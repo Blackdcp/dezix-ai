@@ -1,0 +1,237 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ==================== NextAuth 相关 ====================
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  passwordHash  String?
+  image         String?
+  role          Role      @default(USER)
+  balance       Decimal   @default(0) @db.Decimal(12, 6)
+  referralCode  String?   @unique
+  referredBy    String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts        Account[]
+  sessions        Session[]
+  apiKeys         ApiKey[]
+  usageLogs       UsageLog[]
+  transactions    Transaction[]
+  referralRewards ReferralReward[]
+
+  @@map("users")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+// ==================== API Key ====================
+
+model ApiKey {
+  id             String    @id @default(cuid())
+  userId         String
+  name           String
+  keyHash        String    @unique
+  keyPrefix      String    // 显示用，如 "sk-dezix-xxxx"
+  isActive       Boolean   @default(true)
+  expiresAt      DateTime?
+  totalQuota     Decimal?  @db.Decimal(12, 6) // 额度上限，null=无限
+  usedQuota      Decimal   @default(0) @db.Decimal(12, 6)
+  modelWhitelist String[]  // 允许的模型 ID 列表，空=全部
+  rateLimit      Int?      // 每分钟请求上限
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  usageLogs UsageLog[]
+
+  @@map("api_keys")
+}
+
+// ==================== 供应商 & 渠道 & 模型 ====================
+
+model Provider {
+  id        String   @id @default(cuid())
+  name      String   @unique // OpenAI, Anthropic, Google, DeepSeek
+  baseUrl   String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  channels Channel[]
+
+  @@map("providers")
+}
+
+model Channel {
+  id         String   @id @default(cuid())
+  providerId String
+  name       String
+  apiKey     String   @db.Text // 上游 API Key（加密存储）
+  baseUrl    String?  // 覆盖 provider 的 baseUrl
+  priority   Int      @default(0) // 越大优先级越高
+  weight     Int      @default(1) // 负载均衡权重
+  isActive   Boolean  @default(true)
+  models     String[] // 此渠道支持的模型 ID 列表
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  provider  Provider   @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  usageLogs UsageLog[]
+
+  @@map("channels")
+}
+
+model Model {
+  id            String   @id @default(cuid())
+  modelId       String   @unique // 如 "gpt-4o", "claude-3.5-sonnet"
+  displayName   String
+  providerId    String
+  category      String   @default("chat") // chat, embedding, image, etc.
+  inputPrice    Decimal  @db.Decimal(12, 8) // 每 1K token 成本价
+  outputPrice   Decimal  @db.Decimal(12, 8)
+  sellPrice     Decimal  @db.Decimal(12, 8) // 每 1K token 售价（输入）
+  sellOutPrice  Decimal  @db.Decimal(12, 8) // 每 1K token 售价（输出）
+  maxContext     Int      @default(4096)
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  usageLogs UsageLog[]
+
+  @@map("models")
+}
+
+// ==================== 使用日志 ====================
+
+model UsageLog {
+  id              String   @id @default(cuid())
+  userId          String
+  apiKeyId        String?
+  channelId       String?
+  modelId         String
+  promptTokens    Int      @default(0)
+  completionTokens Int     @default(0)
+  totalTokens     Int      @default(0)
+  cost            Decimal  @db.Decimal(12, 8) // 成本
+  revenue         Decimal  @db.Decimal(12, 8) // 收入（向用户收取）
+  duration        Int      @default(0) // 请求耗时 ms
+  status          String   @default("success") // success, error
+  errorMessage    String?  @db.Text
+  requestIp       String?
+  createdAt       DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  apiKey  ApiKey? @relation(fields: [apiKeyId], references: [id], onDelete: SetNull)
+  channel Channel? @relation(fields: [channelId], references: [id], onDelete: SetNull)
+  model   Model   @relation(fields: [modelId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([modelId, createdAt])
+  @@map("usage_logs")
+}
+
+// ==================== 交易 & 计费 ====================
+
+model Transaction {
+  id          String          @id @default(cuid())
+  userId      String
+  type        TransactionType
+  amount      Decimal         @db.Decimal(12, 6) // 正数=入账，负数=扣费
+  balance     Decimal         @db.Decimal(12, 6) // 交易后余额
+  description String?
+  referenceId String?         // 关联订单号/请求 ID
+  createdAt   DateTime        @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@map("transactions")
+}
+
+enum TransactionType {
+  TOPUP    // 充值
+  USAGE    // API 调用扣费
+  REFUND   // 退款
+  REFERRAL // 推荐奖励
+  ADMIN    // 管理员调整
+}
+
+// ==================== 推荐返佣 ====================
+
+model ReferralReward {
+  id         String   @id @default(cuid())
+  userId     String   // 获得奖励的用户
+  fromUserId String   // 被推荐的用户
+  amount     Decimal  @db.Decimal(12, 6)
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@map("referral_rewards")
+}
+
+// ==================== 系统配置 ====================
+
+model SystemConfig {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String   @db.Text
+  updatedAt DateTime @updatedAt
+
+  @@map("system_configs")
+}
