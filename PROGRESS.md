@@ -61,7 +61,7 @@
 - [x] 文件内容 + Docker 资源零 `myapi` 残留
 
 ### Phase 1 剩余
-- [ ] Git init + commit: "Phase 1: 项目基础设施 + 品牌命名 Dezix AI"
+- [x] Git init + commit: "Phase 1: 项目基础设施 + 品牌命名 Dezix AI"
 
 ### 下次启动备注
 - 项目路径: `E:\Claude code\dezix-ai`
@@ -77,19 +77,20 @@
 ---
 
 ## Phase 2: 核心 API 网关引擎
-- [ ] `POST /api/v1/chat/completions` (流式 + 非流式)
-- [ ] `GET /api/v1/models`
-- [ ] API Key 鉴权 (Bearer token)
-- [ ] Provider 适配器 (OpenAI, Anthropic, Google, DeepSeek)
-- [ ] 请求路由 + 渠道选择 (`src/lib/gateway/router.ts`)
-- [ ] SSE 流式转换器 (`src/lib/gateway/stream.ts`)
-- [ ] Token 计数 + 按请求扣费 (`src/lib/gateway/token-counter.ts`, `billing.ts`)
-- [ ] Redis 限流 (`src/lib/gateway/rate-limiter.ts`)
-- [ ] 上游故障自动 Fallback
-- [ ] 异步请求日志 (UsageLog)
-- [ ] 种子数据 (`prisma/seed.ts` — 模型 + 渠道)
-- [ ] 验证: curl 发送请求，验证流式响应和计费
-- [ ] Git commit: "Phase 2: API 网关引擎"
+- [x] `POST /api/v1/chat/completions` (流式 + 非流式)
+- [x] `GET /api/v1/models`
+- [x] API Key 鉴权 (Bearer token)
+- [x] Provider 适配器 (OpenAI, Anthropic, Google, DeepSeek)
+- [x] 请求路由 + 渠道选择 (`src/lib/gateway/router.ts`)
+- [x] SSE 流式转换器 (`src/lib/gateway/stream.ts`)
+- [x] Token 计数 + 按请求扣费 (`src/lib/gateway/token-counter.ts`, `billing.ts`)
+- [x] Redis 限流 (`src/lib/gateway/rate-limiter.ts`)
+- [x] 上游故障自动 Fallback
+- [x] 异步请求日志 (UsageLog)
+- [x] 种子数据 (`prisma/seed.ts` — 模型 + 渠道)
+- [x] 测试脚本 (`scripts/create-test-key.ts` — 创建测试 API Key)
+- [x] 验证: curl 发送请求，验证流式响应和计费
+- [x] Git commit: "Phase 2: API 网关引擎"
 
 ---
 
