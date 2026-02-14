@@ -95,10 +95,20 @@
 ---
 
 ## Phase 3: API Key 管理 + 控制台 Dashboard
-- [ ] Dashboard 页面: 余额、今日消费、请求数、趋势图
-- [ ] API Key CRUD: 创建/删除/禁用
-- [ ] 子 Key 权限: 额度上限、过期时间、模型白名单
+
+### 已完成
+- [x] 安装依赖: recharts + shadcn/ui 组件 (dialog, table, badge, switch, select, sonner, checkbox, popover, command, tooltip)
+- [x] 创建 `src/app/api/console/dashboard/route.ts` — GET 返回余额、今日消费/请求、活跃密钥数、7 日趋势
+- [x] 创建 `src/app/api/console/api-keys/route.ts` — GET 列出所有 Key / POST 创建新 Key (sk-dezix-{48 hex}, SHA-256 哈希存储, 返回一次性明文)
+- [x] 创建 `src/app/api/console/api-keys/[id]/route.ts` — PATCH 更新 Key 属性 / DELETE 删除 Key + 清除 Redis 缓存
+- [x] 改造 `src/app/(console)/dashboard/page.tsx` — 改为 client component，4 个统计卡片 + 7 日 recharts AreaChart 双轴趋势图 + 快速开始
+- [x] 创建 `src/app/(console)/api-keys/page.tsx` — 完整 CRUD: Table 列表 + 创建 Dialog (含密钥展示/复制) + 编辑 Dialog + 删除确认 Dialog + 启用/禁用 Switch
+- [x] 更新 `src/app/(console)/layout.tsx` — 添加 Sonner Toaster 组件
+- [x] `npm run build` 验证通过
+
+### 待完成
 - [ ] Git commit: "Phase 3: API Key 管理 + Dashboard"
+- [ ] 启动 Docker + dev server 进行功能验证（创建密钥、列表展示、编辑、删除、Dashboard 数据）
 
 ---
 

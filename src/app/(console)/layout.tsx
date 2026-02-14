@@ -1,6 +1,7 @@
 import { SessionProvider } from "next-auth/react";
 import { ConsoleSidebar } from "@/components/layout/console-sidebar";
 import { ConsoleHeader } from "@/components/layout/console-header";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function ConsoleLayout({
   children,
@@ -16,6 +17,7 @@ export default function ConsoleLayout({
           <main className="flex-1 overflow-y-auto p-6">{children}</main>
         </div>
       </div>
+      <Toaster richColors position="top-right" />
     </SessionProvider>
   );
 }
