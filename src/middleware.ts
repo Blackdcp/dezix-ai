@@ -7,6 +7,7 @@ const protectedPaths = [
   "/usage",
   "/models",
   "/playground",
+  "/chat",
   "/billing",
   "/settings",
 ];

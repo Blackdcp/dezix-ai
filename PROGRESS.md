@@ -129,12 +129,25 @@
 
 ---
 
-## Phase 5: 充值计费 + 聊天界面
-- [ ] 余额充值 (支付宝/微信/开发沙箱)
-- [ ] 交易记录页
-- [ ] 类 ChatGPT 聊天界面 (流式、Markdown、代码高亮)
-- [ ] 用户设置页
-- [ ] Git commit: "Phase 5: 充值计费 + 聊天界面"
+## Phase 5: 充值计费 + AI 对话 + 用户设置
+
+### 已完成
+- [x] 安装依赖: react-markdown, remark-gfm, react-syntax-highlighter
+- [x] 创建 `src/app/api/console/billing/route.ts` — GET 返回余额 + 交易记录分页
+- [x] 创建 `src/app/api/console/billing/topup/route.ts` — POST 模拟充值 (原子 SQL + Transaction 记录)
+- [x] 创建 `src/app/(console)/billing/page.tsx` — 余额卡片 + 预设/自定义充值 + 交易记录表格 + 分页
+- [x] 创建 `src/app/api/console/settings/route.ts` — GET/PATCH 用户资料 (邮箱唯一性校验)
+- [x] 创建 `src/app/api/console/settings/password/route.ts` — POST 修改密码 (bcrypt 验证旧密码 + hash 新密码)
+- [x] 创建 `src/app/(console)/settings/page.tsx` — 个人信息 + 编辑资料 + 修改密码
+- [x] 创建 `src/components/chat/markdown-renderer.tsx` — react-markdown + remark-gfm + react-syntax-highlighter (oneDark 主题, 语言标签, 复制按钮, GFM 表格/列表/引用)
+- [x] 创建 `src/app/(console)/chat/page.tsx` — AI 对话: localStorage 持久化, 对话列表 (最多 50 条), 消息流 (最多 100 条/对话), 流式 SSE, 模型选择 + API Key, Markdown 渲染 + 代码高亮
+- [x] 更新 `src/components/layout/console-sidebar.tsx` — 添加 /chat "AI 对话" 导航项 (Bot 图标)
+- [x] 更新 `src/middleware.ts` — protectedPaths 添加 /chat
+- [x] `npm run build` 验证通过
+
+### 待完成
+- [x] Git commit: "Phase 5: 充值计费 + AI 对话 + 用户设置"
+- [ ] 启动 Docker + dev server 进行功能验证
 
 ---
 

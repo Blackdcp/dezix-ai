@@ -10,6 +10,7 @@ import {
   MessageSquare,
   Settings,
   CreditCard,
+  Bot,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -19,6 +20,7 @@ const navItems = [
   { href: "/usage", label: "用量统计", icon: BarChart3 },
   { href: "/models", label: "模型市场", icon: Store },
   { href: "/playground", label: "Playground", icon: MessageSquare },
+  { href: "/chat", label: "AI 对话", icon: Bot },
   { href: "/billing", label: "充值计费", icon: CreditCard },
   { href: "/settings", label: "设置", icon: Settings },
 ];
