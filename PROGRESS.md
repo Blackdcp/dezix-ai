@@ -188,11 +188,50 @@
 ---
 
 ## Phase 7: 管理后台 + 推荐返佣
-- [ ] 管理员 Dashboard (收入、成本、利润)
-- [ ] 用户管理、模型管理、渠道管理
-- [ ] 请求日志查看器
-- [ ] 推荐返佣系统 (邀请链接 + 充值返佣)
-- [ ] Git commit: "Phase 7: 管理后台 + 推荐返佣"
+
+### Auth 角色支持
+- [x] 创建 `src/types/next-auth.d.ts` — Session/JWT 类型扩展加 role 字段
+- [x] 修改 `src/lib/auth.ts` — authorize 返回 role，JWT/session callback 传递 role
+- [x] 修改 `src/middleware.ts` — protectedPaths 加 /referral 和 /admin，ADMIN 角色检查
+- [x] 创建 `src/lib/admin.ts` — requireAdmin() 复用鉴权函数
+
+### 管理后台布局
+- [x] 创建 `src/components/layout/admin-sidebar.tsx` — 管理后台侧边栏（5 个导航项）
+- [x] 创建 `src/components/layout/admin-header.tsx` — 管理后台顶栏（返回控制台链接）
+- [x] 创建 `src/app/(admin)/layout.tsx` — 管理后台布局
+
+### 管理后台 API（9 个路由）
+- [x] `GET /api/admin/dashboard` — 平台统计（用户数、收入/成本/利润、30 天趋势）
+- [x] `GET /api/admin/users` — 用户列表（分页 + 搜索 + 角色筛选）
+- [x] `GET/PATCH /api/admin/users/[id]` — 用户详情/编辑角色
+- [x] `POST /api/admin/users/[id]/balance` — 原子 SQL 调整余额 + ADMIN 交易记录
+- [x] `GET/POST /api/admin/models` — 模型列表/创建（modelId 唯一验证）
+- [x] `PATCH/DELETE /api/admin/models/[id]` — 模型编辑/删除
+- [x] `GET/POST /api/admin/channels` — 渠道列表（apiKey 脱敏）/创建
+- [x] `PATCH/DELETE /api/admin/channels/[id]` — 渠道编辑（空 apiKey 不覆盖）/删除
+- [x] `GET /api/admin/logs` — 全平台请求日志（userId/modelId/status/日期筛选 + 分页）
+
+### 管理后台页面（5 个页面）
+- [x] `/admin/dashboard` — 6 统计卡片 + 30 天 AreaChart（收入/成本/请求）
+- [x] `/admin/users` — 用户表格 + 搜索 + 角色筛选 + 调整余额 Dialog + 角色切换
+- [x] `/admin/models` — 模型表格 + 新增/编辑 Dialog + isActive Switch + 删除确认
+- [x] `/admin/channels` — 渠道表格 + 新增/编辑 Dialog + isActive Switch + 删除确认
+- [x] `/admin/logs` — 筛选栏 + 日志表格 + 分页
+
+### 推荐返佣系统
+- [x] 修改 `src/app/api/register/route.ts` — 支持 referralCode，新用户自动生成推荐码
+- [x] 修改 `src/app/(auth)/register/page.tsx` — 读取 ?ref= 参数传给注册 API
+- [x] 修改 `src/app/api/console/billing/topup/route.ts` — 充值后按比例返佣（默认 10%，从 SystemConfig 读取）
+- [x] 创建 `GET /api/console/referral` — 推荐码 + 统计 + 收益列表
+- [x] 创建 `POST /api/console/referral/generate` — 为老用户生成推荐码
+- [x] 创建 `/referral` — 推荐链接 + 复制 + 统计卡片 + 收益表格
+
+### 控制台侧边栏更新
+- [x] 修改 `src/components/layout/console-sidebar.tsx` — 加"推荐返佣"（Gift 图标）+ ADMIN 底部"管理后台"入口
+
+### 验证
+- [x] `npm run build` 通过（46 路由全部编译成功）
+- [x] Git commit: "Phase 7: 管理后台 + 推荐返佣"
 
 ---
 

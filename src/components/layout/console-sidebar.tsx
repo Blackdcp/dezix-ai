@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useSession } from "next-auth/react";
 import {
   LayoutDashboard,
   Key,
@@ -11,6 +12,8 @@ import {
   Settings,
   CreditCard,
   Bot,
+  Gift,
+  Shield,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -22,11 +25,14 @@ const navItems = [
   { href: "/playground", label: "Playground", icon: MessageSquare },
   { href: "/chat", label: "AI 对话", icon: Bot },
   { href: "/billing", label: "充值计费", icon: CreditCard },
+  { href: "/referral", label: "推荐返佣", icon: Gift },
   { href: "/settings", label: "设置", icon: Settings },
 ];
 
 export function ConsoleSidebar() {
   const pathname = usePathname();
+  const { data: session } = useSession();
+  const isAdmin = session?.user?.role === "ADMIN";
 
   return (
     <aside className="flex h-full w-60 flex-col border-r bg-background">
@@ -55,6 +61,20 @@ export function ConsoleSidebar() {
           );
         })}
       </nav>
+      {isAdmin && (
+        <div className="border-t p-3">
+          <Link
+            href="/admin/dashboard"
+            className={cn(
+              "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+              "text-muted-foreground hover:bg-muted hover:text-foreground"
+            )}
+          >
+            <Shield className="h-4 w-4" />
+            管理后台
+          </Link>
+        </div>
+      )}
     </aside>
   );
 }

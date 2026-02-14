@@ -10,6 +10,8 @@ const protectedPaths = [
   "/chat",
   "/billing",
   "/settings",
+  "/referral",
+  "/admin",
 ];
 
 const authPaths = ["/login", "/register"];
@@ -26,6 +28,14 @@ export default auth((req) => {
   // 未登录用户访问受保护页面 → 跳转到登录页
   if (!isLoggedIn && protectedPaths.some((p) => pathname.startsWith(p))) {
     return NextResponse.redirect(new URL("/login", req.url));
+  }
+
+  // 非 ADMIN 用户访问 /admin/* → 跳转到仪表盘
+  if (isLoggedIn && pathname.startsWith("/admin")) {
+    const role = req.auth?.user?.role;
+    if (role !== "ADMIN") {
+      return NextResponse.redirect(new URL("/dashboard", req.url));
+    }
   }
 
   return NextResponse.next();
