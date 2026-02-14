@@ -37,9 +37,18 @@ dezix-ai/
 │   │   │   └── register/page.tsx
 │   │   ├── (console)/           # 控制台 (需登录)
 │   │   │   ├── layout.tsx       # 控制台布局 (侧边栏 + 顶栏)
-│   │   │   └── dashboard/page.tsx
+│   │   │   ├── dashboard/page.tsx
+│   │   │   ├── api-keys/page.tsx    # API 密钥管理 (Phase 3)
+│   │   │   ├── models/page.tsx      # 模型市场 (Phase 4)
+│   │   │   ├── usage/page.tsx       # 用量统计 (Phase 4)
+│   │   │   └── playground/page.tsx  # API Playground (Phase 4)
 │   │   ├── api/
 │   │   │   ├── auth/[...nextauth]/route.ts
+│   │   │   ├── console/            # 控制台内部 API
+│   │   │   │   ├── dashboard/route.ts
+│   │   │   │   ├── api-keys/route.ts + [id]/route.ts
+│   │   │   │   ├── models/route.ts
+│   │   │   │   └── usage/route.ts
 │   │   │   └── v1/             # API 网关端点 (Phase 2)
 │   │   ├── globals.css
 │   │   ├── layout.tsx           # 根布局

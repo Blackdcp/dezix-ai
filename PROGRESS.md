@@ -107,16 +107,25 @@
 - [x] `npm run build` 验证通过
 
 ### 待完成
-- [ ] Git commit: "Phase 3: API Key 管理 + Dashboard"
+- [x] Git commit: "Phase 3: API Key 管理 + Dashboard"
 - [ ] 启动 Docker + dev server 进行功能验证（创建密钥、列表展示、编辑、删除、Dashboard 数据）
 
 ---
 
 ## Phase 4: 用量统计 + 模型市场 + Playground
-- [ ] 用量统计页 (按模型/按日/日期范围筛选)
-- [ ] 模型市场 (卡片网格、搜索筛选、定价展示)
-- [ ] API Playground (请求构建器 + 流式响应 + 代码片段生成)
-- [ ] Git commit: "Phase 4: 用量统计 + 模型市场 + Playground"
+
+### 已完成
+- [x] 安装 shadcn/ui 组件: tabs, slider, textarea, scroll-area
+- [x] 创建 `src/app/api/console/models/route.ts` — GET 返回模型列表 (search/category/provider 筛选, Provider 表映射, Decimal→Number)
+- [x] 创建 `src/app/api/console/usage/route.ts` — GET 返回 summary + dailyTrends + modelBreakdown + recentLogs (日期范围/模型筛选)
+- [x] 创建 `src/app/(console)/models/page.tsx` — 模型市场: 搜索栏 + 分类/供应商筛选 + 响应式卡片网格 + 定价展示 + 300ms 防抖搜索
+- [x] 创建 `src/app/(console)/usage/page.tsx` — 用量统计: 日期预设/自定义 + 模型筛选 + 4 统计卡片 + AreaChart 趋势图 + BarChart 模型分布 + 日志表格
+- [x] 创建 `src/app/(console)/playground/page.tsx` — Playground: 模型选择 + 消息编辑器 + 参数调节 (Temperature/TopP/MaxTokens/Stream) + API Key 输入 + 流式响应查看器 + 代码示例 (cURL/Python/Node.js)
+- [x] `npm run build` 验证通过
+
+### 待完成
+- [x] Git commit: "Phase 4: 用量统计 + 模型市场 + Playground" (7017e5d)
+- [ ] 启动 Docker + dev server 进行功能验证
 
 ---
 
