@@ -152,11 +152,38 @@
 ---
 
 ## Phase 6: 营销官网 + 文档站
-- [ ] 首页 (Hero、功能展示、模型展示、CTA)
-- [ ] 公开模型列表页、定价页、FAQ
-- [ ] MDX 文档站 (快速开始、API 参考、SDK 示例)
-- [ ] 全中文 UI
-- [ ] Git commit: "Phase 6: 营销官网 + 文档站"
+
+### 已完成
+- [x] 创建 `src/app/api/public/models/route.ts` — 公开模型 API（无鉴权，强制 isActive: true，5 分钟缓存，不暴露成本价）
+- [x] 删除 `src/app/page.tsx`（Next.js 默认模板）
+- [x] 创建 `src/components/layout/marketing-header.tsx` — 营销头部（sticky，桌面导航 + 移动端 Sheet 汉堡菜单）
+- [x] 创建 `src/components/layout/marketing-footer.tsx` — 营销底部（4 列 grid：品牌、产品、文档、关于）
+- [x] 创建 `src/app/(marketing)/layout.tsx` — 营销布局（Header + children + Footer）
+- [x] 创建 `src/components/marketing/hero-section.tsx` — Hero 区域（大标题 + CTA）
+- [x] 创建 `src/components/marketing/providers-bar.tsx` — 供应商横条（OpenAI/Anthropic/Google/DeepSeek）
+- [x] 创建 `src/components/marketing/features-section.tsx` — 6 个功能卡片
+- [x] 创建 `src/components/marketing/models-showcase.tsx` — 热门模型展示（从 /api/public/models 获取）
+- [x] 创建 `src/components/marketing/pricing-section.tsx` — 3 个定价方案预览
+- [x] 创建 `src/components/marketing/stats-bar.tsx` — 数据统计条
+- [x] 创建 `src/components/marketing/cta-section.tsx` — 底部 CTA
+- [x] 创建 `src/app/(marketing)/page.tsx` — 首页（组合 7 个 section）
+- [x] 创建 `src/app/(marketing)/model-list/page.tsx` — 公开模型列表（Table + 搜索 + 分类筛选）
+- [x] 创建 `src/app/(marketing)/pricing/page.tsx` — 定价页（方案卡片 + 模型定价表）
+- [x] 创建 `src/app/(marketing)/faq/page.tsx` — FAQ 页（自定义折叠组件，8 个条目）
+- [x] 创建 `src/components/docs/code-block.tsx` — 代码块组件（react-syntax-highlighter + oneDark + 复制按钮）
+- [x] 创建 `src/components/layout/docs-sidebar.tsx` — 文档侧边栏（active link 模式）
+- [x] 创建 `src/app/(docs)/layout.tsx` — 文档布局（MarketingHeader + DocsSidebar + content）
+- [x] 创建 `src/app/(docs)/docs/page.tsx` — 文档首页（重定向 /docs/quick-start）
+- [x] 创建 `src/app/(docs)/docs/quick-start/page.tsx` — 快速开始（注册 → Key → 请求 + Python/Node.js/cURL 示例）
+- [x] 创建 `src/app/(docs)/docs/api-reference/page.tsx` — API 参考（认证、Chat Completions、Models、错误码、流式）
+- [x] 创建 `src/app/(docs)/docs/sdk-examples/page.tsx` — SDK 示例（Python/Node.js/cURL 多场景示例）
+- [x] 更新 `src/app/layout.tsx` — SEO 增强（Open Graph、Twitter Card、keywords、robots）
+- [x] 全中文 UI
+- [x] `npm run build` 验证通过
+
+### 待完成
+- [x] Git commit: "Phase 6: 营销官网 + 文档站"
+- [ ] 启动 Docker + dev server 进行功能验证
 
 ---
 
