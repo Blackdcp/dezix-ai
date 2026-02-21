@@ -199,14 +199,17 @@ npm run test:watch           # Vitest 监听模式
 - curl 代理: `curl --proxy http://127.0.0.1:7897`
 - **Phase 9 部署已完成**，线上健康检查 + 页面 + 模型 API 全部通过
 
-### 下次任务: 继续线上验证 + 后续功能
+### 下次任务: 后续功能
 
-1. 注册 → 登录 → session 正确返回
-2. 创建 API Key → `sk-dezix-` 前缀
-3. 管理后台页面全部 200
-4. `POST /api/v1/chat/completions` 网关转发 (需要配置上游 API Key)
-5. 前端展示页视觉重构（用户已提出不满意）
-6. 后续功能: OAuth 社交登录 / 真实支付 / 模型管理增强等
+**线上验证已全部通过** (注册/登录/session/API Key/管理后台/控制台/网关全流程)
+
+1. 配置真实上游 API Key (通过管理后台 /admin/channels 编辑渠道)，验证网关实际转发
+2. 前端展示页视觉重构（用户已提出不满意）
+3. 后续功能: OAuth 社交登录 / 真实支付 / 模型管理增强等
+
+### 线上测试账号
+- **普通用户**: `testuser1@dezix.ai` / `TestPass123456` (余额 100)
+- **管理员**: `admin@dezix.ai` / `AdminPass123456` (ADMIN 角色)
 
 ### 基础设施信息
 - **Supabase**: 项目 ref `kkwawbsibpgdqqdirbmv`, Region `ap-southeast-2` (Sydney), DB 密码 `DezixAI2026db`

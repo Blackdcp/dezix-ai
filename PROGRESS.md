@@ -359,11 +359,23 @@
 - Supabase 连接串不要加 `sslmode=require`，SSL 由 pg Pool 的 `ssl: { rejectUnauthorized: false }` 处理
 - 前端展示页视觉效果待后续优化（用户已提出）
 
-### 待验证 (下次任务)
-- [ ] 注册 → 登录 → session 正确返回
-- [ ] 创建 API Key → `sk-dezix-` 前缀
-- [ ] 管理后台页面全部 200
-- [ ] `POST /api/v1/chat/completions` 网关转发 (需要上游 API Key)
+### 线上功能验证 (2026-02-21) ✅
+- [x] 注册 → 登录 → session 正确返回 (testuser1@dezix.ai + admin@dezix.ai)
+- [x] 创建 API Key → `sk-dezix-` 前缀 ✅
+- [x] 管理后台 5 个页面全部 200 ✅
+- [x] 控制台 9 个页面全部 200 ✅
+- [x] Admin Dashboard API: 用户数、收入/成本/利润、30 天趋势 ✅
+- [x] Admin Users/Models/Channels/Logs API 全部正常 ✅
+- [x] 管理员充值: POST balance → 余额 100 ✅
+- [x] 网关认证 + 余额检查 + 渠道选择流程完整 ✅
+- [x] `GET /api/v1/models` → 7 个模型 (修复 Redis 缓存反序列化 bug 后正常) ✅
+- [x] `POST /api/v1/chat/completions` → 余额不足返回 insufficient_balance / 余额足够返回 no_available_channel (因上游 API Key 为 placeholder，属预期行为)
+
+### Bug 修复: Upstash Redis 缓存反序列化 (2026-02-21)
+- [x] `@upstash/redis` 的 `get()` 自动反序列化 JSON，代码中再次 `JSON.parse()` 导致缓存命中时报错
+- [x] 修复 `auth.ts` authenticateRequest 和 getModelWhitelist 的 2 处 `JSON.parse`
+- [x] 修复 `router.ts` getChannelsForModel 的 1 处 `JSON.parse`
+- [x] Git commit: `0c548c4`
 
 ---
 
