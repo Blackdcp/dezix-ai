@@ -48,9 +48,9 @@ describe("estimateTokens", () => {
     expect(result).toBe(6);
   });
 
-  it("handles messages without content", () => {
+  it("handles messages with null content", () => {
     const messages: ChatMessage[] = [
-      { role: "assistant" },
+      { role: "assistant", content: null },
     ];
     const result = estimateTokens(messages);
     expect(result).toBe(6);
