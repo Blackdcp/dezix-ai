@@ -50,7 +50,7 @@ export async function selectChannel(
 
 async function getChannelsForModel(modelId: string): Promise<ChannelInfo[]> {
   const cacheKey = `channels:${modelId}`;
-  const cached = await redis.get(cacheKey);
+  const cached = await redis.get<string>(cacheKey);
   if (cached) {
     return JSON.parse(cached);
   }
@@ -77,7 +77,7 @@ async function getChannelsForModel(modelId: string): Promise<ChannelInfo[]> {
   }));
 
   if (result.length > 0) {
-    await redis.set(cacheKey, JSON.stringify(result), "EX", CHANNEL_CACHE_TTL);
+    await redis.set(cacheKey, JSON.stringify(result), { ex: CHANNEL_CACHE_TTL });
   }
 
   return result;

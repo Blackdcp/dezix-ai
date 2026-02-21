@@ -11,19 +11,22 @@ vi.mock("@/lib/db", () => ({
   },
 }));
 
-// Mock redis (needed by rate-limiter)
-const mockMulti = {
-  zremrangebyscore: vi.fn().mockReturnThis(),
-  zcard: vi.fn().mockReturnThis(),
-  zadd: vi.fn().mockReturnThis(),
-  pexpire: vi.fn().mockReturnThis(),
-  exec: vi.fn(),
-};
+// Mock @upstash/ratelimit (needed by rate-limiter)
+const mockLimit = vi.fn();
 
-vi.mock("@/lib/redis", () => ({
-  redis: {
-    multi: () => mockMulti,
+vi.mock("@upstash/ratelimit", () => ({
+  Ratelimit: class MockRatelimit {
+    static slidingWindow() {
+      return {};
+    }
+    constructor() {}
+    limit = mockLimit;
   },
+}));
+
+// Mock redis (needed by rate-limiter module)
+vi.mock("@/lib/redis", () => ({
+  redis: {},
 }));
 
 // Mock bcrypt for speed
@@ -48,9 +51,7 @@ describe("POST /api/register", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     // Default: rate limit allows requests
-    mockMulti.exec.mockResolvedValue([
-      [null, 0], [null, 0], [null, 1], [null, 1],
-    ]);
+    mockLimit.mockResolvedValue({ success: true, remaining: 4 });
   });
 
   it("creates a new user successfully", async () => {
@@ -134,9 +135,7 @@ describe("POST /api/register", () => {
   });
 
   it("returns 429 when rate limited", async () => {
-    mockMulti.exec.mockResolvedValue([
-      [null, 0], [null, 5], [null, 1], [null, 1],
-    ]);
+    mockLimit.mockResolvedValue({ success: false, remaining: 0 });
 
     const response = await POST(makeRequest({
       name: "Test",

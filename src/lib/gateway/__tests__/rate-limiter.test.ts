@@ -1,18 +1,21 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-// Mock redis
-const mockMulti = {
-  zremrangebyscore: vi.fn().mockReturnThis(),
-  zcard: vi.fn().mockReturnThis(),
-  zadd: vi.fn().mockReturnThis(),
-  pexpire: vi.fn().mockReturnThis(),
-  exec: vi.fn(),
-};
+// Mock @upstash/ratelimit
+const mockLimit = vi.fn();
 
-vi.mock("@/lib/redis", () => ({
-  redis: {
-    multi: () => mockMulti,
+vi.mock("@upstash/ratelimit", () => ({
+  Ratelimit: class MockRatelimit {
+    static slidingWindow() {
+      return {};
+    }
+    constructor() {}
+    limit = mockLimit;
   },
+}));
+
+// Mock redis (needed by rate-limiter module)
+vi.mock("@/lib/redis", () => ({
+  redis: {},
 }));
 
 import { checkIpRateLimit } from "../rate-limiter";
@@ -23,25 +26,21 @@ describe("checkIpRateLimit", () => {
   });
 
   it("allows request when under limit", async () => {
-    mockMulti.exec.mockResolvedValue([
-      [null, 0],  // zremrangebyscore
-      [null, 3],  // zcard: 3 requests so far
-      [null, 1],  // zadd
-      [null, 1],  // pexpire
-    ]);
+    mockLimit.mockResolvedValue({
+      success: true,
+      remaining: 7,
+    });
 
     const result = await checkIpRateLimit("1.2.3.4", 10);
     expect(result.allowed).toBe(true);
-    expect(result.remaining).toBe(7); // 10 - 3
+    expect(result.remaining).toBe(7);
   });
 
   it("blocks request when at limit", async () => {
-    mockMulti.exec.mockResolvedValue([
-      [null, 0],
-      [null, 10], // zcard: 10 requests (at limit)
-      [null, 1],
-      [null, 1],
-    ]);
+    mockLimit.mockResolvedValue({
+      success: false,
+      remaining: 0,
+    });
 
     const result = await checkIpRateLimit("1.2.3.4", 10);
     expect(result.allowed).toBe(false);
@@ -55,15 +54,7 @@ describe("checkIpRateLimit", () => {
   });
 
   it("fails open on Redis error", async () => {
-    mockMulti.exec.mockRejectedValue(new Error("Redis connection failed"));
-
-    const result = await checkIpRateLimit("1.2.3.4", 10);
-    expect(result.allowed).toBe(true);
-    expect(result.remaining).toBe(10);
-  });
-
-  it("fails open when exec returns null", async () => {
-    mockMulti.exec.mockResolvedValue(null);
+    mockLimit.mockRejectedValue(new Error("Redis connection failed"));
 
     const result = await checkIpRateLimit("1.2.3.4", 10);
     expect(result.allowed).toBe(true);

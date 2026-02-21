@@ -1,9 +1,26 @@
+import { Ratelimit } from "@upstash/ratelimit";
 import { redis } from "@/lib/redis";
 import { rateLimitError } from "./errors";
 
+const rlCache = new Map<string, Ratelimit>();
+
+function getRatelimiter(limit: number, windowMs: number): Ratelimit {
+  const key = `${limit}:${windowMs}`;
+  if (!rlCache.has(key)) {
+    rlCache.set(
+      key,
+      new Ratelimit({
+        redis,
+        limiter: Ratelimit.slidingWindow(limit, `${windowMs} ms`),
+        prefix: "rl",
+      })
+    );
+  }
+  return rlCache.get(key)!;
+}
+
 /**
- * Redis sliding window rate limiter.
- * Uses a sorted set with timestamps as scores.
+ * Per-API-key rate limiter using @upstash/ratelimit sliding window.
  *
  * @param keyId - The API key ID
  * @param limit - Max requests per window
@@ -17,26 +34,8 @@ export async function checkRateLimit(
   // No limit configured → skip
   if (!limit || limit <= 0) return;
 
-  const now = Date.now();
-  const windowStart = now - windowMs;
-  const redisKey = `ratelimit:${keyId}`;
-
-  // Atomic: remove expired entries, count current entries, add new entry, set TTL
-  const multi = redis.multi();
-  multi.zremrangebyscore(redisKey, 0, windowStart);
-  multi.zcard(redisKey);
-  multi.zadd(redisKey, now, `${now}:${Math.random().toString(36).slice(2, 8)}`);
-  multi.pexpire(redisKey, windowMs);
-
-  const results = await multi.exec();
-  if (!results) {
-    // Redis error, allow the request (fail open)
-    return;
-  }
-
-  // results[1] is the zcard result: [error, count]
-  const count = results[1][1] as number;
-  if (count >= limit) {
+  const { success } = await getRatelimiter(limit, windowMs).limit(keyId);
+  if (!success) {
     throw rateLimitError(
       `Rate limit exceeded: ${limit} requests per ${windowMs / 1000}s`
     );
@@ -44,7 +43,7 @@ export async function checkRateLimit(
 }
 
 /**
- * IP-based rate limiter using the same sliding window algorithm.
+ * IP-based rate limiter using @upstash/ratelimit sliding window.
  * Returns result instead of throwing, so callers can build custom responses.
  */
 export async function checkIpRateLimit(
@@ -54,27 +53,11 @@ export async function checkIpRateLimit(
 ): Promise<{ allowed: boolean; remaining: number }> {
   if (!ip) return { allowed: true, remaining: limit };
 
-  const now = Date.now();
-  const windowStart = now - windowMs;
-  const redisKey = `iplimit:${ip}`;
-
   try {
-    const multi = redis.multi();
-    multi.zremrangebyscore(redisKey, 0, windowStart);
-    multi.zcard(redisKey);
-    multi.zadd(redisKey, now, `${now}:${Math.random().toString(36).slice(2, 8)}`);
-    multi.pexpire(redisKey, windowMs);
-
-    const results = await multi.exec();
-    if (!results) {
-      return { allowed: true, remaining: limit };
-    }
-
-    const count = results[1][1] as number;
-    if (count >= limit) {
-      return { allowed: false, remaining: 0 };
-    }
-    return { allowed: true, remaining: limit - count };
+    const { success, remaining } = await getRatelimiter(limit, windowMs).limit(
+      `ip:${ip}`
+    );
+    return { allowed: success, remaining };
   } catch {
     // Fail open on Redis error
     return { allowed: true, remaining: limit };

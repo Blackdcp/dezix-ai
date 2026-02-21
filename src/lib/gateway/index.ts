@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { waitUntil } from "@vercel/functions";
 import { authenticateRequest, getModelWhitelist } from "./auth";
 import { checkRateLimit } from "./rate-limiter";
 import { estimateTokens, estimateTextTokens } from "./token-counter";
@@ -180,31 +181,33 @@ function handleStreamResponse(
     ctx.requestId
   );
 
-  // Fire-and-forget: billing + logging after stream completes
-  usagePromise.then(async ({ usage, content }) => {
-    const duration = Date.now() - ctx.startTime;
-    try {
-      // If upstream didn't report tokens, estimate from accumulated content
-      if (usage.completion_tokens === 0 && content) {
-        usage.completion_tokens = estimateTextTokens(content);
-        usage.total_tokens = usage.prompt_tokens + usage.completion_tokens;
-      }
+  // Use waitUntil to ensure billing completes after response is sent
+  waitUntil(
+    usagePromise.then(async ({ usage, content }) => {
+      const duration = Date.now() - ctx.startTime;
+      try {
+        // If upstream didn't report tokens, estimate from accumulated content
+        if (usage.completion_tokens === 0 && content) {
+          usage.completion_tokens = estimateTextTokens(content);
+          usage.total_tokens = usage.prompt_tokens + usage.completion_tokens;
+        }
 
-      const { revenue, cost } = await chargeUser(ctx, usage);
-      logUsage(ctx, usage, revenue, cost, duration);
-    } catch (err) {
-      console.error("[Gateway] Post-stream billing error:", err);
-      logUsage(
-        ctx,
-        usage,
-        0,
-        0,
-        duration,
-        "error",
-        err instanceof Error ? err.message : "Billing failed"
-      );
-    }
-  });
+        const { revenue, cost } = await chargeUser(ctx, usage);
+        await logUsage(ctx, usage, revenue, cost, duration);
+      } catch (err) {
+        console.error("[Gateway] Post-stream billing error:", err);
+        await logUsage(
+          ctx,
+          usage,
+          0,
+          0,
+          duration,
+          "error",
+          err instanceof Error ? err.message : "Billing failed"
+        );
+      }
+    })
+  );
 
   return new Response(stream, {
     status: 200,
@@ -239,7 +242,7 @@ async function handleNonStreamResponse(
     };
 
     const { revenue, cost } = await chargeUser(ctx, usage);
-    logUsage(ctx, usage, revenue, cost, duration);
+    await logUsage(ctx, usage, revenue, cost, duration);
 
     return new Response(JSON.stringify(response), {
       status: 200,

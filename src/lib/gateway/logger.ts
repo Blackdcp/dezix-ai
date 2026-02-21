@@ -2,10 +2,10 @@ import { db } from "@/lib/db";
 import type { GatewayContext, UsageInfo } from "./types";
 
 /**
- * Asynchronously log a completed request to the UsageLog table.
- * Fire-and-forget: errors are caught and logged to console.
+ * Log a completed request to the UsageLog table.
+ * Returns a Promise so callers can await if needed (e.g. inside waitUntil).
  */
-export function logUsage(
+export async function logUsage(
   ctx: GatewayContext,
   usage: UsageInfo,
   revenue: number,
@@ -13,10 +13,9 @@ export function logUsage(
   duration: number,
   status: "success" | "error" = "success",
   errorMessage?: string
-): void {
-  // Fire-and-forget — don't await
-  db.usageLog
-    .create({
+): Promise<void> {
+  try {
+    await db.usageLog.create({
       data: {
         userId: ctx.user.id,
         apiKeyId: ctx.apiKey.id,
@@ -32,8 +31,8 @@ export function logUsage(
         errorMessage,
         requestIp: ctx.requestIp,
       },
-    })
-    .catch((err) => {
-      console.error("[Gateway Logger] Failed to log usage:", err);
     });
+  } catch (err) {
+    console.error("[Gateway Logger] Failed to log usage:", err);
+  }
 }

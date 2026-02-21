@@ -5,6 +5,8 @@ import { GatewayError, invalidRequestError, rateLimitError } from "@/lib/gateway
 import { checkIpRateLimit } from "@/lib/gateway/rate-limiter";
 import { addCorsHeaders, corsOptionsResponse } from "@/lib/cors";
 
+export const maxDuration = 300;
+
 export async function OPTIONS() {
   return corsOptionsResponse();
 }

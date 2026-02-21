@@ -34,7 +34,7 @@ export async function authenticateRequest(
 
   // Try Redis cache first
   const cacheKey = `apikey:${keyHash}`;
-  const cached = await redis.get(cacheKey);
+  const cached = await redis.get<string>(cacheKey);
   if (cached) {
     const data = JSON.parse(cached);
     validateKeyData(data);
@@ -87,8 +87,7 @@ export async function authenticateRequest(
       usedQuota: Number(apiKey.usedQuota),
       modelWhitelist: apiKey.modelWhitelist,
     }),
-    "EX",
-    KEY_CACHE_TTL
+    { ex: KEY_CACHE_TTL }
   );
 
   return data;
@@ -135,7 +134,7 @@ function validateKeyData(data: Record<string, unknown>) {
  */
 export async function getModelWhitelist(apiKeyId: string): Promise<string[]> {
   const cacheKey = `apikey:whitelist:${apiKeyId}`;
-  const cached = await redis.get(cacheKey);
+  const cached = await redis.get<string>(cacheKey);
   if (cached) return JSON.parse(cached);
 
   const apiKey = await db.apiKey.findUnique({
@@ -144,6 +143,6 @@ export async function getModelWhitelist(apiKeyId: string): Promise<string[]> {
   });
 
   const whitelist = apiKey?.modelWhitelist ?? [];
-  await redis.set(cacheKey, JSON.stringify(whitelist), "EX", KEY_CACHE_TTL);
+  await redis.set(cacheKey, JSON.stringify(whitelist), { ex: KEY_CACHE_TTL });
   return whitelist;
 }

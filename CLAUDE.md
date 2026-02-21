@@ -8,7 +8,7 @@ Dezix AI 是一个统一 LLM API 网关平台（仿 n1n.ai），面向国内开�
 
 ## 当前状态
 
-**全部 8 个阶段已完成 + 功能验证通过 + 体验优化。** 47 个路由编译通过，68 个测试用例全部通过。
+**全部 8 个阶段已完成 + Phase 9 Vercel 迁移代码已完成。** 47 个路由编译通过，67 个测试用例全部通过。
 
 | 阶段 | 状态 | Git Commit |
 |------|------|------------|
@@ -22,20 +22,21 @@ Dezix AI 是一个统一 LLM API 网关平台（仿 n1n.ai），面向国内开�
 | Phase 8: 生产加固 | ✅ 完成 | `5c29333` |
 | 全功能验证 | ✅ 完成 | `bd3c00a` |
 | Bug 修复 + 体验优化 | ✅ 完成 | `5a28e80` |
+| Phase 9: Vercel + Supabase + Upstash 迁移 | ✅ 代码完成 | 待提交 |
 
 ## 技术栈
 
 | 层 | 技术 |
 |---|---|
 | 前后端 | Next.js 16 (App Router) + TypeScript |
-| 数据库 | PostgreSQL 16 (Prisma ORM 7 + PrismaPg driver adapter) |
-| 缓存/限流 | Redis 7 (ioredis) |
+| 数据库 | Supabase PostgreSQL (Prisma ORM 7 + PrismaPg driver adapter + PgBouncer) |
+| 缓存/限流 | Upstash Redis (@upstash/redis HTTP) + @upstash/ratelimit |
 | 认证 | NextAuth.js v5 (beta) + Credentials Provider |
 | UI | Tailwind CSS v4 + shadcn/ui |
 | 验证 | Zod v4 (15 个路由的输入验证) |
 | 加密 | AES-256-GCM (渠道 API Key 加密存储) |
-| 测试 | Vitest v4 (7 个测试文件, 68 个用例) |
-| 部署 | Docker (multi-stage, tini, healthcheck) |
+| 测试 | Vitest v4 (7 个测试文件, 67 个用例) |
+| 部署 | Vercel Serverless + Supabase + Upstash (Docker 保留用于本地开发) |
 | CI | GitHub Actions (lint → tsc → test → build) |
 
 ## 项目结构
@@ -158,8 +159,10 @@ npm run test:watch           # Vitest 监听模式
 ## 环境变量
 
 参见 `.env.example`，关键变量:
-- `DATABASE_URL` — PostgreSQL 连接串
-- `REDIS_URL` — Redis 连接串
+- `DATABASE_URL` — Supabase PostgreSQL 连接串 (PgBouncer, port 6543)
+- `DIRECT_DATABASE_URL` — Supabase 直连串 (port 5432, 用于 prisma migrate)
+- `UPSTASH_REDIS_REST_URL` — Upstash Redis REST API URL
+- `UPSTASH_REDIS_REST_TOKEN` — Upstash Redis REST API Token
 - `NEXTAUTH_SECRET` — NextAuth 签名密钥
 - `NEXTAUTH_URL` — 应用 URL
 - `ENCRYPTION_KEY` — 渠道 API Key 加密密钥 (64 字符 hex, 32 字节)
@@ -190,9 +193,22 @@ npm run test:watch           # Vitest 监听模式
 ## 下次启动备注
 
 - 项目路径: `E:\Claude code\dezix-ai`
-- Docker Desktop 需手动启动，然后 `docker compose up -d`
+- **Phase 9 代码已完成**，尚未部署到 Vercel
+- 本地开发仍可使用 Docker: `docker compose up -d` (PG + Redis)
+- 本地开发用 `.env.local` 指向本地 PG/Redis 或 Upstash 云端免费额度
+- 生产环境变量通过 Vercel Dashboard 设置
 - Windows 下 npx 有 PATH 问题，可用 `node node_modules/next/dist/bin/next dev`
-- 所有 8 个阶段已完成，可进入后续优化或新功能开发
+
+### Phase 9 部署后待验证 (下次任务)
+
+1. `GET /api/health` → postgres healthy + redis healthy
+2. 访问首页 / 定价 / 文档 → 页面正常加载
+3. 注册 → 登录 → session 正确返回
+4. 创建 API Key → `sk-dezix-` 前缀
+5. `POST /api/v1/chat/completions` (stream: false) → 计费记录写入
+6. `POST /api/v1/chat/completions` (stream: true) → 流式正常 + 计费记录写入 (验证 waitUntil)
+7. 快速发送超限请求 → 返回 429 (rate limit)
+8. 管理后台页面全部 200
 
 ## 跨会话继续开发
 
