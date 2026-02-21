@@ -274,6 +274,21 @@
 
 ---
 
+## Bug 修复 + 体验优化 (2026-02-21)
+
+- [x] 修复 AdminHeader / ConsoleHeader 的 DropdownMenu hydration mismatch（session loading 时渲染 skeleton）
+- [x] API Key 存储方案改为 AES-256-GCM 加密存储（新增 `keyEncrypted` 字段，`keyHash` 保留用于网关鉴权）
+- [x] API Key 列表页显示完整密钥 + 一键复制按钮
+- [x] 创建 Key 弹窗优化：全宽复制按钮 + 点击区域复制
+- [x] Prisma schema `db push` + `generate` 已同步
+- [x] Git commit: `5a28e80`
+
+### 注意事项
+- 旧的 API Key（改动前创建的）没有 `keyEncrypted` 字段，列表降级显示前缀
+- 新创建的 API Key 同时存储哈希（鉴权）+ 加密密文（展示），列表可复制完整密钥
+
+---
+
 ## 后续可选方向
 
 - [ ] Phase 9: 部署上线 (VPS/云服务器 + 域名 + SSL + Nginx 反代)
