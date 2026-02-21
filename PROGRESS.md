@@ -108,7 +108,7 @@
 
 ### 待完成
 - [x] Git commit: "Phase 3: API Key 管理 + Dashboard"
-- [ ] 启动 Docker + dev server 进行功能验证（创建密钥、列表展示、编辑、删除、Dashboard 数据）
+- [x] 启动 Docker + dev server 进行功能验证（Dashboard API 返回余额/趋势、API Key CRUD 全流程通过）
 
 ---
 
@@ -125,7 +125,7 @@
 
 ### 待完成
 - [x] Git commit: "Phase 4: 用量统计 + 模型市场 + Playground" (7017e5d)
-- [ ] 启动 Docker + dev server 进行功能验证
+- [x] 启动 Docker + dev server 进行功能验证（Usage/Models/Playground 页面 200、模型 API 返回 7 个模型）
 
 ---
 
@@ -147,7 +147,7 @@
 
 ### 待完成
 - [x] Git commit: "Phase 5: 充值计费 + AI 对话 + 用户设置"
-- [ ] 启动 Docker + dev server 进行功能验证
+- [x] 启动 Docker + dev server 进行功能验证（充值 10→余额 110、设置修改用户名、Billing/Chat/Settings 页面 200）
 
 ---
 
@@ -183,7 +183,7 @@
 
 ### 待完成
 - [x] Git commit: "Phase 6: 营销官网 + 文档站"
-- [ ] 启动 Docker + dev server 进行功能验证
+- [x] 启动 Docker + dev server 进行功能验证（首页/定价/FAQ/模型列表/文档站全部 200、公开模型 API 返回 7 个模型）
 
 ---
 
@@ -243,3 +243,42 @@
 - [x] 生产级 Docker 配置 (tini PID 1, healthcheck, memory limits, Redis AOF+LRU)
 - [x] CI Pipeline (.github/workflows/ci.yml: lint → tsc → test → build)
 - [x] Git commit: "Phase 8: 生产加固"
+
+---
+
+## 全功能验证 (2026-02-21)
+
+### 验证环境
+- Docker: dezix-postgres (healthy) + dezix-redis (healthy)
+- Next.js dev server: localhost:3000
+- 测试用户: test@example.com (ADMIN 角色)
+
+### 验证结果
+- [x] **健康检查**: `/api/health` → postgres healthy (2ms) + redis healthy (0ms)
+- [x] **营销官网**: 首页/定价/FAQ/模型列表 全部 200
+- [x] **文档站**: 快速开始/API 参考/SDK 示例 全部 200，/docs → 307 重定向正确
+- [x] **公开模型 API**: `/api/public/models` → 7 个模型
+- [x] **认证流程**: CSRF → 登录 → 302 重定向 → session 返回用户信息 + 角色
+- [x] **Dashboard API**: 余额 100、7 日趋势数据、活跃密钥数
+- [x] **API Key CRUD**: 创建 (sk-dezix- 前缀) → 编辑 (改名+限流) → 禁用 → 删除
+- [x] **用量统计 API**: summary + dailyTrends + modelBreakdown + recentLogs
+- [x] **模型市场 API**: 7 个模型 (含 provider/category/定价)
+- [x] **充值**: POST topup 10 → 余额 100→110
+- [x] **用户设置**: GET 资料 + PATCH 修改用户名
+- [x] **管理后台**: 5 个页面全部 200，Dashboard API 返回平台统计 + 30 天趋势
+- [x] **推荐返佣**: 返回推荐码 + 统计
+- [x] **控制台页面**: dashboard/api-keys/models/usage/playground/billing/chat/settings/referral 全部 200
+
+### 结论
+**8 个阶段全部开发完成 + 功能验证通过。** 项目进入可部署状态。
+
+---
+
+## 后续可选方向
+
+- [ ] Phase 9: 部署上线 (VPS/云服务器 + 域名 + SSL + Nginx 反代)
+- [ ] Phase 10: OAuth 社交登录 (GitHub / Google)
+- [ ] Phase 11: 真实支付集成 (Stripe / 支付宝)
+- [ ] Phase 12: 模型管理增强 (自动同步上游模型列表、价格更新)
+- [ ] Phase 13: 监控告警 (Prometheus + Grafana / Sentry)
+- [ ] Phase 14: 多语言支持 (i18n)
