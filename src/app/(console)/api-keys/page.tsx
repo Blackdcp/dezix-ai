@@ -43,6 +43,7 @@ interface ApiKeyItem {
   id: string;
   name: string;
   keyPrefix: string;
+  fullKey: string | null;
   isActive: boolean;
   expiresAt: string | null;
   totalQuota: number | null;
@@ -150,18 +151,28 @@ function CreateKeyDialog({
               请立即复制你的 API Key，此密钥仅展示一次，关闭后无法再次查看。
             </DialogDescription>
           </DialogHeader>
-          <div className="flex items-center gap-2 rounded-md border bg-muted p-3">
-            <code className="flex-1 break-all text-sm">{createdKey}</code>
-            <Button variant="ghost" size="icon" onClick={handleCopy}>
-              {copied ? (
-                <Check className="h-4 w-4 text-green-500" />
-              ) : (
-                <Copy className="h-4 w-4" />
-              )}
-            </Button>
+          <div
+            className="group flex items-center gap-2 rounded-md border bg-muted p-3 cursor-pointer hover:border-primary/50 transition-colors"
+            onClick={handleCopy}
+            title="点击复制"
+          >
+            <code className="flex-1 break-all text-sm select-all">{createdKey}</code>
           </div>
+          <Button onClick={handleCopy} className="w-full gap-2">
+            {copied ? (
+              <>
+                <Check className="h-4 w-4" />
+                已复制
+              </>
+            ) : (
+              <>
+                <Copy className="h-4 w-4" />
+                复制 API Key
+              </>
+            )}
+          </Button>
           <DialogFooter>
-            <Button onClick={() => handleClose(false)}>确认关闭</Button>
+            <Button variant="outline" onClick={() => handleClose(false)}>确认关闭</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -543,7 +554,7 @@ export default function ApiKeysPage() {
               <TableHeader>
                 <TableRow>
                   <TableHead>名称</TableHead>
-                  <TableHead>Key 前缀</TableHead>
+                  <TableHead>API Key</TableHead>
                   <TableHead>状态</TableHead>
                   <TableHead className="text-right">已用额度</TableHead>
                   <TableHead className="text-right">总额度</TableHead>
@@ -557,9 +568,23 @@ export default function ApiKeysPage() {
                   <TableRow key={key.id}>
                     <TableCell className="font-medium">{key.name}</TableCell>
                     <TableCell>
-                      <code className="rounded bg-muted px-1.5 py-0.5 text-xs">
-                        {key.keyPrefix}
-                      </code>
+                      <div className="flex items-center gap-1">
+                        <code className="rounded bg-muted px-1.5 py-0.5 text-xs max-w-[280px] truncate block">
+                          {key.fullKey || key.keyPrefix}
+                        </code>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-6 w-6 shrink-0"
+                          onClick={async () => {
+                            const text = key.fullKey || key.keyPrefix;
+                            await navigator.clipboard.writeText(text);
+                            toast.success("已复制到剪贴板");
+                          }}
+                        >
+                          <Copy className="h-3 w-3" />
+                        </Button>
+                      </div>
                     </TableCell>
                     <TableCell>
                       <Badge variant={key.isActive ? "default" : "secondary"}>

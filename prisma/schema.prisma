@@ -85,6 +85,7 @@ model ApiKey {
   userId         String
   name           String
   keyHash        String    @unique
+  keyEncrypted   String?   @db.Text // AES-256-GCM 加密的完整 Key，用于列表展示
   keyPrefix      String    // 显示用，如 "sk-dezix-xxxx"
   isActive       Boolean   @default(true)
   expiresAt      DateTime?

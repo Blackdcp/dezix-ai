@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { randomBytes, createHash } from "crypto";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { encrypt, decrypt } from "@/lib/encryption";
 import { createApiKeySchema } from "@/lib/validations";
 
 export async function GET() {
@@ -16,6 +17,7 @@ export async function GET() {
       id: true,
       name: true,
       keyPrefix: true,
+      keyEncrypted: true,
       isActive: true,
       expiresAt: true,
       totalQuota: true,
@@ -29,9 +31,17 @@ export async function GET() {
 
   return NextResponse.json(
     keys.map((k) => ({
-      ...k,
+      id: k.id,
+      name: k.name,
+      keyPrefix: k.keyPrefix,
+      fullKey: k.keyEncrypted ? decrypt(k.keyEncrypted) : null,
+      isActive: k.isActive,
+      expiresAt: k.expiresAt,
       totalQuota: k.totalQuota ? Number(k.totalQuota) : null,
       usedQuota: Number(k.usedQuota),
+      modelWhitelist: k.modelWhitelist,
+      rateLimit: k.rateLimit,
+      createdAt: k.createdAt,
     }))
   );
 }
@@ -53,12 +63,14 @@ export async function POST(req: Request) {
   const rawKey = `sk-dezix-${randomBytes(24).toString("hex")}`;
   const keyHash = createHash("sha256").update(rawKey).digest("hex");
   const keyPrefix = `${rawKey.slice(0, 14)}...${rawKey.slice(-4)}`;
+  const keyEncrypted = encrypt(rawKey);
 
   const apiKey = await db.apiKey.create({
     data: {
       userId: session.user.id,
       name: parsed.data.name,
       keyHash,
+      keyEncrypted,
       keyPrefix,
       expiresAt: parsed.data.expiresAt ? new Date(parsed.data.expiresAt) : null,
       totalQuota: parsed.data.totalQuota ?? null,
