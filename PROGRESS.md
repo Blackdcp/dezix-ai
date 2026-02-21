@@ -377,6 +377,12 @@
 - [x] 修复 `router.ts` getChannelsForModel 的 1 处 `JSON.parse`
 - [x] Git commit: `0c548c4`
 
+### Bug 修复: GitHub Actions CI (2026-02-21)
+- [x] CI 缺少 `DATABASE_URL` / `UPSTASH_REDIS_REST_URL` 等环境变量导致 `next build` 失败 → 添加 dummy 环境变量
+- [x] `token-counter.test.ts` 第 53 行 `{ role: "assistant" }` 缺少 `content` 属性，`tsc --noEmit` 报错 → 改为 `{ role: "assistant", content: null }`
+- [x] Git commit: `914b9ec` + `1b2e92c`
+- [x] GitHub Actions CI 全绿通过 ✅
+
 ---
 
 ## 后续可选方向
