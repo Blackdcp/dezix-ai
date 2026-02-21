@@ -7,9 +7,11 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 function createPrismaClient() {
+  const isSupabase = process.env.DATABASE_URL?.includes("supabase");
   const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     max: 1,
+    ssl: isSupabase ? { rejectUnauthorized: false } : undefined,
   });
   const adapter = new PrismaPg(pool);
   return new PrismaClient({

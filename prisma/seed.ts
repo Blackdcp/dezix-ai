@@ -1,11 +1,16 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
+import { Pool } from "pg";
 
-const adapter = new PrismaPg({
+const pool = new Pool({
   connectionString:
     process.env.DATABASE_URL ||
     "postgresql://dezix:dezix_password@localhost:5432/dezix?schema=public",
+  ssl: process.env.DATABASE_URL?.includes("supabase")
+    ? { rejectUnauthorized: false }
+    : undefined,
 });
+const adapter = new PrismaPg(pool);
 
 const prisma = new PrismaClient({ adapter });
 
