@@ -148,7 +148,7 @@ npm run test:watch           # Vitest 监听模式
 | User | 用户 + 余额 + 角色 (ADMIN/USER) + 推荐码 |
 | Account / Session / VerificationToken | NextAuth 认证相关 |
 | ApiKey | API 密钥 (SHA-256 哈希存储) + 配额 + 模型白名单 + 限流 |
-| Provider | 上游供应商 (OpenAI, Anthropic, Google, DeepSeek) |
+| Provider | 上游供应商 (当前: qiniu 七牛云/Sufy，旧的 4 个已停用) |
 | Channel | 上游渠道 (apiKey AES-256-GCM 加密, 优先级/权重) |
 | Model | 模型列表 + 定价 (成本价 + 售价, Decimal 精度) |
 | UsageLog | 每次请求的完整记录 (Token/费用/延迟/IP) |
@@ -199,13 +199,30 @@ npm run test:watch           # Vitest 监听模式
 - curl 代理: `curl --proxy http://127.0.0.1:7897`
 - **Phase 9 部署已完成**，线上健康检查 + 页面 + 模型 API 全部通过
 
-### 下次任务: 后续功能
+### 下次任务: 七牛云上游接入 — 剩余工作
 
-**线上验证已全部通过** (注册/登录/session/API Key/管理后台/控制台/网关全流程)
+**已完成的部分:**
+- `src/lib/gateway/adapters/registry.ts` — 注册 `qiniu` 适配器 (映射到 DeepSeekAdapter)
+- `prisma/seed.ts` — 重写为七牛云上游，91 个模型 (13 家厂商)
+- 线上 Supabase 数据库已 seed: qiniu Provider + Qiniu Primary 渠道 (明文 API Key) + 91 个模型
+- 代码已 push 到 GitHub main 分支 (commit `c766891`)
+- 本地 build 通过，67/67 测试通过
 
-1. 配置真实上游 API Key (通过管理后台 /admin/channels 编辑渠道)，验证网关实际转发
-2. 前端展示页视觉重构（用户已提出不满意）
-3. 后续功能: OAuth 社交登录 / 真实支付 / 模型管理增强等
+**未完成 — 需要明天继续:**
+1. **Vercel 部署**: 代码已 push 但 Vercel 没有自动部署新版本。CLI 部署报错 `Git author dev@dezix.ai must have access to the team`。需要在 Vercel Dashboard 手动触发 Redeploy，或者在 Vercel Settings → Git 中添加 `dev@dezix.ai` 为 team member，或者更改本地 git author email 为 Vercel 账号关联的邮箱
+2. **线上网关测试**: 部署成功后，用测试 API Key 验证实际转发 (非流式 + 流式)
+3. **可用性验证**: 确认七牛云 API Key 能正常转发到上游模型
+
+**测试用 Dezix API Key (已写入线上 DB):**
+`sk-dezix-0afa2d524f6b04a6eeabdbdcbb6e33cf6e2a5f2392aeeb96`
+
+**七牛云 API Key:**
+`sk-d08a4b67a1c5f82b5162661919ad7e981eaf2a5896012a28efbbe66583025708`
+Base URL: `https://api.qnaigc.com/v1`
+
+**Supabase 直连串 (seed 脚本用):**
+`postgresql://postgres:DezixAI2026db@db.kkwawbsibpgdqqdirbmv.supabase.co:5432/postgres`
+注意: pooler 连接串 (`aws-0-ap-southeast-2.pooler.supabase.com`) 报 "Tenant or user not found"，直连可用
 
 ### 线上测试账号
 - **普通用户**: `testuser1@dezix.ai` / `TestPass123456` (余额 100)
