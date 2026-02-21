@@ -1,6 +1,11 @@
+"use client";
+
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
+import {
+  AnimatedSection,
+  AnimatedItem,
+} from "@/components/ui/animated-section";
 
 const plans = [
   {
@@ -48,43 +53,55 @@ export function PricingSection() {
   return (
     <section className="py-16 md:py-24">
       <div className="mx-auto max-w-6xl px-4">
-        <h2 className="mb-4 text-center text-3xl font-bold">
-          简单透明的定价
-        </h2>
-        <p className="mb-12 text-center text-muted-foreground">
-          按量付费，无月费，无隐藏费用
-        </p>
-        <div className="grid gap-6 md:grid-cols-3">
+        <AnimatedSection>
+          <AnimatedItem>
+            <h2 className="mb-4 text-center text-3xl font-semibold tracking-[-0.01em] text-[#1d1d1f] md:text-[40px]">
+              简单透明的定价
+            </h2>
+          </AnimatedItem>
+          <AnimatedItem>
+            <p className="mb-12 text-center text-lg text-[#424245]">
+              按量付费，无月费，无隐藏费用
+            </p>
+          </AnimatedItem>
+        </AnimatedSection>
+        <AnimatedSection className="grid gap-6 md:grid-cols-3">
           {plans.map((plan) => (
-            <div
-              key={plan.name}
-              className={`rounded-lg border p-6 ${
-                plan.highlight
-                  ? "border-primary shadow-lg"
-                  : "bg-card"
-              }`}
-            >
-              <h3 className="text-lg font-semibold">{plan.name}</h3>
-              <div className="mt-2 text-2xl font-bold">{plan.price}</div>
-              <p className="mt-1 text-sm text-muted-foreground">{plan.desc}</p>
-              <ul className="mt-6 space-y-2">
-                {plan.features.map((f) => (
-                  <li key={f} className="flex items-center gap-2 text-sm">
-                    <Check className="h-4 w-4 text-primary" />
-                    {f}
-                  </li>
-                ))}
-              </ul>
-              <Button
-                className="mt-6 w-full"
-                variant={plan.highlight ? "default" : "outline"}
-                asChild
+            <AnimatedItem key={plan.name}>
+              <div
+                className={`rounded-2xl p-8 ${
+                  plan.highlight
+                    ? "bg-white shadow-md ring-2 ring-[#007AFF]"
+                    : "card-hover bg-white shadow-sm"
+                }`}
               >
-                <Link href={plan.href}>{plan.cta}</Link>
-              </Button>
-            </div>
+                <h3 className="text-lg font-semibold text-[#1d1d1f]">{plan.name}</h3>
+                <div className="mt-2 text-2xl font-bold text-[#1d1d1f]">{plan.price}</div>
+                <p className="mt-1 text-[15px] text-[#86868b]">
+                  {plan.desc}
+                </p>
+                <ul className="mt-6 space-y-2">
+                  {plan.features.map((f) => (
+                    <li key={f} className="flex items-center gap-2 text-[15px] text-[#424245]">
+                      <Check className="h-4 w-4 text-[#007AFF]" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  href={plan.href}
+                  className={`mt-6 flex h-12 w-full items-center justify-center rounded-full text-[15px] font-medium transition-colors ${
+                    plan.highlight
+                      ? "btn-primary"
+                      : "border border-black/10 text-[#1d1d1f] hover:bg-black/[0.03]"
+                  }`}
+                >
+                  {plan.cta}
+                </Link>
+              </div>
+            </AnimatedItem>
           ))}
-        </div>
+        </AnimatedSection>
       </div>
     </section>
   );

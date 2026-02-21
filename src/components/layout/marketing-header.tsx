@@ -26,9 +26,9 @@ export function MarketingHeader() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 border-b border-black/[0.04] bg-white/80 backdrop-blur-xl">
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
-        <Link href="/" className="text-lg font-bold">
+        <Link href="/" className="text-lg font-bold text-[#1d1d1f]">
           Dezix AI
         </Link>
 
@@ -46,8 +46,8 @@ export function MarketingHeader() {
                 className={cn(
                   "text-sm font-medium transition-colors",
                   isActive
-                    ? "text-foreground"
-                    : "text-muted-foreground hover:text-foreground"
+                    ? "text-[#1d1d1f]"
+                    : "text-[#424245] hover:text-[#1d1d1f]"
                 )}
               >
                 {link.label}
@@ -57,12 +57,15 @@ export function MarketingHeader() {
         </nav>
 
         <div className="hidden items-center gap-2 md:flex">
-          <Button variant="ghost" size="sm" asChild>
+          <Button variant="ghost" size="sm" className="text-[#424245] hover:text-[#1d1d1f]" asChild>
             <Link href="/login">登录</Link>
           </Button>
-          <Button size="sm" asChild>
-            <Link href="/register">免费注册</Link>
-          </Button>
+          <Link
+            href="/register"
+            className="btn-primary inline-flex h-9 items-center justify-center rounded-full px-5 text-sm font-medium"
+          >
+            免费注册
+          </Link>
         </div>
 
         {/* Mobile nav */}
@@ -80,7 +83,7 @@ export function MarketingHeader() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className="text-sm font-medium text-muted-foreground hover:text-foreground"
+                  className="text-sm font-medium text-[#424245] hover:text-[#1d1d1f]"
                 >
                   {link.label}
                 </Link>
@@ -89,9 +92,12 @@ export function MarketingHeader() {
                 <Button variant="outline" size="sm" asChild>
                   <Link href="/login">登录</Link>
                 </Button>
-                <Button size="sm" asChild>
-                  <Link href="/register">免费注册</Link>
-                </Button>
+                <Link
+                  href="/register"
+                  className="btn-primary inline-flex h-9 items-center justify-center rounded-full text-sm font-medium"
+                >
+                  免费注册
+                </Link>
               </div>
             </nav>
           </SheetContent>

@@ -25,11 +25,11 @@ export function DocsSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden w-56 shrink-0 border-r lg:block">
+    <aside className="hidden w-56 shrink-0 border-r border-black/[0.06] bg-[#f5f5f7] lg:block">
       <nav className="sticky top-14 p-4">
         {docNavItems.map((group) => (
           <div key={group.title} className="mb-6">
-            <h4 className="mb-2 text-xs font-semibold uppercase text-muted-foreground">
+            <h4 className="mb-2 text-xs font-semibold uppercase text-[#86868b]">
               {group.title}
             </h4>
             <ul className="space-y-1">
@@ -42,8 +42,8 @@ export function DocsSidebar() {
                       className={cn(
                         "flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors",
                         isActive
-                          ? "bg-primary/10 text-primary"
-                          : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                          ? "bg-[#007AFF]/10 text-[#007AFF]"
+                          : "text-[#424245] hover:bg-black/[0.03] hover:text-[#1d1d1f]"
                       )}
                     >
                       <item.icon className="h-4 w-4" />

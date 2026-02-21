@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import {
   Table,
@@ -13,6 +12,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import {
+  AnimatedSection,
+  AnimatedItem,
+} from "@/components/ui/animated-section";
 
 interface Model {
   id: string;
@@ -86,94 +89,123 @@ export default function PricingPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
-      <h1 className="mb-2 text-center text-3xl font-bold">定价方案</h1>
-      <p className="mb-12 text-center text-muted-foreground">
-        简单透明的按量计费，无月费，无隐藏费用
-      </p>
+      <AnimatedSection>
+        <AnimatedItem>
+          <h1 className="mb-2 text-center text-5xl font-bold leading-[1.05] tracking-[-0.015em] text-[#1d1d1f] md:text-[56px]">定价方案</h1>
+        </AnimatedItem>
+        <AnimatedItem>
+          <p className="mb-12 text-center text-lg text-[#424245]">
+            简单透明的按量计费，无月费，无隐藏费用
+          </p>
+        </AnimatedItem>
+      </AnimatedSection>
 
       {/* Plans */}
-      <div className="mb-16 grid gap-6 md:grid-cols-3">
+      <AnimatedSection className="mb-16 grid gap-6 md:grid-cols-3">
         {plans.map((plan) => (
-          <div
-            key={plan.name}
-            className={`rounded-lg border p-6 ${
-              plan.highlight ? "border-primary shadow-lg" : "bg-card"
-            }`}
-          >
-            <h3 className="text-lg font-semibold">{plan.name}</h3>
-            <div className="mt-2 text-2xl font-bold">{plan.price}</div>
-            <p className="mt-1 text-sm text-muted-foreground">{plan.desc}</p>
-            <ul className="mt-6 space-y-2">
-              {plan.features.map((f) => (
-                <li key={f} className="flex items-center gap-2 text-sm">
-                  <Check className="h-4 w-4 shrink-0 text-primary" />
-                  {f}
-                </li>
-              ))}
-            </ul>
-            <Button
-              className="mt-6 w-full"
-              variant={plan.highlight ? "default" : "outline"}
-              asChild
+          <AnimatedItem key={plan.name}>
+            <div
+              className={`rounded-2xl p-8 ${
+                plan.highlight
+                  ? "bg-white shadow-md ring-2 ring-[#007AFF]"
+                  : "card-hover bg-white shadow-sm"
+              }`}
             >
-              <Link href={plan.href}>{plan.cta}</Link>
-            </Button>
-          </div>
+              <h3 className="text-lg font-semibold text-[#1d1d1f]">{plan.name}</h3>
+              <div className="mt-2 text-2xl font-bold text-[#1d1d1f]">{plan.price}</div>
+              <p className="mt-1 text-[15px] text-[#86868b]">{plan.desc}</p>
+              <ul className="mt-6 space-y-2">
+                {plan.features.map((f) => (
+                  <li key={f} className="flex items-center gap-2 text-[15px] text-[#424245]">
+                    <Check className="h-4 w-4 shrink-0 text-[#007AFF]" />
+                    {f}
+                  </li>
+                ))}
+              </ul>
+              <Link
+                href={plan.href}
+                className={`mt-6 flex h-12 w-full items-center justify-center rounded-full text-[15px] font-medium transition-colors ${
+                  plan.highlight
+                    ? "btn-primary"
+                    : "border border-black/10 text-[#1d1d1f] hover:bg-black/[0.03]"
+                }`}
+              >
+                {plan.cta}
+              </Link>
+            </div>
+          </AnimatedItem>
         ))}
-      </div>
+      </AnimatedSection>
 
       {/* Model pricing table */}
-      <h2 className="mb-2 text-2xl font-bold">模型定价明细</h2>
-      <p className="mb-6 text-muted-foreground">
-        价格单位为每百万 Token（¥/M tokens）
-      </p>
+      <AnimatedSection>
+        <AnimatedItem>
+          <h2 className="mb-2 text-3xl font-semibold tracking-[-0.01em] text-[#1d1d1f]">模型定价明细</h2>
+        </AnimatedItem>
+        <AnimatedItem>
+          <p className="mb-6 text-lg text-[#424245]">
+            价格单位为每百万 Token（¥/M tokens）
+          </p>
+        </AnimatedItem>
+      </AnimatedSection>
 
       {models.length > 0 && (
-        <div className="overflow-x-auto rounded-lg border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>模型名称</TableHead>
-                <TableHead>供应商</TableHead>
-                <TableHead>分类</TableHead>
-                <TableHead className="text-right">输入价格</TableHead>
-                <TableHead className="text-right">输出价格</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {models.map((m) => (
-                <TableRow key={m.id}>
-                  <TableCell className="font-medium">
-                    {m.displayName}
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant="secondary">{m.providerName}</Badge>
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant="outline">{m.category}</Badge>
-                  </TableCell>
-                  <TableCell className="text-right">
-                    ¥{m.sellPrice}/M
-                  </TableCell>
-                  <TableCell className="text-right">
-                    ¥{m.sellOutPrice}/M
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+        <AnimatedSection>
+          <AnimatedItem>
+            <div className="overflow-hidden rounded-2xl bg-white shadow-sm">
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-b border-black/[0.06] bg-[#f5f5f7]">
+                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#86868b]">模型名称</TableHead>
+                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#86868b]">供应商</TableHead>
+                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#86868b]">分类</TableHead>
+                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-[#86868b]">输入价格</TableHead>
+                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-[#86868b]">输出价格</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {models.map((m) => (
+                    <TableRow key={m.id} className="border-b border-black/[0.04] hover:bg-[#f5f5f7]/50">
+                      <TableCell className="font-medium text-[#1d1d1f]">
+                        {m.displayName}
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="secondary">{m.providerName}</Badge>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="outline">{m.category}</Badge>
+                      </TableCell>
+                      <TableCell className="text-right text-[#424245]">
+                        ¥{m.sellPrice}/M
+                      </TableCell>
+                      <TableCell className="text-right text-[#424245]">
+                        ¥{m.sellOutPrice}/M
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </AnimatedItem>
+        </AnimatedSection>
       )}
 
       {/* Bottom CTA */}
-      <div className="mt-12 text-center">
-        <p className="mb-4 text-muted-foreground">
-          准备好开始使用了吗？
-        </p>
-        <Button size="lg" asChild>
-          <Link href="/register">免费注册，立即体验</Link>
-        </Button>
-      </div>
+      <AnimatedSection>
+        <AnimatedItem>
+          <div className="mt-12 text-center">
+            <p className="mb-4 text-lg text-[#424245]">
+              准备好开始使用了吗？
+            </p>
+            <Link
+              href="/register"
+              className="btn-primary inline-flex h-12 items-center justify-center rounded-full px-8 text-base font-medium"
+            >
+              免费注册，立即体验
+            </Link>
+          </div>
+        </AnimatedItem>
+      </AnimatedSection>
     </div>
   );
 }

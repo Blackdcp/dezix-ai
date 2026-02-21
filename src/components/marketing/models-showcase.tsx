@@ -3,6 +3,10 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import {
+  AnimatedSection,
+  AnimatedItem,
+} from "@/components/ui/animated-section";
 
 interface Model {
   id: string;
@@ -34,40 +38,45 @@ export function ModelsShowcase() {
   }
 
   return (
-    <section className="bg-muted/30 py-16 md:py-24">
+    <section className="py-16 md:py-24">
       <div className="mx-auto max-w-6xl px-4">
-        <h2 className="mb-4 text-center text-3xl font-bold">热门模型</h2>
-        <p className="mb-12 text-center text-muted-foreground">
-          通过 Dezix AI 统一接口访问以下模型
-        </p>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <AnimatedSection>
+          <AnimatedItem>
+            <h2 className="mb-4 text-center text-3xl font-semibold tracking-[-0.01em] text-[#1d1d1f] md:text-[40px]">热门模型</h2>
+          </AnimatedItem>
+          <AnimatedItem>
+            <p className="mb-12 text-center text-lg text-[#424245]">
+              通过 Dezix AI 统一接口访问以下模型
+            </p>
+          </AnimatedItem>
+        </AnimatedSection>
+        <AnimatedSection className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {models.map((m) => (
-            <div
-              key={m.id}
-              className="rounded-lg border bg-card p-4 transition-shadow hover:shadow-md"
-            >
-              <div className="mb-2 flex items-center justify-between">
-                <span className="text-sm font-medium">{m.displayName}</span>
-                <Badge variant="secondary" className="text-xs">
-                  {m.providerName}
-                </Badge>
+            <AnimatedItem key={m.id}>
+              <div className="card-hover rounded-2xl bg-white p-6 shadow-sm">
+                <div className="mb-2 flex items-center justify-between">
+                  <span className="text-sm font-medium text-[#1d1d1f]">{m.displayName}</span>
+                  <Badge variant="secondary" className="text-xs">
+                    {m.providerName}
+                  </Badge>
+                </div>
+                <p className="mb-3 font-mono text-xs text-[#86868b]">
+                  {m.modelId}
+                </p>
+                <div className="flex items-center justify-between text-xs text-[#86868b]">
+                  <span>
+                    ¥{m.sellPrice}/M 输入
+                  </span>
+                  <span>{(m.maxContext / 1000).toFixed(0)}K 上下文</span>
+                </div>
               </div>
-              <p className="mb-3 font-mono text-xs text-muted-foreground">
-                {m.modelId}
-              </p>
-              <div className="flex items-center justify-between text-xs text-muted-foreground">
-                <span>
-                  ¥{m.sellPrice}/M 输入
-                </span>
-                <span>{(m.maxContext / 1000).toFixed(0)}K 上下文</span>
-              </div>
-            </div>
+            </AnimatedItem>
           ))}
-        </div>
+        </AnimatedSection>
         <div className="mt-8 text-center">
           <Link
             href="/model-list"
-            className="text-sm font-medium text-primary hover:underline"
+            className="text-sm font-medium text-[#007AFF] hover:underline"
           >
             查看全部模型 &rarr;
           </Link>

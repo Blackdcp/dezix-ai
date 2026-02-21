@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Globe,
   Layers,
@@ -6,6 +8,10 @@ import {
   Receipt,
   ShieldCheck,
 } from "lucide-react";
+import {
+  AnimatedSection,
+  AnimatedItem,
+} from "@/components/ui/animated-section";
 
 const features = [
   {
@@ -44,24 +50,29 @@ export function FeaturesSection() {
   return (
     <section className="py-16 md:py-24">
       <div className="mx-auto max-w-6xl px-4">
-        <h2 className="mb-4 text-center text-3xl font-bold">
-          为什么选择 Dezix AI
-        </h2>
-        <p className="mb-12 text-center text-muted-foreground">
-          为开发者打造的统一 AI 模型网关
-        </p>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <AnimatedSection>
+          <AnimatedItem>
+            <h2 className="mb-4 text-center text-3xl font-semibold tracking-[-0.01em] text-[#1d1d1f] md:text-[40px]">
+              为什么选择 Dezix AI
+            </h2>
+          </AnimatedItem>
+          <AnimatedItem>
+            <p className="mb-12 text-center text-lg text-[#424245]">
+              为开发者打造的统一 AI 模型网关
+            </p>
+          </AnimatedItem>
+        </AnimatedSection>
+        <AnimatedSection className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((f) => (
-            <div
-              key={f.title}
-              className="rounded-lg border bg-card p-6 transition-shadow hover:shadow-md"
-            >
-              <f.icon className="mb-3 h-8 w-8 text-primary" />
-              <h3 className="mb-2 text-lg font-semibold">{f.title}</h3>
-              <p className="text-sm text-muted-foreground">{f.desc}</p>
-            </div>
+            <AnimatedItem key={f.title}>
+              <div className="card-hover rounded-2xl bg-white p-8 shadow-sm">
+                <f.icon className="mb-3 h-8 w-8 text-[#007AFF]" />
+                <h3 className="mb-2 text-lg font-semibold text-[#1d1d1f]">{f.title}</h3>
+                <p className="text-[15px] text-[#424245]">{f.desc}</p>
+              </div>
+            </AnimatedItem>
           ))}
-        </div>
+        </AnimatedSection>
       </div>
     </section>
   );

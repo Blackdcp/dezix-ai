@@ -3,6 +3,11 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  AnimatedSection,
+  AnimatedItem,
+} from "@/components/ui/animated-section";
 
 const faqs = [
   {
@@ -43,22 +48,32 @@ function FaqItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="border-b">
+    <div className="border-b border-black/[0.04]">
       <button
         onClick={() => setOpen(!open)}
         className="flex w-full items-center justify-between py-4 text-left"
       >
-        <span className="text-sm font-medium">{q}</span>
+        <span className="text-[15px] font-medium text-[#1d1d1f]">{q}</span>
         <ChevronDown
           className={cn(
-            "h-4 w-4 shrink-0 text-muted-foreground transition-transform",
+            "h-4 w-4 shrink-0 text-[#86868b] transition-transform duration-200",
             open && "rotate-180"
           )}
         />
       </button>
-      {open && (
-        <div className="pb-4 text-sm text-muted-foreground">{a}</div>
-      )}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden"
+          >
+            <div className="pb-4 text-[15px] text-[#424245]">{a}</div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -66,17 +81,27 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 export default function FaqPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
-      <h1 className="mb-2 text-3xl font-bold">常见问题</h1>
-      <p className="mb-8 text-muted-foreground">
-        关于 Dezix AI 的常见问题解答
-      </p>
-      <div className="rounded-lg border">
-        <div className="px-6">
-          {faqs.map((faq) => (
-            <FaqItem key={faq.q} q={faq.q} a={faq.a} />
-          ))}
-        </div>
-      </div>
+      <AnimatedSection>
+        <AnimatedItem>
+          <h1 className="mb-2 text-5xl font-bold leading-[1.05] tracking-[-0.015em] text-[#1d1d1f] md:text-[56px]">常见问题</h1>
+        </AnimatedItem>
+        <AnimatedItem>
+          <p className="mb-8 text-lg text-[#424245]">
+            关于 Dezix AI 的常见问题解答
+          </p>
+        </AnimatedItem>
+      </AnimatedSection>
+      <AnimatedSection>
+        <AnimatedItem>
+          <div className="rounded-2xl bg-white shadow-sm">
+            <div className="px-6">
+              {faqs.map((faq) => (
+                <FaqItem key={faq.q} q={faq.q} a={faq.a} />
+              ))}
+            </div>
+          </div>
+        </AnimatedItem>
+      </AnimatedSection>
     </div>
   );
 }

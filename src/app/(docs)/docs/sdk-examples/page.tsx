@@ -5,19 +5,19 @@ import { CodeBlock } from "@/components/docs/code-block";
 export default function SdkExamplesPage() {
   return (
     <article className="prose-sm max-w-none">
-      <h1 className="mb-2 text-3xl font-bold">SDK 示例</h1>
-      <p className="mb-8 text-muted-foreground">
+      <h1 className="mb-2 text-3xl font-bold tracking-[-0.015em] text-[#1d1d1f]">SDK 示例</h1>
+      <p className="mb-8 text-[17px] leading-relaxed text-[#424245]">
         使用各语言 SDK 快速接入 Dezix AI。由于完全兼容 OpenAI 格式，您可以直接使用 OpenAI 官方 SDK。
       </p>
 
       {/* Python */}
-      <h2 className="mb-3 mt-8 text-xl font-bold">Python</h2>
-      <p className="mb-4 text-sm leading-7 text-muted-foreground">
+      <h2 className="mb-3 mt-8 text-xl font-bold text-[#1d1d1f]">Python</h2>
+      <p className="mb-4 text-[17px] leading-relaxed text-[#424245]">
         安装 OpenAI Python SDK：
       </p>
       <CodeBlock language="bash" title="安装" code="pip install openai" />
 
-      <h3 className="mb-2 mt-6 text-lg font-semibold">基本对话</h3>
+      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1d1d1f]">基本对话</h3>
       <CodeBlock
         language="python"
         title="basic_chat.py"
@@ -41,7 +41,7 @@ response = client.chat.completions.create(
 print(response.choices[0].message.content)`}
       />
 
-      <h3 className="mb-2 mt-6 text-lg font-semibold">流式响应</h3>
+      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1d1d1f]">流式响应</h3>
       <CodeBlock
         language="python"
         title="streaming.py"
@@ -66,7 +66,7 @@ for chunk in stream:
 print()`}
       />
 
-      <h3 className="mb-2 mt-6 text-lg font-semibold">多轮对话</h3>
+      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1d1d1f]">多轮对话</h3>
       <CodeBlock
         language="python"
         title="multi_turn.py"
@@ -101,13 +101,13 @@ print(f"助手: {response.choices[0].message.content}")`}
       />
 
       {/* Node.js */}
-      <h2 className="mb-3 mt-10 text-xl font-bold">Node.js</h2>
-      <p className="mb-4 text-sm leading-7 text-muted-foreground">
+      <h2 className="mb-3 mt-10 text-xl font-bold text-[#1d1d1f]">Node.js</h2>
+      <p className="mb-4 text-[17px] leading-relaxed text-[#424245]">
         安装 OpenAI Node.js SDK：
       </p>
       <CodeBlock language="bash" title="安装" code="npm install openai" />
 
-      <h3 className="mb-2 mt-6 text-lg font-semibold">基本对话</h3>
+      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1d1d1f]">基本对话</h3>
       <CodeBlock
         language="javascript"
         title="basic_chat.mjs"
@@ -131,7 +131,7 @@ const response = await client.chat.completions.create({
 console.log(response.choices[0].message.content);`}
       />
 
-      <h3 className="mb-2 mt-6 text-lg font-semibold">流式响应</h3>
+      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1d1d1f]">流式响应</h3>
       <CodeBlock
         language="javascript"
         title="streaming.mjs"
@@ -160,15 +160,15 @@ console.log();`}
       />
 
       {/* cURL */}
-      <h2 className="mb-3 mt-10 text-xl font-bold">cURL</h2>
+      <h2 className="mb-3 mt-10 text-xl font-bold text-[#1d1d1f]">cURL</h2>
 
-      <h3 className="mb-2 mt-6 text-lg font-semibold">非流式请求</h3>
+      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1d1d1f]">非流式请求</h3>
       <CodeBlock
         language="bash"
         title="非流式"
-        code={`curl https://your-domain.com/api/v1/chat/completions \\
-  -H "Content-Type: application/json" \\
-  -H "Authorization: Bearer sk-dezix-your-api-key" \\
+        code={`curl https://your-domain.com/api/v1/chat/completions \\\\
+  -H "Content-Type: application/json" \\\\
+  -H "Authorization: Bearer sk-dezix-your-api-key" \\\\
   -d '{
     "model": "gpt-4o-mini",
     "messages": [
@@ -177,14 +177,14 @@ console.log();`}
   }'`}
       />
 
-      <h3 className="mb-2 mt-6 text-lg font-semibold">流式请求</h3>
+      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1d1d1f]">流式请求</h3>
       <CodeBlock
         language="bash"
         title="流式"
-        code={`curl https://your-domain.com/api/v1/chat/completions \\
-  -H "Content-Type: application/json" \\
-  -H "Authorization: Bearer sk-dezix-your-api-key" \\
-  -N \\
+        code={`curl https://your-domain.com/api/v1/chat/completions \\\\
+  -H "Content-Type: application/json" \\\\
+  -H "Authorization: Bearer sk-dezix-your-api-key" \\\\
+  -N \\\\
   -d '{
     "model": "gpt-4o-mini",
     "messages": [
@@ -194,25 +194,25 @@ console.log();`}
   }'`}
       />
 
-      <h3 className="mb-2 mt-6 text-lg font-semibold">获取模型列表</h3>
+      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1d1d1f]">获取模型列表</h3>
       <CodeBlock
         language="bash"
         title="模型列表"
-        code={`curl https://your-domain.com/api/v1/models \\
+        code={`curl https://your-domain.com/api/v1/models \\\\
   -H "Authorization: Bearer sk-dezix-your-api-key"`}
       />
 
       {/* Tips */}
-      <h2 className="mb-3 mt-10 text-xl font-bold">使用提示</h2>
-      <ul className="mb-4 ml-6 list-disc space-y-2 text-sm text-muted-foreground">
+      <h2 className="mb-3 mt-10 text-xl font-bold text-[#1d1d1f]">使用提示</h2>
+      <ul className="mb-4 ml-6 list-disc space-y-2 text-[17px] leading-relaxed text-[#424245]">
         <li>
-          将 <code className="rounded bg-muted px-1.5 py-0.5 text-xs">your-domain.com</code> 替换为实际的 Dezix AI 域名
+          将 <code className="rounded-md bg-[#f5f5f7] px-1.5 py-0.5 text-xs text-[#007AFF]">your-domain.com</code> 替换为实际的 Dezix AI 域名
         </li>
         <li>
-          将 <code className="rounded bg-muted px-1.5 py-0.5 text-xs">sk-dezix-your-api-key</code> 替换为您的真实 API Key
+          将 <code className="rounded-md bg-[#f5f5f7] px-1.5 py-0.5 text-xs text-[#007AFF]">sk-dezix-your-api-key</code> 替换为您的真实 API Key
         </li>
         <li>
-          可以通过切换 <code className="rounded bg-muted px-1.5 py-0.5 text-xs">model</code> 参数来使用不同的模型，如 claude-3-5-sonnet-20241022、gemini-1.5-pro 等
+          可以通过切换 <code className="rounded-md bg-[#f5f5f7] px-1.5 py-0.5 text-xs text-[#007AFF]">model</code> 参数来使用不同的模型，如 claude-3-5-sonnet-20241022、gemini-1.5-pro 等
         </li>
         <li>建议将 API Key 存储在环境变量中，避免硬编码在代码里</li>
         <li>

@@ -11,7 +11,7 @@ export default function DocsLayout({
       <MarketingHeader />
       <div className="mx-auto flex max-w-6xl">
         <DocsSidebar />
-        <main className="min-h-[calc(100vh-3.5rem)] flex-1 px-6 py-8 lg:px-12">
+        <main className="min-h-[calc(100vh-3.5rem)] flex-1 bg-background px-6 py-8 lg:px-12">
           {children}
         </main>
       </div>
