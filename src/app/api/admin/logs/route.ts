@@ -1,19 +1,25 @@
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/admin";
 import { db } from "@/lib/db";
+import { adminLogsQuerySchema } from "@/lib/validations";
 
 export async function GET(req: Request) {
   const { error } = await requireAdmin();
   if (error) return error;
 
   const url = new URL(req.url);
-  const page = Math.max(1, parseInt(url.searchParams.get("page") || "1"));
-  const pageSize = Math.min(50, Math.max(1, parseInt(url.searchParams.get("pageSize") || "20")));
-  const userId = url.searchParams.get("userId") || "";
-  const modelId = url.searchParams.get("modelId") || "";
-  const status = url.searchParams.get("status") || "";
-  const dateFrom = url.searchParams.get("dateFrom") || "";
-  const dateTo = url.searchParams.get("dateTo") || "";
+  const parsed = adminLogsQuerySchema.safeParse({
+    page: url.searchParams.get("page") ?? undefined,
+    pageSize: url.searchParams.get("pageSize") ?? undefined,
+    userId: url.searchParams.get("userId") ?? undefined,
+    modelId: url.searchParams.get("modelId") ?? undefined,
+    status: url.searchParams.get("status") ?? undefined,
+    dateFrom: url.searchParams.get("dateFrom") ?? undefined,
+    dateTo: url.searchParams.get("dateTo") ?? undefined,
+  });
+  const { page, pageSize, userId, modelId, status, dateFrom, dateTo } = parsed.success
+    ? parsed.data
+    : { page: 1, pageSize: 20, userId: "", modelId: "", status: "", dateFrom: "", dateTo: "" };
 
   const where: Record<string, unknown> = {};
 

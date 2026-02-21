@@ -8,6 +8,7 @@ import { createStreamTransformer, buildStreamUrl } from "./stream";
 import { logUsage } from "./logger";
 import { getAdapter } from "./adapters/registry";
 import { GoogleAdapter } from "./adapters/google";
+import { chatCompletionRequestSchema } from "@/lib/validations";
 import {
   GatewayError,
   invalidRequestError,
@@ -41,7 +42,14 @@ export async function processCompletionRequest(
 
   try {
     // 1. Validate request
-    validateRequest(request);
+    const parsed = chatCompletionRequestSchema.safeParse(request);
+    if (!parsed.success) {
+      const issue = parsed.error.issues[0];
+      throw invalidRequestError(
+        issue?.message ?? "Invalid request",
+        issue?.path?.[0]?.toString()
+      );
+    }
 
     // 2. Authenticate
     const { apiKey, user } = await authenticateRequest(authHeader);
@@ -244,15 +252,6 @@ async function handleNonStreamResponse(
     if (err instanceof GatewayError) throw err;
     console.error("[Gateway] Response transform error:", err);
     throw upstreamError("Failed to process upstream response");
-  }
-}
-
-function validateRequest(request: ChatCompletionRequest) {
-  if (!request.model) {
-    throw invalidRequestError("'model' is required", "model");
-  }
-  if (!request.messages || !Array.isArray(request.messages) || request.messages.length === 0) {
-    throw invalidRequestError("'messages' must be a non-empty array", "messages");
   }
 }
 

@@ -1,5 +1,6 @@
 import { db } from "@/lib/db";
 import { redis } from "@/lib/redis";
+import { decrypt } from "@/lib/encryption";
 import { noAvailableChannelError } from "./errors";
 
 interface ChannelInfo {
@@ -69,7 +70,7 @@ async function getChannelsForModel(modelId: string): Promise<ChannelInfo[]> {
     id: ch.id,
     providerId: ch.providerId,
     providerName: ch.provider.name,
-    apiKey: ch.apiKey,
+    apiKey: decrypt(ch.apiKey),
     baseUrl: ch.baseUrl || ch.provider.baseUrl,
     priority: ch.priority,
     weight: ch.weight,

@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/admin";
 import { db } from "@/lib/db";
+import { encrypt } from "@/lib/encryption";
+import { adminUpdateChannelSchema } from "@/lib/validations";
 
 export async function PATCH(
   req: Request,
@@ -11,21 +13,23 @@ export async function PATCH(
 
   const { id } = await params;
   const body = await req.json().catch(() => null);
-  if (!body) {
-    return NextResponse.json({ error: "无效请求" }, { status: 400 });
+  const parsed = adminUpdateChannelSchema.safeParse(body);
+  if (!parsed.success) {
+    const msg = parsed.error.issues[0]?.message ?? "无效请求";
+    return NextResponse.json({ error: msg }, { status: 400 });
   }
 
   const updateData: Record<string, unknown> = {};
-
-  if (body.name !== undefined) updateData.name = body.name;
-  if (body.providerId !== undefined) updateData.providerId = body.providerId;
-  if (body.baseUrl !== undefined) updateData.baseUrl = body.baseUrl || null;
-  if (body.priority !== undefined) updateData.priority = body.priority;
-  if (body.weight !== undefined) updateData.weight = body.weight;
-  if (body.isActive !== undefined) updateData.isActive = body.isActive;
-  if (body.models !== undefined) updateData.models = body.models;
+  const d = parsed.data;
+  if (d.name !== undefined) updateData.name = d.name;
+  if (d.providerId !== undefined) updateData.providerId = d.providerId;
+  if (d.baseUrl !== undefined) updateData.baseUrl = d.baseUrl || null;
+  if (d.priority !== undefined) updateData.priority = d.priority;
+  if (d.weight !== undefined) updateData.weight = d.weight;
+  if (d.isActive !== undefined) updateData.isActive = d.isActive;
+  if (d.models !== undefined) updateData.models = d.models;
   // Only update apiKey if non-empty value provided
-  if (body.apiKey && body.apiKey.trim()) updateData.apiKey = body.apiKey;
+  if (d.apiKey && d.apiKey.trim()) updateData.apiKey = encrypt(d.apiKey);
 
   const channel = await db.channel.update({
     where: { id },

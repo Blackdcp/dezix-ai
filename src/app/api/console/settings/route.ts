@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { updateSettingsSchema } from "@/lib/validations";
 
 export async function GET() {
   const session = await auth();
@@ -32,36 +33,28 @@ export async function PATCH(req: Request) {
   }
 
   const body = await req.json().catch(() => null);
-  if (!body) {
-    return NextResponse.json({ error: "请求体无效" }, { status: 400 });
+  const parsed = updateSettingsSchema.safeParse(body);
+  if (!parsed.success) {
+    const msg = parsed.error.issues[0]?.message ?? "请求参数无效";
+    return NextResponse.json({ error: msg }, { status: 400 });
   }
 
   const updateData: { name?: string; email?: string } = {};
 
-  if (body.name !== undefined) {
-    if (typeof body.name !== "string" || body.name.trim().length === 0) {
-      return NextResponse.json({ error: "姓名不能为空" }, { status: 400 });
-    }
-    updateData.name = body.name.trim();
+  if (parsed.data.name !== undefined) {
+    updateData.name = parsed.data.name.trim();
   }
 
-  if (body.email !== undefined) {
-    if (typeof body.email !== "string" || !body.email.includes("@")) {
-      return NextResponse.json({ error: "邮箱格式无效" }, { status: 400 });
-    }
+  if (parsed.data.email !== undefined) {
     // Check uniqueness
     const existing = await db.user.findUnique({
-      where: { email: body.email },
+      where: { email: parsed.data.email },
       select: { id: true },
     });
     if (existing && existing.id !== session.user.id) {
       return NextResponse.json({ error: "该邮箱已被使用" }, { status: 409 });
     }
-    updateData.email = body.email.trim();
-  }
-
-  if (Object.keys(updateData).length === 0) {
-    return NextResponse.json({ error: "没有需要更新的字段" }, { status: 400 });
+    updateData.email = parsed.data.email.trim();
   }
 
   const updated = await db.user.update({

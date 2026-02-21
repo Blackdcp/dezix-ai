@@ -2,21 +2,32 @@ import { NextResponse } from "next/server";
 import crypto from "crypto";
 import bcrypt from "bcryptjs";
 import { db } from "@/lib/db";
+import { registerSchema } from "@/lib/validations";
+import { checkIpRateLimit } from "@/lib/gateway/rate-limiter";
 
 export async function POST(req: Request) {
   try {
-    const { name, email, password, referralCode } = await req.json();
-
-    if (!name || !email || !password) {
-      return NextResponse.json({ error: "请填写所有字段" }, { status: 400 });
-    }
-
-    if (password.length < 8) {
+    // IP rate limit: 5 requests/minute
+    const ip =
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+      req.headers.get("x-real-ip") ??
+      "unknown";
+    const { allowed } = await checkIpRateLimit(ip, 5);
+    if (!allowed) {
       return NextResponse.json(
-        { error: "密码至少需要 8 位" },
-        { status: 400 }
+        { error: "请求过于频繁，请稍后再试" },
+        { status: 429 }
       );
     }
+
+    const body = await req.json().catch(() => null);
+    const parsed = registerSchema.safeParse(body);
+    if (!parsed.success) {
+      const msg = parsed.error.issues[0]?.message ?? "请求参数无效";
+      return NextResponse.json({ error: msg }, { status: 400 });
+    }
+
+    const { name, email, password, referralCode } = parsed.data;
 
     const existingUser = await db.user.findUnique({ where: { email } });
     if (existingUser) {

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { randomBytes, createHash } from "crypto";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { createApiKeySchema } from "@/lib/validations";
 
 export async function GET() {
   const session = await auth();
@@ -42,11 +43,10 @@ export async function POST(req: Request) {
   }
 
   const body = await req.json().catch(() => null);
-  if (!body || !body.name) {
-    return NextResponse.json(
-      { error: "name is required" },
-      { status: 400 }
-    );
+  const parsed = createApiKeySchema.safeParse(body);
+  if (!parsed.success) {
+    const msg = parsed.error.issues[0]?.message ?? "请求参数无效";
+    return NextResponse.json({ error: msg }, { status: 400 });
   }
 
   // Generate key: sk-dezix-{48 random hex chars}
@@ -57,13 +57,13 @@ export async function POST(req: Request) {
   const apiKey = await db.apiKey.create({
     data: {
       userId: session.user.id,
-      name: body.name,
+      name: parsed.data.name,
       keyHash,
       keyPrefix,
-      expiresAt: body.expiresAt ? new Date(body.expiresAt) : null,
-      totalQuota: body.totalQuota ?? null,
-      modelWhitelist: body.modelWhitelist ?? [],
-      rateLimit: body.rateLimit ?? null,
+      expiresAt: parsed.data.expiresAt ? new Date(parsed.data.expiresAt) : null,
+      totalQuota: parsed.data.totalQuota ?? null,
+      modelWhitelist: parsed.data.modelWhitelist ?? [],
+      rateLimit: parsed.data.rateLimit ?? null,
     },
     select: {
       id: true,

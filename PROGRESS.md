@@ -236,10 +236,10 @@
 ---
 
 ## Phase 8: 生产加固
-- [ ] Zod 输入验证
-- [ ] API Key 加密存储、安全头、CORS
-- [ ] IP 限流、健康检查端点
-- [ ] 单元测试 + 集成测试 (Vitest)
-- [ ] 生产级 Docker 配置
-- [ ] CI Pipeline
-- [ ] Git commit: "Phase 8: 生产加固"
+- [x] Zod 输入验证 (15 个路由 + 6 个 schema 文件)
+- [x] API Key 加密存储 (AES-256-GCM)、安全头 (HSTS/X-Frame-Options/CSP)、CORS
+- [x] IP 限流 (注册 5/min, Completions 60/min, Models 30/min)、健康检查端点 (/api/health)
+- [x] 单元测试 + 集成测试 (Vitest, 7 个测试文件, 68 个测试用例)
+- [x] 生产级 Docker 配置 (tini PID 1, healthcheck, memory limits, Redis AOF+LRU)
+- [x] CI Pipeline (.github/workflows/ci.yml: lint → tsc → test → build)
+- [x] Git commit: "Phase 8: 生产加固"

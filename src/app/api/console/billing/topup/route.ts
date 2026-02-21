@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { Prisma } from "@prisma/client";
+import { topupSchema } from "@/lib/validations";
 
 export async function POST(req: Request) {
   const session = await auth();
@@ -10,14 +11,13 @@ export async function POST(req: Request) {
   }
 
   const body = await req.json().catch(() => null);
-  if (!body || typeof body.amount !== "number" || body.amount <= 0 || body.amount > 10000) {
-    return NextResponse.json(
-      { error: "金额必须在 0.01 ~ 10000 之间" },
-      { status: 400 }
-    );
+  const parsed = topupSchema.safeParse(body);
+  if (!parsed.success) {
+    const msg = parsed.error.issues[0]?.message ?? "金额必须在 0.01 ~ 10000 之间";
+    return NextResponse.json({ error: msg }, { status: 400 });
   }
 
-  const amount = Math.round(body.amount * 100) / 100; // Round to 2 decimal places
+  const amount = Math.round(parsed.data.amount * 100) / 100;
   const amountDecimal = new Prisma.Decimal(amount.toFixed(6));
 
   // Atomic balance addition

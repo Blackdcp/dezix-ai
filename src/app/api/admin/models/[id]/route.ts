@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/admin";
 import { db } from "@/lib/db";
+import { adminUpdateModelSchema } from "@/lib/validations";
 
 export async function PATCH(
   req: Request,
@@ -11,24 +12,15 @@ export async function PATCH(
 
   const { id } = await params;
   const body = await req.json().catch(() => null);
-  if (!body) {
-    return NextResponse.json({ error: "无效请求" }, { status: 400 });
+  const parsed = adminUpdateModelSchema.safeParse(body);
+  if (!parsed.success) {
+    const msg = parsed.error.issues[0]?.message ?? "无效请求";
+    return NextResponse.json({ error: msg }, { status: 400 });
   }
-
-  const updateData: Record<string, unknown> = {};
-
-  if (body.displayName !== undefined) updateData.displayName = body.displayName;
-  if (body.category !== undefined) updateData.category = body.category;
-  if (body.inputPrice !== undefined) updateData.inputPrice = body.inputPrice;
-  if (body.outputPrice !== undefined) updateData.outputPrice = body.outputPrice;
-  if (body.sellPrice !== undefined) updateData.sellPrice = body.sellPrice;
-  if (body.sellOutPrice !== undefined) updateData.sellOutPrice = body.sellOutPrice;
-  if (body.maxContext !== undefined) updateData.maxContext = body.maxContext;
-  if (body.isActive !== undefined) updateData.isActive = body.isActive;
 
   const model = await db.model.update({
     where: { id },
-    data: updateData,
+    data: parsed.data,
   });
 
   return NextResponse.json({

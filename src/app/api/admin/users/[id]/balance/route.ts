@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/admin";
 import { db } from "@/lib/db";
 import { Prisma } from "@prisma/client";
+import { adminAdjustBalanceSchema } from "@/lib/validations";
 
 export async function POST(
   req: Request,
@@ -12,14 +13,15 @@ export async function POST(
 
   const { id } = await params;
   const body = await req.json().catch(() => null);
-
-  if (!body || typeof body.amount !== "number" || body.amount === 0) {
-    return NextResponse.json({ error: "金额不能为零" }, { status: 400 });
+  const parsed = adminAdjustBalanceSchema.safeParse(body);
+  if (!parsed.success) {
+    const msg = parsed.error.issues[0]?.message ?? "金额不能为零";
+    return NextResponse.json({ error: msg }, { status: 400 });
   }
 
-  const amount = Math.round(body.amount * 100) / 100;
+  const amount = Math.round(parsed.data.amount * 100) / 100;
   const amountDecimal = new Prisma.Decimal(amount.toFixed(6));
-  const description = body.description || `管理员调整余额 ${amount > 0 ? "+" : ""}¥${amount.toFixed(2)}`;
+  const description = parsed.data.description || `管理员调整余额 ${amount > 0 ? "+" : ""}¥${amount.toFixed(2)}`;
 
   // Atomic balance update
   await db.$executeRaw`

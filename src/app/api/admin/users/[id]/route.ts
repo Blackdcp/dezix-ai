@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/admin";
 import { db } from "@/lib/db";
+import { adminUpdateUserSchema } from "@/lib/validations";
 
 export async function GET(
   _req: Request,
@@ -43,18 +44,15 @@ export async function PATCH(
 
   const { id } = await params;
   const body = await req.json().catch(() => null);
-  if (!body) {
-    return NextResponse.json({ error: "无效请求" }, { status: 400 });
+  const parsed = adminUpdateUserSchema.safeParse(body);
+  if (!parsed.success) {
+    const msg = parsed.error.issues[0]?.message ?? "无效请求";
+    return NextResponse.json({ error: msg }, { status: 400 });
   }
 
   const updateData: Record<string, unknown> = {};
-
-  if (body.name !== undefined) updateData.name = body.name;
-  if (body.role === "ADMIN" || body.role === "USER") updateData.role = body.role;
-
-  if (Object.keys(updateData).length === 0) {
-    return NextResponse.json({ error: "没有可更新的字段" }, { status: 400 });
-  }
+  if (parsed.data.name !== undefined) updateData.name = parsed.data.name;
+  if (parsed.data.role !== undefined) updateData.role = parsed.data.role;
 
   const user = await db.user.update({
     where: { id },

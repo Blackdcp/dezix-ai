@@ -1,16 +1,22 @@
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/admin";
 import { db } from "@/lib/db";
+import { adminUsersQuerySchema } from "@/lib/validations";
 
 export async function GET(req: Request) {
   const { error } = await requireAdmin();
   if (error) return error;
 
   const url = new URL(req.url);
-  const page = Math.max(1, parseInt(url.searchParams.get("page") || "1"));
-  const pageSize = Math.min(50, Math.max(1, parseInt(url.searchParams.get("pageSize") || "20")));
-  const search = url.searchParams.get("search") || "";
-  const role = url.searchParams.get("role") || "";
+  const parsed = adminUsersQuerySchema.safeParse({
+    page: url.searchParams.get("page") ?? undefined,
+    pageSize: url.searchParams.get("pageSize") ?? undefined,
+    search: url.searchParams.get("search") ?? undefined,
+    role: url.searchParams.get("role") ?? undefined,
+  });
+  const { page, pageSize, search, role } = parsed.success
+    ? parsed.data
+    : { page: 1, pageSize: 20, search: "", role: undefined as string | undefined };
 
   const where: Record<string, unknown> = {};
 

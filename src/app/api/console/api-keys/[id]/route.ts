@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createHash } from "crypto";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { redis } from "@/lib/redis";
+import { updateApiKeySchema } from "@/lib/validations";
 
 type RouteParams = { params: Promise<{ id: string }> };
 
@@ -25,19 +25,22 @@ export async function PATCH(req: NextRequest, { params }: RouteParams) {
   }
 
   const body = await req.json().catch(() => null);
-  if (!body) {
-    return NextResponse.json({ error: "Invalid body" }, { status: 400 });
+  const parsed = updateApiKeySchema.safeParse(body);
+  if (!parsed.success) {
+    const msg = parsed.error.issues[0]?.message ?? "请求参数无效";
+    return NextResponse.json({ error: msg }, { status: 400 });
   }
 
   const updateData: Record<string, unknown> = {};
-  if (body.name !== undefined) updateData.name = body.name;
-  if (body.isActive !== undefined) updateData.isActive = body.isActive;
-  if (body.expiresAt !== undefined)
-    updateData.expiresAt = body.expiresAt ? new Date(body.expiresAt) : null;
-  if (body.totalQuota !== undefined) updateData.totalQuota = body.totalQuota;
-  if (body.modelWhitelist !== undefined)
-    updateData.modelWhitelist = body.modelWhitelist;
-  if (body.rateLimit !== undefined) updateData.rateLimit = body.rateLimit;
+  const d = parsed.data;
+  if (d.name !== undefined) updateData.name = d.name;
+  if (d.isActive !== undefined) updateData.isActive = d.isActive;
+  if (d.expiresAt !== undefined)
+    updateData.expiresAt = d.expiresAt ? new Date(d.expiresAt) : null;
+  if (d.totalQuota !== undefined) updateData.totalQuota = d.totalQuota;
+  if (d.modelWhitelist !== undefined)
+    updateData.modelWhitelist = d.modelWhitelist;
+  if (d.rateLimit !== undefined) updateData.rateLimit = d.rateLimit;
 
   const updated = await db.apiKey.update({
     where: { id },

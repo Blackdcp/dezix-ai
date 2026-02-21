@@ -1,14 +1,21 @@
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/admin";
 import { db } from "@/lib/db";
+import { encrypt } from "@/lib/encryption";
+import { adminChannelsQuerySchema, adminCreateChannelSchema } from "@/lib/validations";
 
 export async function GET(req: Request) {
   const { error } = await requireAdmin();
   if (error) return error;
 
   const url = new URL(req.url);
-  const page = Math.max(1, parseInt(url.searchParams.get("page") || "1"));
-  const pageSize = Math.min(50, Math.max(1, parseInt(url.searchParams.get("pageSize") || "20")));
+  const parsed = adminChannelsQuerySchema.safeParse({
+    page: url.searchParams.get("page") ?? undefined,
+    pageSize: url.searchParams.get("pageSize") ?? undefined,
+  });
+  const { page, pageSize } = parsed.success
+    ? parsed.data
+    : { page: 1, pageSize: 20 };
 
   const [channels, total] = await Promise.all([
     db.channel.findMany({
@@ -39,20 +46,22 @@ export async function POST(req: Request) {
   if (error) return error;
 
   const body = await req.json().catch(() => null);
-  if (!body || !body.providerId || !body.name || !body.apiKey) {
-    return NextResponse.json({ error: "缺少必填字段" }, { status: 400 });
+  const parsed = adminCreateChannelSchema.safeParse(body);
+  if (!parsed.success) {
+    const msg = parsed.error.issues[0]?.message ?? "缺少必填字段";
+    return NextResponse.json({ error: msg }, { status: 400 });
   }
 
   const channel = await db.channel.create({
     data: {
-      providerId: body.providerId,
-      name: body.name,
-      apiKey: body.apiKey,
-      baseUrl: body.baseUrl || null,
-      priority: body.priority ?? 0,
-      weight: body.weight ?? 1,
-      isActive: body.isActive ?? true,
-      models: body.models || [],
+      providerId: parsed.data.providerId,
+      name: parsed.data.name,
+      apiKey: encrypt(parsed.data.apiKey),
+      baseUrl: parsed.data.baseUrl || null,
+      priority: parsed.data.priority,
+      weight: parsed.data.weight,
+      isActive: parsed.data.isActive,
+      models: parsed.data.models,
     },
     include: { provider: { select: { name: true } } },
   });

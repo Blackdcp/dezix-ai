@@ -42,3 +42,41 @@ export async function checkRateLimit(
     );
   }
 }
+
+/**
+ * IP-based rate limiter using the same sliding window algorithm.
+ * Returns result instead of throwing, so callers can build custom responses.
+ */
+export async function checkIpRateLimit(
+  ip: string,
+  limit: number,
+  windowMs: number = 60_000
+): Promise<{ allowed: boolean; remaining: number }> {
+  if (!ip) return { allowed: true, remaining: limit };
+
+  const now = Date.now();
+  const windowStart = now - windowMs;
+  const redisKey = `iplimit:${ip}`;
+
+  try {
+    const multi = redis.multi();
+    multi.zremrangebyscore(redisKey, 0, windowStart);
+    multi.zcard(redisKey);
+    multi.zadd(redisKey, now, `${now}:${Math.random().toString(36).slice(2, 8)}`);
+    multi.pexpire(redisKey, windowMs);
+
+    const results = await multi.exec();
+    if (!results) {
+      return { allowed: true, remaining: limit };
+    }
+
+    const count = results[1][1] as number;
+    if (count >= limit) {
+      return { allowed: false, remaining: 0 };
+    }
+    return { allowed: true, remaining: limit - count };
+  } catch {
+    // Fail open on Redis error
+    return { allowed: true, remaining: limit };
+  }
+}

@@ -1,15 +1,21 @@
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/admin";
 import { db } from "@/lib/db";
+import { adminModelsQuerySchema, adminCreateModelSchema } from "@/lib/validations";
 
 export async function GET(req: Request) {
   const { error } = await requireAdmin();
   if (error) return error;
 
   const url = new URL(req.url);
-  const page = Math.max(1, parseInt(url.searchParams.get("page") || "1"));
-  const pageSize = Math.min(50, Math.max(1, parseInt(url.searchParams.get("pageSize") || "20")));
-  const search = url.searchParams.get("search") || "";
+  const parsed = adminModelsQuerySchema.safeParse({
+    page: url.searchParams.get("page") ?? undefined,
+    pageSize: url.searchParams.get("pageSize") ?? undefined,
+    search: url.searchParams.get("search") ?? undefined,
+  });
+  const { page, pageSize, search } = parsed.success
+    ? parsed.data
+    : { page: 1, pageSize: 20, search: "" };
 
   const where: Record<string, unknown> = {};
   if (search) {
@@ -49,29 +55,20 @@ export async function POST(req: Request) {
   if (error) return error;
 
   const body = await req.json().catch(() => null);
-  if (!body || !body.modelId || !body.displayName || !body.providerId) {
-    return NextResponse.json({ error: "缺少必填字段" }, { status: 400 });
+  const parsed = adminCreateModelSchema.safeParse(body);
+  if (!parsed.success) {
+    const msg = parsed.error.issues[0]?.message ?? "缺少必填字段";
+    return NextResponse.json({ error: msg }, { status: 400 });
   }
 
   // Check modelId uniqueness
-  const existing = await db.model.findUnique({ where: { modelId: body.modelId } });
+  const existing = await db.model.findUnique({ where: { modelId: parsed.data.modelId } });
   if (existing) {
     return NextResponse.json({ error: "模型 ID 已存在" }, { status: 409 });
   }
 
   const model = await db.model.create({
-    data: {
-      modelId: body.modelId,
-      displayName: body.displayName,
-      providerId: body.providerId,
-      category: body.category || "chat",
-      inputPrice: body.inputPrice ?? 0,
-      outputPrice: body.outputPrice ?? 0,
-      sellPrice: body.sellPrice ?? 0,
-      sellOutPrice: body.sellOutPrice ?? 0,
-      maxContext: body.maxContext ?? 4096,
-      isActive: body.isActive ?? true,
-    },
+    data: parsed.data,
   });
 
   return NextResponse.json({
