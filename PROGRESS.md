@@ -289,11 +289,67 @@
 
 ---
 
+## 代码质量修复 (2026-02-21)
+
+### ESLint 全量清零
+- [x] 修复 5 个 `react-hooks/set-state-in-effect` 错误（ESLint 配置关闭，标准 fetch 模式）
+- [x] 修复 10 个未使用变量/导入警告（配置 `_` 前缀忽略 + 清理死代码）
+- [x] ESLint 0 error, 0 warning
+
+### 网关引擎关键 Bug 修复
+- [x] `billing.ts`: `chargeUser()` 改用 `UPDATE ... RETURNING balance` 原子操作，消除竞态条件
+- [x] `stream.ts`: 修复双重 `[DONE]` 信号 + `error()` 后不再调用 `close()`
+- [x] `index.ts`: `generateId()` 改用 `crypto.randomBytes()` 替代 `Math.random()`
+- [x] 清理未使用导入: ChatMessage, ChatCompletionChunk, GatewayContext, cacheKey
+- [x] Git commit: `72d7fee`
+
+---
+
+## Phase 9: Vercel 部署 (进行中)
+
+### 已完成
+- [x] Supabase 项目创建 (ap-southeast-2, Data API 关闭, RLS 关闭)
+- [x] Upstash Redis 创建 (REST URL + Token 已获取)
+- [x] GitHub 仓库推送 (`Blackdcp/dezix-ai`, private)
+- [x] Vercel 项目关联 GitHub 仓库
+- [x] 生成生产密钥 (NEXTAUTH_SECRET + ENCRYPTION_KEY)
+- [x] 修复构建问题: `build` 脚本加 `prisma generate`，`tsconfig.json` 排除 `seed.ts`
+- [x] 修复 Prisma 7: `directUrl` 从 `schema.prisma` 移到 `prisma.config.ts`
+- [x] Git commit: `4e73485`
+
+### 待完成 (下次继续)
+- [ ] Vercel 删除旧项目，重新导入 (拉取最新 commit `4e73485`)
+- [ ] 重新填写环境变量 (见下方清单)
+- [ ] 部署成功后添加 `NEXTAUTH_URL` 和 `NEXT_PUBLIC_APP_URL`
+- [ ] 运行 `prisma db push` 同步数据库表到 Supabase
+- [ ] 运行 seed 脚本填充种子数据
+- [ ] 全流程验证 (健康检查、注册登录、API Key、网关转发)
+
+### 环境变量清单
+
+| Key | Value |
+|-----|-------|
+| `DATABASE_URL` | `postgresql://postgres.kkwawbsibpgdqqdirbmv:%5BaA-18817327186%5D@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1` |
+| `DIRECT_DATABASE_URL` | `postgresql://postgres:%5BaA-18817327186%5D@db.kkwawbsibpgdqqdirbmv.supabase.co:5432/postgres` |
+| `UPSTASH_REDIS_REST_URL` | `https://calm-collie-29219.upstash.io` |
+| `UPSTASH_REDIS_REST_TOKEN` | `AXIjAAIncDJjNzU4MjBlYzRjZDA0ZmNjOTJiOWEzNzI3OTY4MWMzYXAyMjkyMTk` |
+| `NEXTAUTH_SECRET` | `zZi2ckmRMx+VD+LiXDmuejK/rrNLvsKUh9XoyYP/j68=` |
+| `ENCRYPTION_KEY` | `48cf6d5ddc1fd79812bf1e6fd0c857a917645efa384e78000d51e2b0d2fe4b89` |
+| `NEXT_PUBLIC_APP_NAME` | `Dezix AI` |
+
+### 注意事项
+- Git 代理: `git -c http.proxy=http://127.0.0.1:7897 -c https.proxy=http://127.0.0.1:7897 push`
+- Vercel "Redeploy" 只重跑同一 commit，不会拉新代码；需要删除项目重新导入或等 webhook 自动触发
+- 密码中 `[` `]` 在 URL 中编码为 `%5B` `%5D`
+- 前端展示页视觉效果待后续优化（用户已提出）
+
+---
+
 ## 后续可选方向
 
-- [ ] Phase 9: 部署上线 (VPS/云服务器 + 域名 + SSL + Nginx 反代)
 - [ ] Phase 10: OAuth 社交登录 (GitHub / Google)
 - [ ] Phase 11: 真实支付集成 (Stripe / 支付宝)
 - [ ] Phase 12: 模型管理增强 (自动同步上游模型列表、价格更新)
 - [ ] Phase 13: 监控告警 (Prometheus + Grafana / Sentry)
 - [ ] Phase 14: 多语言支持 (i18n)
+- [ ] 前端视觉重构 (营销首页、定价、文档站、控制台)

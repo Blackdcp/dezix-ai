@@ -8,7 +8,7 @@ Dezix AI 是一个统一 LLM API 网关平台（仿 n1n.ai），面向国内开�
 
 ## 当前状态
 
-**全部 8 个阶段已完成 + Phase 9 Vercel 迁移代码已完成。** 47 个路由编译通过，67 个测试用例全部通过。
+**全部 8 个阶段已完成 + Phase 9 Vercel 部署进行中。** 50 个路由编译通过，67 个测试用例全部通过，ESLint 零错误。
 
 | 阶段 | 状态 | Git Commit |
 |------|------|------------|
@@ -22,7 +22,9 @@ Dezix AI 是一个统一 LLM API 网关平台（仿 n1n.ai），面向国内开�
 | Phase 8: 生产加固 | ✅ 完成 | `5c29333` |
 | 全功能验证 | ✅ 完成 | `bd3c00a` |
 | Bug 修复 + 体验优化 | ✅ 完成 | `5a28e80` |
-| Phase 9: Vercel + Supabase + Upstash 迁移 | ✅ 代码完成 | 待提交 |
+| Phase 9: Vercel + Supabase + Upstash 迁移 | ✅ 代码完成 | `2c2a95c` |
+| 代码质量修复 + 网关 Bug 修复 | ✅ 完成 | `72d7fee` |
+| Phase 9: Vercel 部署 | 🔄 进行中 | `4e73485` |
 
 ## 技术栈
 
@@ -193,13 +195,33 @@ npm run test:watch           # Vitest 监听模式
 ## 下次启动备注
 
 - 项目路径: `E:\Claude code\dezix-ai`
-- **Phase 9 代码已完成**，尚未部署到 Vercel
-- 本地开发仍可使用 Docker: `docker compose up -d` (PG + Redis)
-- 本地开发用 `.env.local` 指向本地 PG/Redis 或 Upstash 云端免费额度
-- 生产环境变量通过 Vercel Dashboard 设置
-- Windows 下 npx 有 PATH 问题，可用 `node node_modules/next/dist/bin/next dev`
+- GitHub: `Blackdcp/dezix-ai` (private)
+- Git 代理: `git -c http.proxy=http://127.0.0.1:7897 -c https.proxy=http://127.0.0.1:7897 push`
+- **Phase 9 部署进行中**，代码已就绪，Vercel 部署需要继续
 
-### Phase 9 部署后待验证 (下次任务)
+### 下次任务: 继续 Vercel 部署
+
+1. **Vercel 删除旧项目，重新导入** `Blackdcp/dezix-ai`（当前旧项目 webhook 不触发，需要重建）
+2. 填写环境变量（完整清单在 PROGRESS.md 的 Phase 9 部分）
+3. 部署成功后添加 `NEXTAUTH_URL` 和 `NEXT_PUBLIC_APP_URL`（Vercel 分配的域名）
+4. 用 `DIRECT_DATABASE_URL` 运行 `prisma db push` 同步表到 Supabase
+5. 运行 seed 脚本填充种子数据
+6. 全流程验证
+
+### Supabase 信息
+- 项目 ref: `kkwawbsibpgdqqdirbmv`
+- Region: `ap-southeast-2` (Sydney)
+- DB 密码中 `[` `]` 需 URL 编码为 `%5B` `%5D`
+
+### Upstash 信息
+- REST URL: `https://calm-collie-29219.upstash.io`
+
+### 其他备注
+- 本地开发仍可使用 Docker: `docker compose up -d` (PG + Redis)
+- Windows 下 npx 有 PATH 问题，可用 `node node_modules/next/dist/bin/next dev`
+- 前端展示页视觉效果待后续优化（用户已提出）
+
+### Phase 9 部署后待验证
 
 1. `GET /api/health` → postgres healthy + redis healthy
 2. 访问首页 / 定价 / 文档 → 页面正常加载
