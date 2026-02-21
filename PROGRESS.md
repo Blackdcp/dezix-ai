@@ -305,7 +305,7 @@
 
 ---
 
-## Phase 9: Vercel 部署 (进行中)
+## Phase 9: Vercel 部署 ✅ 完成
 
 ### 已完成
 - [x] Supabase 项目创建 (ap-southeast-2, Data API 关闭, RLS 关闭)
@@ -313,35 +313,57 @@
 - [x] GitHub 仓库推送 (`Blackdcp/dezix-ai`, private)
 - [x] Vercel 项目关联 GitHub 仓库
 - [x] 生成生产密钥 (NEXTAUTH_SECRET + ENCRYPTION_KEY)
-- [x] 修复构建问题: `build` 脚本加 `prisma generate`，`tsconfig.json` 排除 `seed.ts`
-- [x] 修复 Prisma 7: `directUrl` 从 `schema.prisma` 移到 `prisma.config.ts`
-- [x] Git commit: `4e73485`
+- [x] 修复构建问题: `build` 脚本加 `prisma generate`，`tsconfig.json` 排除 `seed.ts` + `prisma.config.ts`
+- [x] 修复 Prisma 7: `directUrl` 从 `schema.prisma` 移到 `prisma.config.ts` (后发现不支持，改用 `DIRECT_DATABASE_URL || DATABASE_URL` fallback)
+- [x] 修复 Supabase SSL: `db.ts` 和 `seed.ts` 添加 `ssl: { rejectUnauthorized: false }`
+- [x] Vercel 构建成功: 50 个路由全部编译
+- [x] `prisma db push` 同步 12 张表到 Supabase (通过 Session mode pooler 端口 5432)
+- [x] `seed.ts` 填充种子数据: 4 供应商 + 7 模型 + 4 渠道
+- [x] 环境变量全部配置 (含 NEXTAUTH_URL + NEXT_PUBLIC_APP_URL)
+- [x] Git commit: `b0ea867`
 
-### 待完成 (下次继续)
-- [ ] Vercel 删除旧项目，重新导入 (拉取最新 commit `4e73485`)
-- [ ] 重新填写环境变量 (见下方清单)
-- [ ] 部署成功后添加 `NEXTAUTH_URL` 和 `NEXT_PUBLIC_APP_URL`
-- [ ] 运行 `prisma db push` 同步数据库表到 Supabase
-- [ ] 运行 seed 脚本填充种子数据
-- [ ] 全流程验证 (健康检查、注册登录、API Key、网关转发)
+### 线上验证结果
+- [x] `/api/health` → postgres healthy (1228ms) + redis healthy (494ms)
+- [x] `/api/public/models` → 7 个模型 + 4 个供应商
+- [x] 首页 `/` → 200
+- [x] 定价 `/pricing` → 200
+- [x] FAQ `/faq` → 200
+- [x] 模型列表 `/model-list` → 200
+- [x] 文档 `/docs` → 307 重定向 (正确)
+- [x] 快速开始 `/docs/quick-start` → 200
+- [x] API 参考 `/docs/api-reference` → 200
+- [x] 登录 `/login` → 200
+- [x] 注册 `/register` → 200
 
-### 环境变量清单
+### 线上地址
+- **网站**: https://dezix-ai.vercel.app
+- **GitHub**: https://github.com/Blackdcp/dezix-ai (private)
+
+### Vercel 环境变量 (最终版)
 
 | Key | Value |
 |-----|-------|
-| `DATABASE_URL` | `postgresql://postgres.kkwawbsibpgdqqdirbmv:%5BaA-18817327186%5D@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1` |
-| `DIRECT_DATABASE_URL` | `postgresql://postgres:%5BaA-18817327186%5D@db.kkwawbsibpgdqqdirbmv.supabase.co:5432/postgres` |
+| `DATABASE_URL` | `postgresql://postgres.kkwawbsibpgdqqdirbmv:DezixAI2026db@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1` |
+| `DIRECT_DATABASE_URL` | `postgresql://postgres.kkwawbsibpgdqqdirbmv:DezixAI2026db@aws-1-ap-southeast-2.pooler.supabase.com:5432/postgres` |
 | `UPSTASH_REDIS_REST_URL` | `https://calm-collie-29219.upstash.io` |
 | `UPSTASH_REDIS_REST_TOKEN` | `AXIjAAIncDJjNzU4MjBlYzRjZDA0ZmNjOTJiOWEzNzI3OTY4MWMzYXAyMjkyMTk` |
 | `NEXTAUTH_SECRET` | `zZi2ckmRMx+VD+LiXDmuejK/rrNLvsKUh9XoyYP/j68=` |
 | `ENCRYPTION_KEY` | `48cf6d5ddc1fd79812bf1e6fd0c857a917645efa384e78000d51e2b0d2fe4b89` |
 | `NEXT_PUBLIC_APP_NAME` | `Dezix AI` |
+| `NEXTAUTH_URL` | `https://dezix-ai.vercel.app` |
+| `NEXT_PUBLIC_APP_URL` | `https://dezix-ai.vercel.app` |
 
 ### 注意事项
 - Git 代理: `git -c http.proxy=http://127.0.0.1:7897 -c https.proxy=http://127.0.0.1:7897 push`
-- Vercel "Redeploy" 只重跑同一 commit，不会拉新代码；需要删除项目重新导入或等 webhook 自动触发
-- 密码中 `[` `]` 在 URL 中编码为 `%5B` `%5D`
+- Supabase 直连端口 5432 从国内不可达，使用 Session mode pooler (pooler 主机 + 5432) 替代
+- Supabase 连接串不要加 `sslmode=require`，SSL 由 pg Pool 的 `ssl: { rejectUnauthorized: false }` 处理
 - 前端展示页视觉效果待后续优化（用户已提出）
+
+### 待验证 (下次任务)
+- [ ] 注册 → 登录 → session 正确返回
+- [ ] 创建 API Key → `sk-dezix-` 前缀
+- [ ] 管理后台页面全部 200
+- [ ] `POST /api/v1/chat/completions` 网关转发 (需要上游 API Key)
 
 ---
 
