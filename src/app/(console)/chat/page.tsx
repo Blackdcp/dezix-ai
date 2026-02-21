@@ -166,7 +166,7 @@ export default function ChatPage() {
   const handleDeleteConversation = (id: string) => {
     updateConversations((prev) => prev.filter((c) => c.id !== id));
     if (activeId === id) {
-      setActiveId((prev) => {
+      setActiveId(() => {
         const remaining = conversations.filter((c) => c.id !== id);
         return remaining.length > 0 ? remaining[0].id : null;
       });

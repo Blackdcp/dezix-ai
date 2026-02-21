@@ -48,25 +48,21 @@ export async function chargeUser(
 
   const revenueDecimal = new Prisma.Decimal(revenue.toFixed(8));
 
-  // Atomic balance deduction
-  const result = await db.$executeRaw`
+  // Atomic balance deduction with RETURNING to get the new balance in one query
+  const rows = await db.$queryRaw<{ balance: Prisma.Decimal }[]>`
     UPDATE users
     SET balance = balance - ${revenueDecimal}::decimal,
         "updatedAt" = NOW()
     WHERE id = ${ctx.user.id}
       AND balance >= ${revenueDecimal}::decimal
+    RETURNING balance
   `;
 
-  if (result === 0) {
+  if (rows.length === 0) {
     throw insufficientBalanceError();
   }
 
-  // Get updated balance for transaction record
-  const updatedUser = await db.user.findUnique({
-    where: { id: ctx.user.id },
-    select: { balance: true },
-  });
-  const newBalance = updatedUser ? Number(updatedUser.balance) : 0;
+  const newBalance = Number(rows[0].balance);
 
   // Record transaction + update ApiKey quota in parallel
   await Promise.all([

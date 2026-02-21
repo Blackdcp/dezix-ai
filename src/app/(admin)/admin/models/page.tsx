@@ -88,7 +88,7 @@ export default function AdminModelsPage() {
   }, [page, search]);
 
   useEffect(() => {
-    fetchModels();
+    void fetchModels();
   }, [fetchModels]);
 
   const openCreate = () => {

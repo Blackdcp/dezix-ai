@@ -99,12 +99,8 @@ export async function authenticateRequest(
  */
 export async function checkModelWhitelist(
   keyHash: string,
-  modelId: string
+  _modelId: string
 ): Promise<string[]> {
-  // Read whitelist from the cache or DB
-  const cacheKey = `apikey:${sha256("__bypass__")}`;
-  // We actually read it from the cached auth data
-  // This function is called after auth, so we re-read from cache
   const apiKey = await db.apiKey.findUnique({
     where: { keyHash },
     select: { modelWhitelist: true },

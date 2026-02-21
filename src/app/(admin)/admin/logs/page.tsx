@@ -79,7 +79,7 @@ export default function AdminLogsPage() {
   }, [page, userId, modelId, status, dateFrom, dateTo]);
 
   useEffect(() => {
-    fetchLogs();
+    void fetchLogs();
   }, [fetchLogs]);
 
   return (

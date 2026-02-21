@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { randomBytes } from "crypto";
 import { waitUntil } from "@vercel/functions";
 import { authenticateRequest, getModelWhitelist } from "./auth";
 import { checkRateLimit } from "./rate-limiter";
@@ -259,10 +260,5 @@ async function handleNonStreamResponse(
 }
 
 function generateId(): string {
-  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  let result = "";
-  for (let i = 0; i < 24; i++) {
-    result += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return result;
+  return randomBytes(18).toString("base64url");
 }

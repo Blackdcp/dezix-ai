@@ -82,7 +82,7 @@ export default function AdminUsersPage() {
   }, [page, search, roleFilter]);
 
   useEffect(() => {
-    fetchUsers();
+    void fetchUsers();
   }, [fetchUsers]);
 
   const toggleRole = async (user: UserItem) => {

@@ -1,5 +1,5 @@
 import type { ProviderAdapter } from "./adapters/base";
-import type { ChatCompletionChunk, GatewayContext, UsageInfo } from "./types";
+import type { UsageInfo } from "./types";
 import { GoogleAdapter } from "./adapters/google";
 
 /**
@@ -32,6 +32,8 @@ export function createStreamTransformer(
   const encoder = new TextEncoder();
   const decoder = new TextDecoder();
   let buffer = "";
+  let doneSent = false;
+  let errored = false;
 
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
@@ -63,6 +65,7 @@ export function createStreamTransformer(
               // Check for [DONE] signal
               if (line.trim() === "data: [DONE]") {
                 controller.enqueue(encoder.encode("data: [DONE]\n\n"));
+                doneSent = true;
               }
               continue;
             }
@@ -105,12 +108,17 @@ export function createStreamTransformer(
           }
         }
 
-        // Send [DONE] if not already sent
-        controller.enqueue(encoder.encode("data: [DONE]\n\n"));
+        // Send [DONE] only if upstream didn't already send one
+        if (!doneSent) {
+          controller.enqueue(encoder.encode("data: [DONE]\n\n"));
+        }
       } catch (err) {
+        errored = true;
         controller.error(err);
       } finally {
-        controller.close();
+        if (!errored) {
+          controller.close();
+        }
         resolveUsage!({
           usage: {
             prompt_tokens: promptTokens,

@@ -82,7 +82,7 @@ export default function AdminChannelsPage() {
   }, [page]);
 
   useEffect(() => {
-    fetchChannels();
+    void fetchChannels();
   }, [fetchChannels]);
 
   const openCreate = () => {
