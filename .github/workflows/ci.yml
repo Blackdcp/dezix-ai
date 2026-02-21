@@ -6,6 +6,17 @@ on:
   pull_request:
     branches: [main]
 
+env:
+  # CI-only dummy values — never used for real connections
+  DATABASE_URL: "postgresql://ci:ci@localhost:5432/ci"
+  UPSTASH_REDIS_REST_URL: "https://ci-placeholder.upstash.io"
+  UPSTASH_REDIS_REST_TOKEN: "ci-placeholder-token"
+  NEXTAUTH_SECRET: "ci-test-secret-do-not-use-in-production"
+  NEXTAUTH_URL: "http://localhost:3000"
+  ENCRYPTION_KEY: "0000000000000000000000000000000000000000000000000000000000000000"
+  NEXT_PUBLIC_APP_NAME: "Dezix AI"
+  NEXT_PUBLIC_APP_URL: "http://localhost:3000"
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -37,5 +48,3 @@ jobs:
 
       - name: Build
         run: npm run build
-        env:
-          NEXTAUTH_SECRET: ci-test-secret
