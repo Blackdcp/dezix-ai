@@ -34,11 +34,11 @@ export async function authenticateRequest(
 
   // Try Redis cache first
   const cacheKey = `apikey:${keyHash}`;
-  const cached = await redis.get<string>(cacheKey);
+  const cached = await redis.get(cacheKey);
   if (cached) {
-    const data = JSON.parse(cached);
-    validateKeyData(data);
-    return data;
+    const data = typeof cached === "string" ? JSON.parse(cached) : cached;
+    validateKeyData(data as Record<string, unknown>);
+    return data as Pick<GatewayContext, "apiKey" | "user">;
   }
 
   // Query database
@@ -130,8 +130,10 @@ function validateKeyData(data: Record<string, unknown>) {
  */
 export async function getModelWhitelist(apiKeyId: string): Promise<string[]> {
   const cacheKey = `apikey:whitelist:${apiKeyId}`;
-  const cached = await redis.get<string>(cacheKey);
-  if (cached) return JSON.parse(cached);
+  const cached = await redis.get(cacheKey);
+  if (cached) {
+    return typeof cached === "string" ? JSON.parse(cached) : (cached as string[]);
+  }
 
   const apiKey = await db.apiKey.findUnique({
     where: { id: apiKeyId },

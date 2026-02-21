@@ -50,9 +50,9 @@ export async function selectChannel(
 
 async function getChannelsForModel(modelId: string): Promise<ChannelInfo[]> {
   const cacheKey = `channels:${modelId}`;
-  const cached = await redis.get<string>(cacheKey);
+  const cached = await redis.get(cacheKey);
   if (cached) {
-    return JSON.parse(cached);
+    return (typeof cached === "string" ? JSON.parse(cached) : cached) as ChannelInfo[];
   }
 
   const channels = await db.channel.findMany({
