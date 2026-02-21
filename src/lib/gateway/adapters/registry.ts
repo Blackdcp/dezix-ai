@@ -9,6 +9,7 @@ const adapters: Record<string, ProviderAdapter> = {
   anthropic: new AnthropicAdapter(),
   google: new GoogleAdapter(),
   deepseek: new DeepSeekAdapter(),
+  qiniu: new DeepSeekAdapter(), // Qiniu (Sufy) uses OpenAI-compatible API; DeepSeek adapter's URL path matches
 };
 
 /**
