@@ -8,7 +8,7 @@ Dezix AI 是一个统一 LLM API 网关平台（仿 n1n.ai），面向国内开�
 
 ## 当前状态
 
-**Phase 1-10, 11, 14 已完成。**
+**Phase 1-12, 14 已完成。**
 
 **线上地址**: https://dezix-ai.vercel.app
 
@@ -25,6 +25,7 @@ Dezix AI 是一个统一 LLM API 网关平台（仿 n1n.ai），面向国内开�
 | Phase 9: Vercel 部署 | ✅ 完成 | `743ee4d` |
 | Phase 10: OAuth 社交登录 (GitHub + Google) | ✅ 完成 | — |
 | Phase 11: 微信收款码充值 + 管理员审核 | ✅ 完成 | `783e6e7` |
+| Phase 12: 模型管理增强 (上游同步 + 批量调价) | ✅ 完成 | `2d20d7d` |
 | Phase 14: 多语言支持 (i18n) | ✅ 完成 | — |
 
 ## 技术栈
@@ -277,6 +278,32 @@ Base URL: `https://api.qnaigc.com/v1`
 - `import { usePathname, useRouter } from "next/navigation"` → `import { usePathname, useRouter } from "@/i18n/navigation"`
 - 注意: `useSearchParams` 保持从 `next/navigation` 导入 (next-intl 不提供)
 - API 路由返回错误码 (如 `EMAIL_ALREADY_EXISTS`)，前端用 `useTranslations("Errors")` 翻译
+
+### Phase 12: 模型管理增强 — 上游同步 + 批量调价 (已完成 ✅)
+
+**功能**: 管理员一键从七牛云上游拉取最新模型列表，自动发现新增/下线模型；海外模型标记为 `isManual` 不受同步影响；批量选中模型调价。
+
+**关键文件:**
+- `prisma/schema.prisma` — Model 表新增 `isManual Boolean @default(false)` 字段
+- `src/lib/sync-models.ts` — 同步引擎 (fetchUpstreamModels, inferModelDefaults, syncUpstreamModels)
+- `src/app/api/admin/models/sync/route.ts` — GET 预览同步 (dry run) / POST 执行同步
+- `src/app/api/admin/models/batch-price/route.ts` — POST 批量更新定价
+- `src/lib/validations/admin.ts` — 新增 `adminBatchPriceSchema`
+- `src/app/[locale]/(admin)/admin/models/page.tsx` — 同步按钮 + 预览弹窗 + 复选框 + 批量调价弹窗 + isManual 徽章
+
+**数据库状态:**
+- Schema 已 push 到 Supabase (`isManual` 字段已添加)
+- 35 个海外模型 (openai/, claude-, gemini-, x-ai/) 已标记 `isManual=true`
+- 其余 56 个国内模型 `isManual=false`，可通过同步自动管理
+
+**同步逻辑:**
+1. 调用上游 `/v1/models` API 获取公开模型列表
+2. 与 DB 中 `isManual=false` 的模型比较
+3. 新模型 → 自动推断 displayName/category/定价/maxContext 后创建
+4. 上游下线的模型 → 标记 `isActive=false`（不删除）
+5. 更新渠道 models[] = 所有 isActive 模型的 modelId
+
+**待部署:** 代码已 commit (`2d20d7d`)，需 `git push` 到 GitHub 触发 Vercel 部署
 
 ## 跨会话继续开发
 

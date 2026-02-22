@@ -509,11 +509,51 @@
 
 ---
 
+## Phase 12: 模型管理增强 — 上游同步 + 批量调价 ✅
+
+### 数据库
+- [x] Model 表新增 `isManual Boolean @default(false)` 字段
+- [x] `prisma db push` 同步到 Supabase
+- [x] 35 个海外模型 (openai/, claude-, gemini-, x-ai/) 标记 `isManual=true`
+
+### 同步引擎 (`src/lib/sync-models.ts`)
+- [x] `fetchUpstreamModels(apiKey, baseUrl)` — 调用上游 `/v1/models`
+- [x] `inferModelDefaults(modelId)` — 自动推断 displayName, category, 定价档位, maxContext
+- [x] `syncUpstreamModels(providerId, dryRun)` — 完整同步流程 (对比→新增→下线→更新渠道)
+
+### API 路由
+- [x] `GET /api/admin/models/sync` — 预览同步 (dry run, 返回 diff)
+- [x] `POST /api/admin/models/sync` — 执行同步
+- [x] `POST /api/admin/models/batch-price` — 批量更新定价
+
+### Zod 验证
+- [x] `adminBatchPriceSchema` (modelIds + 4 个可选价格字段)
+
+### i18n
+- [x] zh.json + en.json — AdminModels 命名空间新增 21 个翻译键
+
+### 管理页面增强 (`/admin/models`)
+- [x] 顶部「同步上游模型」按钮 (RefreshCw 图标, loading 动画)
+- [x] 同步预览 Dialog (新增/下线模型列表 + 确认执行)
+- [x] 表格复选框列 + 全选
+- [x] 选中模型后显示「批量调价」按钮 + Dialog (4 个价格输入)
+- [x] isManual 模型显示「手动」Badge
+
+### 验证
+- [x] `npm run build` 通过
+- [x] Git commit: `2d20d7d`
+
+### 待部署
+- [ ] `git push` 到 GitHub 触发 Vercel 部署
+- [ ] 线上验证: `/admin/models` → 同步 + 批量调价功能
+
+---
+
 ## 后续可选方向
 
 - [x] Phase 10: OAuth 社交登录 (GitHub / Google)
 - [x] Phase 11: 微信收款码充值 + 管理员审核
-- [ ] Phase 12: 模型管理增强 (自动同步上游模型列表、价格更新)
+- [x] Phase 12: 模型管理增强 (自动同步上游模型列表、批量调价)
 - [ ] Phase 13: 监控告警 (Prometheus + Grafana / Sentry)
 - [x] Phase 14: 多语言支持 (i18n)
 - [ ] 前端视觉重构 (营销首页、定价、文档站、控制台)
