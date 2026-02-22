@@ -1,23 +1,26 @@
 "use client";
 
 import { CodeBlock } from "@/components/docs/code-block";
+import { useTranslations } from "next-intl";
 
 export default function ApiReferencePage() {
+  const t = useTranslations("ApiReference");
+
   return (
     <article className="prose-sm max-w-none">
-      <h1 className="mb-2 text-3xl font-bold tracking-[-0.015em] text-[#1d1d1f]">API 参考</h1>
+      <h1 className="mb-2 text-3xl font-bold tracking-[-0.015em] text-[#1d1d1f]">{t("title")}</h1>
       <p className="mb-8 text-[17px] leading-relaxed text-[#424245]">
-        Dezix AI 的 API 完全兼容 OpenAI 格式，以下是完整接口文档。
+        {t("subtitle")}
       </p>
 
       {/* Authentication */}
-      <h2 className="mb-3 mt-8 text-xl font-bold text-[#1d1d1f]">认证</h2>
+      <h2 className="mb-3 mt-8 text-xl font-bold text-[#1d1d1f]">{t("authTitle")}</h2>
       <p className="mb-4 text-[17px] leading-relaxed text-[#424245]">
-        所有 API 请求需要在 HTTP Header 中携带 API Key 进行认证：
+        {t("authText")}
       </p>
       <CodeBlock
         language="http"
-        title="认证 Header"
+        title={t("authHeader")}
         code={`Authorization: Bearer sk-dezix-your-api-key`}
       />
 
@@ -32,73 +35,73 @@ export default function ApiReferencePage() {
       {/* Chat Completions */}
       <h2 className="mb-3 mt-8 text-xl font-bold text-[#1d1d1f]">Chat Completions</h2>
       <p className="mb-2 text-[17px] leading-relaxed text-[#424245]">
-        创建一个聊天补全请求。
+        {t("chatCompletionsDesc")}
       </p>
       <div className="mb-4 rounded-lg bg-[#007AFF]/10 px-3 py-2">
         <code className="text-sm font-semibold text-[#007AFF]">POST /chat/completions</code>
       </div>
 
-      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1d1d1f]">请求参数</h3>
+      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1d1d1f]">{t("requestParams")}</h3>
       <div className="mb-4 overflow-x-auto">
         <table className="w-full border-collapse text-sm">
           <thead className="border-b border-black/[0.06] bg-[#f5f5f7]">
             <tr>
-              <th className="px-3 py-2 text-left text-xs uppercase tracking-wider font-medium text-[#86868b]">参数</th>
-              <th className="px-3 py-2 text-left text-xs uppercase tracking-wider font-medium text-[#86868b]">类型</th>
-              <th className="px-3 py-2 text-left text-xs uppercase tracking-wider font-medium text-[#86868b]">必填</th>
-              <th className="px-3 py-2 text-left text-xs uppercase tracking-wider font-medium text-[#86868b]">说明</th>
+              <th className="px-3 py-2 text-left text-xs uppercase tracking-wider font-medium text-[#86868b]">{t("param")}</th>
+              <th className="px-3 py-2 text-left text-xs uppercase tracking-wider font-medium text-[#86868b]">{t("type")}</th>
+              <th className="px-3 py-2 text-left text-xs uppercase tracking-wider font-medium text-[#86868b]">{t("required")}</th>
+              <th className="px-3 py-2 text-left text-xs uppercase tracking-wider font-medium text-[#86868b]">{t("paramDesc")}</th>
             </tr>
           </thead>
           <tbody>
             <tr className="border-b border-black/[0.04] hover:bg-[#f5f5f7]/50">
               <td className="px-3 py-2 font-mono text-xs text-[#007AFF]">model</td>
               <td className="px-3 py-2 text-[#424245]">string</td>
-              <td className="px-3 py-2 text-[#424245]">是</td>
-              <td className="px-3 py-2 text-[#86868b]">模型 ID，如 gpt-4o-mini</td>
+              <td className="px-3 py-2 text-[#424245]">{t("yes")}</td>
+              <td className="px-3 py-2 text-[#86868b]">{t("modelDesc")}</td>
             </tr>
             <tr className="border-b border-black/[0.04] hover:bg-[#f5f5f7]/50">
               <td className="px-3 py-2 font-mono text-xs text-[#007AFF]">messages</td>
               <td className="px-3 py-2 text-[#424245]">array</td>
-              <td className="px-3 py-2 text-[#424245]">是</td>
-              <td className="px-3 py-2 text-[#86868b]">消息列表，包含 role 和 content</td>
+              <td className="px-3 py-2 text-[#424245]">{t("yes")}</td>
+              <td className="px-3 py-2 text-[#86868b]">{t("messagesDesc")}</td>
             </tr>
             <tr className="border-b border-black/[0.04] hover:bg-[#f5f5f7]/50">
               <td className="px-3 py-2 font-mono text-xs text-[#007AFF]">stream</td>
               <td className="px-3 py-2 text-[#424245]">boolean</td>
-              <td className="px-3 py-2 text-[#424245]">否</td>
-              <td className="px-3 py-2 text-[#86868b]">是否使用流式输出，默认 false</td>
+              <td className="px-3 py-2 text-[#424245]">{t("no")}</td>
+              <td className="px-3 py-2 text-[#86868b]">{t("streamDesc")}</td>
             </tr>
             <tr className="border-b border-black/[0.04] hover:bg-[#f5f5f7]/50">
               <td className="px-3 py-2 font-mono text-xs text-[#007AFF]">temperature</td>
               <td className="px-3 py-2 text-[#424245]">number</td>
-              <td className="px-3 py-2 text-[#424245]">否</td>
-              <td className="px-3 py-2 text-[#86868b]">采样温度，0-2 之间，默认 1</td>
+              <td className="px-3 py-2 text-[#424245]">{t("no")}</td>
+              <td className="px-3 py-2 text-[#86868b]">{t("temperatureDesc")}</td>
             </tr>
             <tr className="border-b border-black/[0.04] hover:bg-[#f5f5f7]/50">
               <td className="px-3 py-2 font-mono text-xs text-[#007AFF]">max_tokens</td>
               <td className="px-3 py-2 text-[#424245]">integer</td>
-              <td className="px-3 py-2 text-[#424245]">否</td>
-              <td className="px-3 py-2 text-[#86868b]">最大生成 Token 数</td>
+              <td className="px-3 py-2 text-[#424245]">{t("no")}</td>
+              <td className="px-3 py-2 text-[#86868b]">{t("maxTokensDesc")}</td>
             </tr>
             <tr className="border-b border-black/[0.04] hover:bg-[#f5f5f7]/50">
               <td className="px-3 py-2 font-mono text-xs text-[#007AFF]">top_p</td>
               <td className="px-3 py-2 text-[#424245]">number</td>
-              <td className="px-3 py-2 text-[#424245]">否</td>
-              <td className="px-3 py-2 text-[#86868b]">核采样阈值，0-1 之间，默认 1</td>
+              <td className="px-3 py-2 text-[#424245]">{t("no")}</td>
+              <td className="px-3 py-2 text-[#86868b]">{t("topPDesc")}</td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1d1d1f]">请求示例</h3>
+      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1d1d1f]">{t("requestExample")}</h3>
       <CodeBlock
         language="json"
-        title="请求体"
+        title={t("requestBody")}
         code={`{
   "model": "gpt-4o-mini",
   "messages": [
-    {"role": "system", "content": "你是一个有帮助的助手。"},
-    {"role": "user", "content": "你好"}
+    {"role": "system", "content": "You are a helpful assistant."},
+    {"role": "user", "content": "Hello"}
   ],
   "temperature": 0.7,
   "max_tokens": 1000,
@@ -106,10 +109,10 @@ export default function ApiReferencePage() {
 }`}
       />
 
-      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1d1d1f]">响应示例</h3>
+      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1d1d1f]">{t("responseExample")}</h3>
       <CodeBlock
         language="json"
-        title="非流式响应"
+        title={t("nonStreamResponse")}
         code={`{
   "id": "chatcmpl-xxx",
   "object": "chat.completion",
@@ -120,7 +123,7 @@ export default function ApiReferencePage() {
       "index": 0,
       "message": {
         "role": "assistant",
-        "content": "你好！有什么可以帮助你的吗？"
+        "content": "Hello! How can I help you?"
       },
       "finish_reason": "stop"
     }
@@ -134,17 +137,16 @@ export default function ApiReferencePage() {
       />
 
       {/* Streaming */}
-      <h2 className="mb-3 mt-8 text-xl font-bold text-[#1d1d1f]">流式响应</h2>
+      <h2 className="mb-3 mt-8 text-xl font-bold text-[#1d1d1f]">{t("streamTitle")}</h2>
       <p className="mb-4 text-[17px] leading-relaxed text-[#424245]">
-        设置 <code className="rounded-md bg-[#f5f5f7] px-1.5 py-0.5 text-xs text-[#007AFF]">stream: true</code> 时，
-        响应将以 SSE（Server-Sent Events）格式返回。每个事件包含一个 JSON 数据块：
+        {t("streamText")}
       </p>
       <CodeBlock
         language="text"
-        title="流式响应格式"
-        code={`data: {"id":"chatcmpl-xxx","object":"chat.completion.chunk","choices":[{"index":0,"delta":{"content":"你"},"finish_reason":null}]}
+        title={t("streamFormat")}
+        code={`data: {"id":"chatcmpl-xxx","object":"chat.completion.chunk","choices":[{"index":0,"delta":{"content":"Hello"},"finish_reason":null}]}
 
-data: {"id":"chatcmpl-xxx","object":"chat.completion.chunk","choices":[{"index":0,"delta":{"content":"好"},"finish_reason":null}]}
+data: {"id":"chatcmpl-xxx","object":"chat.completion.chunk","choices":[{"index":0,"delta":{"content":"!"},"finish_reason":null}]}
 
 data: {"id":"chatcmpl-xxx","object":"chat.completion.chunk","choices":[{"index":0,"delta":{},"finish_reason":"stop"}]}
 
@@ -154,14 +156,14 @@ data: [DONE]`}
       {/* Models List */}
       <h2 className="mb-3 mt-8 text-xl font-bold text-[#1d1d1f]">Models List</h2>
       <p className="mb-2 text-[17px] leading-relaxed text-[#424245]">
-        获取可用模型列表。
+        {t("listModelsDesc")}
       </p>
       <div className="mb-4 rounded-lg bg-[#007AFF]/10 px-3 py-2">
         <code className="text-sm font-semibold text-[#007AFF]">GET /models</code>
       </div>
       <CodeBlock
         language="json"
-        title="响应示例"
+        title={t("listModelsResponse")}
         code={`{
   "object": "list",
   "data": [
@@ -180,43 +182,43 @@ data: [DONE]`}
       />
 
       {/* Error Codes */}
-      <h2 className="mb-3 mt-8 text-xl font-bold text-[#1d1d1f]">错误码</h2>
+      <h2 className="mb-3 mt-8 text-xl font-bold text-[#1d1d1f]">{t("errorCodes")}</h2>
       <div className="overflow-x-auto">
         <table className="w-full border-collapse text-sm">
           <thead className="border-b border-black/[0.06] bg-[#f5f5f7]">
             <tr>
-              <th className="px-3 py-2 text-left text-xs uppercase tracking-wider font-medium text-[#86868b]">HTTP 状态码</th>
-              <th className="px-3 py-2 text-left text-xs uppercase tracking-wider font-medium text-[#86868b]">说明</th>
+              <th className="px-3 py-2 text-left text-xs uppercase tracking-wider font-medium text-[#86868b]">{t("httpStatus")}</th>
+              <th className="px-3 py-2 text-left text-xs uppercase tracking-wider font-medium text-[#86868b]">{t("errorDesc")}</th>
             </tr>
           </thead>
           <tbody>
             <tr className="border-b border-black/[0.04] hover:bg-[#f5f5f7]/50">
               <td className="px-3 py-2 font-mono text-[#007AFF]">400</td>
-              <td className="px-3 py-2 text-[#86868b]">请求参数错误（缺少 model 或 messages）</td>
+              <td className="px-3 py-2 text-[#86868b]">{t("error400")}</td>
             </tr>
             <tr className="border-b border-black/[0.04] hover:bg-[#f5f5f7]/50">
               <td className="px-3 py-2 font-mono text-[#007AFF]">401</td>
-              <td className="px-3 py-2 text-[#86868b]">API Key 无效或缺失</td>
+              <td className="px-3 py-2 text-[#86868b]">{t("error401")}</td>
             </tr>
             <tr className="border-b border-black/[0.04] hover:bg-[#f5f5f7]/50">
               <td className="px-3 py-2 font-mono text-[#007AFF]">402</td>
-              <td className="px-3 py-2 text-[#86868b]">余额不足</td>
+              <td className="px-3 py-2 text-[#86868b]">{t("error402")}</td>
             </tr>
             <tr className="border-b border-black/[0.04] hover:bg-[#f5f5f7]/50">
               <td className="px-3 py-2 font-mono text-[#007AFF]">404</td>
-              <td className="px-3 py-2 text-[#86868b]">模型不存在或未启用</td>
+              <td className="px-3 py-2 text-[#86868b]">{t("error404")}</td>
             </tr>
             <tr className="border-b border-black/[0.04] hover:bg-[#f5f5f7]/50">
               <td className="px-3 py-2 font-mono text-[#007AFF]">429</td>
-              <td className="px-3 py-2 text-[#86868b]">请求频率超限</td>
+              <td className="px-3 py-2 text-[#86868b]">{t("error429")}</td>
             </tr>
             <tr className="border-b border-black/[0.04] hover:bg-[#f5f5f7]/50">
               <td className="px-3 py-2 font-mono text-[#007AFF]">500</td>
-              <td className="px-3 py-2 text-[#86868b]">服务器内部错误</td>
+              <td className="px-3 py-2 text-[#86868b]">{t("error500")}</td>
             </tr>
             <tr className="border-b border-black/[0.04] hover:bg-[#f5f5f7]/50">
               <td className="px-3 py-2 font-mono text-[#007AFF]">502</td>
-              <td className="px-3 py-2 text-[#86868b]">上游供应商请求失败</td>
+              <td className="px-3 py-2 text-[#86868b]">{t("error502")}</td>
             </tr>
           </tbody>
         </table>

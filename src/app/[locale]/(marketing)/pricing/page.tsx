@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Check } from "lucide-react";
 import {
   Table,
@@ -16,6 +16,7 @@ import {
   AnimatedSection,
   AnimatedItem,
 } from "@/components/ui/animated-section";
+import { useTranslations } from "next-intl";
 
 interface Model {
   id: string;
@@ -27,58 +28,44 @@ interface Model {
   sellOutPrice: number;
 }
 
-const plans = [
-  {
-    name: "免费体验",
-    price: "¥0",
-    desc: "注册即送体验额度，快速上手",
-    features: [
-      "注册赠送体验余额",
-      "全部模型可用",
-      "API 调用访问",
-      "基础用量统计",
-      "社区支持",
-    ],
-    cta: "免费注册",
-    href: "/register",
-    highlight: false,
-  },
-  {
-    name: "按量付费",
-    price: "按 Token 计费",
-    desc: "用多少付多少，灵活便捷",
-    features: [
-      "按实际 Token 用量计费",
-      "全部模型可用",
-      "流式响应支持",
-      "完整用量统计与分析",
-      "多 API Key 管理",
-      "优先技术支持",
-    ],
-    cta: "立即充值",
-    href: "/register",
-    highlight: true,
-  },
-  {
-    name: "企业方案",
-    price: "联系我们",
-    desc: "大规模使用定制方案",
-    features: [
-      "专属优惠定价",
-      "私有化部署选项",
-      "99.9% SLA 保障",
-      "专属客户经理",
-      "自定义模型接入",
-      "账单与合同支持",
-    ],
-    cta: "联系销售",
-    href: "/faq",
-    highlight: false,
-  },
-];
-
 export default function PricingPage() {
+  const t = useTranslations("PricingPage");
+  const tp = useTranslations("Pricing");
   const [models, setModels] = useState<Model[]>([]);
+
+  const freeFeatures = t.raw("freeFeatures") as string[];
+  const payFeatures = t.raw("payFeatures") as string[];
+  const entFeatures = t.raw("entFeatures") as string[];
+
+  const plans = [
+    {
+      name: tp("freePlan"),
+      price: tp("freePrice"),
+      desc: t("freeDesc"),
+      features: freeFeatures,
+      cta: tp("freeRegister"),
+      href: "/register",
+      highlight: false,
+    },
+    {
+      name: tp("payAsYouGo"),
+      price: tp("payAsYouGoPrice"),
+      desc: t("payDesc"),
+      features: payFeatures,
+      cta: tp("topUpNow"),
+      href: "/register",
+      highlight: true,
+    },
+    {
+      name: tp("enterprise"),
+      price: tp("enterprisePrice"),
+      desc: t("entDesc"),
+      features: entFeatures,
+      cta: tp("contactSales"),
+      href: "/faq",
+      highlight: false,
+    },
+  ];
 
   useEffect(() => {
     fetch("/api/public/models")
@@ -91,11 +78,11 @@ export default function PricingPage() {
     <div className="mx-auto max-w-6xl px-4 py-12">
       <AnimatedSection>
         <AnimatedItem>
-          <h1 className="mb-2 text-center text-5xl font-bold leading-[1.05] tracking-[-0.015em] text-[#1d1d1f] md:text-[56px]">定价方案</h1>
+          <h1 className="mb-2 text-center text-5xl font-bold leading-[1.05] tracking-[-0.015em] text-[#1d1d1f] md:text-[56px]">{t("title")}</h1>
         </AnimatedItem>
         <AnimatedItem>
           <p className="mb-12 text-center text-lg text-[#424245]">
-            简单透明的按量计费，无月费，无隐藏费用
+            {t("subtitle")}
           </p>
         </AnimatedItem>
       </AnimatedSection>
@@ -140,11 +127,11 @@ export default function PricingPage() {
       {/* Model pricing table */}
       <AnimatedSection>
         <AnimatedItem>
-          <h2 className="mb-2 text-3xl font-semibold tracking-[-0.01em] text-[#1d1d1f]">模型定价明细</h2>
+          <h2 className="mb-2 text-3xl font-semibold tracking-[-0.01em] text-[#1d1d1f]">{tp("modelPricingTitle")}</h2>
         </AnimatedItem>
         <AnimatedItem>
           <p className="mb-6 text-lg text-[#424245]">
-            价格单位为每百万 Token（¥/M tokens）
+            {tp("modelPricingDesc")}
           </p>
         </AnimatedItem>
       </AnimatedSection>
@@ -156,11 +143,11 @@ export default function PricingPage() {
               <Table>
                 <TableHeader>
                   <TableRow className="border-b border-black/[0.06] bg-[#f5f5f7]">
-                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#86868b]">模型名称</TableHead>
-                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#86868b]">供应商</TableHead>
-                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#86868b]">分类</TableHead>
-                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-[#86868b]">输入价格</TableHead>
-                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-[#86868b]">输出价格</TableHead>
+                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#86868b]">{tp("modelName")}</TableHead>
+                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#86868b]">{tp("provider")}</TableHead>
+                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#86868b]">{tp("category")}</TableHead>
+                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-[#86868b]">{tp("inputPrice")}</TableHead>
+                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-[#86868b]">{tp("outputPrice")}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -195,13 +182,13 @@ export default function PricingPage() {
         <AnimatedItem>
           <div className="mt-12 text-center">
             <p className="mb-4 text-lg text-[#424245]">
-              准备好开始使用了吗？
+              {tp("readyToStart")}
             </p>
             <Link
               href="/register"
               className="btn-primary inline-flex h-12 items-center justify-center rounded-full px-8 text-base font-medium"
             >
-              免费注册，立即体验
+              {tp("freeRegisterNow")}
             </Link>
           </div>
         </AnimatedItem>

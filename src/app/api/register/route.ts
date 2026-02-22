@@ -15,7 +15,7 @@ export async function POST(req: Request) {
     const { allowed } = await checkIpRateLimit(ip, 5);
     if (!allowed) {
       return NextResponse.json(
-        { error: "请求过于频繁，请稍后再试" },
+        { error: "RATE_LIMITED" },
         { status: 429 }
       );
     }
@@ -23,7 +23,7 @@ export async function POST(req: Request) {
     const body = await req.json().catch(() => null);
     const parsed = registerSchema.safeParse(body);
     if (!parsed.success) {
-      const msg = parsed.error.issues[0]?.message ?? "请求参数无效";
+      const msg = parsed.error.issues[0]?.message ?? "INVALID_PARAMS";
       return NextResponse.json({ error: msg }, { status: 400 });
     }
 
@@ -32,7 +32,7 @@ export async function POST(req: Request) {
     const existingUser = await db.user.findUnique({ where: { email } });
     if (existingUser) {
       return NextResponse.json(
-        { error: "该邮箱已被注册" },
+        { error: "EMAIL_ALREADY_EXISTS" },
         { status: 409 }
       );
     }
@@ -62,8 +62,8 @@ export async function POST(req: Request) {
       },
     });
 
-    return NextResponse.json({ message: "注册成功" }, { status: 201 });
+    return NextResponse.json({ message: "REGISTER_SUCCESS" }, { status: 201 });
   } catch {
-    return NextResponse.json({ error: "服务器内部错误" }, { status: 500 });
+    return NextResponse.json({ error: "SERVER_ERROR" }, { status: 500 });
   }
 }

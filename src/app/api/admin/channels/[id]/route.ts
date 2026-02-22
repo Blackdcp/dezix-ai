@@ -15,7 +15,7 @@ export async function PATCH(
   const body = await req.json().catch(() => null);
   const parsed = adminUpdateChannelSchema.safeParse(body);
   if (!parsed.success) {
-    const msg = parsed.error.issues[0]?.message ?? "无效请求";
+    const msg = parsed.error.issues[0]?.message ?? "INVALID_REQUEST";
     return NextResponse.json({ error: msg }, { status: 400 });
   }
 

@@ -28,7 +28,7 @@ export async function GET() {
   });
 
   if (!user) {
-    return NextResponse.json({ error: "用户不存在" }, { status: 404 });
+    return NextResponse.json({ error: "USER_NOT_FOUND" }, { status: 404 });
   }
 
   const authMethods: string[] = [];
@@ -61,7 +61,7 @@ export async function PATCH(req: Request) {
   const body = await req.json().catch(() => null);
   const parsed = updateSettingsSchema.safeParse(body);
   if (!parsed.success) {
-    const msg = parsed.error.issues[0]?.message ?? "请求参数无效";
+    const msg = parsed.error.issues[0]?.message ?? "INVALID_PARAMS";
     return NextResponse.json({ error: msg }, { status: 400 });
   }
 
@@ -78,7 +78,7 @@ export async function PATCH(req: Request) {
       select: { id: true },
     });
     if (existing && existing.id !== session.user.id) {
-      return NextResponse.json({ error: "该邮箱已被使用" }, { status: 409 });
+      return NextResponse.json({ error: "EMAIL_TAKEN" }, { status: 409 });
     }
     updateData.email = parsed.data.email.trim();
   }

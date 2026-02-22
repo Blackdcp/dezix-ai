@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { useTranslations, useLocale } from "next-intl";
 import {
   Card,
   CardContent,
@@ -49,6 +50,9 @@ interface UserItem {
 }
 
 export default function AdminUsersPage() {
+  const t = useTranslations("AdminUsers");
+  const tc = useTranslations("Common");
+  const locale = useLocale();
   const [users, setUsers] = useState<UserItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -94,10 +98,10 @@ export default function AdminUsersPage() {
       body: JSON.stringify({ role: newRole }),
     });
     if (res.ok) {
-      toast.success(`已将 ${user.email} 设为 ${newRole}`);
+      toast.success(t("roleChangeSuccess", { email: user.email, role: newRole }));
       fetchUsers();
     } else {
-      toast.error("操作失败");
+      toast.error(t("operationFailed"));
     }
   };
 
@@ -113,29 +117,29 @@ export default function AdminUsersPage() {
       }),
     });
     if (res.ok) {
-      toast.success("余额调整成功");
+      toast.success(t("adjustSuccess"));
       setBalanceOpen(false);
       setBalanceAmount("");
       setBalanceDesc("");
       fetchUsers();
     } else {
       const data = await res.json().catch(() => ({}));
-      toast.error(data.error || "操作失败");
+      toast.error(data.error || t("operationFailed"));
     }
     setBalanceLoading(false);
   };
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">用户管理</h1>
+      <h1 className="text-2xl font-bold">{t("title")}</h1>
 
       <Card>
         <CardHeader>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <CardTitle>用户列表</CardTitle>
+            <CardTitle>{t("userList")}</CardTitle>
             <div className="flex gap-2">
               <Input
-                placeholder="搜索用户名或邮箱..."
+                placeholder={t("searchPlaceholder")}
                 value={search}
                 onChange={(e) => {
                   setSearch(e.target.value);
@@ -151,10 +155,10 @@ export default function AdminUsersPage() {
                 }}
               >
                 <SelectTrigger className="w-32">
-                  <SelectValue placeholder="全部角色" />
+                  <SelectValue placeholder={t("allRoles")} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="ALL">全部角色</SelectItem>
+                  <SelectItem value="ALL">{t("allRoles")}</SelectItem>
                   <SelectItem value="USER">USER</SelectItem>
                   <SelectItem value="ADMIN">ADMIN</SelectItem>
                 </SelectContent>
@@ -164,21 +168,21 @@ export default function AdminUsersPage() {
         </CardHeader>
         <CardContent>
           {loading ? (
-            <div className="py-8 text-center text-muted-foreground">加载中...</div>
+            <div className="py-8 text-center text-muted-foreground">{tc("loading")}</div>
           ) : (
             <>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>用户名</TableHead>
-                    <TableHead>邮箱</TableHead>
-                    <TableHead>角色</TableHead>
-                    <TableHead>登录方式</TableHead>
-                    <TableHead className="text-right">余额</TableHead>
-                    <TableHead>密钥数</TableHead>
-                    <TableHead>请求数</TableHead>
-                    <TableHead>注册时间</TableHead>
-                    <TableHead>操作</TableHead>
+                    <TableHead>{t("username")}</TableHead>
+                    <TableHead>{t("email")}</TableHead>
+                    <TableHead>{t("role")}</TableHead>
+                    <TableHead>{t("loginMethod")}</TableHead>
+                    <TableHead className="text-right">{t("balance")}</TableHead>
+                    <TableHead>{t("keysCount")}</TableHead>
+                    <TableHead>{t("requestsCount")}</TableHead>
+                    <TableHead>{t("registeredAt")}</TableHead>
+                    <TableHead>{t("actions")}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -195,7 +199,7 @@ export default function AdminUsersPage() {
                         <div className="flex gap-1">
                           {u.authMethods.map((m) => (
                             <Badge key={m} variant="outline" className="text-xs">
-                              {m === "credentials" ? "密码" : m === "github" ? "GitHub" : m === "google" ? "Google" : m}
+                              {m === "credentials" ? t("credentials") : m === "github" ? "GitHub" : m === "google" ? "Google" : m}
                             </Badge>
                           ))}
                         </div>
@@ -203,7 +207,7 @@ export default function AdminUsersPage() {
                       <TableCell className="text-right">¥{u.balance.toFixed(2)}</TableCell>
                       <TableCell>{u._count.apiKeys}</TableCell>
                       <TableCell>{u._count.usageLogs}</TableCell>
-                      <TableCell>{new Date(u.createdAt).toLocaleDateString("zh-CN")}</TableCell>
+                      <TableCell>{new Date(u.createdAt).toLocaleDateString(locale === "zh" ? "zh-CN" : "en-US")}</TableCell>
                       <TableCell>
                         <div className="flex gap-1">
                           <Button
@@ -214,14 +218,14 @@ export default function AdminUsersPage() {
                               setBalanceOpen(true);
                             }}
                           >
-                            调整余额
+                            {t("adjustBalance")}
                           </Button>
                           <Button
                             variant="ghost"
                             size="sm"
                             onClick={() => toggleRole(u)}
                           >
-                            {u.role === "ADMIN" ? "设为 USER" : "设为 ADMIN"}
+                            {u.role === "ADMIN" ? t("setAsUser") : t("setAsAdmin")}
                           </Button>
                         </div>
                       </TableCell>
@@ -230,7 +234,7 @@ export default function AdminUsersPage() {
                   {users.length === 0 && (
                     <TableRow>
                       <TableCell colSpan={9} className="text-center text-muted-foreground py-8">
-                        暂无用户
+                        {t("noUsers")}
                       </TableCell>
                     </TableRow>
                   )}
@@ -245,7 +249,7 @@ export default function AdminUsersPage() {
                     disabled={page <= 1}
                     onClick={() => setPage(page - 1)}
                   >
-                    上一页
+                    {t("prevPage")}
                   </Button>
                   <span className="text-sm text-muted-foreground">
                     {page} / {totalPages}
@@ -256,7 +260,7 @@ export default function AdminUsersPage() {
                     disabled={page >= totalPages}
                     onClick={() => setPage(page + 1)}
                   >
-                    下一页
+                    {t("nextPage")}
                   </Button>
                 </div>
               )}
@@ -269,32 +273,32 @@ export default function AdminUsersPage() {
       <Dialog open={balanceOpen} onOpenChange={setBalanceOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>调整余额</DialogTitle>
+            <DialogTitle>{t("adjustBalanceTitle")}</DialogTitle>
             <DialogDescription>
-              为 {balanceUser?.email} 调整余额（正数增加，负数扣减）
+              {t("adjustBalanceDesc", { email: balanceUser?.email ?? "" })}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-2">
             <div className="space-y-2">
-              <Label>当前余额</Label>
+              <Label>{t("currentBalance")}</Label>
               <div className="text-lg font-bold">¥{balanceUser?.balance.toFixed(2)}</div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="amount">调整金额</Label>
+              <Label htmlFor="amount">{t("adjustAmount")}</Label>
               <Input
                 id="amount"
                 type="number"
                 step="0.01"
-                placeholder="如 100 或 -50"
+                placeholder={t("adjustAmountPlaceholder")}
                 value={balanceAmount}
                 onChange={(e) => setBalanceAmount(e.target.value)}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="desc">备注（可选）</Label>
+              <Label htmlFor="desc">{t("remark")}</Label>
               <Input
                 id="desc"
-                placeholder="调整原因"
+                placeholder={t("remarkPlaceholder")}
                 value={balanceDesc}
                 onChange={(e) => setBalanceDesc(e.target.value)}
               />
@@ -302,13 +306,13 @@ export default function AdminUsersPage() {
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setBalanceOpen(false)}>
-              取消
+              {t("cancel")}
             </Button>
             <Button
               onClick={handleBalanceSubmit}
               disabled={!balanceAmount || balanceLoading}
             >
-              {balanceLoading ? "处理中..." : "确认调整"}
+              {balanceLoading ? t("processing") : t("confirmAdjust")}
             </Button>
           </DialogFooter>
         </DialogContent>

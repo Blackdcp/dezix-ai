@@ -16,6 +16,7 @@ import {
   AnimatedSection,
   AnimatedItem,
 } from "@/components/ui/animated-section";
+import { useTranslations } from "next-intl";
 
 interface Model {
   id: string;
@@ -28,18 +29,9 @@ interface Model {
   maxContext: number;
 }
 
-const categoryLabels: Record<string, string> = {
-  chat: "对话",
-  multimodal: "多模态",
-  code: "代码",
-  reasoning: "推理",
-  image: "图像",
-  embedding: "向量",
-  audio: "音频",
-  video: "视频",
-};
-
 export default function ModelListPage() {
+  const t = useTranslations("ModelList");
+  const tc = useTranslations("Categories");
   const [models, setModels] = useState<Model[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [search, setSearch] = useState("");
@@ -71,11 +63,11 @@ export default function ModelListPage() {
     <div className="mx-auto max-w-6xl px-4 py-12">
       <AnimatedSection>
         <AnimatedItem>
-          <h1 className="mb-2 text-5xl font-bold leading-[1.05] tracking-[-0.015em] text-[#1d1d1f] md:text-[56px]">模型列表</h1>
+          <h1 className="mb-2 text-5xl font-bold leading-[1.05] tracking-[-0.015em] text-[#1d1d1f] md:text-[56px]">{t("title")}</h1>
         </AnimatedItem>
         <AnimatedItem>
           <p className="mb-8 text-lg text-[#424245]">
-            浏览 Dezix AI 支持的所有 AI 模型及定价信息
+            {t("subtitle")}
           </p>
         </AnimatedItem>
       </AnimatedSection>
@@ -84,7 +76,7 @@ export default function ModelListPage() {
         <AnimatedItem>
           <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center">
             <Input
-              placeholder="搜索模型名称或 ID..."
+              placeholder={t("searchPlaceholder")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="max-w-sm border-black/[0.08] bg-[#f5f5f7] focus:border-[#007AFF]/50 focus:ring-[#007AFF]/20"
@@ -95,10 +87,10 @@ export default function ModelListPage() {
                 onValueChange={setActiveCategory}
               >
                 <TabsList>
-                  <TabsTrigger value="all">全部</TabsTrigger>
+                  <TabsTrigger value="all">{t("all")}</TabsTrigger>
                   {categories.map((c) => (
                     <TabsTrigger key={c} value={c}>
-                      {categoryLabels[c] || c}
+                      {tc(c as string)}
                     </TabsTrigger>
                   ))}
                 </TabsList>
@@ -121,13 +113,13 @@ export default function ModelListPage() {
               <Table>
                 <TableHeader>
                   <TableRow className="border-b border-black/[0.06] bg-[#f5f5f7]">
-                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#86868b]">名称</TableHead>
-                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#86868b]">模型 ID</TableHead>
-                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#86868b]">供应商</TableHead>
-                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#86868b]">分类</TableHead>
-                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-[#86868b]">输入价格</TableHead>
-                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-[#86868b]">输出价格</TableHead>
-                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-[#86868b]">最大上下文</TableHead>
+                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#86868b]">{t("name")}</TableHead>
+                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#86868b]">{t("modelId")}</TableHead>
+                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#86868b]">{t("provider")}</TableHead>
+                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#86868b]">{t("category")}</TableHead>
+                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-[#86868b]">{t("inputPrice")}</TableHead>
+                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-[#86868b]">{t("outputPrice")}</TableHead>
+                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-[#86868b]">{t("maxContext")}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -137,7 +129,7 @@ export default function ModelListPage() {
                         colSpan={7}
                         className="py-10 text-center text-base text-[#86868b]"
                       >
-                        未找到匹配的模型
+                        {t("noResults")}
                       </TableCell>
                     </TableRow>
                   ) : (
@@ -153,7 +145,7 @@ export default function ModelListPage() {
                           <Badge variant="secondary">{m.providerName}</Badge>
                         </TableCell>
                         <TableCell>
-                          <Badge variant="outline">{categoryLabels[m.category] || m.category}</Badge>
+                          <Badge variant="outline">{tc(m.category as string)}</Badge>
                         </TableCell>
                         <TableCell className="text-right text-[#424245]">
                           ¥{m.sellPrice}/M tokens

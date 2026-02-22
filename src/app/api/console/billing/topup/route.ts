@@ -13,7 +13,7 @@ export async function POST(req: Request) {
   const body = await req.json().catch(() => null);
   const parsed = topupSchema.safeParse(body);
   if (!parsed.success) {
-    const msg = parsed.error.issues[0]?.message ?? "金额必须在 0.01 ~ 10000 之间";
+    const msg = parsed.error.issues[0]?.message ?? "TOPUP_AMOUNT_INVALID";
     return NextResponse.json({ error: msg }, { status: 400 });
   }
 
@@ -42,7 +42,7 @@ export async function POST(req: Request) {
       type: "TOPUP",
       amount: amountDecimal,
       balance: new Prisma.Decimal(newBalance.toFixed(6)),
-      description: `模拟充值 ¥${amount.toFixed(2)}`,
+      description: `TOPUP_DESC:${amount.toFixed(2)}`,
     },
   });
 
@@ -81,7 +81,7 @@ export async function POST(req: Request) {
             type: "REFERRAL",
             amount: commissionDecimal,
             balance: new Prisma.Decimal(referrerBalance.toFixed(6)),
-            description: `推荐返佣 ¥${commission.toFixed(2)}（${(rate * 100).toFixed(0)}%）`,
+            description: `REFERRAL_DESC:${commission.toFixed(2)}:${(rate * 100).toFixed(0)}`,
             referenceId: session.user.id,
           },
         });

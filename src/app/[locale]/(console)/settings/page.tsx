@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations, useLocale } from "next-intl";
 import {
   Card,
   CardContent,
@@ -53,28 +54,33 @@ function PasswordIcon({ className }: { className?: string }) {
   return <Lock className={className} />;
 }
 
-const providerConfig: Record<string, { label: string; icon: typeof GitHubIcon; color: string; bgColor: string }> = {
-  github: {
-    label: "GitHub",
-    icon: GitHubIcon,
-    color: "text-[#24292f]",
-    bgColor: "bg-[#24292f]/5",
-  },
-  google: {
-    label: "Google",
-    icon: GoogleIcon,
-    color: "text-[#4285F4]",
-    bgColor: "bg-[#4285F4]/5",
-  },
-  credentials: {
-    label: "邮箱密码",
-    icon: PasswordIcon,
-    color: "text-foreground",
-    bgColor: "bg-muted",
-  },
-};
-
 export default function SettingsPage() {
+  const t = useTranslations("Settings");
+  const tc = useTranslations("Common");
+  const te = useTranslations("Errors");
+  const locale = useLocale();
+
+  const providerConfig: Record<string, { label: string; icon: typeof GitHubIcon; color: string; bgColor: string }> = {
+    github: {
+      label: "GitHub",
+      icon: GitHubIcon,
+      color: "text-[#24292f]",
+      bgColor: "bg-[#24292f]/5",
+    },
+    google: {
+      label: "Google",
+      icon: GoogleIcon,
+      color: "text-[#4285F4]",
+      bgColor: "bg-[#4285F4]/5",
+    },
+    credentials: {
+      label: t("emailPassword"),
+      icon: PasswordIcon,
+      color: "text-foreground",
+      bgColor: "bg-muted",
+    },
+  };
+
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -97,17 +103,17 @@ export default function SettingsPage() {
         setEditName(data.name || "");
         setEditEmail(data.email || "");
       })
-      .catch(() => toast.error("加载用户信息失败"))
+      .catch(() => toast.error(t("loadFailed")))
       .finally(() => setLoading(false));
-  }, []);
+  }, [t]);
 
   const handleSaveProfile = async () => {
     if (!editName.trim()) {
-      toast.error("姓名不能为空");
+      toast.error(t("nameRequired"));
       return;
     }
     if (!editEmail.includes("@")) {
-      toast.error("邮箱格式无效");
+      toast.error(t("emailInvalid"));
       return;
     }
     setSaving(true);
@@ -118,9 +124,16 @@ export default function SettingsPage() {
         body: JSON.stringify({ name: editName.trim(), email: editEmail.trim() }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "保存失败");
+      if (!res.ok) {
+        // Try to translate error code from API
+        try {
+          throw new Error(te(data.error as Parameters<typeof te>[0]));
+        } catch {
+          throw new Error(data.error || t("saveFailed"));
+        }
+      }
       setProfile(data);
-      toast.success("资料已更新");
+      toast.success(t("saveSuccess"));
     } catch (err) {
       toast.error((err as Error).message);
     } finally {
@@ -130,15 +143,15 @@ export default function SettingsPage() {
 
   const handleChangePassword = async () => {
     if (!oldPassword) {
-      toast.error("请输入当前密码");
+      toast.error(t("currentPasswordRequired"));
       return;
     }
     if (newPassword.length < 8) {
-      toast.error("新密码至少 8 位");
+      toast.error(t("newPasswordMin"));
       return;
     }
     if (newPassword !== confirmPassword) {
-      toast.error("两次输入的密码不一致");
+      toast.error(t("passwordMismatch"));
       return;
     }
     setChangingPwd(true);
@@ -149,8 +162,15 @@ export default function SettingsPage() {
         body: JSON.stringify({ oldPassword, newPassword }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "修改失败");
-      toast.success("密码已修改");
+      if (!res.ok) {
+        // Try to translate error code from API
+        try {
+          throw new Error(te(data.error as Parameters<typeof te>[0]));
+        } catch {
+          throw new Error(data.error || t("passwordChangeFailed"));
+        }
+      }
+      toast.success(t("passwordChangeSuccess"));
       setOldPassword("");
       setNewPassword("");
       setConfirmPassword("");
@@ -162,7 +182,7 @@ export default function SettingsPage() {
   };
 
   const formatDate = (dateStr: string) => {
-    return new Date(dateStr).toLocaleString("zh-CN", {
+    return new Date(dateStr).toLocaleString(locale === "zh" ? "zh-CN" : "en-US", {
       year: "numeric",
       month: "2-digit",
       day: "2-digit",
@@ -187,22 +207,22 @@ export default function SettingsPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">设置</h1>
+      <h1 className="text-2xl font-bold">{t("title")}</h1>
 
       {/* Profile Info */}
       <Card>
         <CardHeader className="flex flex-row items-center gap-3">
           <User className="h-5 w-5 text-muted-foreground" />
           <div>
-            <CardTitle>个人信息</CardTitle>
-            <CardDescription>你的账号基本信息</CardDescription>
+            <CardTitle>{t("profileTitle")}</CardTitle>
+            <CardDescription>{t("profileDesc")}</CardDescription>
           </div>
         </CardHeader>
         <CardContent>
           {loading ? (
             <div className="flex h-20 items-center justify-center text-muted-foreground">
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              加载中...
+              {tc("loading")}
             </div>
           ) : profile ? (
             <div className="flex items-start gap-4">
@@ -210,7 +230,7 @@ export default function SettingsPage() {
               {profile.image ? (
                 <img
                   src={profile.image}
-                  alt="头像"
+                  alt={tc("avatar")}
                   className="h-14 w-14 rounded-full border"
                 />
               ) : (
@@ -219,10 +239,10 @@ export default function SettingsPage() {
                 </div>
               )}
               <div className="grid gap-1.5 text-sm">
-                <div className="text-base font-medium">{profile.name || "未设置姓名"}</div>
+                <div className="text-base font-medium">{profile.name || t("noName")}</div>
                 <div className="text-muted-foreground">{profile.email}</div>
                 <div className="text-xs text-muted-foreground">
-                  注册于 {formatDate(profile.createdAt)}
+                  {t("registeredAt", { date: formatDate(profile.createdAt) })}
                 </div>
               </div>
             </div>
@@ -235,15 +255,15 @@ export default function SettingsPage() {
         <CardHeader className="flex flex-row items-center gap-3">
           <Link2 className="h-5 w-5 text-muted-foreground" />
           <div>
-            <CardTitle>账号关联</CardTitle>
-            <CardDescription>管理你的登录方式和第三方账号绑定</CardDescription>
+            <CardTitle>{t("linkedAccounts")}</CardTitle>
+            <CardDescription>{t("linkedAccountsDesc")}</CardDescription>
           </div>
         </CardHeader>
         <CardContent>
           {loading ? (
             <div className="flex h-20 items-center justify-center text-muted-foreground">
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              加载中...
+              {tc("loading")}
             </div>
           ) : profile ? (
             <div className="space-y-0">
@@ -261,7 +281,7 @@ export default function SettingsPage() {
                       <div>
                         <div className="text-sm font-medium">{config.label}</div>
                         <div className="text-xs text-muted-foreground">
-                          {isLinked ? "使用邮箱和密码登录" : "未设置密码"}
+                          {isLinked ? t("emailPasswordLinked") : t("emailPasswordNotSet")}
                         </div>
                       </div>
                     </div>
@@ -269,12 +289,12 @@ export default function SettingsPage() {
                       {isLinked ? (
                         <>
                           <CheckCircle2 className="h-4 w-4 text-green-500" />
-                          <span className="text-green-600">已启用</span>
+                          <span className="text-green-600">{t("enabled")}</span>
                         </>
                       ) : (
                         <>
                           <Circle className="h-4 w-4 text-muted-foreground/40" />
-                          <span className="text-muted-foreground">未启用</span>
+                          <span className="text-muted-foreground">{t("notEnabled")}</span>
                         </>
                       )}
                     </div>
@@ -300,8 +320,8 @@ export default function SettingsPage() {
                           <div className="text-sm font-medium">{config.label}</div>
                           <div className="text-xs text-muted-foreground">
                             {isLinked
-                              ? `已绑定 (ID: ${githubAccount!.providerAccountId})`
-                              : "使用 GitHub 账号快捷登录"}
+                              ? t("githubLinked", { id: githubAccount!.providerAccountId })
+                              : t("githubNotLinked")}
                           </div>
                         </div>
                         {isLinked && githubAvatarUrl && (
@@ -317,12 +337,12 @@ export default function SettingsPage() {
                       {isLinked ? (
                         <>
                           <CheckCircle2 className="h-4 w-4 text-green-500" />
-                          <span className="text-green-600">已绑定</span>
+                          <span className="text-green-600">{t("linked")}</span>
                         </>
                       ) : (
                         <>
                           <Circle className="h-4 w-4 text-muted-foreground/40" />
-                          <span className="text-muted-foreground">未绑定</span>
+                          <span className="text-muted-foreground">{t("notLinked")}</span>
                         </>
                       )}
                     </div>
@@ -348,8 +368,8 @@ export default function SettingsPage() {
                         <div className="text-sm font-medium">{config.label}</div>
                         <div className="text-xs text-muted-foreground">
                           {isLinked
-                            ? `已绑定 (ID: ${googleAccount!.providerAccountId})`
-                            : "使用 Google 账号快捷登录"}
+                            ? t("googleLinked", { id: googleAccount!.providerAccountId })
+                            : t("googleNotLinked")}
                         </div>
                       </div>
                     </div>
@@ -357,12 +377,12 @@ export default function SettingsPage() {
                       {isLinked ? (
                         <>
                           <CheckCircle2 className="h-4 w-4 text-green-500" />
-                          <span className="text-green-600">已绑定</span>
+                          <span className="text-green-600">{t("linked")}</span>
                         </>
                       ) : (
                         <>
                           <Circle className="h-4 w-4 text-muted-foreground/40" />
-                          <span className="text-muted-foreground">未绑定</span>
+                          <span className="text-muted-foreground">{t("notLinked")}</span>
                         </>
                       )}
                     </div>
@@ -377,32 +397,32 @@ export default function SettingsPage() {
       {/* Edit Profile */}
       <Card>
         <CardHeader>
-          <CardTitle>编辑资料</CardTitle>
-          <CardDescription>修改你的姓名和邮箱</CardDescription>
+          <CardTitle>{t("editProfile")}</CardTitle>
+          <CardDescription>{t("editProfileDesc")}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid gap-2">
-            <Label htmlFor="edit-name">姓名</Label>
+            <Label htmlFor="edit-name">{t("nameLabel")}</Label>
             <Input
               id="edit-name"
               value={editName}
               onChange={(e) => setEditName(e.target.value)}
-              placeholder="输入姓名"
+              placeholder={t("namePlaceholder")}
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="edit-email">邮箱</Label>
+            <Label htmlFor="edit-email">{t("emailLabel")}</Label>
             <Input
               id="edit-email"
               type="email"
               value={editEmail}
               onChange={(e) => setEditEmail(e.target.value)}
-              placeholder="输入邮箱"
+              placeholder={t("emailPlaceholder")}
             />
           </div>
           <Button disabled={saving} onClick={handleSaveProfile}>
             {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            保存
+            {t("saveButton")}
           </Button>
         </CardContent>
       </Card>
@@ -413,44 +433,44 @@ export default function SettingsPage() {
         <CardHeader className="flex flex-row items-center gap-3">
           <Lock className="h-5 w-5 text-muted-foreground" />
           <div>
-            <CardTitle>修改密码</CardTitle>
-            <CardDescription>更改你的登录密码</CardDescription>
+            <CardTitle>{t("changePassword")}</CardTitle>
+            <CardDescription>{t("changePasswordDesc")}</CardDescription>
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid gap-2">
-            <Label htmlFor="old-pwd">当前密码</Label>
+            <Label htmlFor="old-pwd">{t("currentPassword")}</Label>
             <Input
               id="old-pwd"
               type="password"
               value={oldPassword}
               onChange={(e) => setOldPassword(e.target.value)}
-              placeholder="输入当前密码"
+              placeholder={t("currentPasswordPlaceholder")}
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="new-pwd">新密码</Label>
+            <Label htmlFor="new-pwd">{t("newPassword")}</Label>
             <Input
               id="new-pwd"
               type="password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
-              placeholder="至少 8 位"
+              placeholder={t("newPasswordPlaceholder")}
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="confirm-pwd">确认新密码</Label>
+            <Label htmlFor="confirm-pwd">{t("confirmPassword")}</Label>
             <Input
               id="confirm-pwd"
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="再次输入新密码"
+              placeholder={t("confirmPasswordPlaceholder")}
             />
           </div>
           <Button disabled={changingPwd} onClick={handleChangePassword}>
             {changingPwd && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            修改密码
+            {t("changePasswordButton")}
           </Button>
         </CardContent>
       </Card>

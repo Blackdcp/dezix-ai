@@ -2,6 +2,7 @@
 
 import { Suspense, useEffect, useState, useRef, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import {
   Select,
   SelectContent,
@@ -85,6 +86,7 @@ export default function ChatPage() {
 }
 
 function ChatPageInner() {
+  const t = useTranslations("Chat");
   const searchParams = useSearchParams();
   const queryModel = searchParams.get("model") || "";
 
@@ -169,7 +171,7 @@ function ChatPageInner() {
   const handleNewConversation = () => {
     const convo: Conversation = {
       id: newId(),
-      title: "新对话",
+      title: t("newChat"),
       messages: [],
       createdAt: Date.now(),
     };
@@ -199,11 +201,11 @@ function ChatPageInner() {
     const text = input.trim();
     if (!text) return;
     if (!apiKey.trim()) {
-      toast.error("请输入 API Key");
+      toast.error(t("apiKeyRequired"));
       return;
     }
     if (!selectedModel) {
-      toast.error("请选择模型");
+      toast.error(t("modelRequired"));
       return;
     }
 
@@ -267,7 +269,7 @@ function ChatPageInner() {
       if (!res.ok) {
         const err = await res
           .json()
-          .catch(() => ({ error: { message: "请求失败" } }));
+          .catch(() => ({ error: { message: t("requestFailed") } }));
         throw new Error(err.error?.message || `HTTP ${res.status}`);
       }
 
@@ -324,7 +326,7 @@ function ChatPageInner() {
       }
     } catch (err) {
       if ((err as Error).name !== "AbortError") {
-        toast.error((err as Error).message || "请求失败");
+        toast.error((err as Error).message || t("requestFailed"));
         // Add error message
         const finalConvoId = convoId;
         updateConversations((prev) =>
@@ -336,7 +338,7 @@ function ChatPageInner() {
                 ...c.messages,
                 {
                   role: "assistant" as const,
-                  content: `错误: ${(err as Error).message}`,
+                  content: t("errorPrefix", { message: (err as Error).message }),
                 },
               ].slice(-MAX_MESSAGES),
             };
@@ -355,6 +357,7 @@ function ChatPageInner() {
     activeId,
     conversations,
     updateConversations,
+    t,
   ]);
 
   const handleStop = () => {
@@ -386,14 +389,14 @@ function ChatPageInner() {
             onClick={handleNewConversation}
           >
             <Plus className="mr-2 h-4 w-4" />
-            新对话
+            {t("newChat")}
           </Button>
         </div>
         <ScrollArea className="flex-1">
           <div className="space-y-1 p-2">
             {conversations.length === 0 ? (
               <div className="px-3 py-6 text-center text-xs text-muted-foreground">
-                暂无对话
+                {t("noChatHistory")}
               </div>
             ) : (
               conversations.map((c) => (
@@ -429,10 +432,10 @@ function ChatPageInner() {
         {/* Top Config Bar */}
         <div className="flex items-center gap-4 border-b px-4 py-2">
           <div className="flex items-center gap-2">
-            <span className="text-sm text-muted-foreground">模型</span>
+            <span className="text-sm text-muted-foreground">{t("model")}</span>
             <Select value={selectedModel} onValueChange={setSelectedModel}>
               <SelectTrigger className="w-[200px]">
-                <SelectValue placeholder="选择模型" />
+                <SelectValue placeholder={t("selectModel")} />
               </SelectTrigger>
               <SelectContent>
                 {models.map((m) => (
@@ -462,8 +465,8 @@ function ChatPageInner() {
               !streaming && (
                 <div className="flex flex-col items-center justify-center py-20 text-muted-foreground">
                   <Bot className="mb-4 h-12 w-12" />
-                  <p className="text-lg font-medium">开始新对话</p>
-                  <p className="text-sm">选择模型，输入 API Key，发送你的第一条消息</p>
+                  <p className="text-lg font-medium">{t("startNewChat")}</p>
+                  <p className="text-sm">{t("startNewChatDesc")}</p>
                 </div>
               )
             ) : (
@@ -518,7 +521,7 @@ function ChatPageInner() {
                   ) : (
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <Loader2 className="h-4 w-4 animate-spin" />
-                      思考中...
+                      {t("thinking")}
                     </div>
                   )}
                 </div>
@@ -535,7 +538,7 @@ function ChatPageInner() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="输入消息... (Enter 发送, Shift+Enter 换行)"
+              placeholder={t("inputPlaceholder")}
               rows={1}
               className="min-h-[44px] max-h-[200px] resize-none"
             />

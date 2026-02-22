@@ -27,7 +27,7 @@ export async function PATCH(req: NextRequest, { params }: RouteParams) {
   const body = await req.json().catch(() => null);
   const parsed = updateApiKeySchema.safeParse(body);
   if (!parsed.success) {
-    const msg = parsed.error.issues[0]?.message ?? "请求参数无效";
+    const msg = parsed.error.issues[0]?.message ?? "INVALID_PARAMS";
     return NextResponse.json({ error: msg }, { status: 400 });
   }
 

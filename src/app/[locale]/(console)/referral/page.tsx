@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations, useLocale } from "next-intl";
 import {
   Card,
   CardContent,
@@ -37,6 +38,9 @@ interface ReferralData {
 }
 
 export default function ReferralPage() {
+  const t = useTranslations("Referral");
+  const tc = useTranslations("Common");
+  const locale = useLocale();
   const [data, setData] = useState<ReferralData | null>(null);
   const [loading, setLoading] = useState(true);
   const [generating, setGenerating] = useState(false);
@@ -58,10 +62,10 @@ export default function ReferralPage() {
     setGenerating(true);
     const res = await fetch("/api/console/referral/generate", { method: "POST" });
     if (res.ok) {
-      toast.success("推荐码已生成");
+      toast.success(t("codeGenerated"));
       fetchData();
     } else {
-      toast.error("生成失败");
+      toast.error(t("generateFailed"));
     }
     setGenerating(false);
   };
@@ -73,34 +77,34 @@ export default function ReferralPage() {
   const copyLink = () => {
     if (referralLink) {
       navigator.clipboard.writeText(referralLink);
-      toast.success("推荐链接已复制");
+      toast.success(t("linkCopied"));
     }
   };
 
   const stats = [
     {
-      title: "推荐用户数",
+      title: t("referralUsers"),
       value: String(data?.referredCount ?? 0),
-      desc: "通过你的链接注册的用户",
+      desc: t("referralUsersDesc"),
       icon: Users,
     },
     {
-      title: "总佣金收入",
+      title: t("totalCommission"),
       value: `¥${(data?.totalEarnings ?? 0).toFixed(2)}`,
-      desc: "累计推荐返佣金额",
+      desc: t("totalCommissionDesc"),
       icon: DollarSign,
     },
     {
-      title: "返佣次数",
+      title: t("rewardCount"),
       value: String(data?.rewardCount ?? 0),
-      desc: "累计获得返佣次数",
+      desc: t("rewardCountDesc"),
       icon: Gift,
     },
   ];
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">推荐返佣</h1>
+      <h1 className="text-2xl font-bold">{t("title")}</h1>
 
       {/* Stats */}
       <div className="grid gap-4 md:grid-cols-3">
@@ -123,25 +127,25 @@ export default function ReferralPage() {
       {/* Referral Link */}
       <Card>
         <CardHeader>
-          <CardTitle>推荐链接</CardTitle>
+          <CardTitle>{t("referralLink")}</CardTitle>
           <CardDescription>
-            分享你的推荐链接，被推荐用户每次充值你将获得 10% 返佣
+            {t("referralLinkDesc")}
           </CardDescription>
         </CardHeader>
         <CardContent>
           {loading ? (
-            <div className="text-muted-foreground">加载中...</div>
+            <div className="text-muted-foreground">{tc("loading")}</div>
           ) : data?.referralCode ? (
             <div className="flex gap-2">
               <Input value={referralLink} readOnly className="font-mono" />
               <Button onClick={copyLink} variant="outline">
                 <Copy className="mr-2 h-4 w-4" />
-                复制
+                {t("copy")}
               </Button>
             </div>
           ) : (
             <Button onClick={generateCode} disabled={generating}>
-              {generating ? "生成中..." : "生成推荐码"}
+              {generating ? t("generating") : t("generateCode")}
             </Button>
           )}
         </CardContent>
@@ -150,26 +154,26 @@ export default function ReferralPage() {
       {/* Rewards Table */}
       <Card>
         <CardHeader>
-          <CardTitle>返佣记录</CardTitle>
-          <CardDescription>最近 50 条返佣记录</CardDescription>
+          <CardTitle>{t("rewardsTitle")}</CardTitle>
+          <CardDescription>{t("rewardsDesc")}</CardDescription>
         </CardHeader>
         <CardContent>
           {loading ? (
-            <div className="py-8 text-center text-muted-foreground">加载中...</div>
+            <div className="py-8 text-center text-muted-foreground">{tc("loading")}</div>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>时间</TableHead>
-                  <TableHead>来源用户</TableHead>
-                  <TableHead className="text-right">佣金金额</TableHead>
+                  <TableHead>{t("time")}</TableHead>
+                  <TableHead>{t("sourceUser")}</TableHead>
+                  <TableHead className="text-right">{t("commission")}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {data?.rewards.map((r) => (
                   <TableRow key={r.id}>
                     <TableCell>
-                      {new Date(r.createdAt).toLocaleString("zh-CN")}
+                      {new Date(r.createdAt).toLocaleString(locale === "zh" ? "zh-CN" : "en-US")}
                     </TableCell>
                     <TableCell>{r.fromUserEmail}</TableCell>
                     <TableCell className="text-right font-medium text-green-600">
@@ -180,7 +184,7 @@ export default function ReferralPage() {
                 {(!data?.rewards || data.rewards.length === 0) && (
                   <TableRow>
                     <TableCell colSpan={3} className="text-center text-muted-foreground py-8">
-                      暂无返佣记录
+                      {t("noRewards")}
                     </TableCell>
                   </TableRow>
                 )}

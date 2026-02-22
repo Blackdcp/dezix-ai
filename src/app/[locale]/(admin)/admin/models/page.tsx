@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { useTranslations } from "next-intl";
 import {
   Card,
   CardContent,
@@ -57,6 +58,8 @@ const emptyForm = {
 };
 
 export default function AdminModelsPage() {
+  const t = useTranslations("AdminModels");
+  const tc = useTranslations("Common");
   const [models, setModels] = useState<ModelItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -137,12 +140,12 @@ export default function AdminModelsPage() {
     });
 
     if (res.ok) {
-      toast.success(editingId ? "模型已更新" : "模型已创建");
+      toast.success(editingId ? t("updateSuccess") : t("createSuccess"));
       setDialogOpen(false);
       fetchModels();
     } else {
       const data = await res.json().catch(() => ({}));
-      toast.error(data.error || "操作失败");
+      toast.error(data.error || t("operationFailed"));
     }
     setSaving(false);
   };
@@ -151,11 +154,11 @@ export default function AdminModelsPage() {
     if (!deleteId) return;
     const res = await fetch(`/api/admin/models/${deleteId}`, { method: "DELETE" });
     if (res.ok) {
-      toast.success("模型已删除");
+      toast.success(t("deleteSuccess"));
       setDeleteId(null);
       fetchModels();
     } else {
-      toast.error("删除失败");
+      toast.error(t("deleteFailed"));
     }
   };
 
@@ -166,7 +169,7 @@ export default function AdminModelsPage() {
       body: JSON.stringify({ isActive: !m.isActive }),
     });
     if (res.ok) {
-      toast.success(m.isActive ? "已禁用" : "已启用");
+      toast.success(m.isActive ? t("disableSuccess") : t("enableSuccess"));
       fetchModels();
     }
   };
@@ -174,16 +177,16 @@ export default function AdminModelsPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">模型管理</h1>
-        <Button onClick={openCreate}>新增模型</Button>
+        <h1 className="text-2xl font-bold">{t("title")}</h1>
+        <Button onClick={openCreate}>{t("addModel")}</Button>
       </div>
 
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle>模型列表</CardTitle>
+            <CardTitle>{t("modelList")}</CardTitle>
             <Input
-              placeholder="搜索模型..."
+              placeholder={t("searchPlaceholder")}
               value={search}
               onChange={(e) => {
                 setSearch(e.target.value);
@@ -195,20 +198,20 @@ export default function AdminModelsPage() {
         </CardHeader>
         <CardContent>
           {loading ? (
-            <div className="py-8 text-center text-muted-foreground">加载中...</div>
+            <div className="py-8 text-center text-muted-foreground">{tc("loading")}</div>
           ) : (
             <>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>模型 ID</TableHead>
-                    <TableHead>显示名</TableHead>
-                    <TableHead>分类</TableHead>
-                    <TableHead className="text-right">成本价(入/出)</TableHead>
-                    <TableHead className="text-right">售价(入/出)</TableHead>
-                    <TableHead>上下文</TableHead>
-                    <TableHead>状态</TableHead>
-                    <TableHead>操作</TableHead>
+                    <TableHead>{t("modelId")}</TableHead>
+                    <TableHead>{t("displayName")}</TableHead>
+                    <TableHead>{t("category")}</TableHead>
+                    <TableHead className="text-right">{t("costPrice")}</TableHead>
+                    <TableHead className="text-right">{t("sellPrice")}</TableHead>
+                    <TableHead>{t("context")}</TableHead>
+                    <TableHead>{t("status")}</TableHead>
+                    <TableHead>{t("actions")}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -235,10 +238,10 @@ export default function AdminModelsPage() {
                       <TableCell>
                         <div className="flex gap-1">
                           <Button variant="outline" size="sm" onClick={() => openEdit(m)}>
-                            编辑
+                            {t("edit")}
                           </Button>
                           <Button variant="ghost" size="sm" className="text-red-600" onClick={() => setDeleteId(m.id)}>
-                            删除
+                            {t("delete")}
                           </Button>
                         </div>
                       </TableCell>
@@ -247,7 +250,7 @@ export default function AdminModelsPage() {
                   {models.length === 0 && (
                     <TableRow>
                       <TableCell colSpan={8} className="text-center text-muted-foreground py-8">
-                        暂无模型
+                        {t("noModels")}
                       </TableCell>
                     </TableRow>
                   )}
@@ -257,11 +260,11 @@ export default function AdminModelsPage() {
               {totalPages > 1 && (
                 <div className="flex items-center justify-end gap-2 pt-4">
                   <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage(page - 1)}>
-                    上一页
+                    {t("prevPage")}
                   </Button>
                   <span className="text-sm text-muted-foreground">{page} / {totalPages}</span>
                   <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => setPage(page + 1)}>
-                    下一页
+                    {t("nextPage")}
                   </Button>
                 </div>
               )}
@@ -274,15 +277,15 @@ export default function AdminModelsPage() {
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="max-w-lg">
           <DialogHeader>
-            <DialogTitle>{editingId ? "编辑模型" : "新增模型"}</DialogTitle>
+            <DialogTitle>{editingId ? t("editTitle") : t("createTitle")}</DialogTitle>
             <DialogDescription>
-              {editingId ? "修改模型配置" : "添加一个新的 AI 模型"}
+              {editingId ? t("editDesc") : t("createDesc")}
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-2">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label>模型 ID</Label>
+                <Label>{t("modelIdLabel")}</Label>
                 <Input
                   value={form.modelId}
                   onChange={(e) => setForm({ ...form, modelId: e.target.value })}
@@ -291,7 +294,7 @@ export default function AdminModelsPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label>显示名</Label>
+                <Label>{t("displayNameLabel")}</Label>
                 <Input
                   value={form.displayName}
                   onChange={(e) => setForm({ ...form, displayName: e.target.value })}
@@ -309,7 +312,7 @@ export default function AdminModelsPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label>分类</Label>
+                <Label>{t("categoryLabel")}</Label>
                 <Input
                   value={form.category}
                   onChange={(e) => setForm({ ...form, category: e.target.value })}
@@ -319,7 +322,7 @@ export default function AdminModelsPage() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label>成本价（输入 /1K token）</Label>
+                <Label>{t("costInputLabel")}</Label>
                 <Input
                   type="number"
                   step="0.00000001"
@@ -328,7 +331,7 @@ export default function AdminModelsPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label>成本价（输出 /1K token）</Label>
+                <Label>{t("costOutputLabel")}</Label>
                 <Input
                   type="number"
                   step="0.00000001"
@@ -339,7 +342,7 @@ export default function AdminModelsPage() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label>售价（输入 /1K token）</Label>
+                <Label>{t("sellInputLabel")}</Label>
                 <Input
                   type="number"
                   step="0.00000001"
@@ -348,7 +351,7 @@ export default function AdminModelsPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label>售价（输出 /1K token）</Label>
+                <Label>{t("sellOutputLabel")}</Label>
                 <Input
                   type="number"
                   step="0.00000001"
@@ -358,7 +361,7 @@ export default function AdminModelsPage() {
               </div>
             </div>
             <div className="space-y-2">
-              <Label>最大上下文</Label>
+              <Label>{t("maxContextLabel")}</Label>
               <Input
                 type="number"
                 value={form.maxContext}
@@ -367,9 +370,9 @@ export default function AdminModelsPage() {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDialogOpen(false)}>取消</Button>
+            <Button variant="outline" onClick={() => setDialogOpen(false)}>{t("cancel")}</Button>
             <Button onClick={handleSave} disabled={saving}>
-              {saving ? "保存中..." : "保存"}
+              {saving ? t("saving") : t("save")}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -379,14 +382,14 @@ export default function AdminModelsPage() {
       <Dialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>确认删除</DialogTitle>
+            <DialogTitle>{t("deleteTitle")}</DialogTitle>
             <DialogDescription>
-              确定要删除这个模型吗？此操作不可撤销。
+              {t("deleteDesc")}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDeleteId(null)}>取消</Button>
-            <Button variant="destructive" onClick={handleDelete}>确认删除</Button>
+            <Button variant="outline" onClick={() => setDeleteId(null)}>{t("cancel")}</Button>
+            <Button variant="destructive" onClick={handleDelete}>{t("confirmDelete")}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

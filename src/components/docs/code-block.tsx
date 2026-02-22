@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { Copy, Check } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface CodeBlockProps {
   code: string;
@@ -13,6 +14,7 @@ interface CodeBlockProps {
 
 export function CodeBlock({ code, language, title }: CodeBlockProps) {
   const [copied, setCopied] = useState(false);
+  const t = useTranslations("Common");
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(code);
@@ -31,12 +33,12 @@ export function CodeBlock({ code, language, title }: CodeBlockProps) {
           {copied ? (
             <>
               <Check className="h-3 w-3" />
-              已复制
+              {t("copied")}
             </>
           ) : (
             <>
               <Copy className="h-3 w-3" />
-              复制
+              {t("copy")}
             </>
           )}
         </button>

@@ -149,7 +149,7 @@ export async function GET(req: NextRequest) {
   const modelBreakdown = Array.from(modelMap.entries())
     .map(([id, data]) => ({
       modelId: modelIdMap.get(id) || id,
-      displayName: modelNameMap.get(id) || "未知模型",
+      displayName: modelNameMap.get(id) || "UNKNOWN_MODEL",
       requests: data.requests,
       spending: Math.round(data.spending * 1e6) / 1e6,
       tokens: data.tokens,
@@ -193,7 +193,7 @@ export async function GET(req: NextRequest) {
     recentLogs: recentLogs.map((l) => ({
       id: l.id,
       modelId: logModelIdMap.get(l.modelId) || l.modelId,
-      displayName: logModelNameMap.get(l.modelId) || "未知模型",
+      displayName: logModelNameMap.get(l.modelId) || "UNKNOWN_MODEL",
       promptTokens: l.promptTokens,
       completionTokens: l.completionTokens,
       totalTokens: l.totalTokens,

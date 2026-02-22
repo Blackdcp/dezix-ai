@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { useTranslations, useLocale } from "next-intl";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -63,6 +64,7 @@ function CreateKeyDialog({
   onOpenChange: (v: boolean) => void;
   onCreated: () => void;
 }) {
+  const t = useTranslations("ApiKeys");
   const [name, setName] = useState("");
   const [expiry, setExpiry] = useState("never");
   const [totalQuota, setTotalQuota] = useState("");
@@ -90,7 +92,7 @@ function CreateKeyDialog({
 
   const handleCreate = async () => {
     if (!name.trim()) {
-      toast.error("请输入密钥名称");
+      toast.error(t("nameRequired"));
       return;
     }
     setLoading(true);
@@ -123,9 +125,9 @@ function CreateKeyDialog({
       const data = await res.json();
       setCreatedKey(data.key);
       onCreated();
-      toast.success("密钥创建成功");
+      toast.success(t("createSuccess"));
     } catch {
-      toast.error("创建失败，请重试");
+      toast.error(t("createFailed"));
     } finally {
       setLoading(false);
     }
@@ -135,7 +137,7 @@ function CreateKeyDialog({
     if (createdKey) {
       await navigator.clipboard.writeText(createdKey);
       setCopied(true);
-      toast.success("已复制到剪贴板");
+      toast.success(t("copiedToClipboard"));
       setTimeout(() => setCopied(false), 2000);
     }
   };
@@ -146,15 +148,15 @@ function CreateKeyDialog({
       <Dialog open={open} onOpenChange={handleClose}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle>密钥已创建</DialogTitle>
+            <DialogTitle>{t("keyCreated")}</DialogTitle>
             <DialogDescription>
-              请立即复制你的 API Key，此密钥仅展示一次，关闭后无法再次查看。
+              {t("keyCreatedDesc")}
             </DialogDescription>
           </DialogHeader>
           <div
             className="group flex items-center gap-2 rounded-md border bg-muted p-3 cursor-pointer hover:border-primary/50 transition-colors"
             onClick={handleCopy}
-            title="点击复制"
+            title={t("clickToCopy")}
           >
             <code className="flex-1 break-all text-sm select-all">{createdKey}</code>
           </div>
@@ -162,17 +164,17 @@ function CreateKeyDialog({
             {copied ? (
               <>
                 <Check className="h-4 w-4" />
-                已复制
+                {t("copied")}
               </>
             ) : (
               <>
                 <Copy className="h-4 w-4" />
-                复制 API Key
+                {t("copyApiKey")}
               </>
             )}
           </Button>
           <DialogFooter>
-            <Button variant="outline" onClick={() => handleClose(false)}>确认关闭</Button>
+            <Button variant="outline" onClick={() => handleClose(false)}>{t("closeConfirm")}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -183,62 +185,62 @@ function CreateKeyDialog({
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle>创建 API 密钥</DialogTitle>
+          <DialogTitle>{t("createTitle")}</DialogTitle>
           <DialogDescription>
-            创建新密钥用于调用 API 接口
+            {t("createDesc")}
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid gap-2">
-            <Label htmlFor="name">名称 *</Label>
+            <Label htmlFor="name">{t("nameLabel")}</Label>
             <Input
               id="name"
-              placeholder="例如：生产环境、测试用"
+              placeholder={t("namePlaceholder")}
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
           </div>
           <div className="grid gap-2">
-            <Label>过期时间</Label>
+            <Label>{t("expiry")}</Label>
             <Select value={expiry} onValueChange={setExpiry}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="never">永不过期</SelectItem>
-                <SelectItem value="7">7 天</SelectItem>
-                <SelectItem value="30">30 天</SelectItem>
-                <SelectItem value="90">90 天</SelectItem>
-                <SelectItem value="180">180 天</SelectItem>
-                <SelectItem value="365">1 年</SelectItem>
+                <SelectItem value="never">{t("neverExpire")}</SelectItem>
+                <SelectItem value="7">{t("days7")}</SelectItem>
+                <SelectItem value="30">{t("days30")}</SelectItem>
+                <SelectItem value="90">{t("days90")}</SelectItem>
+                <SelectItem value="180">{t("days180")}</SelectItem>
+                <SelectItem value="365">{t("year1")}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="quota">总额度 (¥，留空表示无限)</Label>
+            <Label htmlFor="quota">{t("quotaLabel")}</Label>
             <Input
               id="quota"
               type="number"
-              placeholder="例如：100"
+              placeholder={t("quotaPlaceholder")}
               value={totalQuota}
               onChange={(e) => setTotalQuota(e.target.value)}
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="rate">速率限制 (次/分钟，留空表示不限)</Label>
+            <Label htmlFor="rate">{t("rateLimitLabel")}</Label>
             <Input
               id="rate"
               type="number"
-              placeholder="例如：60"
+              placeholder={t("rateLimitPlaceholder")}
               value={rateLimit}
               onChange={(e) => setRateLimit(e.target.value)}
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="models">模型白名单 (逗号分隔，留空表示全部)</Label>
+            <Label htmlFor="models">{t("modelWhitelistLabel")}</Label>
             <Input
               id="models"
-              placeholder="例如：gpt-4o,claude-3.5-sonnet"
+              placeholder={t("modelWhitelistPlaceholder")}
               value={modelWhitelist}
               onChange={(e) => setModelWhitelist(e.target.value)}
             />
@@ -246,10 +248,10 @@ function CreateKeyDialog({
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={() => handleClose(false)}>
-            取消
+            {t("cancel")}
           </Button>
           <Button onClick={handleCreate} disabled={loading}>
-            {loading ? "创建中..." : "创建密钥"}
+            {loading ? t("creating") : t("createKey")}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -269,6 +271,7 @@ function EditKeyDialog({
   onOpenChange: (v: boolean) => void;
   onUpdated: () => void;
 }) {
+  const t = useTranslations("ApiKeys");
   const [name, setName] = useState("");
   const [expiry, setExpiry] = useState("never");
   const [totalQuota, setTotalQuota] = useState("");
@@ -330,9 +333,9 @@ function EditKeyDialog({
       if (!res.ok) throw new Error("Failed");
       onUpdated();
       onOpenChange(false);
-      toast.success("密钥已更新");
+      toast.success(t("updateSuccess"));
     } catch {
-      toast.error("更新失败，请重试");
+      toast.error(t("updateFailed"));
     } finally {
       setLoading(false);
     }
@@ -342,12 +345,12 @@ function EditKeyDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle>编辑密钥</DialogTitle>
-          <DialogDescription>修改密钥属性和权限配置</DialogDescription>
+          <DialogTitle>{t("editTitle")}</DialogTitle>
+          <DialogDescription>{t("editDesc")}</DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="grid gap-2">
-            <Label htmlFor="edit-name">名称</Label>
+            <Label htmlFor="edit-name">{t("name")}</Label>
             <Input
               id="edit-name"
               value={name}
@@ -355,23 +358,23 @@ function EditKeyDialog({
             />
           </div>
           <div className="grid gap-2">
-            <Label>过期时间</Label>
+            <Label>{t("expiry")}</Label>
             <Select value={expiry} onValueChange={setExpiry}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="never">永不过期</SelectItem>
-                <SelectItem value="7">7 天</SelectItem>
-                <SelectItem value="30">30 天</SelectItem>
-                <SelectItem value="90">90 天</SelectItem>
-                <SelectItem value="180">180 天</SelectItem>
-                <SelectItem value="365">1 年</SelectItem>
+                <SelectItem value="never">{t("neverExpire")}</SelectItem>
+                <SelectItem value="7">{t("days7")}</SelectItem>
+                <SelectItem value="30">{t("days30")}</SelectItem>
+                <SelectItem value="90">{t("days90")}</SelectItem>
+                <SelectItem value="180">{t("days180")}</SelectItem>
+                <SelectItem value="365">{t("year1")}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="edit-quota">总额度 (¥，留空表示无限)</Label>
+            <Label htmlFor="edit-quota">{t("quotaLabel")}</Label>
             <Input
               id="edit-quota"
               type="number"
@@ -380,7 +383,7 @@ function EditKeyDialog({
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="edit-rate">速率限制 (次/分钟，留空表示不限)</Label>
+            <Label htmlFor="edit-rate">{t("rateLimitLabel")}</Label>
             <Input
               id="edit-rate"
               type="number"
@@ -390,7 +393,7 @@ function EditKeyDialog({
           </div>
           <div className="grid gap-2">
             <Label htmlFor="edit-models">
-              模型白名单 (逗号分隔，留空表示全部)
+              {t("modelWhitelistLabel")}
             </Label>
             <Input
               id="edit-models"
@@ -401,10 +404,10 @@ function EditKeyDialog({
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            取消
+            {t("cancel")}
           </Button>
           <Button onClick={handleSave} disabled={loading}>
-            {loading ? "保存中..." : "保存"}
+            {loading ? t("saving") : t("save")}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -424,6 +427,7 @@ function DeleteKeyDialog({
   onOpenChange: (v: boolean) => void;
   onDeleted: () => void;
 }) {
+  const t = useTranslations("ApiKeys");
   const [loading, setLoading] = useState(false);
 
   const handleDelete = async () => {
@@ -436,9 +440,9 @@ function DeleteKeyDialog({
       if (!res.ok) throw new Error("Failed");
       onDeleted();
       onOpenChange(false);
-      toast.success("密钥已删除");
+      toast.success(t("deleteSuccess"));
     } catch {
-      toast.error("删除失败，请重试");
+      toast.error(t("deleteFailed"));
     } finally {
       setLoading(false);
     }
@@ -448,22 +452,21 @@ function DeleteKeyDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>确认删除</DialogTitle>
+          <DialogTitle>{t("deleteTitle")}</DialogTitle>
           <DialogDescription>
-            确定要删除密钥「{apiKey?.name}」吗？此操作不可撤销，使用该密钥的所有
-            API 调用将立即失效。
+            {t("deleteDesc", { name: apiKey?.name ?? "" })}
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)}>
-            取消
+            {t("cancel")}
           </Button>
           <Button
             variant="destructive"
             onClick={handleDelete}
             disabled={loading}
           >
-            {loading ? "删除中..." : "确认删除"}
+            {loading ? t("deleting") : t("confirmDelete")}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -473,6 +476,9 @@ function DeleteKeyDialog({
 
 // ─── Main Page ──────────────────────────────────────────────────────
 export default function ApiKeysPage() {
+  const t = useTranslations("ApiKeys");
+  const tc = useTranslations("Common");
+  const locale = useLocale();
   const [keys, setKeys] = useState<ApiKeyItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [createOpen, setCreateOpen] = useState(false);
@@ -508,15 +514,15 @@ export default function ApiKeysPage() {
       });
       if (res.ok) {
         fetchKeys();
-        toast.success(key.isActive ? "密钥已禁用" : "密钥已启用");
+        toast.success(key.isActive ? t("disableSuccess") : t("enableSuccess"));
       }
     } catch {
-      toast.error("操作失败");
+      toast.error(t("operationFailed"));
     }
   };
 
   const formatDate = (dateStr: string) => {
-    return new Date(dateStr).toLocaleDateString("zh-CN", {
+    return new Date(dateStr).toLocaleDateString(locale === "zh" ? "zh-CN" : "en-US", {
       year: "numeric",
       month: "2-digit",
       day: "2-digit",
@@ -526,41 +532,41 @@ export default function ApiKeysPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">API 密钥</h1>
+        <h1 className="text-2xl font-bold">{t("title")}</h1>
         <Button onClick={() => setCreateOpen(true)}>
           <Plus className="mr-2 h-4 w-4" />
-          创建密钥
+          {t("createKey")}
         </Button>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>密钥列表</CardTitle>
+          <CardTitle>{t("keyList")}</CardTitle>
           <CardDescription>
-            管理你的 API 密钥，每个密钥可设置独立的额度和权限
+            {t("keyListDesc")}
           </CardDescription>
         </CardHeader>
         <CardContent>
           {loading ? (
             <div className="py-8 text-center text-muted-foreground">
-              加载中...
+              {tc("loading")}
             </div>
           ) : keys.length === 0 ? (
             <div className="py-8 text-center text-muted-foreground">
-              还没有 API 密钥，点击上方按钮创建
+              {t("noKeys")}
             </div>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>名称</TableHead>
-                  <TableHead>API Key</TableHead>
-                  <TableHead>状态</TableHead>
-                  <TableHead className="text-right">已用额度</TableHead>
-                  <TableHead className="text-right">总额度</TableHead>
-                  <TableHead>到期时间</TableHead>
-                  <TableHead>创建时间</TableHead>
-                  <TableHead className="text-right">操作</TableHead>
+                  <TableHead>{t("name")}</TableHead>
+                  <TableHead>{t("apiKey")}</TableHead>
+                  <TableHead>{t("status")}</TableHead>
+                  <TableHead className="text-right">{t("usedQuota")}</TableHead>
+                  <TableHead className="text-right">{t("totalQuota")}</TableHead>
+                  <TableHead>{t("expiresAt")}</TableHead>
+                  <TableHead>{t("createdAt")}</TableHead>
+                  <TableHead className="text-right">{t("actions")}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -579,7 +585,7 @@ export default function ApiKeysPage() {
                           onClick={async () => {
                             const text = key.fullKey || key.keyPrefix;
                             await navigator.clipboard.writeText(text);
-                            toast.success("已复制到剪贴板");
+                            toast.success(t("copiedToClipboard"));
                           }}
                         >
                           <Copy className="h-3 w-3" />
@@ -588,7 +594,7 @@ export default function ApiKeysPage() {
                     </TableCell>
                     <TableCell>
                       <Badge variant={key.isActive ? "default" : "secondary"}>
-                        {key.isActive ? "启用" : "禁用"}
+                        {key.isActive ? t("active") : t("inactive")}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right">
@@ -597,10 +603,10 @@ export default function ApiKeysPage() {
                     <TableCell className="text-right">
                       {key.totalQuota != null
                         ? `¥${key.totalQuota.toFixed(2)}`
-                        : "无限"}
+                        : t("unlimited")}
                     </TableCell>
                     <TableCell>
-                      {key.expiresAt ? formatDate(key.expiresAt) : "永不"}
+                      {key.expiresAt ? formatDate(key.expiresAt) : t("never")}
                     </TableCell>
                     <TableCell>{formatDate(key.createdAt)}</TableCell>
                     <TableCell>

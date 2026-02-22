@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { useTranslations } from "next-intl";
 import {
   Card,
   CardContent,
@@ -55,6 +56,8 @@ const emptyForm = {
 };
 
 export default function AdminChannelsPage() {
+  const t = useTranslations("AdminChannels");
+  const tc = useTranslations("Common");
   const [channels, setChannels] = useState<ChannelItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -118,7 +121,7 @@ export default function AdminChannelsPage() {
     };
 
     if (!editingId && !payload.apiKey) {
-      toast.error("新建渠道必须提供 API Key");
+      toast.error(t("apiKeyRequired"));
       setSaving(false);
       return;
     }
@@ -133,12 +136,12 @@ export default function AdminChannelsPage() {
     });
 
     if (res.ok) {
-      toast.success(editingId ? "渠道已更新" : "渠道已创建");
+      toast.success(editingId ? t("updateSuccess") : t("createSuccess"));
       setDialogOpen(false);
       fetchChannels();
     } else {
       const data = await res.json().catch(() => ({}));
-      toast.error(data.error || "操作失败");
+      toast.error(data.error || t("operationFailed"));
     }
     setSaving(false);
   };
@@ -147,11 +150,11 @@ export default function AdminChannelsPage() {
     if (!deleteId) return;
     const res = await fetch(`/api/admin/channels/${deleteId}`, { method: "DELETE" });
     if (res.ok) {
-      toast.success("渠道已删除");
+      toast.success(t("deleteSuccess"));
       setDeleteId(null);
       fetchChannels();
     } else {
-      toast.error("删除失败");
+      toast.error(t("deleteFailed"));
     }
   };
 
@@ -162,7 +165,7 @@ export default function AdminChannelsPage() {
       body: JSON.stringify({ isActive: !c.isActive }),
     });
     if (res.ok) {
-      toast.success(c.isActive ? "已禁用" : "已启用");
+      toast.success(c.isActive ? t("disableSuccess") : t("enableSuccess"));
       fetchChannels();
     }
   };
@@ -170,31 +173,31 @@ export default function AdminChannelsPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">渠道管理</h1>
-        <Button onClick={openCreate}>新增渠道</Button>
+        <h1 className="text-2xl font-bold">{t("title")}</h1>
+        <Button onClick={openCreate}>{t("addChannel")}</Button>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>渠道列表</CardTitle>
+          <CardTitle>{t("channelList")}</CardTitle>
         </CardHeader>
         <CardContent>
           {loading ? (
-            <div className="py-8 text-center text-muted-foreground">加载中...</div>
+            <div className="py-8 text-center text-muted-foreground">{tc("loading")}</div>
           ) : (
             <>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>名称</TableHead>
-                    <TableHead>供应商</TableHead>
+                    <TableHead>{t("name")}</TableHead>
+                    <TableHead>{t("provider")}</TableHead>
                     <TableHead>API Key</TableHead>
-                    <TableHead>Base URL</TableHead>
-                    <TableHead>优先级</TableHead>
-                    <TableHead>权重</TableHead>
-                    <TableHead>支持模型</TableHead>
-                    <TableHead>状态</TableHead>
-                    <TableHead>操作</TableHead>
+                    <TableHead>{t("baseUrl")}</TableHead>
+                    <TableHead>{t("priority")}</TableHead>
+                    <TableHead>{t("weight")}</TableHead>
+                    <TableHead>{t("models")}</TableHead>
+                    <TableHead>{t("status")}</TableHead>
+                    <TableHead>{t("actions")}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -209,7 +212,7 @@ export default function AdminChannelsPage() {
                       <TableCell>{c.priority}</TableCell>
                       <TableCell>{c.weight}</TableCell>
                       <TableCell className="max-w-40 truncate text-sm">
-                        {c.models.length > 0 ? c.models.join(", ") : "全部"}
+                        {c.models.length > 0 ? c.models.join(", ") : t("allModels")}
                       </TableCell>
                       <TableCell>
                         <Switch checked={c.isActive} onCheckedChange={() => toggleActive(c)} />
@@ -217,10 +220,10 @@ export default function AdminChannelsPage() {
                       <TableCell>
                         <div className="flex gap-1">
                           <Button variant="outline" size="sm" onClick={() => openEdit(c)}>
-                            编辑
+                            {t("edit")}
                           </Button>
                           <Button variant="ghost" size="sm" className="text-red-600" onClick={() => setDeleteId(c.id)}>
-                            删除
+                            {t("delete")}
                           </Button>
                         </div>
                       </TableCell>
@@ -229,7 +232,7 @@ export default function AdminChannelsPage() {
                   {channels.length === 0 && (
                     <TableRow>
                       <TableCell colSpan={9} className="text-center text-muted-foreground py-8">
-                        暂无渠道
+                        {t("noChannels")}
                       </TableCell>
                     </TableRow>
                   )}
@@ -239,11 +242,11 @@ export default function AdminChannelsPage() {
               {totalPages > 1 && (
                 <div className="flex items-center justify-end gap-2 pt-4">
                   <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage(page - 1)}>
-                    上一页
+                    {t("prevPage")}
                   </Button>
                   <span className="text-sm text-muted-foreground">{page} / {totalPages}</span>
                   <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => setPage(page + 1)}>
-                    下一页
+                    {t("nextPage")}
                   </Button>
                 </div>
               )}
@@ -256,19 +259,19 @@ export default function AdminChannelsPage() {
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="max-w-lg">
           <DialogHeader>
-            <DialogTitle>{editingId ? "编辑渠道" : "新增渠道"}</DialogTitle>
+            <DialogTitle>{editingId ? t("editTitle") : t("createTitle")}</DialogTitle>
             <DialogDescription>
-              {editingId ? "修改渠道配置（留空 API Key 则不更新）" : "添加一个新的上游渠道"}
+              {editingId ? t("editDesc") : t("createDesc")}
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-2">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label>渠道名称</Label>
+                <Label>{t("channelName")}</Label>
                 <Input
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  placeholder="OpenAI 主力"
+                  placeholder={t("channelNamePlaceholder")}
                 />
               </div>
               <div className="space-y-2">
@@ -286,11 +289,11 @@ export default function AdminChannelsPage() {
                 type="password"
                 value={form.apiKey}
                 onChange={(e) => setForm({ ...form, apiKey: e.target.value })}
-                placeholder={editingId ? "留空则不更新" : "sk-..."}
+                placeholder={editingId ? t("apiKeyEditHint") : t("apiKeyPlaceholder")}
               />
             </div>
             <div className="space-y-2">
-              <Label>Base URL（可选，覆盖供应商默认）</Label>
+              <Label>{t("baseUrlLabel")}</Label>
               <Input
                 value={form.baseUrl}
                 onChange={(e) => setForm({ ...form, baseUrl: e.target.value })}
@@ -299,7 +302,7 @@ export default function AdminChannelsPage() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label>优先级</Label>
+                <Label>{t("priorityLabel")}</Label>
                 <Input
                   type="number"
                   value={form.priority}
@@ -307,7 +310,7 @@ export default function AdminChannelsPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label>权重</Label>
+                <Label>{t("weightLabel")}</Label>
                 <Input
                   type="number"
                   value={form.weight}
@@ -316,7 +319,7 @@ export default function AdminChannelsPage() {
               </div>
             </div>
             <div className="space-y-2">
-              <Label>支持模型（逗号分隔，留空=全部）</Label>
+              <Label>{t("modelsLabel")}</Label>
               <Input
                 value={form.models}
                 onChange={(e) => setForm({ ...form, models: e.target.value })}
@@ -325,9 +328,9 @@ export default function AdminChannelsPage() {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDialogOpen(false)}>取消</Button>
+            <Button variant="outline" onClick={() => setDialogOpen(false)}>{t("cancel")}</Button>
             <Button onClick={handleSave} disabled={saving}>
-              {saving ? "保存中..." : "保存"}
+              {saving ? t("saving") : t("save")}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -337,12 +340,12 @@ export default function AdminChannelsPage() {
       <Dialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>确认删除</DialogTitle>
-            <DialogDescription>确定要删除这个渠道吗？此操作不可撤销。</DialogDescription>
+            <DialogTitle>{t("deleteTitle")}</DialogTitle>
+            <DialogDescription>{t("deleteDesc")}</DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDeleteId(null)}>取消</Button>
-            <Button variant="destructive" onClick={handleDelete}>确认删除</Button>
+            <Button variant="outline" onClick={() => setDeleteId(null)}>{t("cancel")}</Button>
+            <Button variant="destructive" onClick={handleDelete}>{t("confirmDelete")}</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

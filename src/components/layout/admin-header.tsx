@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ArrowLeft, LogOut, User } from "lucide-react";
+import { LanguageSwitcher } from "@/components/layout/language-switcher";
 
 function UserMenu() {
   const { data: session, status } = useSession();
@@ -67,7 +68,10 @@ export function AdminHeader() {
         <ArrowLeft className="h-4 w-4" />
         {t("backToConsole")}
       </Link>
-      <UserMenu />
+      <div className="flex items-center gap-2">
+        <LanguageSwitcher />
+        <UserMenu />
+      </div>
     </header>
   );
 }

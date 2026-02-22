@@ -1,23 +1,26 @@
 "use client";
 
 import { CodeBlock } from "@/components/docs/code-block";
+import { useTranslations } from "next-intl";
 
 export default function SdkExamplesPage() {
+  const t = useTranslations("SdkExamples");
+
   return (
     <article className="prose-sm max-w-none">
-      <h1 className="mb-2 text-3xl font-bold tracking-[-0.015em] text-[#1d1d1f]">SDK 示例</h1>
+      <h1 className="mb-2 text-3xl font-bold tracking-[-0.015em] text-[#1d1d1f]">{t("title")}</h1>
       <p className="mb-8 text-[17px] leading-relaxed text-[#424245]">
-        使用各语言 SDK 快速接入 Dezix AI。由于完全兼容 OpenAI 格式，您可以直接使用 OpenAI 官方 SDK。
+        {t("subtitle")}
       </p>
 
       {/* Python */}
       <h2 className="mb-3 mt-8 text-xl font-bold text-[#1d1d1f]">Python</h2>
       <p className="mb-4 text-[17px] leading-relaxed text-[#424245]">
-        安装 OpenAI Python SDK：
+        {t("installPython")}
       </p>
-      <CodeBlock language="bash" title="安装" code="pip install openai" />
+      <CodeBlock language="bash" title={t("install")} code="pip install openai" />
 
-      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1d1d1f]">基本对话</h3>
+      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1d1d1f]">{t("basicChat")}</h3>
       <CodeBlock
         language="python"
         title="basic_chat.py"
@@ -31,8 +34,8 @@ client = OpenAI(
 response = client.chat.completions.create(
     model="gpt-4o-mini",
     messages=[
-        {"role": "system", "content": "你是一个有帮助的 AI 助手。"},
-        {"role": "user", "content": "请用 Python 写一个快速排序算法"}
+        {"role": "system", "content": "You are a helpful AI assistant."},
+        {"role": "user", "content": "Write a quicksort algorithm in Python"}
     ],
     temperature=0.7,
     max_tokens=1000
@@ -41,7 +44,7 @@ response = client.chat.completions.create(
 print(response.choices[0].message.content)`}
       />
 
-      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1d1d1f]">流式响应</h3>
+      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1d1d1f]">{t("streamingResponse")}</h3>
       <CodeBlock
         language="python"
         title="streaming.py"
@@ -55,7 +58,7 @@ client = OpenAI(
 stream = client.chat.completions.create(
     model="gpt-4o-mini",
     messages=[
-        {"role": "user", "content": "给我讲一个简短的故事"}
+        {"role": "user", "content": "Tell me a short story"}
     ],
     stream=True
 )
@@ -66,7 +69,7 @@ for chunk in stream:
 print()`}
       />
 
-      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1d1d1f]">多轮对话</h3>
+      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1d1d1f]">{t("multiTurn")}</h3>
       <CodeBlock
         language="python"
         title="multi_turn.py"
@@ -78,36 +81,36 @@ client = OpenAI(
 )
 
 messages = [
-    {"role": "system", "content": "你是一个专业的翻译助手。"}
+    {"role": "system", "content": "You are a professional translator."}
 ]
 
-# 第一轮
-messages.append({"role": "user", "content": "请将以下文本翻译成英文：你好世界"})
+# Turn 1
+messages.append({"role": "user", "content": "Translate 'Hello World' to French"})
 response = client.chat.completions.create(
     model="gpt-4o-mini",
     messages=messages
 )
 assistant_msg = response.choices[0].message.content
 messages.append({"role": "assistant", "content": assistant_msg})
-print(f"助手: {assistant_msg}")
+print(f"Assistant: {assistant_msg}")
 
-# 第二轮
-messages.append({"role": "user", "content": "现在翻译成日文"})
+# Turn 2
+messages.append({"role": "user", "content": "Now translate it to Japanese"})
 response = client.chat.completions.create(
     model="gpt-4o-mini",
     messages=messages
 )
-print(f"助手: {response.choices[0].message.content}")`}
+print(f"Assistant: {response.choices[0].message.content}")`}
       />
 
       {/* Node.js */}
       <h2 className="mb-3 mt-10 text-xl font-bold text-[#1d1d1f]">Node.js</h2>
       <p className="mb-4 text-[17px] leading-relaxed text-[#424245]">
-        安装 OpenAI Node.js SDK：
+        {t("installNode")}
       </p>
-      <CodeBlock language="bash" title="安装" code="npm install openai" />
+      <CodeBlock language="bash" title={t("install")} code="npm install openai" />
 
-      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1d1d1f]">基本对话</h3>
+      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1d1d1f]">{t("basicChat")}</h3>
       <CodeBlock
         language="javascript"
         title="basic_chat.mjs"
@@ -121,8 +124,8 @@ const client = new OpenAI({
 const response = await client.chat.completions.create({
   model: "gpt-4o-mini",
   messages: [
-    { role: "system", content: "你是一个有帮助的 AI 助手。" },
-    { role: "user", content: "请用 JavaScript 写一个冒泡排序" },
+    { role: "system", content: "You are a helpful AI assistant." },
+    { role: "user", content: "Write a bubble sort in JavaScript" },
   ],
   temperature: 0.7,
   max_tokens: 1000,
@@ -131,7 +134,7 @@ const response = await client.chat.completions.create({
 console.log(response.choices[0].message.content);`}
       />
 
-      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1d1d1f]">流式响应</h3>
+      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1d1d1f]">{t("streamingResponse")}</h3>
       <CodeBlock
         language="javascript"
         title="streaming.mjs"
@@ -145,7 +148,7 @@ const client = new OpenAI({
 const stream = await client.chat.completions.create({
   model: "gpt-4o-mini",
   messages: [
-    { role: "user", content: "给我讲一个简短的故事" },
+    { role: "user", content: "Tell me a short story" },
   ],
   stream: true,
 });
@@ -162,25 +165,25 @@ console.log();`}
       {/* cURL */}
       <h2 className="mb-3 mt-10 text-xl font-bold text-[#1d1d1f]">cURL</h2>
 
-      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1d1d1f]">非流式请求</h3>
+      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1d1d1f]">{t("nonStream")}</h3>
       <CodeBlock
         language="bash"
-        title="非流式"
+        title={t("nonStream")}
         code={`curl https://your-domain.com/api/v1/chat/completions \\\\
   -H "Content-Type: application/json" \\\\
   -H "Authorization: Bearer sk-dezix-your-api-key" \\\\
   -d '{
     "model": "gpt-4o-mini",
     "messages": [
-      {"role": "user", "content": "你好"}
+      {"role": "user", "content": "Hello"}
     ]
   }'`}
       />
 
-      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1d1d1f]">流式请求</h3>
+      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1d1d1f]">{t("streamRequest")}</h3>
       <CodeBlock
         language="bash"
-        title="流式"
+        title={t("streamRequest")}
         code={`curl https://your-domain.com/api/v1/chat/completions \\\\
   -H "Content-Type: application/json" \\\\
   -H "Authorization: Bearer sk-dezix-your-api-key" \\\\
@@ -188,36 +191,28 @@ console.log();`}
   -d '{
     "model": "gpt-4o-mini",
     "messages": [
-      {"role": "user", "content": "你好"}
+      {"role": "user", "content": "Hello"}
     ],
     "stream": true
   }'`}
       />
 
-      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1d1d1f]">获取模型列表</h3>
+      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1d1d1f]">{t("getModels")}</h3>
       <CodeBlock
         language="bash"
-        title="模型列表"
+        title={t("getModels")}
         code={`curl https://your-domain.com/api/v1/models \\\\
   -H "Authorization: Bearer sk-dezix-your-api-key"`}
       />
 
       {/* Tips */}
-      <h2 className="mb-3 mt-10 text-xl font-bold text-[#1d1d1f]">使用提示</h2>
+      <h2 className="mb-3 mt-10 text-xl font-bold text-[#1d1d1f]">{t("tipsTitle")}</h2>
       <ul className="mb-4 ml-6 list-disc space-y-2 text-[17px] leading-relaxed text-[#424245]">
-        <li>
-          将 <code className="rounded-md bg-[#f5f5f7] px-1.5 py-0.5 text-xs text-[#007AFF]">your-domain.com</code> 替换为实际的 Dezix AI 域名
-        </li>
-        <li>
-          将 <code className="rounded-md bg-[#f5f5f7] px-1.5 py-0.5 text-xs text-[#007AFF]">sk-dezix-your-api-key</code> 替换为您的真实 API Key
-        </li>
-        <li>
-          可以通过切换 <code className="rounded-md bg-[#f5f5f7] px-1.5 py-0.5 text-xs text-[#007AFF]">model</code> 参数来使用不同的模型，如 claude-3-5-sonnet-20241022、gemini-1.5-pro 等
-        </li>
-        <li>建议将 API Key 存储在环境变量中，避免硬编码在代码里</li>
-        <li>
-          生产环境中建议添加错误处理和重试逻辑
-        </li>
+        <li>{t("tip1")}</li>
+        <li>{t("tip2")}</li>
+        <li>{t("tip3")}</li>
+        <li>{t("tip4")}</li>
+        <li>{t("tip5")}</li>
       </ul>
     </article>
   );

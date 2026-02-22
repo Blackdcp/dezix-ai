@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { LanguageSwitcher } from "@/components/layout/language-switcher";
 
 const navLinks = [
   { href: "/", labelKey: "home" },
@@ -58,6 +59,7 @@ export function MarketingHeader() {
         </nav>
 
         <div className="hidden items-center gap-2 md:flex">
+          <LanguageSwitcher />
           <Button variant="ghost" size="sm" className="text-[#424245] hover:text-[#1d1d1f]" asChild>
             <Link href="/login">{t("login")}</Link>
           </Button>

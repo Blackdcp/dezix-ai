@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { useTranslations, useLocale } from "next-intl";
 import {
   Card,
   CardContent,
@@ -100,6 +101,9 @@ function getDateRange(days: number) {
 }
 
 export default function UsagePage() {
+  const t = useTranslations("Usage");
+  const tc = useTranslations("Common");
+  const locale = useLocale();
   const [summary, setSummary] = useState<Summary | null>(null);
   const [dailyTrends, setDailyTrends] = useState<DailyTrend[]>([]);
   const [modelBreakdown, setModelBreakdown] = useState<ModelBreakdown[]>([]);
@@ -171,7 +175,7 @@ export default function UsagePage() {
   };
 
   const formatDateTime = (dateStr: string) => {
-    return new Date(dateStr).toLocaleString("zh-CN", {
+    return new Date(dateStr).toLocaleString(locale === "zh" ? "zh-CN" : "en-US", {
       month: "2-digit",
       day: "2-digit",
       hour: "2-digit",
@@ -182,25 +186,25 @@ export default function UsagePage() {
 
   const stats = [
     {
-      title: "总请求",
+      title: t("totalRequests"),
       value: String(summary?.totalRequests ?? 0),
-      desc: `成功 ${summary?.successCount ?? 0} / 失败 ${summary?.errorCount ?? 0}`,
+      desc: t("successCount", { success: summary?.successCount ?? 0, error: summary?.errorCount ?? 0 }),
       icon: Activity,
     },
     {
-      title: "总消费",
+      title: t("totalSpending"),
       value: `¥${(summary?.totalSpending ?? 0).toFixed(4)}`,
-      desc: "所选时段总费用",
+      desc: t("periodSpending"),
       icon: CreditCard,
     },
     {
-      title: "输入 Token",
+      title: t("inputTokens"),
       value: (summary?.promptTokens ?? 0).toLocaleString(),
       desc: "Prompt tokens",
       icon: ArrowDownToLine,
     },
     {
-      title: "输出 Token",
+      title: t("outputTokens"),
       value: (summary?.completionTokens ?? 0).toLocaleString(),
       desc: "Completion tokens",
       icon: ArrowUpFromLine,
@@ -209,15 +213,15 @@ export default function UsagePage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">用量统计</h1>
+      <h1 className="text-2xl font-bold">{t("title")}</h1>
 
       {/* Filters */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
         <div className="flex gap-2">
           {[
-            { label: "7 天", value: "7" },
-            { label: "30 天", value: "30" },
-            { label: "90 天", value: "90" },
+            { label: t("days7"), value: "7" },
+            { label: t("days30"), value: "30" },
+            { label: t("days90"), value: "90" },
           ].map((p) => (
             <Button
               key={p.value}
@@ -233,7 +237,7 @@ export default function UsagePage() {
             size="sm"
             onClick={() => handlePreset("custom")}
           >
-            自定义
+            {t("custom")}
           </Button>
         </div>
         {preset === "custom" && (
@@ -244,7 +248,7 @@ export default function UsagePage() {
               onChange={(e) => setStartDate(e.target.value)}
               className="w-[150px]"
             />
-            <span className="text-muted-foreground">至</span>
+            <span className="text-muted-foreground">{t("to")}</span>
             <Input
               type="date"
               value={endDate}
@@ -255,10 +259,10 @@ export default function UsagePage() {
         )}
         <Select value={modelFilter} onValueChange={setModelFilter}>
           <SelectTrigger className="w-full sm:w-[200px]">
-            <SelectValue placeholder="模型筛选" />
+            <SelectValue placeholder={t("modelFilter")} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">全部模型</SelectItem>
+            <SelectItem value="all">{t("allModels")}</SelectItem>
             {modelOptions.map((m) => (
               <SelectItem key={m.id} value={m.id}>
                 {m.displayName}
@@ -289,13 +293,13 @@ export default function UsagePage() {
       {/* Trends Chart */}
       <Card>
         <CardHeader>
-          <CardTitle>趋势图</CardTitle>
-          <CardDescription>请求数量与消费趋势</CardDescription>
+          <CardTitle>{t("trendsTitle")}</CardTitle>
+          <CardDescription>{t("trendsDesc")}</CardDescription>
         </CardHeader>
         <CardContent>
           {loading ? (
             <div className="flex h-[300px] items-center justify-center text-muted-foreground">
-              加载中...
+              {tc("loading")}
             </div>
           ) : (
             <ResponsiveContainer width="100%" height={300}>
@@ -373,7 +377,7 @@ export default function UsagePage() {
                     const v = Number(value);
                     return [
                       name === "requests" ? v : `¥${v.toFixed(4)}`,
-                      name === "requests" ? "请求数" : "消费",
+                      name === "requests" ? t("requestCount") : t("spending"),
                     ];
                   }}
                 />
@@ -403,8 +407,8 @@ export default function UsagePage() {
       {modelBreakdown.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>模型分布</CardTitle>
-            <CardDescription>各模型请求量分布</CardDescription>
+            <CardTitle>{t("modelBreakdown")}</CardTitle>
+            <CardDescription>{t("modelBreakdownDesc")}</CardDescription>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={Math.max(200, modelBreakdown.length * 40)}>
@@ -436,9 +440,9 @@ export default function UsagePage() {
                   }}
                   formatter={(value, name) => {
                     const v = Number(value);
-                    if (name === "requests") return [v, "请求数"];
-                    if (name === "spending") return [`¥${v.toFixed(4)}`, "消费"];
-                    return [v.toLocaleString(), "Token"];
+                    if (name === "requests") return [v, t("requestCount")];
+                    if (name === "spending") return [`¥${v.toFixed(4)}`, t("spending")];
+                    return [v.toLocaleString(), t("token")];
                   }}
                 />
                 <Bar dataKey="requests" fill="hsl(221, 83%, 53%)" radius={[0, 4, 4, 0]} />
@@ -451,30 +455,30 @@ export default function UsagePage() {
       {/* Recent Logs Table */}
       <Card>
         <CardHeader>
-          <CardTitle>请求日志</CardTitle>
-          <CardDescription>最近 50 条请求记录</CardDescription>
+          <CardTitle>{t("logsTitle")}</CardTitle>
+          <CardDescription>{t("logsDesc")}</CardDescription>
         </CardHeader>
         <CardContent>
           {loading ? (
             <div className="py-8 text-center text-muted-foreground">
-              加载中...
+              {tc("loading")}
             </div>
           ) : recentLogs.length === 0 ? (
             <div className="py-8 text-center text-muted-foreground">
-              暂无请求记录
+              {t("noLogs")}
             </div>
           ) : (
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>模型</TableHead>
-                    <TableHead className="text-right">输入 Token</TableHead>
-                    <TableHead className="text-right">输出 Token</TableHead>
-                    <TableHead className="text-right">费用</TableHead>
-                    <TableHead>状态</TableHead>
-                    <TableHead className="text-right">耗时</TableHead>
-                    <TableHead>时间</TableHead>
+                    <TableHead>{t("model")}</TableHead>
+                    <TableHead className="text-right">{t("inputToken")}</TableHead>
+                    <TableHead className="text-right">{t("outputToken")}</TableHead>
+                    <TableHead className="text-right">{t("cost")}</TableHead>
+                    <TableHead>{t("statusCol")}</TableHead>
+                    <TableHead className="text-right">{t("duration")}</TableHead>
+                    <TableHead>{t("time")}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -501,7 +505,7 @@ export default function UsagePage() {
                             log.status === "success" ? "default" : "destructive"
                           }
                         >
-                          {log.status === "success" ? "成功" : "失败"}
+                          {log.status === "success" ? t("success") : t("failed")}
                         </Badge>
                       </TableCell>
                       <TableCell className="text-right">

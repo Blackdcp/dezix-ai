@@ -66,7 +66,7 @@ describe("POST /api/register", () => {
 
     expect(response.status).toBe(201);
     const data = await response.json();
-    expect(data.message).toBe("注册成功");
+    expect(data.message).toBe("REGISTER_SUCCESS");
     expect(db.user.create).toHaveBeenCalledTimes(1);
   });
 
@@ -81,7 +81,7 @@ describe("POST /api/register", () => {
 
     expect(response.status).toBe(409);
     const data = await response.json();
-    expect(data.error).toContain("已被注册");
+    expect(data.error).toContain("EMAIL_ALREADY_EXISTS");
   });
 
   it("rejects invalid input (missing fields)", async () => {

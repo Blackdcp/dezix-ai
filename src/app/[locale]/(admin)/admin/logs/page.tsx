@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { useTranslations, useLocale } from "next-intl";
 import {
   Card,
   CardContent,
@@ -45,6 +46,9 @@ interface LogItem {
 }
 
 export default function AdminLogsPage() {
+  const t = useTranslations("AdminLogs");
+  const tc = useTranslations("Common");
+  const locale = useLocale();
   const [logs, setLogs] = useState<LogItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -84,23 +88,23 @@ export default function AdminLogsPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">请求日志</h1>
+      <h1 className="text-2xl font-bold">{t("title")}</h1>
 
       {/* Filters */}
       <Card>
         <CardHeader>
-          <CardTitle>筛选条件</CardTitle>
+          <CardTitle>{t("filters")}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex flex-wrap gap-3">
             <Input
-              placeholder="用户 ID"
+              placeholder={t("userIdPlaceholder")}
               value={userId}
               onChange={(e) => { setUserId(e.target.value); setPage(1); }}
               className="w-48"
             />
             <Input
-              placeholder="模型 ID (如 gpt-4o)"
+              placeholder={t("modelIdPlaceholder")}
               value={modelId}
               onChange={(e) => { setModelId(e.target.value); setPage(1); }}
               className="w-48"
@@ -110,12 +114,12 @@ export default function AdminLogsPage() {
               onValueChange={(v) => { setStatus(v === "ALL" ? "" : v); setPage(1); }}
             >
               <SelectTrigger className="w-32">
-                <SelectValue placeholder="全部状态" />
+                <SelectValue placeholder={t("allStatus")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="ALL">全部状态</SelectItem>
-                <SelectItem value="success">成功</SelectItem>
-                <SelectItem value="error">失败</SelectItem>
+                <SelectItem value="ALL">{t("allStatus")}</SelectItem>
+                <SelectItem value="success">{t("success")}</SelectItem>
+                <SelectItem value="error">{t("error")}</SelectItem>
               </SelectContent>
             </Select>
             <Input
@@ -124,7 +128,7 @@ export default function AdminLogsPage() {
               onChange={(e) => { setDateFrom(e.target.value); setPage(1); }}
               className="w-40"
             />
-            <span className="self-center text-muted-foreground">至</span>
+            <span className="self-center text-muted-foreground">{t("to")}</span>
             <Input
               type="date"
               value={dateTo}
@@ -139,33 +143,33 @@ export default function AdminLogsPage() {
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle>日志列表</CardTitle>
-            <span className="text-sm text-muted-foreground">共 {total} 条</span>
+            <CardTitle>{t("logList")}</CardTitle>
+            <span className="text-sm text-muted-foreground">{t("totalCount", { count: total })}</span>
           </div>
         </CardHeader>
         <CardContent>
           {loading ? (
-            <div className="py-8 text-center text-muted-foreground">加载中...</div>
+            <div className="py-8 text-center text-muted-foreground">{tc("loading")}</div>
           ) : (
             <>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>时间</TableHead>
-                    <TableHead>用户</TableHead>
-                    <TableHead>模型</TableHead>
-                    <TableHead>Token(入/出)</TableHead>
-                    <TableHead className="text-right">成本</TableHead>
-                    <TableHead className="text-right">收入</TableHead>
-                    <TableHead>耗时</TableHead>
-                    <TableHead>状态</TableHead>
+                    <TableHead>{t("time")}</TableHead>
+                    <TableHead>{t("user")}</TableHead>
+                    <TableHead>{t("model")}</TableHead>
+                    <TableHead>{t("tokens")}</TableHead>
+                    <TableHead className="text-right">{t("cost")}</TableHead>
+                    <TableHead className="text-right">{t("revenue")}</TableHead>
+                    <TableHead>{t("duration")}</TableHead>
+                    <TableHead>{t("status")}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {logs.map((l) => (
                     <TableRow key={l.id}>
                       <TableCell className="text-sm whitespace-nowrap">
-                        {new Date(l.createdAt).toLocaleString("zh-CN")}
+                        {new Date(l.createdAt).toLocaleString(locale === "zh" ? "zh-CN" : "en-US")}
                       </TableCell>
                       <TableCell className="text-sm">
                         {l.user.name || l.user.email}
@@ -179,7 +183,7 @@ export default function AdminLogsPage() {
                       <TableCell className="text-sm">{l.duration}ms</TableCell>
                       <TableCell>
                         <Badge variant={l.status === "success" ? "default" : "destructive"}>
-                          {l.status === "success" ? "成功" : "失败"}
+                          {l.status === "success" ? t("success") : t("error")}
                         </Badge>
                       </TableCell>
                     </TableRow>
@@ -187,7 +191,7 @@ export default function AdminLogsPage() {
                   {logs.length === 0 && (
                     <TableRow>
                       <TableCell colSpan={8} className="text-center text-muted-foreground py-8">
-                        暂无日志
+                        {t("noLogs")}
                       </TableCell>
                     </TableRow>
                   )}
@@ -197,11 +201,11 @@ export default function AdminLogsPage() {
               {totalPages > 1 && (
                 <div className="flex items-center justify-end gap-2 pt-4">
                   <Button variant="outline" size="sm" disabled={page <= 1} onClick={() => setPage(page - 1)}>
-                    上一页
+                    {t("prevPage")}
                   </Button>
                   <span className="text-sm text-muted-foreground">{page} / {totalPages}</span>
                   <Button variant="outline" size="sm" disabled={page >= totalPages} onClick={() => setPage(page + 1)}>
-                    下一页
+                    {t("nextPage")}
                   </Button>
                 </div>
               )}

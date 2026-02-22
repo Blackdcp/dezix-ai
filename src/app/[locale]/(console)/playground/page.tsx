@@ -2,6 +2,7 @@
 
 import { Suspense, useEffect, useState, useCallback, useRef } from "react";
 import { useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import {
   Card,
   CardContent,
@@ -69,6 +70,7 @@ export default function PlaygroundPage() {
 }
 
 function PlaygroundPageInner() {
+  const t = useTranslations("Playground");
   const searchParams = useSearchParams();
   const queryModel = searchParams.get("model") || "";
 
@@ -153,17 +155,17 @@ function PlaygroundPageInner() {
 
   const handleSend = useCallback(async () => {
     if (!apiKey.trim()) {
-      toast.error("请输入 API Key");
+      toast.error(t("apiKeyRequired"));
       return;
     }
     if (!selectedModel) {
-      toast.error("请选择模型");
+      toast.error(t("modelRequired"));
       return;
     }
 
     const validMessages = messages.filter((m) => m.content.trim());
     if (validMessages.length === 0) {
-      toast.error("请输入至少一条消息");
+      toast.error(t("messageRequired"));
       return;
     }
 
@@ -200,7 +202,7 @@ function PlaygroundPageInner() {
       });
 
       if (!res.ok) {
-        const err = await res.json().catch(() => ({ error: { message: "请求失败" } }));
+        const err = await res.json().catch(() => ({ error: { message: t("requestFailed") } }));
         throw new Error(err.error?.message || `HTTP ${res.status}`);
       }
 
@@ -259,20 +261,20 @@ function PlaygroundPageInner() {
       if ((err as Error).name === "AbortError") {
         // User cancelled
       } else {
-        toast.error((err as Error).message || "请求失败");
-        setResponse(`错误: ${(err as Error).message}`);
+        toast.error((err as Error).message || t("requestFailed"));
+        setResponse(t("errorPrefix", { message: (err as Error).message }));
       }
     } finally {
       setDuration(Date.now() - startTime);
       setLoading(false);
       abortRef.current = null;
     }
-  }, [apiKey, selectedModel, messages, temperature, maxTokens, topP, stream]);
+  }, [apiKey, selectedModel, messages, temperature, maxTokens, topP, stream, t]);
 
   const handleCopy = async (text: string, id: string) => {
     await navigator.clipboard.writeText(text);
     setCopied(id);
-    toast.success("已复制");
+    toast.success(t("copiedSuccess"));
     setTimeout(() => setCopied(null), 2000);
   };
 
@@ -341,15 +343,15 @@ ${stream ? `for await (const chunk of response) {
         <div className="space-y-4">
           <Card>
             <CardHeader className="pb-3">
-              <CardTitle className="text-base">请求配置</CardTitle>
+              <CardTitle className="text-base">{t("requestConfig")}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               {/* Model Select */}
               <div className="grid gap-2">
-                <Label>模型</Label>
+                <Label>{t("model")}</Label>
                 <Select value={selectedModel} onValueChange={setSelectedModel}>
                   <SelectTrigger>
-                    <SelectValue placeholder="选择模型" />
+                    <SelectValue placeholder={t("selectModel")} />
                   </SelectTrigger>
                   <SelectContent>
                     {models.map((m) => (
@@ -364,10 +366,10 @@ ${stream ? `for await (const chunk of response) {
               {/* Messages */}
               <div className="grid gap-2">
                 <div className="flex items-center justify-between">
-                  <Label>消息</Label>
+                  <Label>{t("messages")}</Label>
                   <Button variant="ghost" size="sm" onClick={addMessage}>
                     <Plus className="mr-1 h-3 w-3" />
-                    添加
+                    {t("addMessage")}
                   </Button>
                 </div>
                 <div className="space-y-3">
@@ -391,7 +393,7 @@ ${stream ? `for await (const chunk of response) {
                         onChange={(e) =>
                           updateMessage(msg.id, "content", e.target.value)
                         }
-                        placeholder="输入消息内容..."
+                        placeholder={t("messagePlaceholder")}
                         rows={2}
                         className="min-h-[60px]"
                       />
@@ -445,7 +447,7 @@ ${stream ? `for await (const chunk of response) {
                 </div>
                 <div className="flex items-center gap-2 pt-6">
                   <Switch checked={stream} onCheckedChange={setStream} />
-                  <Label>流式输出</Label>
+                  <Label>{t("streaming")}</Label>
                 </div>
               </div>
 
@@ -470,12 +472,12 @@ ${stream ? `for await (const chunk of response) {
                     onClick={handleStop}
                   >
                     <Square className="mr-2 h-4 w-4" />
-                    停止
+                    {t("stop")}
                   </Button>
                 ) : (
                   <Button className="w-full" onClick={handleSend}>
                     <Send className="mr-2 h-4 w-4" />
-                    发送请求
+                    {t("send")}
                   </Button>
                 )}
               </div>
@@ -487,7 +489,7 @@ ${stream ? `for await (const chunk of response) {
         <Card className="flex flex-col">
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-base">响应结果</CardTitle>
+              <CardTitle className="text-base">{t("response")}</CardTitle>
               {response && (
                 <Button
                   variant="ghost"
@@ -499,7 +501,7 @@ ${stream ? `for await (const chunk of response) {
                   ) : (
                     <Copy className="mr-1 h-3 w-3" />
                   )}
-                  复制
+                  {t("copy")}
                 </Button>
               )}
             </div>
@@ -510,7 +512,7 @@ ${stream ? `for await (const chunk of response) {
                 {loading && !response && (
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <Loader2 className="h-4 w-4 animate-spin" />
-                    等待响应...
+                    {t("waitingResponse")}
                   </div>
                 )}
                 {response}
@@ -519,7 +521,7 @@ ${stream ? `for await (const chunk of response) {
                 )}
                 {!loading && !response && (
                   <span className="text-muted-foreground">
-                    发送请求后响应内容将显示在这里
+                    {t("sendToSeeResponse")}
                   </span>
                 )}
               </div>
@@ -531,19 +533,19 @@ ${stream ? `for await (const chunk of response) {
                 {usage && (
                   <>
                     <Badge variant="outline">
-                      输入: {usage.promptTokens} tokens
+                      {t("inputTokens", { count: usage.promptTokens })}
                     </Badge>
                     <Badge variant="outline">
-                      输出: {usage.completionTokens} tokens
+                      {t("outputTokens", { count: usage.completionTokens })}
                     </Badge>
                     <Badge variant="outline">
-                      总计: {usage.totalTokens} tokens
+                      {t("totalTokens", { count: usage.totalTokens })}
                     </Badge>
                   </>
                 )}
                 {duration > 0 && (
                   <Badge variant="outline">
-                    耗时: {(duration / 1000).toFixed(2)}s
+                    {t("durationLabel", { seconds: (duration / 1000).toFixed(2) })}
                   </Badge>
                 )}
               </div>
@@ -555,9 +557,9 @@ ${stream ? `for await (const chunk of response) {
       {/* Code Examples */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">代码示例</CardTitle>
+          <CardTitle className="text-base">{t("codeExample")}</CardTitle>
           <CardDescription>
-            复制以下代码集成到你的应用中
+            {t("codeExampleDesc")}
           </CardDescription>
         </CardHeader>
         <CardContent>

@@ -7,6 +7,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { Copy, Check } from "lucide-react";
 import type { Components } from "react-markdown";
+import { useTranslations } from "next-intl";
 
 interface MarkdownRendererProps {
   content: string;
@@ -14,6 +15,7 @@ interface MarkdownRendererProps {
 
 export function MarkdownRenderer({ content }: MarkdownRendererProps) {
   const [copiedBlock, setCopiedBlock] = useState<string | null>(null);
+  const t = useTranslations("Common");
 
   const handleCopy = async (code: string, id: string) => {
     await navigator.clipboard.writeText(code);
@@ -39,12 +41,12 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
                 {copiedBlock === blockId ? (
                   <>
                     <Check className="h-3 w-3" />
-                    已复制
+                    {t("copied")}
                   </>
                 ) : (
                   <>
                     <Copy className="h-3 w-3" />
-                    复制
+                    {t("copy")}
                   </>
                 )}
               </button>

@@ -57,14 +57,14 @@ export async function POST(req: Request) {
   const body = await req.json().catch(() => null);
   const parsed = adminCreateModelSchema.safeParse(body);
   if (!parsed.success) {
-    const msg = parsed.error.issues[0]?.message ?? "缺少必填字段";
+    const msg = parsed.error.issues[0]?.message ?? "MISSING_FIELDS";
     return NextResponse.json({ error: msg }, { status: 400 });
   }
 
   // Check modelId uniqueness
   const existing = await db.model.findUnique({ where: { modelId: parsed.data.modelId } });
   if (existing) {
-    return NextResponse.json({ error: "模型 ID 已存在" }, { status: 409 });
+    return NextResponse.json({ error: "MODEL_EXISTS" }, { status: 409 });
   }
 
   const model = await db.model.create({

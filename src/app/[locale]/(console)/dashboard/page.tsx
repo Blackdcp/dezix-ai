@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import {
   Card,
   CardContent,
@@ -34,6 +35,8 @@ interface DashboardData {
 }
 
 export default function DashboardPage() {
+  const t = useTranslations("Dashboard");
+  const tc = useTranslations("Common");
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -47,27 +50,27 @@ export default function DashboardPage() {
 
   const stats = [
     {
-      title: "账户余额",
+      title: t("balance"),
       value: `¥${(data?.balance ?? 0).toFixed(2)}`,
-      desc: "可用余额",
+      desc: t("balanceDesc"),
       icon: CreditCard,
     },
     {
-      title: "今日消费",
+      title: t("todaySpending"),
       value: `¥${(data?.todaySpending ?? 0).toFixed(4)}`,
-      desc: "今日 API 调用费用",
+      desc: t("todaySpendingDesc"),
       icon: TrendingUp,
     },
     {
-      title: "请求次数",
+      title: t("requests"),
       value: String(data?.todayRequests ?? 0),
-      desc: "今日请求总数",
+      desc: t("requestsDesc"),
       icon: Activity,
     },
     {
-      title: "API 密钥",
+      title: t("apiKeys"),
       value: String(data?.activeKeys ?? 0),
-      desc: "活跃密钥数",
+      desc: t("apiKeysDesc"),
       icon: Key,
     },
   ];
@@ -79,7 +82,7 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">仪表盘</h1>
+      <h1 className="text-2xl font-bold">{t("title")}</h1>
 
       {/* Stats Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -102,13 +105,13 @@ export default function DashboardPage() {
       {/* 7-Day Trends */}
       <Card>
         <CardHeader>
-          <CardTitle>近 7 日趋势</CardTitle>
-          <CardDescription>请求数量与消费金额</CardDescription>
+          <CardTitle>{t("trendsTitle")}</CardTitle>
+          <CardDescription>{t("trendsDesc")}</CardDescription>
         </CardHeader>
         <CardContent>
           {loading ? (
             <div className="flex h-[300px] items-center justify-center text-muted-foreground">
-              加载中...
+              {tc("loading")}
             </div>
           ) : (
             <ResponsiveContainer width="100%" height={300}>
@@ -158,7 +161,7 @@ export default function DashboardPage() {
                     const v = Number(value);
                     return [
                       name === "requests" ? v : `¥${v.toFixed(4)}`,
-                      name === "requests" ? "请求数" : "消费",
+                      name === "requests" ? t("requestCount") : t("spending"),
                     ];
                   }}
                 />
@@ -187,14 +190,14 @@ export default function DashboardPage() {
       {/* Quick Start */}
       <Card>
         <CardHeader>
-          <CardTitle>快速开始</CardTitle>
-          <CardDescription>跟着下面的步骤开始使用 Dezix AI</CardDescription>
+          <CardTitle>{t("quickStart")}</CardTitle>
+          <CardDescription>{t("quickStartDesc")}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-3 text-sm text-muted-foreground">
-          <p>1. 前往「API 密钥」页面创建你的第一个 API Key</p>
-          <p>2. 在「模型市场」浏览可用的 AI 模型</p>
-          <p>3. 使用「Playground」测试 API 调用</p>
-          <p>4. 将 API Key 集成到你的应用中</p>
+          <p>{t("step1")}</p>
+          <p>{t("step2")}</p>
+          <p>{t("step3")}</p>
+          <p>{t("step4")}</p>
         </CardContent>
       </Card>
     </div>

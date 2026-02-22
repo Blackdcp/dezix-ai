@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState, useCallback, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/navigation";
 import { Input } from "@/components/ui/input";
 import {
   Card,
@@ -38,17 +39,6 @@ interface ProviderItem {
   name: string;
 }
 
-const categoryLabels: Record<string, string> = {
-  chat: "对话",
-  multimodal: "多模态",
-  code: "代码",
-  reasoning: "推理",
-  image: "图像",
-  embedding: "向量",
-  audio: "音频",
-  video: "视频",
-};
-
 function formatPrice(price: number): string {
   // Price is per 1K tokens, convert to per 1M tokens for display
   return (price * 1000).toFixed(2);
@@ -61,6 +51,9 @@ function formatContext(ctx: number): string {
 }
 
 export default function ModelsPage() {
+  const t = useTranslations("ConsoleModels");
+  const tc = useTranslations("Common");
+  const tCat = useTranslations("Categories");
   const router = useRouter();
   const [models, setModels] = useState<ModelItem[]>([]);
   const [providers, setProviders] = useState<ProviderItem[]>([]);
@@ -119,14 +112,14 @@ export default function ModelsPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">模型市场</h1>
+      <h1 className="text-2xl font-bold">{t("title")}</h1>
 
       {/* Filters */}
       <div className="flex flex-col gap-4 sm:flex-row">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
-            placeholder="搜索模型名称或 ID..."
+            placeholder={t("searchPlaceholder")}
             value={search}
             onChange={(e) => handleSearchChange(e.target.value)}
             className="pl-9"
@@ -134,23 +127,23 @@ export default function ModelsPage() {
         </div>
         <Select value={category} onValueChange={handleCategoryChange}>
           <SelectTrigger className="w-full sm:w-[140px]">
-            <SelectValue placeholder="分类" />
+            <SelectValue placeholder={t("categoryPlaceholder")} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">全部分类</SelectItem>
+            <SelectItem value="all">{t("allCategories")}</SelectItem>
             {categories.map((c) => (
               <SelectItem key={c} value={c}>
-                {categoryLabels[c] || c}
+                {tCat(c as "chat" | "multimodal" | "code" | "reasoning" | "image" | "embedding" | "audio" | "video")}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
         <Select value={provider} onValueChange={handleProviderChange}>
           <SelectTrigger className="w-full sm:w-[160px]">
-            <SelectValue placeholder="供应商" />
+            <SelectValue placeholder={t("providerPlaceholder")} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">全部供应商</SelectItem>
+            <SelectItem value="all">{t("allProviders")}</SelectItem>
             {providers.map((p) => (
               <SelectItem key={p.id} value={p.id}>
                 {p.name}
@@ -162,10 +155,10 @@ export default function ModelsPage() {
 
       {/* Model Grid */}
       {loading ? (
-        <div className="py-12 text-center text-muted-foreground">加载中...</div>
+        <div className="py-12 text-center text-muted-foreground">{tc("loading")}</div>
       ) : models.length === 0 ? (
         <div className="py-12 text-center text-muted-foreground">
-          没有找到匹配的模型
+          {t("noResults")}
         </div>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -180,7 +173,7 @@ export default function ModelsPage() {
                     variant={model.isActive ? "default" : "secondary"}
                     className="shrink-0"
                   >
-                    {model.isActive ? "可用" : "不可用"}
+                    {model.isActive ? t("available") : t("unavailable")}
                   </Badge>
                 </div>
                 <code className="text-xs text-muted-foreground">
@@ -191,25 +184,25 @@ export default function ModelsPage() {
                 <div className="flex flex-wrap gap-1.5">
                   <Badge variant="outline">{model.providerName}</Badge>
                   <Badge variant="outline">
-                    {categoryLabels[model.category] || model.category}
+                    {tCat(model.category as "chat" | "multimodal" | "code" | "reasoning" | "image" | "embedding" | "audio" | "video")}
                   </Badge>
                 </div>
                 <div className="grid grid-cols-2 gap-2 text-sm">
                   <div>
-                    <p className="text-muted-foreground">输入价格</p>
+                    <p className="text-muted-foreground">{t("inputPrice")}</p>
                     <p className="font-medium">
                       ¥{formatPrice(model.sellPrice)}/1M
                     </p>
                   </div>
                   <div>
-                    <p className="text-muted-foreground">输出价格</p>
+                    <p className="text-muted-foreground">{t("outputPrice")}</p>
                     <p className="font-medium">
                       ¥{formatPrice(model.sellOutPrice)}/1M
                     </p>
                   </div>
                 </div>
                 <div className="text-sm">
-                  <span className="text-muted-foreground">最大上下文: </span>
+                  <span className="text-muted-foreground">{t("maxContext")}</span>
                   <span className="font-medium">
                     {formatContext(model.maxContext)} tokens
                   </span>
@@ -242,7 +235,7 @@ export default function ModelsPage() {
                     }
                   >
                     <MessageSquare className="mr-1.5 h-3.5 w-3.5" />
-                    对话
+                    {t("chatButton")}
                   </Button>
                 </div>
               </CardContent>

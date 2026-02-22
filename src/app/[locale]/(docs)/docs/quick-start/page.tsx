@@ -1,36 +1,39 @@
 "use client";
 
 import { CodeBlock } from "@/components/docs/code-block";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 
 export default function QuickStartPage() {
+  const t = useTranslations("QuickStart");
+
   return (
     <article className="prose-sm max-w-none">
-      <h1 className="mb-2 text-3xl font-bold tracking-[-0.015em] text-[#1d1d1f]">快速开始</h1>
+      <h1 className="mb-2 text-3xl font-bold tracking-[-0.015em] text-[#1d1d1f]">{t("title")}</h1>
       <p className="mb-8 text-[17px] leading-relaxed text-[#424245]">
-        几分钟内完成 Dezix AI 的接入，开始调用 AI 模型。
+        {t("subtitle")}
       </p>
 
       {/* Step 1 */}
-      <h2 className="mb-3 mt-8 text-xl font-bold text-[#1d1d1f]">1. 注册账号</h2>
+      <h2 className="mb-3 mt-8 text-xl font-bold text-[#1d1d1f]">{t("step1Title")}</h2>
       <p className="mb-4 text-[17px] leading-relaxed text-[#424245]">
-        访问{" "}
-        <a href="/register" className="text-[#007AFF] hover:underline">
-          注册页面
-        </a>
-        ，填写邮箱和密码即可完成注册。注册后将自动获得免费体验额度。
+        {t("step1Text1")}{" "}
+        <Link href="/register" className="text-[#007AFF] hover:underline">
+          {t("step1Link")}
+        </Link>
+        {" "}{t("step1Text2")}
       </p>
 
       {/* Step 2 */}
-      <h2 className="mb-3 mt-8 text-xl font-bold text-[#1d1d1f]">2. 获取 API Key</h2>
+      <h2 className="mb-3 mt-8 text-xl font-bold text-[#1d1d1f]">{t("step2Title")}</h2>
       <p className="mb-4 text-[17px] leading-relaxed text-[#424245]">
-        登录控制台后，进入「API 密钥」页面，点击「创建密钥」。创建成功后请立即复制并妥善保存，
-        密钥只会显示一次。API Key 格式为 <code className="rounded-md bg-[#f5f5f7] px-1.5 py-0.5 text-xs text-[#007AFF]">sk-dezix-xxx</code>。
+        {t("step2Text")}
       </p>
 
       {/* Step 3 */}
-      <h2 className="mb-3 mt-8 text-xl font-bold text-[#1d1d1f]">3. 发送第一个请求</h2>
+      <h2 className="mb-3 mt-8 text-xl font-bold text-[#1d1d1f]">{t("step3Title")}</h2>
       <p className="mb-4 text-[17px] leading-relaxed text-[#424245]">
-        Dezix AI 完全兼容 OpenAI API 格式。将 Base URL 替换为 Dezix AI 的地址，使用您的 API Key 即可。
+        {t("step3Text")}
       </p>
 
       <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1d1d1f]">cURL</h3>
@@ -43,7 +46,7 @@ export default function QuickStartPage() {
   -d '{
     "model": "gpt-4o-mini",
     "messages": [
-      {"role": "user", "content": "你好，请介绍一下你自己"}
+      {"role": "user", "content": "Hello, introduce yourself"}
     ]
   }'`}
       />
@@ -62,7 +65,7 @@ client = OpenAI(
 response = client.chat.completions.create(
     model="gpt-4o-mini",
     messages=[
-        {"role": "user", "content": "你好，请介绍一下你自己"}
+        {"role": "user", "content": "Hello, introduce yourself"}
     ]
 )
 
@@ -83,7 +86,7 @@ const client = new OpenAI({
 const response = await client.chat.completions.create({
   model: "gpt-4o-mini",
   messages: [
-    { role: "user", content: "你好，请介绍一下你自己" },
+    { role: "user", content: "Hello, introduce yourself" },
   ],
 });
 
@@ -91,35 +94,31 @@ console.log(response.choices[0].message.content);`}
       />
 
       {/* Step 4 */}
-      <h2 className="mb-3 mt-8 text-xl font-bold text-[#1d1d1f]">4. 下一步</h2>
+      <h2 className="mb-3 mt-8 text-xl font-bold text-[#1d1d1f]">{t("step4Title")}</h2>
       <ul className="mb-4 ml-6 list-disc space-y-2 text-[17px] leading-relaxed text-[#424245]">
         <li>
-          查看{" "}
-          <a href="/docs/api-reference" className="text-[#007AFF] hover:underline">
-            API 参考
-          </a>
-          ，了解完整的接口文档
+          <Link href="/docs/api-reference" className="text-[#007AFF] hover:underline">
+            {t("step4ApiRef")}
+          </Link>
+          {" "}{t("step4ApiRefDesc")}
         </li>
         <li>
-          查看{" "}
-          <a href="/docs/sdk-examples" className="text-[#007AFF] hover:underline">
-            SDK 示例
-          </a>
-          ，获取更多语言的代码示例
+          <Link href="/docs/sdk-examples" className="text-[#007AFF] hover:underline">
+            {t("step4Sdk")}
+          </Link>
+          {" "}{t("step4SdkDesc")}
         </li>
         <li>
-          访问{" "}
-          <a href="/model-list" className="text-[#007AFF] hover:underline">
-            模型列表
-          </a>
-          ，浏览所有可用模型
+          <Link href="/model-list" className="text-[#007AFF] hover:underline">
+            {t("step4Models")}
+          </Link>
+          {" "}{t("step4ModelsDesc")}
         </li>
         <li>
-          在控制台的{" "}
-          <a href="/playground" className="text-[#007AFF] hover:underline">
-            Playground
-          </a>
-          {" "}中在线测试 API
+          <Link href="/playground" className="text-[#007AFF] hover:underline">
+            {t("step4Playground")}
+          </Link>
+          {" "}{t("step4PlaygroundDesc")}
         </li>
       </ul>
     </article>

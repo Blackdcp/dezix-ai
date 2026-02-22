@@ -2,13 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
-
-const stats = [
-  { value: 90, suffix: "+", label: "AI 模型" },
-  { value: 13, suffix: "+", label: "模型供应商" },
-  { value: 100, suffix: "%", label: "OpenAI 兼容" },
-  { value: 100, suffix: "ms", prefix: "<", label: "额外延迟" },
-];
+import { useTranslations } from "next-intl";
 
 function CountUp({
   target,
@@ -52,6 +46,15 @@ function CountUp({
 }
 
 export function StatsBar() {
+  const t = useTranslations("Stats");
+
+  const stats = [
+    { value: 90, suffix: "+", label: t("aiModels") },
+    { value: 13, suffix: "+", label: t("providers") },
+    { value: 100, suffix: "%", label: t("openaiCompat") },
+    { value: 100, suffix: "ms", prefix: "<", label: t("latency") },
+  ];
+
   return (
     <section className="bg-[#f5f5f7] py-16">
       <div className="mx-auto max-w-6xl px-4">

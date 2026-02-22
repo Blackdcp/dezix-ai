@@ -48,7 +48,7 @@ export async function POST(req: Request) {
   const body = await req.json().catch(() => null);
   const parsed = adminCreateChannelSchema.safeParse(body);
   if (!parsed.success) {
-    const msg = parsed.error.issues[0]?.message ?? "缺少必填字段";
+    const msg = parsed.error.issues[0]?.message ?? "MISSING_FIELDS";
     return NextResponse.json({ error: msg }, { status: 400 });
   }
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 import {
   Card,
   CardContent,
@@ -40,6 +41,8 @@ interface DashboardData {
 }
 
 export default function AdminDashboardPage() {
+  const t = useTranslations("AdminDashboard");
+  const tc = useTranslations("Common");
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -53,39 +56,39 @@ export default function AdminDashboardPage() {
 
   const stats = [
     {
-      title: "总用户数",
+      title: t("totalUsers"),
       value: String(data?.totalUsers ?? 0),
-      desc: `今日新增 ${data?.todayUsers ?? 0}`,
+      desc: t("todayNewUsers", { count: data?.todayUsers ?? 0 }),
       icon: Users,
     },
     {
-      title: "总收入",
+      title: t("totalRevenue"),
       value: `¥${(data?.totalRevenue ?? 0).toFixed(4)}`,
-      desc: `今日 ¥${(data?.todayRevenue ?? 0).toFixed(4)}`,
+      desc: t("todayRevenue", { amount: (data?.todayRevenue ?? 0).toFixed(4) }),
       icon: TrendingUp,
     },
     {
-      title: "总成本",
+      title: t("totalCost"),
       value: `¥${(data?.totalCost ?? 0).toFixed(4)}`,
-      desc: `今日 ¥${(data?.todayCost ?? 0).toFixed(4)}`,
+      desc: t("todayCost", { amount: (data?.todayCost ?? 0).toFixed(4) }),
       icon: DollarSign,
     },
     {
-      title: "总利润",
+      title: t("totalProfit"),
       value: `¥${(data?.totalProfit ?? 0).toFixed(4)}`,
-      desc: "收入 - 成本",
+      desc: t("profitDesc"),
       icon: BarChart3,
     },
     {
-      title: "总请求数",
+      title: t("totalRequests"),
       value: String(data?.totalRequests ?? 0),
-      desc: `今日 ${data?.todayRequests ?? 0}`,
+      desc: t("todayRequests", { count: data?.todayRequests ?? 0 }),
       icon: Activity,
     },
     {
-      title: "今日请求",
+      title: t("todayRequestsTitle"),
       value: String(data?.todayRequests ?? 0),
-      desc: "今日 API 调用",
+      desc: t("todayRequestsDesc"),
       icon: Zap,
     },
   ];
@@ -97,7 +100,7 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">管理仪表盘</h1>
+      <h1 className="text-2xl font-bold">{t("title")}</h1>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {stats.map((s) => (
@@ -118,13 +121,13 @@ export default function AdminDashboardPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>近 30 日趋势</CardTitle>
-          <CardDescription>收入、成本与请求数</CardDescription>
+          <CardTitle>{t("trendsTitle")}</CardTitle>
+          <CardDescription>{t("trendsDesc")}</CardDescription>
         </CardHeader>
         <CardContent>
           {loading ? (
             <div className="flex h-[300px] items-center justify-center text-muted-foreground">
-              加载中...
+              {tc("loading")}
             </div>
           ) : (
             <ResponsiveContainer width="100%" height={300}>
@@ -176,9 +179,9 @@ export default function AdminDashboardPage() {
                   labelFormatter={(label) => formatDate(String(label))}
                   formatter={(value, name) => {
                     const v = Number(value);
-                    if (name === "requests") return [v, "请求数"];
-                    if (name === "revenue") return [`¥${v.toFixed(4)}`, "收入"];
-                    return [`¥${v.toFixed(4)}`, "成本"];
+                    if (name === "requests") return [v, t("requestCount")];
+                    if (name === "revenue") return [`¥${v.toFixed(4)}`, t("revenue")];
+                    return [`¥${v.toFixed(4)}`, t("cost")];
                   }}
                 />
                 <Area

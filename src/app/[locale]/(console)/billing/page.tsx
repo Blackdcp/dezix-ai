@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { useTranslations, useLocale } from "next-intl";
 import {
   Card,
   CardContent,
@@ -23,17 +24,13 @@ interface Transaction {
   createdAt: string;
 }
 
-const typeLabels: Record<string, { label: string; variant: "default" | "destructive" | "secondary" | "outline" }> = {
-  TOPUP: { label: "充值", variant: "default" },
-  USAGE: { label: "消费", variant: "destructive" },
-  REFUND: { label: "退款", variant: "secondary" },
-  REFERRAL: { label: "返佣", variant: "outline" },
-  ADMIN: { label: "调整", variant: "outline" },
-};
-
 const presetAmounts = [10, 50, 100, 500];
 
 export default function BillingPage() {
+  const t = useTranslations("Billing");
+  const tc = useTranslations("Common");
+  const te = useTranslations("Errors");
+  const locale = useLocale();
   const [balance, setBalance] = useState(0);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [total, setTotal] = useState(0);
@@ -43,6 +40,14 @@ export default function BillingPage() {
 
   const [topupAmount, setTopupAmount] = useState("");
   const [topupLoading, setTopupLoading] = useState(false);
+
+  const typeLabels: Record<string, { label: string; variant: "default" | "destructive" | "secondary" | "outline" }> = {
+    TOPUP: { label: t("topupType"), variant: "default" },
+    USAGE: { label: t("usageType"), variant: "destructive" },
+    REFUND: { label: t("refundType"), variant: "secondary" },
+    REFERRAL: { label: t("referralType"), variant: "outline" },
+    ADMIN: { label: t("adminType"), variant: "outline" },
+  };
 
   const fetchBilling = useCallback(async (p: number) => {
     setLoading(true);
@@ -54,11 +59,11 @@ export default function BillingPage() {
       setTotal(data.total);
       setPage(data.page);
     } catch {
-      toast.error("加载失败");
+      toast.error(t("loadFailed"));
     } finally {
       setLoading(false);
     }
-  }, [pageSize]);
+  }, [pageSize, t]);
 
   useEffect(() => {
     fetchBilling(1);
@@ -66,7 +71,7 @@ export default function BillingPage() {
 
   const handleTopup = async (amount: number) => {
     if (amount <= 0 || amount > 10000) {
-      toast.error("金额必须在 0.01 ~ 10000 之间");
+      toast.error(t("amountRange"));
       return;
     }
     setTopupLoading(true);
@@ -77,13 +82,19 @@ export default function BillingPage() {
         body: JSON.stringify({ amount }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "充值失败");
-      toast.success(`充值成功 ¥${amount.toFixed(2)}`);
+      if (!res.ok) throw new Error(data.error || t("topUpFailed"));
+      toast.success(t("topUpSuccess", { amount: amount.toFixed(2) }));
       setBalance(data.balance);
       setTopupAmount("");
       fetchBilling(1);
     } catch (err) {
-      toast.error((err as Error).message);
+      const errorMsg = (err as Error).message;
+      // Try to translate error code from API
+      try {
+        toast.error(te(errorMsg as Parameters<typeof te>[0]));
+      } catch {
+        toast.error(errorMsg);
+      }
     } finally {
       setTopupLoading(false);
     }
@@ -93,7 +104,7 @@ export default function BillingPage() {
 
   const formatTime = (dateStr: string) => {
     const d = new Date(dateStr);
-    return d.toLocaleString("zh-CN", {
+    return d.toLocaleString(locale === "zh" ? "zh-CN" : "en-US", {
       year: "numeric",
       month: "2-digit",
       day: "2-digit",
@@ -105,27 +116,27 @@ export default function BillingPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">充值计费</h1>
+      <h1 className="text-2xl font-bold">{t("title")}</h1>
 
       {/* Balance Card */}
       <Card>
         <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle className="text-sm font-medium">账户余额</CardTitle>
+          <CardTitle className="text-sm font-medium">{t("balance")}</CardTitle>
           <CreditCard className="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>
           <div className="text-3xl font-bold">
             ¥{loading ? "..." : balance.toFixed(2)}
           </div>
-          <CardDescription>可用于 API 调用消费</CardDescription>
+          <CardDescription>{t("balanceDesc")}</CardDescription>
         </CardContent>
       </Card>
 
       {/* Topup Area */}
       <Card>
         <CardHeader>
-          <CardTitle>模拟充值</CardTitle>
-          <CardDescription>选择预设金额或输入自定义金额（无真实支付）</CardDescription>
+          <CardTitle>{t("topUp")}</CardTitle>
+          <CardDescription>{t("topUpDesc")}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex flex-wrap gap-3">
@@ -143,7 +154,7 @@ export default function BillingPage() {
           <div className="flex gap-3">
             <Input
               type="number"
-              placeholder="自定义金额"
+              placeholder={t("customPlaceholder")}
               value={topupAmount}
               onChange={(e) => setTopupAmount(e.target.value)}
               min={0.01}
@@ -157,7 +168,7 @@ export default function BillingPage() {
               {topupLoading ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               ) : null}
-              确认充值
+              {t("confirmTopUp")}
             </Button>
           </div>
         </CardContent>
@@ -166,18 +177,18 @@ export default function BillingPage() {
       {/* Transaction History */}
       <Card>
         <CardHeader>
-          <CardTitle>交易记录</CardTitle>
-          <CardDescription>共 {total} 条记录</CardDescription>
+          <CardTitle>{t("transactions")}</CardTitle>
+          <CardDescription>{t("totalRecords", { count: total })}</CardDescription>
         </CardHeader>
         <CardContent>
           {loading ? (
             <div className="flex h-32 items-center justify-center text-muted-foreground">
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              加载中...
+              {tc("loading")}
             </div>
           ) : transactions.length === 0 ? (
             <div className="flex h-32 items-center justify-center text-muted-foreground">
-              暂无交易记录
+              {t("noRecords")}
             </div>
           ) : (
             <>
@@ -185,11 +196,11 @@ export default function BillingPage() {
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b text-left text-muted-foreground">
-                      <th className="pb-3 pr-4 font-medium">类型</th>
-                      <th className="pb-3 pr-4 font-medium">金额</th>
-                      <th className="pb-3 pr-4 font-medium">交易后余额</th>
-                      <th className="pb-3 pr-4 font-medium">描述</th>
-                      <th className="pb-3 font-medium">时间</th>
+                      <th className="pb-3 pr-4 font-medium">{t("type")}</th>
+                      <th className="pb-3 pr-4 font-medium">{t("amount")}</th>
+                      <th className="pb-3 pr-4 font-medium">{t("balanceAfter")}</th>
+                      <th className="pb-3 pr-4 font-medium">{t("description")}</th>
+                      <th className="pb-3 font-medium">{t("time")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -235,7 +246,7 @@ export default function BillingPage() {
               {totalPages > 1 && (
                 <div className="mt-4 flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">
-                    第 {page} / {totalPages} 页
+                    {t("page", { current: page, total: totalPages })}
                   </span>
                   <div className="flex gap-2">
                     <Button
@@ -244,7 +255,7 @@ export default function BillingPage() {
                       disabled={page <= 1}
                       onClick={() => fetchBilling(page - 1)}
                     >
-                      上一页
+                      {t("prevPage")}
                     </Button>
                     <Button
                       variant="outline"
@@ -252,7 +263,7 @@ export default function BillingPage() {
                       disabled={page >= totalPages}
                       onClick={() => fetchBilling(page + 1)}
                     >
-                      下一页
+                      {t("nextPage")}
                     </Button>
                   </div>
                 </div>

@@ -29,7 +29,7 @@ export async function GET(
   });
 
   if (!user) {
-    return NextResponse.json({ error: "用户不存在" }, { status: 404 });
+    return NextResponse.json({ error: "USER_NOT_FOUND" }, { status: 404 });
   }
 
   return NextResponse.json({ ...user, balance: Number(user.balance) });
@@ -46,7 +46,7 @@ export async function PATCH(
   const body = await req.json().catch(() => null);
   const parsed = adminUpdateUserSchema.safeParse(body);
   if (!parsed.success) {
-    const msg = parsed.error.issues[0]?.message ?? "无效请求";
+    const msg = parsed.error.issues[0]?.message ?? "INVALID_REQUEST";
     return NextResponse.json({ error: msg }, { status: 400 });
   }
 

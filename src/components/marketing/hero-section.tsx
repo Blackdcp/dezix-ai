@@ -1,6 +1,7 @@
 "use client";
 
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { GridBackground } from "@/components/marketing/grid-background";
 import {
   AnimatedSection,
@@ -8,6 +9,8 @@ import {
 } from "@/components/ui/animated-section";
 
 export function HeroSection() {
+  const t = useTranslations("Hero");
+
   return (
     <section className="relative overflow-hidden py-24 md:py-36">
       <GridBackground />
@@ -15,14 +18,14 @@ export function HeroSection() {
         <AnimatedSection>
           <AnimatedItem>
             <h1 className="mx-auto max-w-3xl text-5xl font-bold leading-[1.05] tracking-[-0.015em] text-[#1d1d1f] md:text-[56px]">
-              一个 API Key
+              {t("titleLine1")}
               <br />
-              <span className="text-[#007AFF]">访问所有主流 AI 模型</span>
+              <span className="text-[#007AFF]">{t("titleLine2")}</span>
             </h1>
           </AnimatedItem>
           <AnimatedItem>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-[#424245]">
-              Dezix AI 统一网关让您通过 OpenAI 兼容接口，轻松调用 OpenAI、Anthropic、Google、DeepSeek 等 13 家厂商的 90+ 款模型，按量付费，透明计费。
+              {t("description")}
             </p>
           </AnimatedItem>
           <AnimatedItem>
@@ -31,13 +34,13 @@ export function HeroSection() {
                 href="/register"
                 className="btn-primary inline-flex h-12 items-center justify-center rounded-full px-8 text-base font-medium"
               >
-                免费开始
+                {t("getStarted")}
               </Link>
               <Link
                 href="/docs/quick-start"
                 className="inline-flex h-12 items-center justify-center rounded-full border border-black/10 px-8 text-base font-medium text-[#1d1d1f] transition-colors hover:bg-black/[0.03]"
               >
-                查看文档
+                {t("viewDocs")}
               </Link>
             </div>
           </AnimatedItem>

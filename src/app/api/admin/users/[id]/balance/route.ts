@@ -15,13 +15,13 @@ export async function POST(
   const body = await req.json().catch(() => null);
   const parsed = adminAdjustBalanceSchema.safeParse(body);
   if (!parsed.success) {
-    const msg = parsed.error.issues[0]?.message ?? "金额不能为零";
+    const msg = parsed.error.issues[0]?.message ?? "AMOUNT_NOT_ZERO";
     return NextResponse.json({ error: msg }, { status: 400 });
   }
 
   const amount = Math.round(parsed.data.amount * 100) / 100;
   const amountDecimal = new Prisma.Decimal(amount.toFixed(6));
-  const description = parsed.data.description || `管理员调整余额 ${amount > 0 ? "+" : ""}¥${amount.toFixed(2)}`;
+  const description = parsed.data.description || `ADMIN_BALANCE_DESC:${amount > 0 ? "+" : ""}${amount.toFixed(2)}`;
 
   // Atomic balance update
   await db.$executeRaw`
@@ -38,7 +38,7 @@ export async function POST(
   });
 
   if (!updatedUser) {
-    return NextResponse.json({ error: "用户不存在" }, { status: 404 });
+    return NextResponse.json({ error: "USER_NOT_FOUND" }, { status: 404 });
   }
 
   const newBalance = Number(updatedUser.balance);

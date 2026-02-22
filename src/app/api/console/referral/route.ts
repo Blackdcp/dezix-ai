@@ -60,7 +60,7 @@ export async function GET() {
         id: r.id,
         fromUserEmail: fromUser?.email
           ? fromUser.email.replace(/(.{2}).*(@.*)/, "$1***$2")
-          : "未知",
+          : "UNKNOWN",
         amount: Number(r.amount),
         createdAt: r.createdAt,
       };

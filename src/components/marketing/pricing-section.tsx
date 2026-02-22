@@ -1,67 +1,58 @@
 "use client";
 
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { Check } from "lucide-react";
 import {
   AnimatedSection,
   AnimatedItem,
 } from "@/components/ui/animated-section";
 
-const plans = [
-  {
-    name: "免费体验",
-    price: "¥0",
-    desc: "注册即送体验额度",
-    features: ["注册赠送余额", "全部模型可用", "API 访问", "社区支持"],
-    cta: "免费注册",
-    href: "/register",
-    highlight: false,
-  },
-  {
-    name: "按量付费",
-    price: "按 Token 计费",
-    desc: "用多少付多少",
-    features: [
-      "按实际用量计费",
-      "全部模型可用",
-      "流式响应支持",
-      "完整用量统计",
-      "优先技术支持",
-    ],
-    cta: "立即充值",
-    href: "/register",
-    highlight: true,
-  },
-  {
-    name: "企业方案",
-    price: "联系我们",
-    desc: "大规模定制方案",
-    features: [
-      "专属定价",
-      "私有化部署",
-      "SLA 保障",
-      "专属技术支持",
-      "自定义模型接入",
-    ],
-    cta: "联系销售",
-    href: "/faq",
-    highlight: false,
-  },
-];
-
 export function PricingSection() {
+  const t = useTranslations("Pricing");
+
+  const plans = [
+    {
+      name: t("freePlan"),
+      price: t("freePrice"),
+      desc: t("freeDesc"),
+      features: [t("freeFeature1"), t("freeFeature2"), t("freeFeature3"), t("freeFeature4")],
+      cta: t("freeRegister"),
+      href: "/register" as const,
+      highlight: false,
+    },
+    {
+      name: t("payAsYouGo"),
+      price: t("payAsYouGoPrice"),
+      desc: t("payAsYouGoDesc"),
+      features: [t("payFeature1"), t("payFeature2"), t("payFeature3"), t("payFeature4"), t("payFeature5")],
+      cta: t("topUpNow"),
+      href: "/register" as const,
+      highlight: true,
+    },
+    {
+      name: t("enterprise"),
+      price: t("enterprisePrice"),
+      desc: t("enterpriseDesc"),
+      features: [t("entFeature1"), t("entFeature2"), t("entFeature3"), t("entFeature4"), t("entFeature5")],
+      cta: t("contactSales"),
+      href: "/faq" as const,
+      highlight: false,
+    },
+  ];
+
   return (
     <section className="py-16 md:py-24">
       <div className="mx-auto max-w-6xl px-4">
         <AnimatedSection>
           <AnimatedItem>
             <h2 className="mb-4 text-center text-3xl font-semibold tracking-[-0.01em] text-[#1d1d1f] md:text-[40px]">
-              简单透明的定价
+              {t("title")}
             </h2>
           </AnimatedItem>
           <AnimatedItem>
             <p className="mb-12 text-center text-lg text-[#424245]">
-              按量付费，无月费，无隐藏费用
+              {t("subtitle")}
             </p>
           </AnimatedItem>
         </AnimatedSection>
