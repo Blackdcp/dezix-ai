@@ -8,7 +8,7 @@ Dezix AI 是一个统一 LLM API 网关平台（仿 n1n.ai），面向国内开�
 
 ## 当前状态
 
-**Phase 1-12, 14 已完成。**
+**Phase 1-12, 14 已完成。下一步: Phase 15 前端视觉重构。**
 
 **线上地址**: https://dezix-ai.vercel.app
 
@@ -309,3 +309,16 @@ Base URL: `https://api.qnaigc.com/v1`
 
 新会话启动后，告诉 Claude:
 > 读一下 PROGRESS.md，继续上次的工作
+
+### 下一步: Phase 15 前端视觉重构
+所有功能开发已完成 (Phase 1-12, 14)，Phase 13 监控告警不做。
+剩余唯一工作: **前端视觉重构** — 营销首页、定价页、文档站、控制台。
+
+**需要重构的页面范围:**
+- 营销页: `src/app/[locale]/(marketing)/` — 首页、定价、FAQ、模型列表
+- 营销组件: `src/components/marketing/` — hero, features, providers-bar, pricing, models-showcase, stats-bar, cta
+- 文档站: `src/app/[locale]/(docs)/` — 快速开始、API 参考、SDK 示例
+- 控制台: `src/app/[locale]/(console)/` — dashboard, models, playground, chat, billing, usage, api-keys, settings, referral
+- 管理后台: `src/app/[locale]/(admin)/admin/` — dashboard, users, models, channels, logs, orders
+- 布局组件: `src/components/layout/` — marketing-header/footer, console-sidebar/header, admin-sidebar/header, docs-sidebar
+- 登录/注册: `src/app/[locale]/(auth)/` — login, register
