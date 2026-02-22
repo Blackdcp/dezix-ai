@@ -444,7 +444,7 @@
 
 ---
 
-## Phase 10: OAuth 社交登录 (GitHub + Google)
+## Phase 10: OAuth 社交登录 (GitHub + Google) ✅
 
 ### 已完成
 - [x] 新建 `src/components/auth/oauth-buttons.tsx` — GitHub/Google OAuth 按钮组件 (SVG 图标, loading 状态, referral cookie)
@@ -452,7 +452,22 @@
 - [x] 修改 `src/app/(auth)/login/page.tsx` — 添加分隔线 + OAuthButtons
 - [x] 修改 `src/app/(auth)/register/page.tsx` — 添加分隔线 + OAuthButtons (含 referralCode 传递)
 - [x] 更新 `.env.example` — 添加 GITHUB_CLIENT_ID/SECRET, GOOGLE_CLIENT_ID/SECRET
+- [x] OAuth provider 条件注册 — 只在环境变量存在时才注册 GitHub/Google provider，避免缺失凭证导致初始化失败
 - [x] `npm run build` 编译通过 (50 路由)
+
+### 线上部署
+- [x] GitHub OAuth App 创建 + Vercel 环境变量配置 (GITHUB_CLIENT_ID + GITHUB_CLIENT_SECRET)
+- [x] Google OAuth Client 创建 + Vercel 环境变量配置 (GOOGLE_CLIENT_ID + GOOGLE_CLIENT_SECRET)
+- [x] Vercel 部署 + 三个 provider 全部生效 (credentials + github + google)
+- [x] GitHub 登录验证通过
+- [x] Google 登录验证通过
+
+### 账号关联展示
+- [x] 管理后台 `/admin/users` — 用户表格新增"登录方式"列 (密码/GitHub/Google Badge)
+- [x] 用户设置 `/settings` — 重新设计:
+  - 个人信息卡片: 头像 (OAuth 自动拉取 / 首字母 fallback) + 姓名 + 邮箱
+  - 账号关联卡片: 三行独立展示 (邮箱密码 / GitHub / Google)，带 SVG 图标、状态指示、GitHub 头像
+  - 纯 OAuth 用户隐藏"修改密码"卡片
 
 ---
 
