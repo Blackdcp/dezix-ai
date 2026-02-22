@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { getModelBrand, getBrandList } from "@/lib/brand";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
@@ -32,17 +33,19 @@ export async function GET(req: NextRequest) {
     orderBy: { displayName: "asc" },
   });
 
-  const providers = await db.provider.findMany({
-    select: { id: true, name: true },
-  });
-  const providerMap = new Map(providers.map((p) => [p.id, p.name]));
-
   const allModels = await db.model.findMany({
     where: { isActive: true },
-    select: { category: true },
+    select: { category: true, modelId: true },
     distinct: ["category"],
   });
   const categories = allModels.map((m) => m.category);
+
+  // Build brand list from all active model IDs
+  const allActiveModels = await db.model.findMany({
+    where: { isActive: true },
+    select: { modelId: true },
+  });
+  const brands = getBrandList(allActiveModels.map((m) => m.modelId));
 
   return NextResponse.json(
     {
@@ -50,13 +53,13 @@ export async function GET(req: NextRequest) {
         id: m.id,
         modelId: m.modelId,
         displayName: m.displayName,
-        providerName: providerMap.get(m.providerId) || "Unknown",
+        providerName: getModelBrand(m.modelId),
         category: m.category,
         sellPrice: Number(m.sellPrice),
         sellOutPrice: Number(m.sellOutPrice),
         maxContext: m.maxContext,
       })),
-      providers: providers.map((p) => ({ id: p.id, name: p.name })),
+      providers: brands.map((b) => ({ id: b, name: b })),
       categories,
     },
     {

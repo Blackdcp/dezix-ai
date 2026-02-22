@@ -12,7 +12,7 @@ import {
 const faqs = [
   {
     q: "Dezix AI 是什么？",
-    a: "Dezix AI 是一个统一的 AI 模型 API 网关平台。通过一个 API Key，您可以访问 OpenAI、Anthropic、Google、DeepSeek 等多家供应商的 AI 模型，无需分别注册和管理多个平台的账号和密钥。",
+    a: "Dezix AI 是一个统一的 AI 模型 API 网关平台。通过一个 API Key，您可以访问 OpenAI、Anthropic、Google、DeepSeek、xAI、字节跳动、阿里云、智谱 AI、月之暗面、MiniMax、小米、美团、阶跃星辰等 13 家供应商的 90+ 款 AI 模型，无需分别注册和管理多个平台的账号和密钥。",
   },
   {
     q: "API 接口兼容 OpenAI 格式吗？",
@@ -28,7 +28,7 @@ const faqs = [
   },
   {
     q: "支持哪些模型？",
-    a: "目前支持 OpenAI（GPT-4o、GPT-4o-mini）、Anthropic（Claude 3.5 Sonnet）、Google（Gemini 1.5 Pro、Gemini 1.5 Flash）、DeepSeek（DeepSeek Chat、DeepSeek Coder）等主流模型。我们会持续更新支持的模型列表。",
+    a: "目前支持 OpenAI（GPT-5、GPT-5.2）、Anthropic（Claude 4.6 Opus、Claude 4.5 Sonnet）、Google（Gemini 3.1 Pro、Gemini 2.5 Flash）、DeepSeek（DeepSeek V3.2、DeepSeek R1）、xAI（Grok 4.1）、字节跳动（豆包 Seed 2.0）、阿里云（Qwen3 Max、Qwen3 Coder）、智谱 AI（GLM-5）、月之暗面（Kimi K2.5）、MiniMax（M2.5）等 90+ 款主流模型。我们会持续更新支持的模型列表。",
   },
   {
     q: "流式响应如何使用？",

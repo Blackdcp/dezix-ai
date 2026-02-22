@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import {
   Card,
@@ -16,7 +17,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Search, Play, MessageSquare } from "lucide-react";
 
 interface ModelItem {
   id: string;
@@ -38,8 +40,11 @@ interface ProviderItem {
 
 const categoryLabels: Record<string, string> = {
   chat: "对话",
-  embedding: "向量",
+  multimodal: "多模态",
+  code: "代码",
+  reasoning: "推理",
   image: "图像",
+  embedding: "向量",
   audio: "音频",
   video: "视频",
 };
@@ -56,6 +61,7 @@ function formatContext(ctx: number): string {
 }
 
 export default function ModelsPage() {
+  const router = useRouter();
   const [models, setModels] = useState<ModelItem[]>([]);
   const [providers, setProviders] = useState<ProviderItem[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
@@ -164,7 +170,7 @@ export default function ModelsPage() {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {models.map((model) => (
-            <Card key={model.id} className="relative">
+            <Card key={model.id} className="relative flex flex-col">
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between gap-2">
                   <CardTitle className="text-base leading-snug">
@@ -181,7 +187,7 @@ export default function ModelsPage() {
                   {model.modelId}
                 </code>
               </CardHeader>
-              <CardContent className="space-y-3">
+              <CardContent className="flex flex-1 flex-col space-y-3">
                 <div className="flex flex-wrap gap-1.5">
                   <Badge variant="outline">{model.providerName}</Badge>
                   <Badge variant="outline">
@@ -207,6 +213,37 @@ export default function ModelsPage() {
                   <span className="font-medium">
                     {formatContext(model.maxContext)} tokens
                   </span>
+                </div>
+                {/* Action buttons */}
+                <div className="mt-auto flex gap-2 pt-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex-1"
+                    disabled={!model.isActive}
+                    onClick={() =>
+                      router.push(
+                        `/playground?model=${encodeURIComponent(model.modelId)}`
+                      )
+                    }
+                  >
+                    <Play className="mr-1.5 h-3.5 w-3.5" />
+                    Playground
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex-1"
+                    disabled={!model.isActive}
+                    onClick={() =>
+                      router.push(
+                        `/chat?model=${encodeURIComponent(model.modelId)}`
+                      )
+                    }
+                  >
+                    <MessageSquare className="mr-1.5 h-3.5 w-3.5" />
+                    对话
+                  </Button>
                 </div>
               </CardContent>
             </Card>

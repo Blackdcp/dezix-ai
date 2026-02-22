@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { getModelBrand, getBrandList } from "@/lib/brand";
 
 export async function GET(req: NextRequest) {
   const session = await auth();
@@ -11,7 +12,7 @@ export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
   const search = searchParams.get("search")?.trim() || "";
   const category = searchParams.get("category") || "";
-  const provider = searchParams.get("provider") || "";
+  const providerBrand = searchParams.get("provider") || "";
 
   // Build where clause
   const where: Record<string, unknown> = {};
@@ -23,9 +24,6 @@ export async function GET(req: NextRequest) {
   }
   if (category) {
     where.category = category;
-  }
-  if (provider) {
-    where.providerId = provider;
   }
 
   // Query models
@@ -45,11 +43,24 @@ export async function GET(req: NextRequest) {
     orderBy: { displayName: "asc" },
   });
 
-  // Query all providers to map providerId → name
-  const providers = await db.provider.findMany({
-    select: { id: true, name: true },
-  });
-  const providerMap = new Map(providers.map((p) => [p.id, p.name]));
+  // Map models with brand names (hiding upstream provider)
+  const mappedModels = models.map((m) => ({
+    id: m.id,
+    modelId: m.modelId,
+    displayName: m.displayName,
+    providerName: getModelBrand(m.modelId),
+    providerId: m.providerId,
+    category: m.category,
+    sellPrice: Number(m.sellPrice),
+    sellOutPrice: Number(m.sellOutPrice),
+    maxContext: m.maxContext,
+    isActive: m.isActive,
+  }));
+
+  // Filter by brand if specified
+  const filteredModels = providerBrand
+    ? mappedModels.filter((m) => m.providerName === providerBrand)
+    : mappedModels;
 
   // Get distinct categories for filter options
   const allModels = await db.model.findMany({
@@ -58,20 +69,15 @@ export async function GET(req: NextRequest) {
   });
   const categories = allModels.map((m) => m.category);
 
+  // Build brand list from all model IDs
+  const allModelIds = await db.model.findMany({
+    select: { modelId: true },
+  });
+  const brands = getBrandList(allModelIds.map((m) => m.modelId));
+
   return NextResponse.json({
-    models: models.map((m) => ({
-      id: m.id,
-      modelId: m.modelId,
-      displayName: m.displayName,
-      providerName: providerMap.get(m.providerId) || "Unknown",
-      providerId: m.providerId,
-      category: m.category,
-      sellPrice: Number(m.sellPrice),
-      sellOutPrice: Number(m.sellOutPrice),
-      maxContext: m.maxContext,
-      isActive: m.isActive,
-    })),
-    providers: providers.map((p) => ({ id: p.id, name: p.name })),
+    models: filteredModels,
+    providers: brands.map((b) => ({ id: b, name: b })),
     categories,
   });
 }

@@ -4,8 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 
 const stats = [
-  { value: 7, suffix: "+", label: "AI 模型" },
-  { value: 4, suffix: "", label: "模型供应商" },
+  { value: 90, suffix: "+", label: "AI 模型" },
+  { value: 13, suffix: "+", label: "模型供应商" },
   { value: 100, suffix: "%", label: "OpenAI 兼容" },
   { value: 100, suffix: "ms", prefix: "<", label: "额外延迟" },
 ];

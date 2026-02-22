@@ -22,7 +22,7 @@ export function HeroSection() {
           </AnimatedItem>
           <AnimatedItem>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-[#424245]">
-              Dezix AI 统一网关让您通过 OpenAI 兼容接口，轻松调用 OpenAI、Anthropic、Google、DeepSeek 等多家模型，按量付费，透明计费。
+              Dezix AI 统一网关让您通过 OpenAI 兼容接口，轻松调用 OpenAI、Anthropic、Google、DeepSeek 等 13 家厂商的 90+ 款模型，按量付费，透明计费。
             </p>
           </AnimatedItem>
           <AnimatedItem>

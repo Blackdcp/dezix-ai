@@ -199,21 +199,12 @@ npm run test:watch           # Vitest 监听模式
 - curl 代理: `curl --proxy http://127.0.0.1:7897`
 - **Phase 9 部署已完成**，线上健康检查 + 页面 + 模型 API 全部通过
 
-### 下次任务: 七牛云上游接入 — 剩余工作
-
-**已完成的部分:**
+### 七牛云上游 (已接入完成 ✅)
 - `src/lib/gateway/adapters/registry.ts` — 注册 `qiniu` 适配器 (映射到 DeepSeekAdapter)
-- `prisma/seed.ts` — 重写为七牛云上游，91 个模型 (13 家厂商)
-- 线上 Supabase 数据库已 seed: qiniu Provider + Qiniu Primary 渠道 (明文 API Key) + 91 个模型
-- 代码已 push 到 GitHub main 分支 (commit `c766891`)
-- 本地 build 通过，67/67 测试通过
+- `prisma/seed.ts` — 七牛云上游，91 个模型 (13 家厂商)
+- 线上已验证: 非流式/流式/多厂商模型全部转发正常
 
-**未完成 — 需要明天继续:**
-1. **Vercel 部署**: 代码已 push 但 Vercel 没有自动部署新版本。CLI 部署报错 `Git author dev@dezix.ai must have access to the team`。需要在 Vercel Dashboard 手动触发 Redeploy，或者在 Vercel Settings → Git 中添加 `dev@dezix.ai` 为 team member，或者更改本地 git author email 为 Vercel 账号关联的邮箱
-2. **线上网关测试**: 部署成功后，用测试 API Key 验证实际转发 (非流式 + 流式)
-3. **可用性验证**: 确认七牛云 API Key 能正常转发到上游模型
-
-**测试用 Dezix API Key (已写入线上 DB):**
+**测试用 Dezix API Key:**
 `sk-dezix-0afa2d524f6b04a6eeabdbdcbb6e33cf6e2a5f2392aeeb96`
 
 **七牛云 API Key:**

@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState, useRef, useCallback } from "react";
+import { Suspense, useEffect, useState, useRef, useCallback } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   Select,
   SelectContent,
@@ -76,6 +77,17 @@ function newId() {
 // ---------- Component ----------
 
 export default function ChatPage() {
+  return (
+    <Suspense>
+      <ChatPageInner />
+    </Suspense>
+  );
+}
+
+function ChatPageInner() {
+  const searchParams = useSearchParams();
+  const queryModel = searchParams.get("model") || "";
+
   // State
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -114,13 +126,16 @@ export default function ChatPage() {
         );
         setModels(active);
         setSelectedModel((prev) => {
+          // Prefer query param model if available
+          if (queryModel && active.some((m: ModelOption) => m.modelId === queryModel))
+            return queryModel;
           if (prev && active.some((m: ModelOption) => m.modelId === prev))
             return prev;
           return active.length > 0 ? active[0].modelId : "";
         });
       })
       .catch(() => {});
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Persist apiKey and model
   useEffect(() => {

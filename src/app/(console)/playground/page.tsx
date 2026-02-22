@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState, useCallback, useRef } from "react";
+import { Suspense, useEffect, useState, useCallback, useRef } from "react";
+import { useSearchParams } from "next/navigation";
 import {
   Card,
   CardContent,
@@ -60,6 +61,17 @@ function newMsgId() {
 }
 
 export default function PlaygroundPage() {
+  return (
+    <Suspense>
+      <PlaygroundPageInner />
+    </Suspense>
+  );
+}
+
+function PlaygroundPageInner() {
+  const searchParams = useSearchParams();
+  const queryModel = searchParams.get("model") || "";
+
   // Model options
   const [models, setModels] = useState<ModelOption[]>([]);
   const [selectedModel, setSelectedModel] = useState("");
@@ -96,7 +108,12 @@ export default function PlaygroundPage() {
         const active = data.models.filter((m: ModelOption) => m.isActive);
         setModels(active);
         if (active.length > 0 && !selectedModel) {
-          setSelectedModel(active[0].modelId);
+          // Prefer query param model if available
+          if (queryModel && active.some((m: ModelOption) => m.modelId === queryModel)) {
+            setSelectedModel(queryModel);
+          } else {
+            setSelectedModel(active[0].modelId);
+          }
         }
       })
       .catch(() => {});

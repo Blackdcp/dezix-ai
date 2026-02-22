@@ -22,7 +22,7 @@ const features = [
   {
     icon: Layers,
     title: "多模型支持",
-    desc: "一站式访问 GPT-4o、Claude、Gemini、DeepSeek 等主流模型。",
+    desc: "一站式访问 GPT-5、Claude 4、Gemini 3、DeepSeek V3 等 90+ 款主流模型。",
   },
   {
     icon: Zap,

@@ -28,6 +28,17 @@ interface Model {
   maxContext: number;
 }
 
+const categoryLabels: Record<string, string> = {
+  chat: "对话",
+  multimodal: "多模态",
+  code: "代码",
+  reasoning: "推理",
+  image: "图像",
+  embedding: "向量",
+  audio: "音频",
+  video: "视频",
+};
+
 export default function ModelListPage() {
   const [models, setModels] = useState<Model[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
@@ -87,7 +98,7 @@ export default function ModelListPage() {
                   <TabsTrigger value="all">全部</TabsTrigger>
                   {categories.map((c) => (
                     <TabsTrigger key={c} value={c}>
-                      {c}
+                      {categoryLabels[c] || c}
                     </TabsTrigger>
                   ))}
                 </TabsList>
@@ -142,7 +153,7 @@ export default function ModelListPage() {
                           <Badge variant="secondary">{m.providerName}</Badge>
                         </TableCell>
                         <TableCell>
-                          <Badge variant="outline">{m.category}</Badge>
+                          <Badge variant="outline">{categoryLabels[m.category] || m.category}</Badge>
                         </TableCell>
                         <TableCell className="text-right text-[#424245]">
                           ¥{m.sellPrice}/M tokens

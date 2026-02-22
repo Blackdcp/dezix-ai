@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Dezix AI — 统一 AI 模型网关",
   description:
-    "一个 API Key，访问所有主流 AI 模型。支持 OpenAI、Anthropic、Google、DeepSeek，100% OpenAI 兼容接口，按量付费，透明计费。",
+    "一个 API Key，访问 90+ 款主流 AI 模型。支持 OpenAI、Anthropic、Google、DeepSeek、xAI、字节跳动、阿里云等 13 家厂商，100% OpenAI 兼容接口，按量付费，透明计费。",
   keywords: [
     "AI 网关",
     "OpenAI API",

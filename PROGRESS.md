@@ -385,6 +385,24 @@
 
 ---
 
+## 七牛云上游接入验证 (2026-02-22) ✅
+
+### Vercel 部署
+- [x] 代码已 push 到 GitHub main 分支 (commit `c766891` + `f5d860d`)
+- [x] Vercel 部署成功（用户手动解决了 Git author 权限问题）
+
+### 线上网关测试
+- [x] `GET /api/v1/models` → 91 个模型返回正常（13 家厂商）
+- [x] `POST /api/v1/chat/completions` (非流式, deepseek-v3) → 成功，返回完整 JSON 响应
+- [x] `POST /api/v1/chat/completions` (流式, deepseek-v3) → 成功，SSE chunks + `[DONE]` 信号正确
+- [x] `POST /api/v1/chat/completions` (非流式, claude-4.5-sonnet) → 成功，多厂商转发正常
+- [x] Token 计数 + 计费流水正常记录
+
+### 结论
+**七牛云 (Sufy) 上游接入完成，91 个模型全部可通过 Dezix AI 网关转发。** 非流式/流式/多厂商模型均验证通过。
+
+---
+
 ## 后续可选方向
 
 - [ ] Phase 10: OAuth 社交登录 (GitHub / Google)

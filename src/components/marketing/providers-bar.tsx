@@ -7,6 +7,15 @@ const providers = [
   { name: "Anthropic" },
   { name: "Google" },
   { name: "DeepSeek" },
+  { name: "xAI" },
+  { name: "字节跳动" },
+  { name: "阿里云" },
+  { name: "智谱 AI" },
+  { name: "月之暗面" },
+  { name: "MiniMax" },
+  { name: "小米" },
+  { name: "美团" },
+  { name: "阶跃星辰" },
 ];
 
 export function ProvidersBar() {
