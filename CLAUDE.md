@@ -167,6 +167,8 @@ npm run test:watch           # Vitest 监听模式
 - `NEXTAUTH_SECRET` — NextAuth 签名密钥
 - `NEXTAUTH_URL` — 应用 URL
 - `ENCRYPTION_KEY` — 渠道 API Key 加密密钥 (64 字符 hex, 32 字节)
+- `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` — GitHub OAuth App 凭证
+- `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` — Google OAuth Client 凭证
 - `NEXT_PUBLIC_APP_NAME` — 品牌名 (`Dezix AI`)
 - `NEXT_PUBLIC_APP_URL` — 应用公开 URL
 
@@ -186,7 +188,7 @@ npm run test:watch           # Vitest 监听模式
 2. **App Router** — 使用 Next.js App Router，不用 Pages Router
 3. **Server Components 优先** — 只在需要交互时使用 `"use client"`
 4. **API 路由** — 网关 API 在 `/api/v1/`，内部 API 在 `/api/`
-5. **认证** — NextAuth v5，Credentials Provider (邮箱 + 密码)
+5. **认证** — NextAuth v5，Credentials + GitHub OAuth + Google OAuth
 6. **金额** — 使用 Decimal 类型，避免浮点精度问题
 7. **验证** — 所有 API 路由用 Zod `.safeParse()` 验证输入
 8. **测试** — 新功能需添加对应 Vitest 测试
@@ -199,6 +201,14 @@ npm run test:watch           # Vitest 监听模式
 - Git 代理: `git -c http.proxy=http://127.0.0.1:7897 -c https.proxy=http://127.0.0.1:7897 push`
 - curl 代理: `curl --proxy http://127.0.0.1:7897`
 - **Phase 9 部署已完成**，线上健康检查 + 页面 + 模型 API 全部通过
+- **Phase 10 OAuth 代码已完成** (commit `c2d925e`)，已推送 GitHub + Vercel 自动部署
+
+### Phase 10 OAuth 待办 (需用户手动操作)
+- [ ] 创建 GitHub OAuth App: https://github.com/settings/developers → callback `https://dezix-ai.vercel.app/api/auth/callback/github`
+- [ ] 创建 Google OAuth Client: https://console.cloud.google.com/apis/credentials → redirect URI `https://dezix-ai.vercel.app/api/auth/callback/google`
+- [ ] 在 Vercel 添加 4 个环境变量: `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`
+- [ ] Vercel Redeploy 使环境变量生效
+- [ ] 线上测试: GitHub 新用户登录、Google 新用户登录、OAuth 邮箱匹配已有密码用户、带推荐码的 OAuth 注册
 
 ### 七牛云上游 (已接入完成 ✅)
 - `src/lib/gateway/adapters/registry.ts` — 注册 `qiniu` 适配器 (映射到 DeepSeekAdapter)
