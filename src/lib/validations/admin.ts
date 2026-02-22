@@ -98,3 +98,12 @@ export const adminOrdersQuerySchema = paginationSchema.extend({
 export const adminRejectOrderSchema = z.object({
   adminRemark: z.string().min(1, "请填写拒绝原因").max(500),
 });
+
+// POST /api/admin/models/batch-price
+export const adminBatchPriceSchema = z.object({
+  modelIds: z.array(z.string().min(1)).min(1, "至少选择一个模型"),
+  sellPrice: z.number().min(0).optional(),
+  sellOutPrice: z.number().min(0).optional(),
+  inputPrice: z.number().min(0).optional(),
+  outputPrice: z.number().min(0).optional(),
+});

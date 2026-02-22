@@ -42,6 +42,7 @@ export async function GET(req: Request) {
       outputPrice: Number(m.outputPrice),
       sellPrice: Number(m.sellPrice),
       sellOutPrice: Number(m.sellOutPrice),
+      isManual: m.isManual,
     })),
     total,
     page,

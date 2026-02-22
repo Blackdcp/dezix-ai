@@ -22,4 +22,5 @@ export {
   adminLogsQuerySchema,
   adminOrdersQuerySchema,
   adminRejectOrderSchema,
+  adminBatchPriceSchema,
 } from "./admin";

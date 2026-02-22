@@ -149,6 +149,7 @@ model Model {
   sellOutPrice  Decimal  @db.Decimal(12, 8) // 每 1K token 售价（输出）
   maxContext     Int      @default(4096)
   isActive      Boolean  @default(true)
+  isManual      Boolean  @default(false)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 

@@ -29,7 +29,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
+import { RefreshCw } from "lucide-react";
 
 interface ModelItem {
   id: string;
@@ -43,6 +45,13 @@ interface ModelItem {
   sellOutPrice: number;
   maxContext: number;
   isActive: boolean;
+  isManual: boolean;
+}
+
+interface SyncPreview {
+  added: string[];
+  deactivated: string[];
+  total: number;
 }
 
 const emptyForm = {
@@ -55,6 +64,13 @@ const emptyForm = {
   sellPrice: "0",
   sellOutPrice: "0",
   maxContext: "4096",
+};
+
+const emptyPriceForm = {
+  sellPrice: "",
+  sellOutPrice: "",
+  inputPrice: "",
+  outputPrice: "",
 };
 
 export default function AdminModelsPage() {
@@ -75,6 +91,18 @@ export default function AdminModelsPage() {
   // Delete
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
+  // Sync
+  const [syncLoading, setSyncLoading] = useState(false);
+  const [syncPreview, setSyncPreview] = useState<SyncPreview | null>(null);
+  const [syncDialogOpen, setSyncDialogOpen] = useState(false);
+  const [syncExecuting, setSyncExecuting] = useState(false);
+
+  // Selection & Batch pricing
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [batchDialogOpen, setBatchDialogOpen] = useState(false);
+  const [priceForm, setPriceForm] = useState(emptyPriceForm);
+  const [batchSaving, setBatchSaving] = useState(false);
+
   const fetchModels = useCallback(() => {
     setLoading(true);
     const params = new URLSearchParams({ page: String(page), pageSize: "20" });
@@ -93,6 +121,11 @@ export default function AdminModelsPage() {
   useEffect(() => {
     void fetchModels();
   }, [fetchModels]);
+
+  // Clear selection when page/search changes
+  useEffect(() => {
+    setSelectedIds(new Set());
+  }, [page, search]);
 
   const openCreate = () => {
     setEditingId(null);
@@ -174,11 +207,120 @@ export default function AdminModelsPage() {
     }
   };
 
+  // --- Sync handlers ---
+  const handleSyncPreview = async () => {
+    setSyncLoading(true);
+    try {
+      const res = await fetch("/api/admin/models/sync");
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Preview failed");
+      }
+      const preview: SyncPreview = await res.json();
+      setSyncPreview(preview);
+      setSyncDialogOpen(true);
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : t("syncFailed"));
+    } finally {
+      setSyncLoading(false);
+    }
+  };
+
+  const handleSyncExecute = async () => {
+    setSyncExecuting(true);
+    try {
+      const res = await fetch("/api/admin/models/sync", { method: "POST" });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Sync failed");
+      }
+      toast.success(t("syncSuccess"));
+      setSyncDialogOpen(false);
+      setSyncPreview(null);
+      fetchModels();
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : t("syncFailed"));
+    } finally {
+      setSyncExecuting(false);
+    }
+  };
+
+  // --- Selection handlers ---
+  const toggleSelect = (id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedIds.size === models.length) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(models.map((m) => m.id)));
+    }
+  };
+
+  // --- Batch pricing ---
+  const openBatchPrice = () => {
+    if (selectedIds.size === 0) {
+      toast.error(t("selectModels"));
+      return;
+    }
+    setPriceForm(emptyPriceForm);
+    setBatchDialogOpen(true);
+  };
+
+  const handleBatchPrice = async () => {
+    setBatchSaving(true);
+    const payload: Record<string, unknown> = {
+      modelIds: Array.from(selectedIds),
+    };
+    if (priceForm.sellPrice) payload.sellPrice = parseFloat(priceForm.sellPrice);
+    if (priceForm.sellOutPrice) payload.sellOutPrice = parseFloat(priceForm.sellOutPrice);
+    if (priceForm.inputPrice) payload.inputPrice = parseFloat(priceForm.inputPrice);
+    if (priceForm.outputPrice) payload.outputPrice = parseFloat(priceForm.outputPrice);
+
+    try {
+      const res = await fetch("/api/admin/models/batch-price", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (res.ok) {
+        toast.success(t("batchSuccess"));
+        setBatchDialogOpen(false);
+        setSelectedIds(new Set());
+        fetchModels();
+      } else {
+        const data = await res.json().catch(() => ({}));
+        toast.error(data.error || t("operationFailed"));
+      }
+    } catch {
+      toast.error(t("operationFailed"));
+    } finally {
+      setBatchSaving(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">{t("title")}</h1>
-        <Button onClick={openCreate}>{t("addModel")}</Button>
+        <div className="flex items-center gap-2">
+          {selectedIds.size > 0 && (
+            <Button variant="outline" onClick={openBatchPrice}>
+              {t("batchPrice")} ({selectedIds.size})
+            </Button>
+          )}
+          <Button variant="outline" onClick={handleSyncPreview} disabled={syncLoading}>
+            <RefreshCw className={`mr-2 h-4 w-4 ${syncLoading ? "animate-spin" : ""}`} />
+            {syncLoading ? t("syncing") : t("syncButton")}
+          </Button>
+          <Button onClick={openCreate}>{t("addModel")}</Button>
+        </div>
       </div>
 
       <Card>
@@ -204,6 +346,12 @@ export default function AdminModelsPage() {
               <Table>
                 <TableHeader>
                   <TableRow>
+                    <TableHead className="w-10">
+                      <Checkbox
+                        checked={models.length > 0 && selectedIds.size === models.length}
+                        onCheckedChange={toggleSelectAll}
+                      />
+                    </TableHead>
                     <TableHead>{t("modelId")}</TableHead>
                     <TableHead>{t("displayName")}</TableHead>
                     <TableHead>{t("category")}</TableHead>
@@ -217,7 +365,20 @@ export default function AdminModelsPage() {
                 <TableBody>
                   {models.map((m) => (
                     <TableRow key={m.id}>
-                      <TableCell className="font-mono text-sm">{m.modelId}</TableCell>
+                      <TableCell>
+                        <Checkbox
+                          checked={selectedIds.has(m.id)}
+                          onCheckedChange={() => toggleSelect(m.id)}
+                        />
+                      </TableCell>
+                      <TableCell className="font-mono text-sm">
+                        <span>{m.modelId}</span>
+                        {m.isManual && (
+                          <Badge variant="outline" className="ml-2 text-xs">
+                            {t("manualBadge")}
+                          </Badge>
+                        )}
+                      </TableCell>
                       <TableCell>{m.displayName}</TableCell>
                       <TableCell>
                         <Badge variant="secondary">{m.category}</Badge>
@@ -249,7 +410,7 @@ export default function AdminModelsPage() {
                   ))}
                   {models.length === 0 && (
                     <TableRow>
-                      <TableCell colSpan={8} className="text-center text-muted-foreground py-8">
+                      <TableCell colSpan={9} className="text-center text-muted-foreground py-8">
                         {t("noModels")}
                       </TableCell>
                     </TableRow>
@@ -390,6 +551,126 @@ export default function AdminModelsPage() {
           <DialogFooter>
             <Button variant="outline" onClick={() => setDeleteId(null)}>{t("cancel")}</Button>
             <Button variant="destructive" onClick={handleDelete}>{t("confirmDelete")}</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Sync Preview Dialog */}
+      <Dialog open={syncDialogOpen} onOpenChange={setSyncDialogOpen}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle>{t("syncPreview")}</DialogTitle>
+            <DialogDescription>{t("syncPreviewDesc")}</DialogDescription>
+          </DialogHeader>
+          {syncPreview && (
+            <div className="space-y-4 py-2">
+              <p className="text-sm text-muted-foreground">
+                {t("upstreamTotal", { count: syncPreview.total })}
+              </p>
+
+              {syncPreview.added.length === 0 && syncPreview.deactivated.length === 0 ? (
+                <p className="text-sm">{t("noChanges")}</p>
+              ) : (
+                <>
+                  {syncPreview.added.length > 0 && (
+                    <div>
+                      <h4 className="text-sm font-medium text-green-600 mb-1">
+                        + {t("newModels")} ({syncPreview.added.length})
+                      </h4>
+                      <div className="max-h-40 overflow-y-auto rounded border p-2 space-y-1">
+                        {syncPreview.added.map((id) => (
+                          <div key={id} className="font-mono text-xs text-green-700">{id}</div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {syncPreview.deactivated.length > 0 && (
+                    <div>
+                      <h4 className="text-sm font-medium text-red-600 mb-1">
+                        - {t("removedModels")} ({syncPreview.deactivated.length})
+                      </h4>
+                      <div className="max-h-40 overflow-y-auto rounded border p-2 space-y-1">
+                        {syncPreview.deactivated.map((id) => (
+                          <div key={id} className="font-mono text-xs text-red-700">{id}</div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setSyncDialogOpen(false)}>{t("cancel")}</Button>
+            {syncPreview && (syncPreview.added.length > 0 || syncPreview.deactivated.length > 0) && (
+              <Button onClick={handleSyncExecute} disabled={syncExecuting}>
+                {syncExecuting ? t("syncing") : t("confirmSync")}
+              </Button>
+            )}
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Batch Pricing Dialog */}
+      <Dialog open={batchDialogOpen} onOpenChange={setBatchDialogOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>{t("batchPrice")}</DialogTitle>
+            <DialogDescription>
+              {t("batchPriceDesc", { count: selectedIds.size })}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-2">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>{t("sellInputLabel")}</Label>
+                <Input
+                  type="number"
+                  step="0.00000001"
+                  placeholder="0.002"
+                  value={priceForm.sellPrice}
+                  onChange={(e) => setPriceForm({ ...priceForm, sellPrice: e.target.value })}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>{t("sellOutputLabel")}</Label>
+                <Input
+                  type="number"
+                  step="0.00000001"
+                  placeholder="0.006"
+                  value={priceForm.sellOutPrice}
+                  onChange={(e) => setPriceForm({ ...priceForm, sellOutPrice: e.target.value })}
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>{t("costInputLabel")}</Label>
+                <Input
+                  type="number"
+                  step="0.00000001"
+                  placeholder="0.001"
+                  value={priceForm.inputPrice}
+                  onChange={(e) => setPriceForm({ ...priceForm, inputPrice: e.target.value })}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>{t("costOutputLabel")}</Label>
+                <Input
+                  type="number"
+                  step="0.00000001"
+                  placeholder="0.004"
+                  value={priceForm.outputPrice}
+                  onChange={(e) => setPriceForm({ ...priceForm, outputPrice: e.target.value })}
+                />
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setBatchDialogOpen(false)}>{t("cancel")}</Button>
+            <Button onClick={handleBatchPrice} disabled={batchSaving}>
+              {batchSaving ? t("saving") : t("applyPrice")}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
