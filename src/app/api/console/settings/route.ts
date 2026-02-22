@@ -15,7 +15,9 @@ export async function GET() {
       id: true,
       name: true,
       email: true,
+      passwordHash: true,
       createdAt: true,
+      accounts: { select: { provider: true } },
     },
   });
 
@@ -23,7 +25,20 @@ export async function GET() {
     return NextResponse.json({ error: "用户不存在" }, { status: 404 });
   }
 
-  return NextResponse.json(user);
+  const authMethods: string[] = [];
+  if (user.passwordHash) authMethods.push("credentials");
+  for (const a of user.accounts) {
+    if (!authMethods.includes(a.provider)) authMethods.push(a.provider);
+  }
+  if (authMethods.length === 0) authMethods.push("credentials");
+
+  return NextResponse.json({
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    createdAt: user.createdAt,
+    authMethods,
+  });
 }
 
 export async function PATCH(req: Request) {

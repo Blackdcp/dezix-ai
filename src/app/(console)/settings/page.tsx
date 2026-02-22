@@ -11,13 +11,15 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Loader2, User, Lock } from "lucide-react";
+import { Loader2, User, Lock, Link } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 
 interface UserProfile {
   id: string;
   name: string | null;
   email: string;
+  authMethods: string[];
   createdAt: string;
 }
 
@@ -151,6 +153,16 @@ export default function SettingsPage() {
                 <span className="w-20 text-muted-foreground">注册时间</span>
                 <span>{formatDate(profile.createdAt)}</span>
               </div>
+              <div className="flex gap-2">
+                <span className="w-20 text-muted-foreground">登录方式</span>
+                <div className="flex gap-1">
+                  {profile.authMethods.map((m) => (
+                    <Badge key={m} variant="outline" className="text-xs">
+                      {m === "credentials" ? "密码" : m === "github" ? "GitHub" : m === "google" ? "Google" : m}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
             </div>
           ) : null}
         </CardContent>
@@ -189,7 +201,8 @@ export default function SettingsPage() {
         </CardContent>
       </Card>
 
-      {/* Change Password */}
+      {/* Change Password — only for users with password auth */}
+      {profile?.authMethods.includes("credentials") && (
       <Card>
         <CardHeader className="flex flex-row items-center gap-3">
           <Lock className="h-5 w-5 text-muted-foreground" />
@@ -235,6 +248,7 @@ export default function SettingsPage() {
           </Button>
         </CardContent>
       </Card>
+      )}
     </div>
   );
 }
