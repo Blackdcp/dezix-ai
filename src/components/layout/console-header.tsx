@@ -1,6 +1,7 @@
 "use client";
 
 import { signOut, useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -15,6 +16,7 @@ import { LogOut, User } from "lucide-react";
 function UserMenu() {
   const { data: session, status } = useSession();
   const user = session?.user;
+  const t = useTranslations("Header");
 
   if (status === "loading") {
     return (
@@ -40,12 +42,12 @@ function UserMenu() {
       <DropdownMenuContent align="end" className="w-48">
         <DropdownMenuItem>
           <User className="mr-2 h-4 w-4" />
-          个人设置
+          {t("personalSettings")}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/login" })}>
           <LogOut className="mr-2 h-4 w-4" />
-          退出登录
+          {t("logout")}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

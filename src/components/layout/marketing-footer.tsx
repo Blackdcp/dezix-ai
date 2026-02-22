@@ -1,23 +1,26 @@
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 
 const productLinks = [
-  { href: "/model-list", label: "模型列表" },
-  { href: "/pricing", label: "定价" },
-  { href: "/faq", label: "FAQ" },
+  { href: "/model-list", labelKey: "modelList" },
+  { href: "/pricing", labelKey: "pricing" },
+  { href: "/faq", labelKey: "faq" },
 ];
 
 const docLinks = [
-  { href: "/docs/quick-start", label: "快速开始" },
-  { href: "/docs/api-reference", label: "API 参考" },
-  { href: "/docs/sdk-examples", label: "SDK 示例" },
+  { href: "/docs/quick-start", labelKey: "quickStart" },
+  { href: "/docs/api-reference", labelKey: "apiReference" },
+  { href: "/docs/sdk-examples", labelKey: "sdkExamples" },
 ];
 
 const aboutLinks = [
-  { href: "/login", label: "登录" },
-  { href: "/register", label: "注册" },
+  { href: "/login", labelKey: "login" },
+  { href: "/register", labelKey: "register" },
 ];
 
 export function MarketingFooter() {
+  const t = useTranslations();
+
   return (
     <footer className="border-t border-black/[0.04] bg-[#f5f5f7]">
       <div className="mx-auto max-w-6xl px-4 py-12">
@@ -28,13 +31,13 @@ export function MarketingFooter() {
               Dezix AI
             </Link>
             <p className="mt-2 text-sm text-[#86868b]">
-              统一 AI 模型网关平台，一个 API Key 访问所有主流 AI 模型。
+              {t("Footer.description")}
             </p>
           </div>
 
           {/* Product */}
           <div>
-            <h4 className="mb-3 text-sm font-semibold text-[#1d1d1f]">产品</h4>
+            <h4 className="mb-3 text-sm font-semibold text-[#1d1d1f]">{t("Footer.product")}</h4>
             <ul className="space-y-2">
               {productLinks.map((link) => (
                 <li key={link.href}>
@@ -42,7 +45,7 @@ export function MarketingFooter() {
                     href={link.href}
                     className="text-sm text-[#424245] transition-colors hover:text-[#1d1d1f]"
                   >
-                    {link.label}
+                    {t(`Nav.${link.labelKey}`)}
                   </Link>
                 </li>
               ))}
@@ -51,7 +54,7 @@ export function MarketingFooter() {
 
           {/* Docs */}
           <div>
-            <h4 className="mb-3 text-sm font-semibold text-[#1d1d1f]">文档</h4>
+            <h4 className="mb-3 text-sm font-semibold text-[#1d1d1f]">{t("Footer.docs")}</h4>
             <ul className="space-y-2">
               {docLinks.map((link) => (
                 <li key={link.href}>
@@ -59,7 +62,7 @@ export function MarketingFooter() {
                     href={link.href}
                     className="text-sm text-[#424245] transition-colors hover:text-[#1d1d1f]"
                   >
-                    {link.label}
+                    {t(`Footer.${link.labelKey}`)}
                   </Link>
                 </li>
               ))}
@@ -68,7 +71,7 @@ export function MarketingFooter() {
 
           {/* About */}
           <div>
-            <h4 className="mb-3 text-sm font-semibold text-[#1d1d1f]">关于</h4>
+            <h4 className="mb-3 text-sm font-semibold text-[#1d1d1f]">{t("Footer.about")}</h4>
             <ul className="space-y-2">
               {aboutLinks.map((link) => (
                 <li key={link.href}>
@@ -76,7 +79,7 @@ export function MarketingFooter() {
                     href={link.href}
                     className="text-sm text-[#424245] transition-colors hover:text-[#1d1d1f]"
                   >
-                    {link.label}
+                    {t(`Nav.${link.labelKey}`)}
                   </Link>
                 </li>
               ))}
@@ -85,7 +88,7 @@ export function MarketingFooter() {
         </div>
 
         <div className="mt-8 border-t border-black/[0.04] pt-6 text-center text-sm text-[#86868b]">
-          &copy; 2025 Dezix AI. All rights reserved.
+          {t("Footer.copyright")}
         </div>
       </div>
     </footer>

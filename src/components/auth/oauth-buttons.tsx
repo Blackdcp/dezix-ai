@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { signIn } from "next-auth/react";
+import { useTranslations } from "next-intl";
 
 interface OAuthButtonsProps {
   mode: "login" | "register";
@@ -9,6 +10,7 @@ interface OAuthButtonsProps {
 }
 
 export function OAuthButtons({ mode, referralCode }: OAuthButtonsProps) {
+  const t = useTranslations("Auth");
   const [loadingProvider, setLoadingProvider] = useState<string | null>(null);
 
   async function handleOAuth(provider: string) {
@@ -22,8 +24,8 @@ export function OAuthButtons({ mode, referralCode }: OAuthButtonsProps) {
     await signIn(provider, { callbackUrl: "/dashboard" });
   }
 
-  const githubLabel = mode === "login" ? "使用 GitHub 登录" : "使用 GitHub 注册";
-  const googleLabel = mode === "login" ? "使用 Google 登录" : "使用 Google 注册";
+  const githubLabel = mode === "login" ? t("githubLogin") : t("githubRegister");
+  const googleLabel = mode === "login" ? t("googleLogin") : t("googleRegister");
 
   return (
     <div className="space-y-3">
@@ -40,7 +42,7 @@ export function OAuthButtons({ mode, referralCode }: OAuthButtonsProps) {
             <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
           </svg>
         )}
-        {loadingProvider === "github" ? "跳转中..." : githubLabel}
+        {loadingProvider === "github" ? t("redirecting") : githubLabel}
       </button>
 
       <button
@@ -59,7 +61,7 @@ export function OAuthButtons({ mode, referralCode }: OAuthButtonsProps) {
             <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
           </svg>
         )}
-        {loadingProvider === "google" ? "跳转中..." : googleLabel}
+        {loadingProvider === "google" ? t("redirecting") : googleLabel}
       </button>
     </div>
   );

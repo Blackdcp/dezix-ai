@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,16 +14,17 @@ import { Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
-  { href: "/", label: "首页" },
-  { href: "/model-list", label: "模型列表" },
-  { href: "/pricing", label: "定价" },
-  { href: "/docs/quick-start", label: "文档" },
-  { href: "/faq", label: "FAQ" },
+  { href: "/", labelKey: "home" },
+  { href: "/model-list", labelKey: "modelList" },
+  { href: "/pricing", labelKey: "pricing" },
+  { href: "/docs/quick-start", labelKey: "docs" },
+  { href: "/faq", labelKey: "faq" },
 ];
 
 export function MarketingHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const t = useTranslations("Nav");
 
   return (
     <header className="sticky top-0 z-50 border-b border-black/[0.04] bg-white/80 backdrop-blur-xl">
@@ -50,7 +51,7 @@ export function MarketingHeader() {
                     : "text-[#424245] hover:text-[#1d1d1f]"
                 )}
               >
-                {link.label}
+                {t(link.labelKey)}
               </Link>
             );
           })}
@@ -58,13 +59,13 @@ export function MarketingHeader() {
 
         <div className="hidden items-center gap-2 md:flex">
           <Button variant="ghost" size="sm" className="text-[#424245] hover:text-[#1d1d1f]" asChild>
-            <Link href="/login">登录</Link>
+            <Link href="/login">{t("login")}</Link>
           </Button>
           <Link
             href="/register"
             className="btn-primary inline-flex h-9 items-center justify-center rounded-full px-5 text-sm font-medium"
           >
-            免费注册
+            {t("freeRegister")}
           </Link>
         </div>
 
@@ -76,7 +77,7 @@ export function MarketingHeader() {
             </Button>
           </SheetTrigger>
           <SheetContent side="right" className="w-64">
-            <SheetTitle className="sr-only">导航菜单</SheetTitle>
+            <SheetTitle className="sr-only">{t("mobileMenu")}</SheetTitle>
             <nav className="mt-8 flex flex-col gap-4">
               {navLinks.map((link) => (
                 <Link
@@ -85,18 +86,18 @@ export function MarketingHeader() {
                   onClick={() => setOpen(false)}
                   className="text-sm font-medium text-[#424245] hover:text-[#1d1d1f]"
                 >
-                  {link.label}
+                  {t(link.labelKey)}
                 </Link>
               ))}
               <div className="mt-4 flex flex-col gap-2">
                 <Button variant="outline" size="sm" asChild>
-                  <Link href="/login">登录</Link>
+                  <Link href="/login">{t("login")}</Link>
                 </Button>
                 <Link
                   href="/register"
                   className="btn-primary inline-flex h-9 items-center justify-center rounded-full text-sm font-medium"
                 >
-                  免费注册
+                  {t("freeRegister")}
                 </Link>
               </div>
             </nav>

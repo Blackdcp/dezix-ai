@@ -1,14 +1,18 @@
 "use client";
 
-import { useState } from "react";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { useState, Suspense } from "react";
+import { useRouter } from "@/i18n/navigation";
+import { useSearchParams } from "next/navigation";
+import { Link } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { OAuthButtons } from "@/components/auth/oauth-buttons";
 
-export default function LoginPage() {
+function RegisterForm() {
+  const t = useTranslations("Auth");
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const refCode = searchParams.get("ref") || "";
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -18,22 +22,29 @@ export default function LoginPage() {
     setError("");
 
     const formData = new FormData(e.currentTarget);
+    const name = formData.get("name") as string;
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
-    const result = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
+    const res = await fetch("/api/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name,
+        email,
+        password,
+        referralCode: refCode || undefined,
+      }),
     });
 
-    if (result?.error) {
-      setError("邮箱或密码错误");
+    if (!res.ok) {
+      const data = await res.json();
+      setError(data.error || t("registerError"));
       setLoading(false);
-    } else {
-      router.push("/dashboard");
-      router.refresh();
+      return;
     }
+
+    router.push("/login?registered=true");
   }
 
   return (
@@ -48,8 +59,8 @@ export default function LoginPage() {
           <Link href="/" className="text-2xl font-bold text-[#007AFF]">
             Dezix AI
           </Link>
-          <h1 className="mt-4 text-xl font-bold text-[#1d1d1f]">登录</h1>
-          <p className="mt-1 text-[15px] text-[#86868b]">输入你的邮箱和密码登录</p>
+          <h1 className="mt-4 text-xl font-bold text-[#1d1d1f]">{t("registerTitle")}</h1>
+          <p className="mt-1 text-[15px] text-[#86868b]">{t("registerSubtitle")}</p>
         </div>
         <form onSubmit={onSubmit} className="space-y-4">
           {error && (
@@ -57,9 +68,27 @@ export default function LoginPage() {
               {error}
             </div>
           )}
+          {refCode && (
+            <div className="rounded-xl border border-blue-200 bg-blue-50 p-3 text-sm text-[#007AFF]">
+              {t("referralNotice", { code: refCode })}
+            </div>
+          )}
+          <div className="space-y-2">
+            <label htmlFor="name" className="text-sm font-medium text-[#1d1d1f]">
+              {t("username")}
+            </label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              placeholder={t("namePlaceholder")}
+              required
+              className="flex h-12 w-full rounded-xl border-0 bg-[#f5f5f7] px-3 py-2 text-sm text-[#1d1d1f] placeholder:text-[#86868b] focus:outline-none focus:ring-2 focus:ring-[#007AFF]/30"
+            />
+          </div>
           <div className="space-y-2">
             <label htmlFor="email" className="text-sm font-medium text-[#1d1d1f]">
-              邮箱
+              {t("email")}
             </label>
             <input
               id="email"
@@ -72,13 +101,14 @@ export default function LoginPage() {
           </div>
           <div className="space-y-2">
             <label htmlFor="password" className="text-sm font-medium text-[#1d1d1f]">
-              密码
+              {t("password")}
             </label>
             <input
               id="password"
               name="password"
               type="password"
-              placeholder="••••••••"
+              placeholder={t("passwordPlaceholder")}
+              minLength={8}
               required
               className="flex h-12 w-full rounded-xl border-0 bg-[#f5f5f7] px-3 py-2 text-sm text-[#1d1d1f] placeholder:text-[#86868b] focus:outline-none focus:ring-2 focus:ring-[#007AFF]/30"
             />
@@ -88,7 +118,7 @@ export default function LoginPage() {
             className="btn-primary flex h-12 w-full items-center justify-center rounded-full text-base font-medium disabled:opacity-50"
             disabled={loading}
           >
-            {loading ? "登录中..." : "登录"}
+            {loading ? t("registering") : t("registerButton")}
           </button>
         </form>
         <div className="relative my-6">
@@ -96,17 +126,25 @@ export default function LoginPage() {
             <div className="w-full border-t border-[#d2d2d7]" />
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="bg-white px-4 text-[#86868b]">或使用以下方式登录</span>
+            <span className="bg-white px-4 text-[#86868b]">{t("orRegisterWith")}</span>
           </div>
         </div>
-        <OAuthButtons mode="login" />
+        <OAuthButtons mode="register" referralCode={refCode || undefined} />
         <div className="mt-4 text-center text-sm text-[#86868b]">
-          还没有账号？{" "}
-          <Link href="/register" className="text-[#007AFF] hover:underline">
-            注册
+          {t("hasAccount")}{" "}
+          <Link href="/login" className="text-[#007AFF] hover:underline">
+            {t("loginButton")}
           </Link>
         </div>
       </motion.div>
     </div>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense>
+      <RegisterForm />
+    </Suspense>
   );
 }

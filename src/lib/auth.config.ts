@@ -27,7 +27,14 @@ export const authConfig: NextAuthConfig = {
     },
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      const { pathname } = nextUrl;
+      let { pathname } = nextUrl;
+
+      // Strip locale prefix (e.g., /en/dashboard → /dashboard)
+      const localeMatch = pathname.match(/^\/(en)(\/|$)/);
+      const localePrefix = localeMatch ? `/${localeMatch[1]}` : "";
+      const strippedPathname = localeMatch
+        ? pathname.replace(/^\/(en)/, "") || "/"
+        : pathname;
 
       const protectedPaths = [
         "/dashboard",
@@ -45,20 +52,30 @@ export const authConfig: NextAuthConfig = {
       const authPaths = ["/login", "/register"];
 
       // Logged-in users visiting auth pages → redirect to dashboard
-      if (isLoggedIn && authPaths.some((p) => pathname.startsWith(p))) {
-        return Response.redirect(new URL("/dashboard", nextUrl));
+      if (
+        isLoggedIn &&
+        authPaths.some((p) => strippedPathname.startsWith(p))
+      ) {
+        return Response.redirect(
+          new URL(`${localePrefix}/dashboard`, nextUrl)
+        );
       }
 
       // Not logged in visiting protected pages → redirect to login
-      if (!isLoggedIn && protectedPaths.some((p) => pathname.startsWith(p))) {
-        return Response.redirect(new URL("/login", nextUrl));
+      if (
+        !isLoggedIn &&
+        protectedPaths.some((p) => strippedPathname.startsWith(p))
+      ) {
+        return Response.redirect(new URL(`${localePrefix}/login`, nextUrl));
       }
 
       // Non-ADMIN users visiting /admin/* → redirect to dashboard
-      if (isLoggedIn && pathname.startsWith("/admin")) {
+      if (isLoggedIn && strippedPathname.startsWith("/admin")) {
         const role = auth?.user?.role;
         if (role !== "ADMIN") {
-          return Response.redirect(new URL("/dashboard", nextUrl));
+          return Response.redirect(
+            new URL(`${localePrefix}/dashboard`, nextUrl)
+          );
         }
       }
 

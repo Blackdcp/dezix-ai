@@ -8,7 +8,7 @@ Dezix AI 是一个统一 LLM API 网关平台（仿 n1n.ai），面向国内开�
 
 ## 当前状态
 
-**全部 10 个阶段已完成，项目已上线。** 50 个路由编译通过，67 个测试用例全部通过，ESLint 零错误。
+**Phase 1-10 已完成，Phase 14 (i18n) 进行中。**
 
 **线上地址**: https://dezix-ai.vercel.app
 
@@ -24,6 +24,7 @@ Dezix AI 是一个统一 LLM API 网关平台（仿 n1n.ai），面向国内开�
 | Phase 8: 生产加固 | ✅ 完成 | `5c29333` |
 | Phase 9: Vercel 部署 | ✅ 完成 | `743ee4d` |
 | Phase 10: OAuth 社交登录 (GitHub + Google) | ✅ 完成 | — |
+| Phase 14: 多语言支持 (i18n) | 🔧 进行中 | — |
 
 ## 技术栈
 
@@ -249,6 +250,48 @@ Base URL: `https://api.qnaigc.com/v1`
 - 前端展示页视觉效果待后续优化（用户已提出）
 - Vercel 部署命令: `npx vercel --prod --yes` (Vercel CLI 已链接项目)
 - seed 执行需指定直连串: `DATABASE_URL="postgresql://postgres:DezixAI2026db@db.kkwawbsibpgdqqdirbmv.supabase.co:5432/postgres" npx prisma db seed`
+
+### Phase 14: i18n 多语言支持 — 进度记录
+
+**技术方案**: `next-intl` v4.8.3, App Router, URL prefix (`localePrefix: "as-needed"`)
+- 中文无前缀 (`/dashboard`), 英文有前缀 (`/en/dashboard`)
+- IP 检测: `x-vercel-ip-country` header, CN → zh, 其他 → en
+- Cookie `NEXT_LOCALE` 记住用户偏好
+
+**已完成的步骤:**
+
+| 步骤 | 状态 | 说明 |
+|------|------|------|
+| Step 1: 基础设施 | ✅ 完成 | next-intl 已安装, `src/i18n/{routing,request,navigation}.ts` 已创建, `next.config.ts` 加 plugin, `middleware.ts` 重写 (IP 检测 + next-intl + NextAuth), `auth.config.ts` 更新 (剥离 locale 前缀) |
+| Step 2: 目录重构 | ✅ 完成 | 5 个路由组移入 `src/app/[locale]/`, root layout 精简, `[locale]/layout.tsx` 新建 (NextIntlClientProvider + generateMetadata) |
+| Step 3a: 导航+通用组件 | ✅ 完成 | 7 个文件已改: console-sidebar, console-header, admin-sidebar, admin-header, marketing-header, marketing-footer, docs-sidebar |
+| Step 3b: 认证页面 | ❌ 未完成 | login/page.tsx, register/page.tsx, oauth-buttons.tsx 需要改 |
+| Step 3c: 营销页面 | ❌ 未完成 | hero, features, pricing, cta, models-showcase, providers-bar, stats-bar, 4 个营销 page |
+| Step 3d: 控制台页面 | ❌ 未完成 | 10 个控制台页面 |
+| Step 3e: 管理后台页面 | ❌ 未完成 | 5 个管理页面 |
+| Step 3f: 文档页面 | ❌ 未完成 | 4 个文档页面 |
+| Step 3g: API 错误码 | ❌ 未完成 | ~15 个 API 路由的中文错误消息改为错误码 |
+| Step 4: 语言切换器 | ❌ 未完成 | `language-switcher.tsx` 组件 + 放置到 3 个 Header |
+| Step 5: 构建验证 | ❌ 未完成 | `npm run build` + 日期格式修复 |
+
+**已创建的文件:**
+- `src/i18n/routing.ts` — defineRouting (zh 默认, en)
+- `src/i18n/request.ts` — getRequestConfig
+- `src/i18n/navigation.ts` — createNavigation (Link, useRouter, usePathname, redirect)
+- `src/messages/zh.json` — ~400 个中文翻译字符串 (所有命名空间已定义)
+- `src/messages/en.json` — 完整英文翻译
+- `src/app/[locale]/layout.tsx` — 带 NextIntlClientProvider 的 locale layout
+
+**每个文件改动模式 (供继续工作参考):**
+- Client Component: `import { useTranslations } from "next-intl"` → `const t = useTranslations("Namespace")`
+- `import Link from "next/link"` → `import { Link } from "@/i18n/navigation"`
+- `import { usePathname, useRouter } from "next/navigation"` → `import { usePathname, useRouter } from "@/i18n/navigation"`
+- 注意: `useSearchParams` 保持从 `next/navigation` 导入 (next-intl 不提供)
+- 中文字符串替换为 `t("key")` 或 `t("key", { param: value })` 形式
+- 翻译 key 在 `src/messages/zh.json` 中已全部预定义好
+
+**继续工作指令:**
+> 继续 Phase 14 i18n 工作，从 Step 3b (认证页面) 开始。翻译 key 已在 messages JSON 中定义好，需要逐个文件替换中文字符串为 `useTranslations` 调用。
 
 ## 跨会话继续开发
 

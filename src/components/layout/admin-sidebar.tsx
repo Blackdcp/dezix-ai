@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import {
   LayoutDashboard,
   Users,
@@ -12,21 +12,22 @@ import {
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { href: "/admin/dashboard", label: "仪表盘", icon: LayoutDashboard },
-  { href: "/admin/users", label: "用户管理", icon: Users },
-  { href: "/admin/models", label: "模型管理", icon: Box },
-  { href: "/admin/channels", label: "渠道管理", icon: Radio },
-  { href: "/admin/logs", label: "请求日志", icon: FileText },
+  { href: "/admin/dashboard", labelKey: "dashboard", icon: LayoutDashboard },
+  { href: "/admin/users", labelKey: "users", icon: Users },
+  { href: "/admin/models", labelKey: "models", icon: Box },
+  { href: "/admin/channels", labelKey: "channels", icon: Radio },
+  { href: "/admin/logs", labelKey: "logs", icon: FileText },
 ];
 
 export function AdminSidebar() {
   const pathname = usePathname();
+  const t = useTranslations("AdminNav");
 
   return (
     <aside className="flex h-full w-60 flex-col border-r bg-background">
       <div className="flex h-14 items-center border-b px-4">
         <Link href="/admin/dashboard" className="text-lg font-bold">
-          Dezix AI 管理
+          {t("title")}
         </Link>
       </div>
       <nav className="flex-1 space-y-1 p-3">
@@ -44,7 +45,7 @@ export function AdminSidebar() {
               )}
             >
               <item.icon className="h-4 w-4" />
-              {item.label}
+              {t(item.labelKey)}
             </Link>
           );
         })}

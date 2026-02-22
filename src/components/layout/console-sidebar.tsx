@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
 import {
   LayoutDashboard,
@@ -18,21 +18,22 @@ import {
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { href: "/dashboard", label: "仪表盘", icon: LayoutDashboard },
-  { href: "/api-keys", label: "API 密钥", icon: Key },
-  { href: "/usage", label: "用量统计", icon: BarChart3 },
-  { href: "/models", label: "模型市场", icon: Store },
-  { href: "/playground", label: "Playground", icon: MessageSquare },
-  { href: "/chat", label: "AI 对话", icon: Bot },
-  { href: "/billing", label: "充值计费", icon: CreditCard },
-  { href: "/referral", label: "推荐返佣", icon: Gift },
-  { href: "/settings", label: "设置", icon: Settings },
+  { href: "/dashboard", labelKey: "dashboard", icon: LayoutDashboard },
+  { href: "/api-keys", labelKey: "apiKeys", icon: Key },
+  { href: "/usage", labelKey: "usage", icon: BarChart3 },
+  { href: "/models", labelKey: "models", icon: Store },
+  { href: "/playground", labelKey: "playground", icon: MessageSquare },
+  { href: "/chat", labelKey: "chat", icon: Bot },
+  { href: "/billing", labelKey: "billing", icon: CreditCard },
+  { href: "/referral", labelKey: "referral", icon: Gift },
+  { href: "/settings", labelKey: "settings", icon: Settings },
 ];
 
 export function ConsoleSidebar() {
   const pathname = usePathname();
   const { data: session } = useSession();
   const isAdmin = session?.user?.role === "ADMIN";
+  const t = useTranslations("ConsoleNav");
 
   return (
     <aside className="flex h-full w-60 flex-col border-r bg-background">
@@ -56,7 +57,7 @@ export function ConsoleSidebar() {
               )}
             >
               <item.icon className="h-4 w-4" />
-              {item.label}
+              {t(item.labelKey)}
             </Link>
           );
         })}
@@ -71,7 +72,7 @@ export function ConsoleSidebar() {
             )}
           >
             <Shield className="h-4 w-4" />
-            管理后台
+            {t("adminPanel")}
           </Link>
         </div>
       )}

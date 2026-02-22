@@ -1,36 +1,37 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { BookOpen, FileCode, Terminal } from "lucide-react";
 
 const docNavItems = [
   {
-    title: "入门",
+    titleKey: "gettingStarted",
     items: [
-      { href: "/docs/quick-start", label: "快速开始", icon: BookOpen },
+      { href: "/docs/quick-start", labelKey: "quickStart", icon: BookOpen },
     ],
   },
   {
-    title: "参考",
+    titleKey: "reference",
     items: [
-      { href: "/docs/api-reference", label: "API 参考", icon: FileCode },
-      { href: "/docs/sdk-examples", label: "SDK 示例", icon: Terminal },
+      { href: "/docs/api-reference", labelKey: "apiReference", icon: FileCode },
+      { href: "/docs/sdk-examples", labelKey: "sdkExamples", icon: Terminal },
     ],
   },
 ];
 
 export function DocsSidebar() {
   const pathname = usePathname();
+  const t = useTranslations("DocsSidebar");
 
   return (
     <aside className="hidden w-56 shrink-0 border-r border-black/[0.06] bg-[#f5f5f7] lg:block">
       <nav className="sticky top-14 p-4">
         {docNavItems.map((group) => (
-          <div key={group.title} className="mb-6">
+          <div key={group.titleKey} className="mb-6">
             <h4 className="mb-2 text-xs font-semibold uppercase text-[#86868b]">
-              {group.title}
+              {t(group.titleKey)}
             </h4>
             <ul className="space-y-1">
               {group.items.map((item) => {
@@ -47,7 +48,7 @@ export function DocsSidebar() {
                       )}
                     >
                       <item.icon className="h-4 w-4" />
-                      {item.label}
+                      {t(item.labelKey)}
                     </Link>
                   </li>
                 );
