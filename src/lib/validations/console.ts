@@ -25,6 +25,12 @@ export const topupSchema = z.object({
   amount: z.number().min(0.01, "金额最少 0.01").max(10000, "金额最多 10000"),
 });
 
+// POST /api/console/billing/topup-order
+export const createTopupOrderSchema = z.object({
+  amount: z.number().min(0.01, "金额最少 0.01").max(10000, "金额最多 10000"),
+  remark: z.string().max(200).optional(),
+});
+
 // PATCH /api/console/settings
 export const updateSettingsSchema = z.object({
   name: nameSchema.optional(),

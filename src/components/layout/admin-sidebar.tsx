@@ -8,12 +8,14 @@ import {
   Box,
   Radio,
   FileText,
+  CreditCard,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
   { href: "/admin/dashboard", labelKey: "dashboard", icon: LayoutDashboard },
   { href: "/admin/users", labelKey: "users", icon: Users },
+  { href: "/admin/orders", labelKey: "orders", icon: CreditCard },
   { href: "/admin/models", labelKey: "models", icon: Box },
   { href: "/admin/channels", labelKey: "channels", icon: Radio },
   { href: "/admin/logs", labelKey: "logs", icon: FileText },

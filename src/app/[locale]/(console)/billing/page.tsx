@@ -12,8 +12,16 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { CreditCard, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import Image from "next/image";
 
 interface Transaction {
   id: string;
@@ -21,6 +29,15 @@ interface Transaction {
   amount: number;
   balance: number;
   description: string | null;
+  createdAt: string;
+}
+
+interface TopupOrder {
+  id: string;
+  amount: number;
+  status: "PENDING" | "APPROVED" | "REJECTED";
+  remark: string | null;
+  adminRemark: string | null;
   createdAt: string;
 }
 
@@ -39,7 +56,15 @@ export default function BillingPage() {
   const [loading, setLoading] = useState(true);
 
   const [topupAmount, setTopupAmount] = useState("");
-  const [topupLoading, setTopupLoading] = useState(false);
+  const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
+  const [qrDialogOpen, setQrDialogOpen] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
+
+  // Topup orders
+  const [orders, setOrders] = useState<TopupOrder[]>([]);
+  const [ordersTotal, setOrdersTotal] = useState(0);
+  const [ordersPage, setOrdersPage] = useState(1);
+  const [ordersLoading, setOrdersLoading] = useState(true);
 
   const typeLabels: Record<string, { label: string; variant: "default" | "destructive" | "secondary" | "outline" }> = {
     TOPUP: { label: t("topupType"), variant: "default" },
@@ -65,42 +90,65 @@ export default function BillingPage() {
     }
   }, [pageSize, t]);
 
+  const fetchOrders = useCallback(async (p: number) => {
+    setOrdersLoading(true);
+    try {
+      const res = await fetch(`/api/console/billing/topup-order?page=${p}&pageSize=10`);
+      const data = await res.json();
+      setOrders(data.orders);
+      setOrdersTotal(data.total);
+      setOrdersPage(data.page);
+    } catch {
+      // silent
+    } finally {
+      setOrdersLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
     fetchBilling(1);
-  }, [fetchBilling]);
+    fetchOrders(1);
+  }, [fetchBilling, fetchOrders]);
 
-  const handleTopup = async (amount: number) => {
+  const openQrDialog = (amount: number) => {
     if (amount <= 0 || amount > 10000) {
       toast.error(t("amountRange"));
       return;
     }
-    setTopupLoading(true);
+    setSelectedAmount(Math.round(amount * 100) / 100);
+    setQrDialogOpen(true);
+  };
+
+  const handleSubmitOrder = async () => {
+    if (!selectedAmount) return;
+    setSubmitLoading(true);
     try {
-      const res = await fetch("/api/console/billing/topup", {
+      const res = await fetch("/api/console/billing/topup-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount }),
+        body: JSON.stringify({ amount: selectedAmount }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || t("topUpFailed"));
-      toast.success(t("topUpSuccess", { amount: amount.toFixed(2) }));
-      setBalance(data.balance);
+      if (!res.ok) throw new Error(data.error || t("orderSubmitFailed"));
+      toast.success(t("orderSubmitted"));
+      setQrDialogOpen(false);
       setTopupAmount("");
-      fetchBilling(1);
+      setSelectedAmount(null);
+      fetchOrders(1);
     } catch (err) {
       const errorMsg = (err as Error).message;
-      // Try to translate error code from API
       try {
         toast.error(te(errorMsg as Parameters<typeof te>[0]));
       } catch {
         toast.error(errorMsg);
       }
     } finally {
-      setTopupLoading(false);
+      setSubmitLoading(false);
     }
   };
 
   const totalPages = Math.ceil(total / pageSize);
+  const ordersTotalPages = Math.ceil(ordersTotal / 10);
 
   const formatTime = (dateStr: string) => {
     const d = new Date(dateStr);
@@ -112,6 +160,17 @@ export default function BillingPage() {
       minute: "2-digit",
       second: "2-digit",
     });
+  };
+
+  const statusBadge = (status: TopupOrder["status"]) => {
+    switch (status) {
+      case "PENDING":
+        return <Badge variant="secondary">{t("statusPending")}</Badge>;
+      case "APPROVED":
+        return <Badge variant="default">{t("statusApproved")}</Badge>;
+      case "REJECTED":
+        return <Badge variant="destructive">{t("statusRejected")}</Badge>;
+    }
   };
 
   return (
@@ -132,7 +191,7 @@ export default function BillingPage() {
         </CardContent>
       </Card>
 
-      {/* Topup Area */}
+      {/* Topup Area — WeChat QR */}
       <Card>
         <CardHeader>
           <CardTitle>{t("topUp")}</CardTitle>
@@ -144,8 +203,7 @@ export default function BillingPage() {
               <Button
                 key={amt}
                 variant="outline"
-                disabled={topupLoading}
-                onClick={() => handleTopup(amt)}
+                onClick={() => openQrDialog(amt)}
               >
                 ¥{amt}
               </Button>
@@ -162,15 +220,122 @@ export default function BillingPage() {
               step={0.01}
             />
             <Button
-              disabled={topupLoading || !topupAmount}
-              onClick={() => handleTopup(parseFloat(topupAmount))}
+              disabled={!topupAmount}
+              onClick={() => openQrDialog(parseFloat(topupAmount))}
             >
-              {topupLoading ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : null}
               {t("confirmTopUp")}
             </Button>
           </div>
+        </CardContent>
+      </Card>
+
+      {/* QR Code Dialog */}
+      <Dialog open={qrDialogOpen} onOpenChange={setQrDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>{t("qrTitle")}</DialogTitle>
+            <DialogDescription>
+              {t("qrDesc", { amount: selectedAmount?.toFixed(2) || "0" })}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col items-center gap-4 py-4">
+            <div className="relative h-64 w-64 overflow-hidden rounded-lg border">
+              <Image
+                src="/wechat-qr.jpg"
+                alt="WeChat QR Code"
+                fill
+                className="object-contain"
+              />
+            </div>
+            <div className="text-center text-2xl font-bold text-primary">
+              ¥{selectedAmount?.toFixed(2)}
+            </div>
+            <p className="text-center text-sm text-muted-foreground">
+              {t("qrTip")}
+            </p>
+            <Button
+              className="w-full"
+              size="lg"
+              disabled={submitLoading}
+              onClick={handleSubmitOrder}
+            >
+              {submitLoading ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : null}
+              {submitLoading ? t("submitting") : t("iPaid")}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* My Topup Orders */}
+      <Card>
+        <CardHeader>
+          <CardTitle>{t("myOrders")}</CardTitle>
+          <CardDescription>{t("myOrdersDesc")}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {ordersLoading ? (
+            <div className="flex h-32 items-center justify-center text-muted-foreground">
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              {tc("loading")}
+            </div>
+          ) : orders.length === 0 ? (
+            <div className="flex h-32 items-center justify-center text-muted-foreground">
+              {t("noOrders")}
+            </div>
+          ) : (
+            <>
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b text-left text-muted-foreground">
+                      <th className="pb-3 pr-4 font-medium">{t("orderAmount")}</th>
+                      <th className="pb-3 pr-4 font-medium">{t("orderStatus")}</th>
+                      <th className="pb-3 pr-4 font-medium">{t("orderRemark")}</th>
+                      <th className="pb-3 font-medium">{t("orderTime")}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {orders.map((order) => (
+                      <tr key={order.id} className="border-b last:border-0">
+                        <td className="py-3 pr-4 font-medium">¥{order.amount.toFixed(2)}</td>
+                        <td className="py-3 pr-4">{statusBadge(order.status)}</td>
+                        <td className="py-3 pr-4 text-muted-foreground">
+                          {order.status === "REJECTED" && order.adminRemark
+                            ? t("rejectedReason", { reason: order.adminRemark })
+                            : order.remark || "-"}
+                        </td>
+                        <td className="py-3 text-muted-foreground">
+                          {formatTime(order.createdAt)}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              {ordersTotalPages > 1 && (
+                <div className="mt-4 flex items-center justify-end gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={ordersPage <= 1}
+                    onClick={() => fetchOrders(ordersPage - 1)}
+                  >
+                    {t("prevPage")}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={ordersPage >= ordersTotalPages}
+                    onClick={() => fetchOrders(ordersPage + 1)}
+                  >
+                    {t("nextPage")}
+                  </Button>
+                </div>
+              )}
+            </>
+          )}
         </CardContent>
       </Card>
 

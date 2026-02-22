@@ -87,3 +87,14 @@ export const adminLogsQuerySchema = paginationSchema.extend({
   dateFrom: z.string().optional().default(""),
   dateTo: z.string().optional().default(""),
 });
+
+// GET /api/admin/orders query
+export const adminOrdersQuerySchema = paginationSchema.extend({
+  search: z.string().optional().default(""),
+  status: z.enum(["PENDING", "APPROVED", "REJECTED"]).optional(),
+});
+
+// POST /api/admin/orders/[id]/reject
+export const adminRejectOrderSchema = z.object({
+  adminRemark: z.string().min(1, "请填写拒绝原因").max(500),
+});

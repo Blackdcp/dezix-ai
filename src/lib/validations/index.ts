@@ -5,6 +5,7 @@ export {
   createApiKeySchema,
   updateApiKeySchema,
   topupSchema,
+  createTopupOrderSchema,
   updateSettingsSchema,
   changePasswordSchema,
 } from "./console";
@@ -19,4 +20,6 @@ export {
   adminCreateChannelSchema,
   adminUpdateChannelSchema,
   adminLogsQuerySchema,
+  adminOrdersQuerySchema,
+  adminRejectOrderSchema,
 } from "./admin";
