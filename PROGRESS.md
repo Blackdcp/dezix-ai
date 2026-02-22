@@ -471,11 +471,49 @@
 
 ---
 
+## Phase 11: 微信收款码充值 + 管理员审核 ✅
+
+### 数据库
+- [x] 新增 `TopupOrderStatus` 枚举 (PENDING / APPROVED / REJECTED)
+- [x] 新增 `TopupOrder` 模型 (id, userId, amount, status, remark, adminId, adminRemark, createdAt, updatedAt)
+- [x] User 模型添加 `topupOrders TopupOrder[]` 关系
+- [x] `prisma db push` + `prisma generate` 完成
+
+### 推荐返佣公用函数
+- [x] 新建 `src/lib/referral.ts` — `processReferralCommission(userId, amount)` 函数
+- [x] 修改 `src/app/api/console/billing/topup/route.ts` — 改用共享函数
+
+### Zod 验证
+- [x] `createTopupOrderSchema` (console.ts)
+- [x] `adminOrdersQuerySchema` + `adminRejectOrderSchema` (admin.ts)
+
+### API 路由 (4 个新文件)
+- [x] `GET/POST /api/console/billing/topup-order` — 用户订单列表 / 创建订单
+- [x] `GET /api/admin/orders` — 管理员查看全部订单 (分页+状态筛选+搜索)
+- [x] `POST /api/admin/orders/[id]/approve` — 确认到账 (原子更新+余额+Transaction+返佣)
+- [x] `POST /api/admin/orders/[id]/reject` — 拒绝 (需填原因)
+
+### i18n
+- [x] 新增 `AdminOrders` 命名空间 (zh + en)
+- [x] 更新 `Billing` (QR 支付流程)、`AdminNav` (订单导航)、`Errors` (订单错误码)
+
+### 前端页面
+- [x] 收款码: `public/wechat-qr.jpg`
+- [x] 用户充值页改造: 选金额 → Dialog 显示收款码 → 点"已支付"创建订单 + 我的充值订单卡片
+- [x] 管理后台订单页: `/admin/orders` — 订单表格 + 状态筛选 + 搜索 + 审核/拒绝 Dialog
+- [x] 管理侧边栏: 添加"充值订单" (CreditCard 图标)
+
+### 验证
+- [x] `npm run build` 通过
+- [x] Git commit: `783e6e7`
+
+---
+
 ## 后续可选方向
 
 - [x] Phase 10: OAuth 社交登录 (GitHub / Google)
-- [ ] Phase 11: 真实支付集成 (Stripe / 支付宝)
+- [x] Phase 11: 微信收款码充值 + 管理员审核
 - [ ] Phase 12: 模型管理增强 (自动同步上游模型列表、价格更新)
 - [ ] Phase 13: 监控告警 (Prometheus + Grafana / Sentry)
-- [ ] Phase 14: 多语言支持 (i18n)
+- [x] Phase 14: 多语言支持 (i18n)
 - [ ] 前端视觉重构 (营销首页、定价、文档站、控制台)

@@ -8,7 +8,7 @@ Dezix AI 是一个统一 LLM API 网关平台（仿 n1n.ai），面向国内开�
 
 ## 当前状态
 
-**Phase 1-10, 14 已完成。**
+**Phase 1-10, 11, 14 已完成。**
 
 **线上地址**: https://dezix-ai.vercel.app
 
@@ -24,6 +24,7 @@ Dezix AI 是一个统一 LLM API 网关平台（仿 n1n.ai），面向国内开�
 | Phase 8: 生产加固 | ✅ 完成 | `5c29333` |
 | Phase 9: Vercel 部署 | ✅ 完成 | `743ee4d` |
 | Phase 10: OAuth 社交登录 (GitHub + Google) | ✅ 完成 | — |
+| Phase 11: 微信收款码充值 + 管理员审核 | ✅ 完成 | `783e6e7` |
 | Phase 14: 多语言支持 (i18n) | ✅ 完成 | — |
 
 ## 技术栈
