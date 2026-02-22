@@ -204,6 +204,14 @@ npm run test:watch           # Vitest 监听模式
 - `prisma/seed.ts` — 七牛云上游，91 个模型 (13 家厂商)
 - 线上已验证: 非流式/流式/多厂商模型全部转发正常
 
+### 品牌映射 + 模型分类 (已完成 ✅, commit `b50a35b`)
+- `src/lib/brand.ts` — `getModelBrand()` 从 modelId 前缀推断品牌名，隐藏 qiniu 上游
+- API 路由 `providerName` 改用品牌映射，providers 列表从 modelId 推断
+- 91 个模型分为 5 类: chat(59) / multimodal(14) / reasoning(12) / code(5) / image(1)
+- 模型广场新增 Playground + 对话 跳转按钮，支持 `?model=` URL query
+- 营销页更新: 90+ 模型、13+ 供应商、最新模型名称
+- 线上验证: 14 个品牌正确显示，无 qiniu 泄露
+
 **测试用 Dezix API Key:**
 `sk-dezix-0afa2d524f6b04a6eeabdbdcbb6e33cf6e2a5f2392aeeb96`
 
@@ -228,6 +236,8 @@ Base URL: `https://api.qnaigc.com/v1`
 - 本地开发仍可使用 Docker: `docker compose up -d` (PG + Redis)
 - Windows 下 npx 有 PATH 问题，可用 `node node_modules/next/dist/bin/next dev`
 - 前端展示页视觉效果待后续优化（用户已提出）
+- Vercel 部署命令: `npx vercel --prod --yes` (Vercel CLI 已链接项目)
+- seed 执行需指定直连串: `DATABASE_URL="postgresql://postgres:DezixAI2026db@db.kkwawbsibpgdqqdirbmv.supabase.co:5432/postgres" npx prisma db seed`
 
 ## 跨会话继续开发
 

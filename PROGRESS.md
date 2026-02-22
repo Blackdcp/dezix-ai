@@ -403,6 +403,47 @@
 
 ---
 
+## 供应商隐藏 + 模型分类 + 营销同步 + 模型广场交互 (2026-02-22) ✅
+
+### 1. 供应商品牌映射（隐藏 qiniu）
+- [x] 新建 `src/lib/brand.ts` — `getModelBrand()` 从 modelId 前缀推断品牌名（14 条规则 + fallback）
+- [x] 新建 `getBrandList()` — 从 modelId 列表生成去重品牌列表
+- [x] 修改 `src/app/api/console/models/route.ts` — providerName 改用 `getModelBrand()`，providers 返回品牌列表
+- [x] 修改 `src/app/api/public/models/route.ts` — 同上
+- [x] 线上验证: 所有 providerName 均为品牌名（OpenAI/Anthropic/Google 等），不含 "qiniu"
+
+### 2. 模型分类修正
+- [x] 修改 `prisma/seed.ts` — 91 个模型重新分类为 5 类:
+  - `chat` (59): 纯文本对话
+  - `multimodal` (14): Gemini 全系列 + VL/Vision 模型
+  - `reasoning` (12): R1 + thinking 系列
+  - `code` (5): Codex + Coder + Grok Code
+  - `image` (1): Gemini 2.5 Flash Image
+- [x] 修改 `src/app/(console)/models/page.tsx` — categoryLabels 加新分类
+- [x] 修改 `src/app/(marketing)/model-list/page.tsx` — 加 categoryLabels 映射
+- [x] 线上 seed 已执行，分类数据已更新
+
+### 3. 前端营销页面同步
+- [x] `src/components/marketing/stats-bar.tsx` — 7+ → 90+, 4 → 13+
+- [x] `src/components/marketing/providers-bar.tsx` — 4 家 → 13 家厂商
+- [x] `src/components/marketing/hero-section.tsx` — "等 13 家厂商的 90+ 款模型"
+- [x] `src/components/marketing/features-section.tsx` — "GPT-5、Claude 4、Gemini 3、DeepSeek V3 等 90+ 款"
+- [x] `src/app/(marketing)/faq/page.tsx` — FAQ #1 更新供应商列表，FAQ #5 更新模型名称
+- [x] `src/app/layout.tsx` — SEO description 更新
+
+### 4. 模型广场交互按钮
+- [x] `src/app/(console)/models/page.tsx` — 每个卡片加 Playground + 对话 按钮，跳转 `?model=`
+- [x] `src/app/(console)/playground/page.tsx` — 支持 `?model=` 自动选中 + Suspense boundary
+- [x] `src/app/(console)/chat/page.tsx` — 支持 `?model=` 自动选中 + Suspense boundary
+
+### 部署
+- [x] Git commit: `b50a35b`
+- [x] GitHub push + Vercel 部署成功
+- [x] 线上 seed 执行: 91 个模型分类已更新
+- [x] 线上 API 验证: 14 个品牌、5 个分类、无 qiniu 泄露
+
+---
+
 ## 后续可选方向
 
 - [ ] Phase 10: OAuth 社交登录 (GitHub / Google)
