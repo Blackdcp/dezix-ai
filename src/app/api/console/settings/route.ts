@@ -15,9 +15,15 @@ export async function GET() {
       id: true,
       name: true,
       email: true,
+      image: true,
       passwordHash: true,
       createdAt: true,
-      accounts: { select: { provider: true } },
+      accounts: {
+        select: {
+          provider: true,
+          providerAccountId: true,
+        },
+      },
     },
   });
 
@@ -36,8 +42,13 @@ export async function GET() {
     id: user.id,
     name: user.name,
     email: user.email,
+    image: user.image,
     createdAt: user.createdAt,
     authMethods,
+    linkedAccounts: user.accounts.map((a) => ({
+      provider: a.provider,
+      providerAccountId: a.providerAccountId,
+    })),
   });
 }
 
