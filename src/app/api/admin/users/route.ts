@@ -41,7 +41,9 @@ export async function GET(req: Request) {
         role: true,
         balance: true,
         referralCode: true,
+        passwordHash: true,
         createdAt: true,
+        accounts: { select: { provider: true } },
         _count: { select: { apiKeys: true, usageLogs: true } },
       },
       orderBy: { createdAt: "desc" },
@@ -52,10 +54,25 @@ export async function GET(req: Request) {
   ]);
 
   return NextResponse.json({
-    users: users.map((u) => ({
-      ...u,
-      balance: Number(u.balance),
-    })),
+    users: users.map((u) => {
+      const authMethods: string[] = [];
+      if (u.passwordHash) authMethods.push("credentials");
+      for (const a of u.accounts) {
+        if (!authMethods.includes(a.provider)) authMethods.push(a.provider);
+      }
+      if (authMethods.length === 0) authMethods.push("credentials");
+      return {
+        id: u.id,
+        name: u.name,
+        email: u.email,
+        role: u.role,
+        balance: Number(u.balance),
+        referralCode: u.referralCode,
+        createdAt: u.createdAt,
+        authMethods,
+        _count: u._count,
+      };
+    }),
     total,
     page,
     pageSize,

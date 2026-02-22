@@ -43,6 +43,7 @@ interface UserItem {
   role: string;
   balance: number;
   referralCode: string | null;
+  authMethods: string[];
   createdAt: string;
   _count: { apiKeys: number; usageLogs: number };
 }
@@ -172,6 +173,7 @@ export default function AdminUsersPage() {
                     <TableHead>用户名</TableHead>
                     <TableHead>邮箱</TableHead>
                     <TableHead>角色</TableHead>
+                    <TableHead>登录方式</TableHead>
                     <TableHead className="text-right">余额</TableHead>
                     <TableHead>密钥数</TableHead>
                     <TableHead>请求数</TableHead>
@@ -188,6 +190,15 @@ export default function AdminUsersPage() {
                         <Badge variant={u.role === "ADMIN" ? "default" : "secondary"}>
                           {u.role}
                         </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex gap-1">
+                          {u.authMethods.map((m) => (
+                            <Badge key={m} variant="outline" className="text-xs">
+                              {m === "credentials" ? "密码" : m === "github" ? "GitHub" : m === "google" ? "Google" : m}
+                            </Badge>
+                          ))}
+                        </div>
                       </TableCell>
                       <TableCell className="text-right">¥{u.balance.toFixed(2)}</TableCell>
                       <TableCell>{u._count.apiKeys}</TableCell>
@@ -218,7 +229,7 @@ export default function AdminUsersPage() {
                   ))}
                   {users.length === 0 && (
                     <TableRow>
-                      <TableCell colSpan={8} className="text-center text-muted-foreground py-8">
+                      <TableCell colSpan={9} className="text-center text-muted-foreground py-8">
                         暂无用户
                       </TableCell>
                     </TableRow>
