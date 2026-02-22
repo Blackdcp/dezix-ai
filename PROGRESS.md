@@ -544,8 +544,11 @@
 - [x] Git commit: `2d20d7d`
 
 ### 待部署
-- [ ] `git push` 到 GitHub 触发 Vercel 部署
-- [ ] 线上验证: `/admin/models` → 同步 + 批量调价功能
+- [x] `git push` 到 GitHub 触发 Vercel 部署
+- [x] 线上验证: `/admin/models` → 200
+- [x] 线上验证: `GET /api/admin/models/sync` → 预览返回 49 个上游模型，9 个待下线
+- [x] 线上验证: `POST /api/admin/models/batch-price` → 批量调价成功
+- [x] 线上验证: `isManual` 字段在 API 响应中正确返回
 
 ---
 
