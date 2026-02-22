@@ -8,7 +8,7 @@ Dezix AI 是一个统一 LLM API 网关平台（仿 n1n.ai），面向国内开�
 
 ## 当前状态
 
-**全部 9 个阶段已完成，项目已上线。** 50 个路由编译通过，67 个测试用例全部通过，ESLint 零错误。
+**全部 10 个阶段已完成，项目已上线。** 50 个路由编译通过，67 个测试用例全部通过，ESLint 零错误。
 
 **线上地址**: https://dezix-ai.vercel.app
 
@@ -23,6 +23,7 @@ Dezix AI 是一个统一 LLM API 网关平台（仿 n1n.ai），面向国内开�
 | Phase 7: 管理后台 + 推荐返佣 | ✅ 完成 | `99f1a76` |
 | Phase 8: 生产加固 | ✅ 完成 | `5c29333` |
 | Phase 9: Vercel 部署 | ✅ 完成 | `743ee4d` |
+| Phase 10: OAuth 社交登录 (GitHub + Google) | ✅ 完成 | — |
 
 ## 技术栈
 
@@ -31,7 +32,7 @@ Dezix AI 是一个统一 LLM API 网关平台（仿 n1n.ai），面向国内开�
 | 前后端 | Next.js 16 (App Router) + TypeScript |
 | 数据库 | Supabase PostgreSQL (Prisma ORM 7 + PrismaPg driver adapter + PgBouncer) |
 | 缓存/限流 | Upstash Redis (@upstash/redis HTTP) + @upstash/ratelimit |
-| 认证 | NextAuth.js v5 (beta) + Credentials Provider |
+| 认证 | NextAuth.js v5 (beta) + Credentials + GitHub OAuth + Google OAuth |
 | UI | Tailwind CSS v4 + shadcn/ui |
 | 验证 | Zod v4 (15 个路由的输入验证) |
 | 加密 | AES-256-GCM (渠道 API Key 加密存储) |

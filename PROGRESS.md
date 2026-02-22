@@ -444,9 +444,21 @@
 
 ---
 
+## Phase 10: OAuth 社交登录 (GitHub + Google)
+
+### 已完成
+- [x] 新建 `src/components/auth/oauth-buttons.tsx` — GitHub/Google OAuth 按钮组件 (SVG 图标, loading 状态, referral cookie)
+- [x] 修改 `src/lib/auth.ts` — 添加 GitHub/Google provider + allowDangerousEmailAccountLinking + 增强 jwt callback + events.createUser (referralCode + 推荐关联)
+- [x] 修改 `src/app/(auth)/login/page.tsx` — 添加分隔线 + OAuthButtons
+- [x] 修改 `src/app/(auth)/register/page.tsx` — 添加分隔线 + OAuthButtons (含 referralCode 传递)
+- [x] 更新 `.env.example` — 添加 GITHUB_CLIENT_ID/SECRET, GOOGLE_CLIENT_ID/SECRET
+- [x] `npm run build` 编译通过 (50 路由)
+
+---
+
 ## 后续可选方向
 
-- [ ] Phase 10: OAuth 社交登录 (GitHub / Google)
+- [x] Phase 10: OAuth 社交登录 (GitHub / Google)
 - [ ] Phase 11: 真实支付集成 (Stripe / 支付宝)
 - [ ] Phase 12: 模型管理增强 (自动同步上游模型列表、价格更新)
 - [ ] Phase 13: 监控告警 (Prometheus + Grafana / Sentry)

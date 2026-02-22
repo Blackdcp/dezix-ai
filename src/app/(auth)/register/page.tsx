@@ -4,6 +4,7 @@ import { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { OAuthButtons } from "@/components/auth/oauth-buttons";
 
 function RegisterForm() {
   const router = useRouter();
@@ -117,6 +118,15 @@ function RegisterForm() {
             {loading ? "注册中..." : "注册"}
           </button>
         </form>
+        <div className="relative my-6">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-[#d2d2d7]" />
+          </div>
+          <div className="relative flex justify-center text-sm">
+            <span className="bg-white px-4 text-[#86868b]">或使用以下方式注册</span>
+          </div>
+        </div>
+        <OAuthButtons mode="register" referralCode={refCode || undefined} />
         <div className="mt-4 text-center text-sm text-[#86868b]">
           已有账号？{" "}
           <Link href="/login" className="text-[#007AFF] hover:underline">

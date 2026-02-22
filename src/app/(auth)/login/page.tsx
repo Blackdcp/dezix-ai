@@ -5,6 +5,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { OAuthButtons } from "@/components/auth/oauth-buttons";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -90,6 +91,15 @@ export default function LoginPage() {
             {loading ? "登录中..." : "登录"}
           </button>
         </form>
+        <div className="relative my-6">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-[#d2d2d7]" />
+          </div>
+          <div className="relative flex justify-center text-sm">
+            <span className="bg-white px-4 text-[#86868b]">或使用以下方式登录</span>
+          </div>
+        </div>
+        <OAuthButtons mode="login" />
         <div className="mt-4 text-center text-sm text-[#86868b]">
           还没有账号？{" "}
           <Link href="/register" className="text-[#007AFF] hover:underline">
