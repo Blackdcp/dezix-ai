@@ -560,3 +560,45 @@
 - ~~Phase 13: 监控告警~~ (不做)
 - [x] Phase 14: 多语言支持 (i18n)
 - [ ] **Phase 15: 前端视觉重构** (营销首页、定价、文档站、控制台) ← 下一步
+
+---
+
+## Phase 15: 前端视觉重构 (进行中)
+
+### 设计方向
+- 从当前 Apple 风格 (#007AFF 蓝、Geist 字体、rounded-full 按钮) 重构为 Formant.ai 风格高端 SaaS
+- 用户要求: 不只是按 75 分的方案执行，需要综合 UE/UI 体验层面整体提升到 95+ 水准
+- 配色: --accent #2563eb, 渐变 #2563eb → #7c3aed, 背景 #f8f9fb, 文字 #0f1729/#3d4663/#7c8299
+- 字体: Outfit (标题) + DM Sans (正文) + JetBrains Mono (代码)
+- 按钮: rounded-full → rounded-[10px]/[12px]
+- 卡片: rounded-[14px] + 顶部渐变线 hover 效果
+
+### 覆盖范围
+- [ ] Step 1: 全局基础 (globals.css, layout.tsx, tailwind)
+- [ ] Step 2: 营销页 Header + Footer
+- [ ] Step 3: Hero Section (点阵背景、渐变光球、代码预览块)
+- [ ] Step 4: Providers + Features + Stats
+- [ ] Step 5: Pricing + CTA + Models Showcase
+- [ ] Step 6: 营销子页面 (/pricing, /faq, /model-list)
+- [ ] Step 7: Auth 页面 (login, register)
+- [ ] Step 8: 文档站 (docs-sidebar, docs layout)
+- [ ] Step 9: 控制台 (console-sidebar, console-header, layout)
+- [ ] Step 10: 管理后台 (admin-sidebar, admin-header, layout)
+- [ ] Step 11: Build 验证 + Git Commit
+
+### Bug 修复 (Phase 15 Part B)
+- [ ] Step 12: CLAUDE.md 凭据清理 (移除密钥, 改引用 .env)
+- [ ] Step 13: Redis 缓存明文 API Key (router.ts 缓存加密值)
+- [ ] Step 14: 流式计费预扣机制 (gateway/index.ts)
+- [ ] Step 15: 推荐返佣原子操作 (referral.ts)
+- [ ] Step 16: OAuth 账号劫持 (移除 allowDangerousEmailAccountLinking)
+- [ ] Step 17: H2-H7 高危 Bug (auth缓存/解密异常/Google API Key/Token计数/Anthropic tool/Google多系统消息)
+- [ ] Step 18: M1-M7 中等 Bug (计费成本/Stream cancel/死代码/批量调价/渠道URL校验)
+- [ ] Step 19: 版权年份 2025 → 2026
+- [ ] Step 20: Build + 测试 + Git Commit
+
+### 注意事项
+- 项目路径: `E:\Claude code\dezix-ai` (不是 maas-platform)
+- 使用 src/ 目录结构 + [locale] i18n 路由
+- 参考 CLAUDE.md 了解完整项目结构和文件位置
+- `E:\Claude code\maas-platform` 是之前会话误创建的独立项目，与 dezix-ai 无关
