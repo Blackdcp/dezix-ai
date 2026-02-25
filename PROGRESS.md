@@ -563,44 +563,65 @@
 
 ---
 
-## Phase 15: 前端视觉重构 Part A ✅ 完成
+## Phase 15: 前端视觉重构
 
-### 设计方向
-- 从当前 Apple 风格 (#007AFF 蓝、Geist 字体、rounded-full 按钮) 重构为 Formant.ai 风格高端 SaaS
-- 用户要求: 不只是按 75 分的方案执行，需要综合 UE/UI 体验层面整体提升到 95+ 水准
-- 配色: --accent #2563eb, 渐变 #2563eb → #7c3aed, 背景 #f8f9fb, 文字 #0f1729/#3d4663/#7c8299
-- 字体: Outfit (标题) + DM Sans (正文) + JetBrains Mono (代码)
-- 按钮: rounded-full → rounded-[10px]/[12px]
-- 卡片: rounded-[14px] + 顶部渐变线 hover 效果
+### 设计方向 (最终确定)
+- 用户提供了参考图 (`C:\Users\user\Desktop\39ada8279480c9ddee898c1ba01be537.jpg`)
+- **浅色、现代、活泼的 SaaS 风格** — 白色背景、彩色点缀、干净排版
+- 配色: Purple (#7C5CFC), Coral (#E8706A), Green (#2DB574), Dark text (#1a1a2e), 白色/浅灰背景
+- 品牌渐变: `linear-gradient(135deg, #7C5CFC 0%, #E8706A 100%)`
+- 按钮: `btn-primary` = 黑色(#1a1a2e) rounded-full 药丸形; `btn-secondary` = 白色边框 rounded-full
+- 卡片: 白色背景, #e4e4e7 边框, rounded-2xl, hover 阴影
+- 导航: rounded-xl 链接项, bg-[#f0ecff] + text-[#7C5CFC] 选中态
 
-### Part A: 视觉重构 (已完成)
-- [x] Step 1: 全局基础 (globals.css 重写 — 新配色/字体/卡片系统/按钮/点阵背景/渐变光球, layout.tsx 字体)
-- [x] Step 2: 营销页 Header (Logo icon + 导航 pill 样式 + rounded-[10px] 按钮) + Footer (白底 + 品牌 icon)
-- [x] Step 3: Hero Section (点阵背景 + 双色渐变光球 + badge pill + 渐变标题 + 代码预览块)
-- [x] Step 4: Providers (border-y 白底 + hover 变色) + Features (card-gradient-line + icon 背景) + Stats (gradient-brand 白字)
-- [x] Step 5: Pricing (渐变顶线 + shadow-[#2563eb]/10) + CTA (点阵+光球) + Models Showcase (card-elevated)
-- [x] Step 6: 营销子页面 (/pricing, /faq, /model-list — 全部新配色、圆角、表格样式)
-- [x] Step 7: Auth 页面 (login, register — Logo icon + border 输入框 + rounded-[14px] 卡片)
-- [x] Step 8: 文档站 (docs-sidebar 白底 + rounded-[8px] 导航项, docs layout max-w-7xl)
-- [x] Step 9: 控制台 (console-sidebar 白底 + Logo icon + rounded-[8px], console-header 白底 + avatar 蓝色)
-- [x] Step 10: 管理后台 (admin-sidebar 深色 icon + rounded-[8px], admin-header 白底)
-- [x] Step 11: Build 验证通过 (76 路由, 0 警告, 0 错误)
-- [x] Language switcher 同步更新 (rounded-[8px], 新配色)
-- [x] Git commit
+### Part A: 第一次重构 (已废弃, 30/100 分)
+- 错误理解为深色未来感主题 (#0a0e1a 背景, cyan #00d4ff, neon purple, glass-morphism)
+- 用户明确否定: "你没有按照我给你的参考风格制作，我的参考是浅色背景的"
+- Git commit: `d4a2885` (已被 Part B 覆盖)
 
-### Part B: Bug 修复 (待完成)
-- [ ] Step 12: CLAUDE.md 凭据清理 (移除密钥, 改引用 .env)
-- [ ] Step 13: Redis 缓存明文 API Key (router.ts 缓存加密值)
-- [ ] Step 14: 流式计费预扣机制 (gateway/index.ts)
-- [ ] Step 15: 推荐返佣原子操作 (referral.ts)
-- [ ] Step 16: OAuth 账号劫持 (移除 allowDangerousEmailAccountLinking)
-- [ ] Step 17: H2-H7 高危 Bug (auth缓存/解密异常/Google API Key/Token计数/Anthropic tool/Google多系统消息)
-- [ ] Step 18: M1-M7 中等 Bug (计费成本/Stream cancel/死代码/批量调价/渠道URL校验)
-- [ ] Step 19: 版权年份 2025 → 2026
-- [ ] Step 20: Build + 测试 + Git Commit
+### Part B: 浅色主题重构 (进行中) — commit `59f5308`
+
+#### 已完成的文件 (27 个文件已改):
+- [x] `src/app/globals.css` — 完整重写: 白色背景, 新 CSS 变量, .gradient-brand, .btn-primary/.btn-secondary (pill), .card-elevated, .shape-blob, .badge-purple/.badge-coral/.badge-green
+- [x] `src/components/layout/marketing-header.tsx` — 白色 bg/80 backdrop-blur, #1a1a2e 文字, #7C5CFC 选中态, pill CTA
+- [x] `src/components/layout/marketing-footer.tsx` — bg-[#fafafa], border-[#e4e4e7], hover:text-[#7C5CFC]
+- [x] `src/components/layout/language-switcher.tsx` — rounded-full 触发器, rounded-xl 下拉, #7C5CFC 选中
+- [x] `src/components/marketing/grid-background.tsx` — 三个 .shape-blob (purple/coral/green)
+- [x] `src/components/marketing/hero-section.tsx` — #1a1a2e 标题, 彩色代码预览, gradient-brand 副标题
+- [x] `src/components/marketing/providers-bar.tsx` — bg-[#fafafa], #a1a1aa 文字
+- [x] `src/components/marketing/features-section.tsx` — 白色卡片, 每功能彩色 icon (purple/coral/green 循环)
+- [x] `src/components/marketing/stats-bar.tsx` — 保持 gradient-brand 背景 + 白字
+- [x] `src/components/marketing/pricing-section.tsx` — 白色卡片, #7C5CFC 高亮边框, #2DB574 绿色勾
+- [x] `src/components/marketing/models-showcase.tsx` — card-elevated 白色卡片
+- [x] `src/components/marketing/cta-section.tsx` — shape-blob 背景 (purple + coral)
+- [x] `src/app/[locale]/(marketing)/faq/page.tsx` — 白色手风琴, border-[#e4e4e7], rounded-2xl
+- [x] `src/app/[locale]/(marketing)/pricing/page.tsx` — 白色卡片, bg-[#fafafa] 表头
+- [x] `src/app/[locale]/(marketing)/model-list/page.tsx` — 浅色表格, rounded-full 徽章
+- [x] `src/app/[locale]/(auth)/login/page.tsx` — 白色卡片 on bg-[#fafafa], #7C5CFC 链接
+- [x] `src/app/[locale]/(auth)/register/page.tsx` — 同 login 处理
+- [x] `src/components/auth/oauth-buttons.tsx` — 白色边框 rounded-full 按钮
+- [x] `src/components/layout/docs-sidebar.tsx` — bg-[#fafafa], rounded-xl, bg-[#f0ecff] 选中
+- [x] `src/app/[locale]/(docs)/docs/quick-start/page.tsx` — 浅色文字颜色修复
+- [x] `src/app/[locale]/(docs)/docs/api-reference/page.tsx` — 浅色文字颜色修复
+- [x] `src/app/[locale]/(docs)/docs/sdk-examples/page.tsx` — 浅色文字颜色修复
+- [x] `src/components/layout/console-sidebar.tsx` — bg-[#fafafa], gradient-brand logo, #f0ecff 选中态, rounded-xl
+- [x] `src/components/layout/console-header.tsx` — 白色 bg, border-[#e4e4e7], #7C5CFC avatar, rounded-xl
+- [x] `src/app/[locale]/(console)/layout.tsx` — bg-[#f4f4f5] (从 #0a0e1a 改为浅色)
+- [x] `src/components/layout/admin-sidebar.tsx` — bg-[#fafafa], #7C5CFC 图标, rounded-xl, #f0ecff 选中
+- [x] `src/components/layout/admin-header.tsx` — 白色 bg, border-[#e4e4e7], #7C5CFC avatar, rounded-xl
+- [x] `src/app/[locale]/(admin)/layout.tsx` — bg-[#f4f4f5] (从 #0a0e1a 改为浅色)
+
+#### 待完成:
+- [ ] 扫描残留深色主题引用 (#0a0e1a, #00d4ff, white/[0.06], #111827, #94a3b8 等)
+- [ ] `npm run build` 构建验证
+- [ ] 控制台内页 (dashboard, models, usage, playground, chat, billing, api-keys, settings, referral) 可能还有深色引用
+- [ ] 管理后台内页 (admin/dashboard, admin/users, admin/models, admin/channels, admin/logs, admin/orders) 可能还有深色引用
 
 ### 注意事项
-- 项目路径: `E:\Claude code\dezix-ai` (不是 maas-platform)
+- 项目路径: `E:\Claude code\dezix-ai`
+- 参考图: `C:\Users\user\Desktop\39ada8279480c9ddee898c1ba01be537.jpg`
+- 开发服务器运行在 port 3001
 - 使用 src/ 目录结构 + [locale] i18n 路由
-- 参考 CLAUDE.md 了解完整项目结构和文件位置
-- `E:\Claude code\maas-platform` 是之前会话误创建的独立项目，与 dezix-ai 无关
+- Google Fonts `@import` 必须是 globals.css 的第一行 (在 tailwindcss import 之前)
+- CountUp 组件在 stats-bar 中必须使用 `<span>` 不能用 `<div>` (hydration 修复)
+- 导航必须从 `@/i18n/navigation` 导入 (不是 `next/navigation`)
