@@ -42,16 +42,16 @@ export function PricingSection() {
   ];
 
   return (
-    <section className="bg-[#f8f9fb] py-20 md:py-28">
+    <section className="bg-[#fafafa] py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-6">
         <AnimatedSection>
           <AnimatedItem>
-            <h2 className="font-heading mb-4 text-center text-3xl font-bold tracking-tight text-[#0f1729] md:text-4xl">
+            <h2 className="font-heading mb-4 text-center text-3xl font-bold tracking-tight text-[#1a1a2e] md:text-4xl">
               {t("title")}
             </h2>
           </AnimatedItem>
           <AnimatedItem>
-            <p className="mx-auto mb-14 max-w-2xl text-center text-lg text-[#3d4663]">
+            <p className="mx-auto mb-14 max-w-2xl text-center text-lg text-[#52525b]">
               {t("subtitle")}
             </p>
           </AnimatedItem>
@@ -60,31 +60,31 @@ export function PricingSection() {
           {plans.map((plan) => (
             <AnimatedItem key={plan.name}>
               <div
-                className={`relative rounded-[14px] border bg-white p-8 ${
+                className={`relative rounded-2xl border bg-white p-8 ${
                   plan.highlight
-                    ? "border-[#2563eb] shadow-lg shadow-[#2563eb]/10"
-                    : "border-[var(--border)] card-elevated"
+                    ? "border-[#7C5CFC] shadow-lg shadow-[#7C5CFC]/10"
+                    : "border-[#e4e4e7]"
                 }`}
               >
                 {plan.highlight && (
-                  <div className="absolute -top-px left-0 right-0 h-[3px] rounded-t-[14px] gradient-brand" />
+                  <div className="absolute -top-px left-0 right-0 h-[3px] rounded-t-2xl gradient-brand" />
                 )}
-                <h3 className="font-heading text-lg font-semibold text-[#0f1729]">{plan.name}</h3>
-                <div className="mt-3 font-heading text-3xl font-bold text-[#0f1729]">{plan.price}</div>
-                <p className="mt-2 text-sm text-[#7c8299]">
+                <h3 className="font-heading text-lg font-semibold text-[#1a1a2e]">{plan.name}</h3>
+                <div className="mt-3 font-heading text-3xl font-bold text-[#1a1a2e]">{plan.price}</div>
+                <p className="mt-2 text-sm text-[#71717a]">
                   {plan.desc}
                 </p>
                 <ul className="mt-6 space-y-3">
                   {plan.features.map((f) => (
-                    <li key={f} className="flex items-start gap-2.5 text-sm text-[#3d4663]">
-                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#2563eb]" />
+                    <li key={f} className="flex items-start gap-2.5 text-sm text-[#52525b]">
+                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#2DB574]" />
                       {f}
                     </li>
                   ))}
                 </ul>
                 <Link
                   href={plan.href}
-                  className={`mt-8 flex h-11 w-full items-center justify-center rounded-[10px] text-sm font-medium transition-all ${
+                  className={`mt-8 flex h-11 w-full items-center justify-center text-sm font-medium transition-all ${
                     plan.highlight
                       ? "btn-primary"
                       : "btn-secondary"

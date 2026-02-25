@@ -78,10 +78,10 @@ export default function PricingPage() {
     <div className="mx-auto max-w-7xl px-6 py-16">
       <AnimatedSection>
         <AnimatedItem>
-          <h1 className="font-heading mb-3 text-center text-4xl font-bold tracking-tight text-[#0f1729] md:text-5xl">{t("title")}</h1>
+          <h1 className="font-heading mb-3 text-center text-4xl font-bold tracking-tight text-[#1a1a2e] md:text-5xl">{t("title")}</h1>
         </AnimatedItem>
         <AnimatedItem>
-          <p className="mx-auto mb-14 max-w-2xl text-center text-lg text-[#3d4663]">
+          <p className="mx-auto mb-14 max-w-2xl text-center text-lg text-[#71717a]">
             {t("subtitle")}
           </p>
         </AnimatedItem>
@@ -92,32 +92,32 @@ export default function PricingPage() {
         {plans.map((plan) => (
           <AnimatedItem key={plan.name}>
             <div
-              className={`relative rounded-[14px] border bg-white p-8 ${
+              className={`relative rounded-2xl border p-8 ${
                 plan.highlight
-                  ? "border-[#2563eb] shadow-lg shadow-[#2563eb]/10"
-                  : "border-[var(--border)] card-elevated"
+                  ? "border-[#7C5CFC] bg-white shadow-lg shadow-[#7C5CFC]/10"
+                  : "border-[#e4e4e7] bg-white"
               }`}
             >
               {plan.highlight && (
-                <div className="absolute -top-px left-0 right-0 h-[3px] rounded-t-[14px] gradient-brand" />
+                <div className="absolute -top-px left-0 right-0 h-[3px] rounded-t-2xl bg-[#7C5CFC]" />
               )}
-              <h3 className="font-heading text-lg font-semibold text-[#0f1729]">{plan.name}</h3>
-              <div className="mt-3 font-heading text-3xl font-bold text-[#0f1729]">{plan.price}</div>
-              <p className="mt-2 text-sm text-[#7c8299]">{plan.desc}</p>
+              <h3 className="font-heading text-lg font-semibold text-[#1a1a2e]">{plan.name}</h3>
+              <div className="mt-3 font-heading text-3xl font-bold text-[#1a1a2e]">{plan.price}</div>
+              <p className="mt-2 text-sm text-[#a1a1aa]">{plan.desc}</p>
               <ul className="mt-6 space-y-3">
                 {plan.features.map((f) => (
-                  <li key={f} className="flex items-start gap-2.5 text-sm text-[#3d4663]">
-                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#2563eb]" />
+                  <li key={f} className="flex items-start gap-2.5 text-sm text-[#52525b]">
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#2DB574]" />
                     {f}
                   </li>
                 ))}
               </ul>
               <Link
                 href={plan.href}
-                className={`mt-8 flex h-11 w-full items-center justify-center rounded-[10px] text-sm font-medium transition-all ${
+                className={`mt-8 flex h-11 w-full items-center justify-center rounded-full text-sm font-medium transition-all ${
                   plan.highlight
                     ? "btn-primary"
-                    : "btn-secondary"
+                    : "border border-[#e4e4e7] bg-white text-[#1a1a2e] hover:bg-[#fafafa]"
                 }`}
               >
                 {plan.cta}
@@ -130,10 +130,10 @@ export default function PricingPage() {
       {/* Model pricing table */}
       <AnimatedSection>
         <AnimatedItem>
-          <h2 className="font-heading mb-3 text-2xl font-bold tracking-tight text-[#0f1729]">{tp("modelPricingTitle")}</h2>
+          <h2 className="font-heading mb-3 text-2xl font-bold tracking-tight text-[#1a1a2e]">{tp("modelPricingTitle")}</h2>
         </AnimatedItem>
         <AnimatedItem>
-          <p className="mb-8 text-lg text-[#3d4663]">
+          <p className="mb-8 text-lg text-[#71717a]">
             {tp("modelPricingDesc")}
           </p>
         </AnimatedItem>
@@ -142,33 +142,33 @@ export default function PricingPage() {
       {models.length > 0 && (
         <AnimatedSection>
           <AnimatedItem>
-            <div className="overflow-hidden rounded-[14px] border border-[var(--border)] bg-white">
+            <div className="overflow-hidden rounded-2xl border border-[#e4e4e7] bg-white">
               <Table>
                 <TableHeader>
-                  <TableRow className="border-b border-[var(--border)] bg-[#f8f9fb]">
-                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#7c8299]">{tp("modelName")}</TableHead>
-                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#7c8299]">{tp("provider")}</TableHead>
-                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#7c8299]">{tp("category")}</TableHead>
-                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-[#7c8299]">{tp("inputPrice")}</TableHead>
-                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-[#7c8299]">{tp("outputPrice")}</TableHead>
+                  <TableRow className="border-b border-[#e4e4e7] bg-[#fafafa]">
+                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#a1a1aa]">{tp("modelName")}</TableHead>
+                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#a1a1aa]">{tp("provider")}</TableHead>
+                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#a1a1aa]">{tp("category")}</TableHead>
+                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-[#a1a1aa]">{tp("inputPrice")}</TableHead>
+                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-[#a1a1aa]">{tp("outputPrice")}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {models.map((m) => (
-                    <TableRow key={m.id} className="border-b border-[var(--border)] hover:bg-[#f8f9fb]/50">
-                      <TableCell className="font-medium text-[#0f1729]">
+                    <TableRow key={m.id} className="border-b border-[#e4e4e7] hover:bg-[#fafafa]/50">
+                      <TableCell className="font-medium text-[#1a1a2e]">
                         {m.displayName}
                       </TableCell>
                       <TableCell>
-                        <Badge variant="secondary" className="rounded-md">{m.providerName}</Badge>
+                        <Badge variant="default">{m.providerName}</Badge>
                       </TableCell>
                       <TableCell>
-                        <Badge variant="outline" className="rounded-md">{m.category}</Badge>
+                        <Badge variant="default">{m.category}</Badge>
                       </TableCell>
-                      <TableCell className="text-right text-[#3d4663]">
+                      <TableCell className="text-right text-[#52525b]">
                         ¥{m.sellPrice}/M
                       </TableCell>
-                      <TableCell className="text-right text-[#3d4663]">
+                      <TableCell className="text-right text-[#52525b]">
                         ¥{m.sellOutPrice}/M
                       </TableCell>
                     </TableRow>
@@ -184,12 +184,12 @@ export default function PricingPage() {
       <AnimatedSection>
         <AnimatedItem>
           <div className="mt-16 text-center">
-            <p className="mb-5 text-lg text-[#3d4663]">
+            <p className="mb-5 text-lg text-[#71717a]">
               {tp("readyToStart")}
             </p>
             <Link
               href="/register"
-              className="btn-primary inline-flex h-12 items-center justify-center gap-2 px-8 text-base font-medium"
+              className="btn-primary inline-flex h-12 items-center justify-center gap-2 rounded-full px-8 text-base font-medium"
             >
               {tp("freeRegisterNow")}
               <ArrowRight className="h-4 w-4" />

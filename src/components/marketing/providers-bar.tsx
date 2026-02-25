@@ -23,16 +23,16 @@ export function ProvidersBar() {
   const t = useTranslations("Providers");
 
   return (
-    <section className="border-y border-[var(--border)] bg-white py-10">
+    <section className="border-y border-[#e4e4e7] bg-[#fafafa] py-10">
       <div className="mx-auto max-w-7xl px-6">
-        <p className="mb-6 text-center text-sm font-medium text-[#7c8299]">
+        <p className="mb-6 text-center text-sm font-medium text-[#a1a1aa]">
           {t("title")}
         </p>
         <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 md:gap-x-16">
           {providers.map((p, i) => (
             <motion.span
               key={p.name || p.nameKey}
-              className="font-heading text-base font-semibold text-[#3d4663]/70 transition-colors hover:text-[#0f1729]"
+              className="font-heading text-base font-semibold text-[#a1a1aa] transition-colors hover:text-[#1a1a2e]"
               initial={{ opacity: 0, y: 6 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

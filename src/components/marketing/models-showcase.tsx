@@ -45,12 +45,12 @@ export function ModelsShowcase() {
       <div className="mx-auto max-w-7xl px-6">
         <AnimatedSection>
           <AnimatedItem>
-            <h2 className="font-heading mb-4 text-center text-3xl font-bold tracking-tight text-[#0f1729] md:text-4xl">
+            <h2 className="font-heading mb-4 text-center text-3xl font-bold tracking-tight text-[#1a1a2e] md:text-4xl">
               {t("title")}
             </h2>
           </AnimatedItem>
           <AnimatedItem>
-            <p className="mx-auto mb-14 max-w-2xl text-center text-lg text-[#3d4663]">
+            <p className="mx-auto mb-14 max-w-2xl text-center text-lg text-[#52525b]">
               {t("subtitle")}
             </p>
           </AnimatedItem>
@@ -60,15 +60,15 @@ export function ModelsShowcase() {
             <AnimatedItem key={m.id}>
               <div className="card-elevated p-5">
                 <div className="mb-2 flex items-center justify-between">
-                  <span className="font-heading text-sm font-semibold text-[#0f1729]">{m.displayName}</span>
-                  <Badge variant="secondary" className="rounded-md text-[10px] font-medium">
+                  <span className="font-heading text-sm font-semibold text-[#1a1a2e]">{m.displayName}</span>
+                  <Badge variant="secondary" className="rounded-full text-[10px] font-medium">
                     {m.providerName}
                   </Badge>
                 </div>
-                <p className="mb-3 font-mono text-xs text-[#7c8299]">
+                <p className="mb-3 font-mono text-xs text-[#a1a1aa]">
                   {m.modelId}
                 </p>
-                <div className="flex items-center justify-between text-xs text-[#7c8299]">
+                <div className="flex items-center justify-between text-xs text-[#71717a]">
                   <span>
                     ¥{m.sellPrice}/M {t("inputLabel")}
                   </span>
@@ -81,7 +81,7 @@ export function ModelsShowcase() {
         <div className="mt-10 text-center">
           <Link
             href="/model-list"
-            className="inline-flex items-center gap-1 text-sm font-medium text-[#2563eb] transition-colors hover:text-[#1d4ed8]"
+            className="inline-flex items-center gap-1 text-sm font-medium text-[#7C5CFC] transition-colors hover:text-[#6A4CE0]"
           >
             {t("viewAll")} <ArrowRight className="h-3.5 w-3.5" />
           </Link>

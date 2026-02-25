@@ -63,10 +63,10 @@ export default function ModelListPage() {
     <div className="mx-auto max-w-7xl px-6 py-16">
       <AnimatedSection>
         <AnimatedItem>
-          <h1 className="font-heading mb-3 text-4xl font-bold tracking-tight text-[#0f1729] md:text-5xl">{t("title")}</h1>
+          <h1 className="font-heading mb-3 text-4xl font-bold tracking-tight text-[#1a1a2e] md:text-5xl">{t("title")}</h1>
         </AnimatedItem>
         <AnimatedItem>
-          <p className="mb-10 text-lg text-[#3d4663]">
+          <p className="mb-10 text-lg text-[#52525b]">
             {t("subtitle")}
           </p>
         </AnimatedItem>
@@ -79,7 +79,7 @@ export default function ModelListPage() {
               placeholder={t("searchPlaceholder")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="max-w-sm rounded-[10px] border-[var(--border)] bg-white focus:border-[#2563eb]/50 focus:ring-[#2563eb]/20"
+              className="max-w-sm rounded-xl border-[#e4e4e7] bg-white focus:border-[#7C5CFC]/50 focus:ring-[#7C5CFC]/20"
             />
             {categories.length > 0 && (
               <Tabs
@@ -103,23 +103,23 @@ export default function ModelListPage() {
       {loading ? (
         <div className="space-y-3 py-8">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="h-12 animate-pulse rounded-lg bg-[#f0f2f5]" />
+            <div key={i} className="h-12 animate-pulse rounded-xl bg-[#f4f4f5]" />
           ))}
         </div>
       ) : (
         <AnimatedSection>
           <AnimatedItem>
-            <div className="overflow-hidden rounded-[14px] border border-[var(--border)] bg-white">
+            <div className="overflow-hidden rounded-2xl border border-[#e4e4e7] bg-white">
               <Table>
                 <TableHeader>
-                  <TableRow className="border-b border-[var(--border)] bg-[#f8f9fb]">
-                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#7c8299]">{t("name")}</TableHead>
-                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#7c8299]">{t("modelId")}</TableHead>
-                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#7c8299]">{t("provider")}</TableHead>
-                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#7c8299]">{t("category")}</TableHead>
-                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-[#7c8299]">{t("inputPrice")}</TableHead>
-                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-[#7c8299]">{t("outputPrice")}</TableHead>
-                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-[#7c8299]">{t("maxContext")}</TableHead>
+                  <TableRow className="border-b border-[#e4e4e7] bg-[#fafafa]">
+                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#a1a1aa]">{t("name")}</TableHead>
+                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#a1a1aa]">{t("modelId")}</TableHead>
+                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#a1a1aa]">{t("provider")}</TableHead>
+                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#a1a1aa]">{t("category")}</TableHead>
+                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-[#a1a1aa]">{t("inputPrice")}</TableHead>
+                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-[#a1a1aa]">{t("outputPrice")}</TableHead>
+                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-[#a1a1aa]">{t("maxContext")}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -127,33 +127,33 @@ export default function ModelListPage() {
                     <TableRow>
                       <TableCell
                         colSpan={7}
-                        className="py-10 text-center text-base text-[#7c8299]"
+                        className="py-10 text-center text-base text-[#a1a1aa]"
                       >
                         {t("noResults")}
                       </TableCell>
                     </TableRow>
                   ) : (
                     filtered.map((m) => (
-                      <TableRow key={m.id} className="border-b border-[var(--border)] hover:bg-[#f8f9fb]/50">
-                        <TableCell className="font-medium text-[#0f1729]">
+                      <TableRow key={m.id} className="border-b border-[#e4e4e7] hover:bg-[#fafafa]/50">
+                        <TableCell className="font-medium text-[#1a1a2e]">
                           {m.displayName}
                         </TableCell>
-                        <TableCell className="font-mono text-xs text-[#7c8299]">
+                        <TableCell className="font-mono text-xs text-[#a1a1aa]">
                           {m.modelId}
                         </TableCell>
                         <TableCell>
-                          <Badge variant="secondary" className="rounded-md">{m.providerName}</Badge>
+                          <Badge variant="secondary" className="rounded-full">{m.providerName}</Badge>
                         </TableCell>
                         <TableCell>
-                          <Badge variant="outline" className="rounded-md">{tc(m.category as string)}</Badge>
+                          <Badge variant="outline" className="rounded-full">{tc(m.category as string)}</Badge>
                         </TableCell>
-                        <TableCell className="text-right text-[#3d4663]">
+                        <TableCell className="text-right text-[#52525b]">
                           ¥{m.sellPrice}/M tokens
                         </TableCell>
-                        <TableCell className="text-right text-[#3d4663]">
+                        <TableCell className="text-right text-[#52525b]">
                           ¥{m.sellOutPrice}/M tokens
                         </TableCell>
-                        <TableCell className="text-right text-[#3d4663]">
+                        <TableCell className="text-right text-[#52525b]">
                           {(m.maxContext / 1000).toFixed(0)}K
                         </TableCell>
                       </TableRow>

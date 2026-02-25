@@ -28,14 +28,14 @@ export function MarketingHeader() {
   const t = useTranslations("Nav");
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[var(--border)] bg-white/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-[#e4e4e7] bg-white/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
-          <div className="gradient-brand flex h-8 w-8 items-center justify-center rounded-lg">
+        <Link href="/" className="flex items-center gap-2.5">
+          <div className="gradient-brand flex h-8 w-8 items-center justify-center rounded-xl">
             <span className="font-heading text-sm font-bold text-white">D</span>
           </div>
-          <span className="font-heading text-lg font-bold text-[#0f1729]">
+          <span className="font-heading text-lg font-bold text-[#1a1a2e]">
             Dezix AI
           </span>
         </Link>
@@ -52,10 +52,10 @@ export function MarketingHeader() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                  "rounded-full px-4 py-2 text-sm font-medium transition-colors",
                   isActive
-                    ? "text-[#2563eb]"
-                    : "text-[#3d4663] hover:text-[#0f1729] hover:bg-[#f0f2f5]"
+                    ? "text-[#7C5CFC]"
+                    : "text-[#52525b] hover:text-[#1a1a2e] hover:bg-[#f4f4f5]"
                 )}
               >
                 {t(link.labelKey)}
@@ -67,17 +67,15 @@ export function MarketingHeader() {
         {/* Desktop actions */}
         <div className="hidden items-center gap-3 md:flex">
           <LanguageSwitcher />
-          <Button
-            variant="ghost"
-            size="sm"
-            className="text-[#3d4663] hover:text-[#0f1729] rounded-[10px]"
-            asChild
+          <Link
+            href="/login"
+            className="px-4 py-2 text-sm font-medium text-[#52525b] transition-colors hover:text-[#1a1a2e]"
           >
-            <Link href="/login">{t("login")}</Link>
-          </Button>
+            {t("login")}
+          </Link>
           <Link
             href="/register"
-            className="btn-primary inline-flex h-9 items-center justify-center px-5 text-sm font-medium"
+            className="btn-primary inline-flex h-10 items-center justify-center px-6 text-sm"
           >
             {t("freeRegister")}
           </Link>
@@ -86,11 +84,11 @@ export function MarketingHeader() {
         {/* Mobile nav */}
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild className="md:hidden">
-            <Button variant="ghost" size="icon" className="rounded-[10px]">
+            <Button variant="ghost" size="icon" className="rounded-full">
               <Menu className="h-5 w-5" />
             </Button>
           </SheetTrigger>
-          <SheetContent side="right" className="w-72">
+          <SheetContent side="right" className="w-72 bg-white">
             <SheetTitle className="sr-only">{t("mobileMenu")}</SheetTitle>
             <nav className="mt-8 flex flex-col gap-1">
               {navLinks.map((link) => (
@@ -98,18 +96,18 @@ export function MarketingHeader() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className="rounded-[10px] px-3 py-2.5 text-sm font-medium text-[#3d4663] transition-colors hover:bg-[#f0f2f5] hover:text-[#0f1729]"
+                  className="rounded-xl px-3 py-2.5 text-sm font-medium text-[#52525b] transition-colors hover:bg-[#f4f4f5] hover:text-[#1a1a2e]"
                 >
                   {t(link.labelKey)}
                 </Link>
               ))}
               <div className="mt-6 flex flex-col gap-2">
-                <Button variant="outline" size="sm" className="rounded-[10px]" asChild>
+                <Button variant="outline" size="sm" className="rounded-full" asChild>
                   <Link href="/login">{t("login")}</Link>
                 </Button>
                 <Link
                   href="/register"
-                  className="btn-primary inline-flex h-9 items-center justify-center text-sm font-medium"
+                  className="btn-primary inline-flex h-10 items-center justify-center text-sm"
                 >
                   {t("freeRegister")}
                 </Link>

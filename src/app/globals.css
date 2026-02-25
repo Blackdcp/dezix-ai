@@ -52,49 +52,49 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  /* ─ Palette: Formant.ai-inspired ─ */
-  --background: #f8f9fb;
-  --foreground: #0f1729;
+  --radius: 0.75rem;
+  /* ─ Palette: Modern / Playful / Light ─ */
+  --background: #ffffff;
+  --foreground: #1a1a2e;
   --card: #ffffff;
-  --card-foreground: #0f1729;
+  --card-foreground: #1a1a2e;
   --popover: #ffffff;
-  --popover-foreground: #0f1729;
-  --primary: #2563eb;
+  --popover-foreground: #1a1a2e;
+  --primary: #7C5CFC;
   --primary-foreground: #ffffff;
-  --secondary: #f0f2f5;
-  --secondary-foreground: #0f1729;
-  --muted: #f0f2f5;
-  --muted-foreground: #7c8299;
-  --accent: #f0f2f5;
-  --accent-foreground: #0f1729;
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: #e2e5eb;
-  --input: #e2e5eb;
-  --ring: #2563eb;
-  --chart-1: #2563eb;
-  --chart-2: #7c3aed;
-  --chart-3: #06b6d4;
+  --secondary: #f4f4f5;
+  --secondary-foreground: #1a1a2e;
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
+  --accent: #f4f4f5;
+  --accent-foreground: #1a1a2e;
+  --destructive: #ef4444;
+  --border: #e4e4e7;
+  --input: #e4e4e7;
+  --ring: #7C5CFC;
+  --chart-1: #7C5CFC;
+  --chart-2: #E8706A;
+  --chart-3: #2DB574;
   --chart-4: #f59e0b;
-  --chart-5: #10b981;
-  --sidebar: #ffffff;
-  --sidebar-foreground: #3d4663;
-  --sidebar-primary: #2563eb;
+  --chart-5: #06b6d4;
+  --sidebar: #fafafa;
+  --sidebar-foreground: #52525b;
+  --sidebar-primary: #7C5CFC;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f0f4ff;
-  --sidebar-accent-foreground: #2563eb;
-  --sidebar-border: #e2e5eb;
-  --sidebar-ring: #2563eb;
-  --accent-brand: #2563eb;
-  --accent-brand-hover: #1d4ed8;
+  --sidebar-accent: #f0ecff;
+  --sidebar-accent-foreground: #7C5CFC;
+  --sidebar-border: #e4e4e7;
+  --sidebar-ring: #7C5CFC;
+  --accent-brand: #7C5CFC;
+  --accent-brand-hover: #6A4CE0;
 }
 
-/* ── Gradient accent ── */
+/* ── Brand gradient (purple → coral) ── */
 .gradient-brand {
-  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #7C5CFC 0%, #E8706A 100%);
 }
 .text-gradient-brand {
-  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #7C5CFC 0%, #E8706A 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -103,13 +103,13 @@
 /* ── Card system ── */
 .card-elevated {
   background: #ffffff;
-  border: 1px solid #e2e5eb;
-  border-radius: 14px;
+  border: 1px solid #e4e4e7;
+  border-radius: 16px;
   transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
 }
 .card-elevated:hover {
-  border-color: #c7ccd6;
-  box-shadow: 0 8px 24px rgba(15, 23, 41, 0.08), 0 2px 8px rgba(15, 23, 41, 0.04);
+  border-color: #d4d4d8;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.04);
   transform: translateY(-2px);
 }
 
@@ -118,8 +118,8 @@
   position: relative;
   overflow: hidden;
   background: #ffffff;
-  border: 1px solid #e2e5eb;
-  border-radius: 14px;
+  border: 1px solid #e4e4e7;
+  border-radius: 16px;
   transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
 }
 .card-gradient-line::before {
@@ -129,13 +129,13 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, #2563eb 0%, #7c3aed 100%);
+  background: linear-gradient(90deg, #7C5CFC 0%, #E8706A 100%);
   opacity: 0;
   transition: opacity 0.2s;
 }
 .card-gradient-line:hover {
-  border-color: #c7ccd6;
-  box-shadow: 0 8px 24px rgba(15, 23, 41, 0.08), 0 2px 8px rgba(15, 23, 41, 0.04);
+  border-color: #d4d4d8;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.04);
   transform: translateY(-2px);
 }
 .card-gradient-line:hover::before {
@@ -144,41 +144,58 @@
 
 /* ── Buttons ── */
 .btn-primary {
-  background: #2563eb;
-  color: white;
-  border-radius: 10px;
-  transition: background 0.2s, box-shadow 0.2s;
+  background: #1a1a2e;
+  color: #ffffff;
+  border-radius: 100px;
+  font-weight: 500;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
 }
 .btn-primary:hover {
-  background: #1d4ed8;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  background: #2d2d44;
+  box-shadow: 0 4px 16px rgba(26, 26, 46, 0.2);
+  transform: translateY(-1px);
 }
 
 .btn-secondary {
-  background: transparent;
-  color: #0f1729;
-  border: 1px solid #e2e5eb;
-  border-radius: 10px;
+  background: #ffffff;
+  color: #1a1a2e;
+  border: 1.5px solid #e4e4e7;
+  border-radius: 100px;
+  font-weight: 500;
   transition: border-color 0.2s, background 0.2s;
 }
 .btn-secondary:hover {
-  border-color: #c7ccd6;
-  background: #f0f2f5;
+  border-color: #d4d4d8;
+  background: #fafafa;
 }
 
 /* ── Dot grid background ── */
 .dot-grid {
-  background-image: radial-gradient(circle, #d1d5db 1px, transparent 1px);
+  background-image: radial-gradient(circle, #e4e4e7 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
-/* ── Glow orb ── */
-.glow-orb {
+/* ── Decorative shapes ── */
+.shape-blob {
   position: absolute;
   border-radius: 50%;
   filter: blur(80px);
-  opacity: 0.25;
+  opacity: 0.15;
   pointer-events: none;
+}
+
+/* ── Colored badges ── */
+.badge-purple {
+  background: #f0ecff;
+  color: #7C5CFC;
+}
+.badge-coral {
+  background: #fef0ef;
+  color: #E8706A;
+}
+.badge-green {
+  background: #ecfdf3;
+  color: #2DB574;
 }
 
 @layer base {

@@ -47,39 +47,39 @@ function RegisterForm() {
     router.push("/login?registered=true");
   }
 
-  const inputClass = "flex h-11 w-full rounded-[10px] border border-[var(--border)] bg-white px-3 py-2 text-sm text-[#0f1729] placeholder:text-[#7c8299] focus:outline-none focus:ring-2 focus:ring-[#2563eb]/20 focus:border-[#2563eb]/50";
+  const inputClass = "flex h-11 w-full rounded-xl border border-[#e4e4e7] bg-white px-3 py-2 text-sm text-[#1a1a2e] placeholder:text-[#a1a1aa] focus:outline-none focus:ring-2 focus:ring-[#7C5CFC]/20 focus:border-[#7C5CFC]/50";
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#f8f9fb] px-4">
+    <div className="flex min-h-screen items-center justify-center bg-[#fafafa] px-4">
       <motion.div
-        className="w-full max-w-md rounded-[14px] border border-[var(--border)] bg-white p-10 shadow-xl shadow-black/5"
+        className="w-full max-w-md rounded-2xl border border-[#e4e4e7] bg-white p-10 shadow-xl shadow-black/5"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
       >
         <div className="mb-8 text-center">
-          <Link href="/" className="inline-flex items-center gap-2">
-            <div className="gradient-brand flex h-8 w-8 items-center justify-center rounded-lg">
+          <Link href="/" className="inline-flex items-center gap-2.5">
+            <div className="gradient-brand flex h-8 w-8 items-center justify-center rounded-xl">
               <span className="font-heading text-sm font-bold text-white">D</span>
             </div>
-            <span className="font-heading text-xl font-bold text-[#0f1729]">Dezix AI</span>
+            <span className="font-heading text-xl font-bold text-[#1a1a2e]">Dezix AI</span>
           </Link>
-          <h1 className="font-heading mt-6 text-xl font-bold text-[#0f1729]">{t("registerTitle")}</h1>
-          <p className="mt-1.5 text-sm text-[#7c8299]">{t("registerSubtitle")}</p>
+          <h1 className="font-heading mt-6 text-xl font-bold text-[#1a1a2e]">{t("registerTitle")}</h1>
+          <p className="mt-1.5 text-sm text-[#71717a]">{t("registerSubtitle")}</p>
         </div>
         <form onSubmit={onSubmit} className="space-y-4">
           {error && (
-            <div className="rounded-[10px] border border-red-200 bg-red-50 p-3 text-sm text-red-600">
+            <div className="rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-600">
               {error}
             </div>
           )}
           {refCode && (
-            <div className="rounded-[10px] border border-[#2563eb]/20 bg-[#2563eb]/5 p-3 text-sm text-[#2563eb]">
+            <div className="rounded-xl border border-[#7C5CFC]/20 bg-[#f0ecff] p-3 text-sm text-[#7C5CFC]">
               {t("referralNotice", { code: refCode })}
             </div>
           )}
           <div className="space-y-2">
-            <label htmlFor="name" className="text-sm font-medium text-[#0f1729]">
+            <label htmlFor="name" className="text-sm font-medium text-[#1a1a2e]">
               {t("username")}
             </label>
             <input
@@ -92,7 +92,7 @@ function RegisterForm() {
             />
           </div>
           <div className="space-y-2">
-            <label htmlFor="email" className="text-sm font-medium text-[#0f1729]">
+            <label htmlFor="email" className="text-sm font-medium text-[#1a1a2e]">
               {t("email")}
             </label>
             <input
@@ -105,7 +105,7 @@ function RegisterForm() {
             />
           </div>
           <div className="space-y-2">
-            <label htmlFor="password" className="text-sm font-medium text-[#0f1729]">
+            <label htmlFor="password" className="text-sm font-medium text-[#1a1a2e]">
               {t("password")}
             </label>
             <input
@@ -128,16 +128,16 @@ function RegisterForm() {
         </form>
         <div className="relative my-6">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-[var(--border)]" />
+            <div className="w-full border-t border-[#e4e4e7]" />
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="bg-white px-4 text-[#7c8299]">{t("orRegisterWith")}</span>
+            <span className="bg-white px-4 text-[#a1a1aa]">{t("orRegisterWith")}</span>
           </div>
         </div>
         <OAuthButtons mode="register" referralCode={refCode || undefined} />
-        <div className="mt-6 text-center text-sm text-[#7c8299]">
+        <div className="mt-6 text-center text-sm text-[#71717a]">
           {t("hasAccount")}{" "}
-          <Link href="/login" className="font-medium text-[#2563eb] hover:text-[#1d4ed8]">
+          <Link href="/login" className="font-medium text-[#7C5CFC] hover:text-[#6A4CE0]">
             {t("loginButton")}
           </Link>
         </div>
