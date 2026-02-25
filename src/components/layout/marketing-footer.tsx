@@ -22,28 +22,35 @@ export function MarketingFooter() {
   const t = useTranslations();
 
   return (
-    <footer className="border-t border-black/[0.04] bg-[#f5f5f7]">
-      <div className="mx-auto max-w-6xl px-4 py-12">
+    <footer className="border-t border-[var(--border)] bg-white">
+      <div className="mx-auto max-w-7xl px-6 py-16">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
-            <Link href="/" className="text-lg font-bold text-[#1d1d1f]">
-              Dezix AI
+            <Link href="/" className="flex items-center gap-2">
+              <div className="gradient-brand flex h-7 w-7 items-center justify-center rounded-lg">
+                <span className="font-heading text-xs font-bold text-white">D</span>
+              </div>
+              <span className="font-heading text-lg font-bold text-[#0f1729]">
+                Dezix AI
+              </span>
             </Link>
-            <p className="mt-2 text-sm text-[#86868b]">
+            <p className="mt-3 text-sm leading-relaxed text-[#7c8299]">
               {t("Footer.description")}
             </p>
           </div>
 
           {/* Product */}
           <div>
-            <h4 className="mb-3 text-sm font-semibold text-[#1d1d1f]">{t("Footer.product")}</h4>
-            <ul className="space-y-2">
+            <h4 className="font-heading mb-4 text-sm font-semibold text-[#0f1729]">
+              {t("Footer.product")}
+            </h4>
+            <ul className="space-y-3">
               {productLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-[#424245] transition-colors hover:text-[#1d1d1f]"
+                    className="text-sm text-[#7c8299] transition-colors hover:text-[#2563eb]"
                   >
                     {t(`Nav.${link.labelKey}`)}
                   </Link>
@@ -54,13 +61,15 @@ export function MarketingFooter() {
 
           {/* Docs */}
           <div>
-            <h4 className="mb-3 text-sm font-semibold text-[#1d1d1f]">{t("Footer.docs")}</h4>
-            <ul className="space-y-2">
+            <h4 className="font-heading mb-4 text-sm font-semibold text-[#0f1729]">
+              {t("Footer.docs")}
+            </h4>
+            <ul className="space-y-3">
               {docLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-[#424245] transition-colors hover:text-[#1d1d1f]"
+                    className="text-sm text-[#7c8299] transition-colors hover:text-[#2563eb]"
                   >
                     {t(`Footer.${link.labelKey}`)}
                   </Link>
@@ -71,13 +80,15 @@ export function MarketingFooter() {
 
           {/* About */}
           <div>
-            <h4 className="mb-3 text-sm font-semibold text-[#1d1d1f]">{t("Footer.about")}</h4>
-            <ul className="space-y-2">
+            <h4 className="font-heading mb-4 text-sm font-semibold text-[#0f1729]">
+              {t("Footer.about")}
+            </h4>
+            <ul className="space-y-3">
               {aboutLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-[#424245] transition-colors hover:text-[#1d1d1f]"
+                    className="text-sm text-[#7c8299] transition-colors hover:text-[#2563eb]"
                   >
                     {t(`Nav.${link.labelKey}`)}
                   </Link>
@@ -87,7 +98,7 @@ export function MarketingFooter() {
           </div>
         </div>
 
-        <div className="mt-8 border-t border-black/[0.04] pt-6 text-center text-sm text-[#86868b]">
+        <div className="mt-12 border-t border-[var(--border)] pt-8 text-center text-sm text-[#7c8299]">
           {t("Footer.copyright")}
         </div>
       </div>

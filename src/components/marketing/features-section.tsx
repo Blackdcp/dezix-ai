@@ -27,27 +27,29 @@ export function FeaturesSection() {
   const t = useTranslations("Features");
 
   return (
-    <section className="py-16 md:py-24">
-      <div className="mx-auto max-w-6xl px-4">
+    <section className="py-20 md:py-28">
+      <div className="mx-auto max-w-7xl px-6">
         <AnimatedSection>
           <AnimatedItem>
-            <h2 className="mb-4 text-center text-3xl font-semibold tracking-[-0.01em] text-[#1d1d1f] md:text-[40px]">
+            <h2 className="font-heading mb-4 text-center text-3xl font-bold tracking-tight text-[#0f1729] md:text-4xl">
               {t("title")}
             </h2>
           </AnimatedItem>
           <AnimatedItem>
-            <p className="mb-12 text-center text-lg text-[#424245]">
+            <p className="mx-auto mb-14 max-w-2xl text-center text-lg text-[#3d4663]">
               {t("subtitle")}
             </p>
           </AnimatedItem>
         </AnimatedSection>
-        <AnimatedSection className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <AnimatedSection className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {featureKeys.map((f) => (
             <AnimatedItem key={f.titleKey}>
-              <div className="card-hover rounded-2xl bg-white p-8 shadow-sm">
-                <f.icon className="mb-3 h-8 w-8 text-[#007AFF]" />
-                <h3 className="mb-2 text-lg font-semibold text-[#1d1d1f]">{t(f.titleKey)}</h3>
-                <p className="text-[15px] text-[#424245]">{t(f.descKey)}</p>
+              <div className="card-gradient-line p-7">
+                <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-[10px] bg-[#2563eb]/10">
+                  <f.icon className="h-5 w-5 text-[#2563eb]" />
+                </div>
+                <h3 className="font-heading mb-2 text-base font-semibold text-[#0f1729]">{t(f.titleKey)}</h3>
+                <p className="text-sm leading-relaxed text-[#3d4663]">{t(f.descKey)}</p>
               </div>
             </AnimatedItem>
           ))}

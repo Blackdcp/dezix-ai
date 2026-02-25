@@ -563,7 +563,7 @@
 
 ---
 
-## Phase 15: 前端视觉重构 (进行中)
+## Phase 15: 前端视觉重构 Part A ✅ 完成
 
 ### 设计方向
 - 从当前 Apple 风格 (#007AFF 蓝、Geist 字体、rounded-full 按钮) 重构为 Formant.ai 风格高端 SaaS
@@ -573,20 +573,22 @@
 - 按钮: rounded-full → rounded-[10px]/[12px]
 - 卡片: rounded-[14px] + 顶部渐变线 hover 效果
 
-### 覆盖范围
-- [ ] Step 1: 全局基础 (globals.css, layout.tsx, tailwind)
-- [ ] Step 2: 营销页 Header + Footer
-- [ ] Step 3: Hero Section (点阵背景、渐变光球、代码预览块)
-- [ ] Step 4: Providers + Features + Stats
-- [ ] Step 5: Pricing + CTA + Models Showcase
-- [ ] Step 6: 营销子页面 (/pricing, /faq, /model-list)
-- [ ] Step 7: Auth 页面 (login, register)
-- [ ] Step 8: 文档站 (docs-sidebar, docs layout)
-- [ ] Step 9: 控制台 (console-sidebar, console-header, layout)
-- [ ] Step 10: 管理后台 (admin-sidebar, admin-header, layout)
-- [ ] Step 11: Build 验证 + Git Commit
+### Part A: 视觉重构 (已完成)
+- [x] Step 1: 全局基础 (globals.css 重写 — 新配色/字体/卡片系统/按钮/点阵背景/渐变光球, layout.tsx 字体)
+- [x] Step 2: 营销页 Header (Logo icon + 导航 pill 样式 + rounded-[10px] 按钮) + Footer (白底 + 品牌 icon)
+- [x] Step 3: Hero Section (点阵背景 + 双色渐变光球 + badge pill + 渐变标题 + 代码预览块)
+- [x] Step 4: Providers (border-y 白底 + hover 变色) + Features (card-gradient-line + icon 背景) + Stats (gradient-brand 白字)
+- [x] Step 5: Pricing (渐变顶线 + shadow-[#2563eb]/10) + CTA (点阵+光球) + Models Showcase (card-elevated)
+- [x] Step 6: 营销子页面 (/pricing, /faq, /model-list — 全部新配色、圆角、表格样式)
+- [x] Step 7: Auth 页面 (login, register — Logo icon + border 输入框 + rounded-[14px] 卡片)
+- [x] Step 8: 文档站 (docs-sidebar 白底 + rounded-[8px] 导航项, docs layout max-w-7xl)
+- [x] Step 9: 控制台 (console-sidebar 白底 + Logo icon + rounded-[8px], console-header 白底 + avatar 蓝色)
+- [x] Step 10: 管理后台 (admin-sidebar 深色 icon + rounded-[8px], admin-header 白底)
+- [x] Step 11: Build 验证通过 (76 路由, 0 警告, 0 错误)
+- [x] Language switcher 同步更新 (rounded-[8px], 新配色)
+- [x] Git commit
 
-### Bug 修复 (Phase 15 Part B)
+### Part B: Bug 修复 (待完成)
 - [ ] Step 12: CLAUDE.md 凭据清理 (移除密钥, 改引用 .env)
 - [ ] Step 13: Redis 缓存明文 API Key (router.ts 缓存加密值)
 - [ ] Step 14: 流式计费预扣机制 (gateway/index.ts)

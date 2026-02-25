@@ -26,9 +26,12 @@ export function AdminSidebar() {
   const t = useTranslations("AdminNav");
 
   return (
-    <aside className="flex h-full w-60 flex-col border-r bg-background">
-      <div className="flex h-14 items-center border-b px-4">
-        <Link href="/admin/dashboard" className="text-lg font-bold">
+    <aside className="flex h-full w-60 flex-col border-r border-[var(--border)] bg-white">
+      <div className="flex h-16 items-center gap-2 border-b border-[var(--border)] px-5">
+        <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#0f1729]">
+          <span className="font-heading text-xs font-bold text-white">A</span>
+        </div>
+        <Link href="/admin/dashboard" className="font-heading text-lg font-bold text-[#0f1729]">
           {t("title")}
         </Link>
       </div>
@@ -40,10 +43,10 @@ export function AdminSidebar() {
               key={item.href}
               href={item.href}
               className={cn(
-                "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                "flex items-center gap-3 rounded-[8px] px-3 py-2 text-sm font-medium transition-colors",
                 isActive
-                  ? "bg-primary/10 text-primary"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                  ? "bg-[#2563eb]/10 text-[#2563eb]"
+                  : "text-[#3d4663] hover:bg-[#f0f2f5] hover:text-[#0f1729]"
               )}
             >
               <item.icon className="h-4 w-4" />

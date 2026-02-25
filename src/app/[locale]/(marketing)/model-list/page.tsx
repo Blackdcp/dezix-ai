@@ -60,13 +60,13 @@ export default function ModelListPage() {
   });
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12">
+    <div className="mx-auto max-w-7xl px-6 py-16">
       <AnimatedSection>
         <AnimatedItem>
-          <h1 className="mb-2 text-5xl font-bold leading-[1.05] tracking-[-0.015em] text-[#1d1d1f] md:text-[56px]">{t("title")}</h1>
+          <h1 className="font-heading mb-3 text-4xl font-bold tracking-tight text-[#0f1729] md:text-5xl">{t("title")}</h1>
         </AnimatedItem>
         <AnimatedItem>
-          <p className="mb-8 text-lg text-[#424245]">
+          <p className="mb-10 text-lg text-[#3d4663]">
             {t("subtitle")}
           </p>
         </AnimatedItem>
@@ -79,7 +79,7 @@ export default function ModelListPage() {
               placeholder={t("searchPlaceholder")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="max-w-sm border-black/[0.08] bg-[#f5f5f7] focus:border-[#007AFF]/50 focus:ring-[#007AFF]/20"
+              className="max-w-sm rounded-[10px] border-[var(--border)] bg-white focus:border-[#2563eb]/50 focus:ring-[#2563eb]/20"
             />
             {categories.length > 0 && (
               <Tabs
@@ -103,23 +103,23 @@ export default function ModelListPage() {
       {loading ? (
         <div className="space-y-3 py-8">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="h-12 animate-pulse rounded-lg bg-[#f5f5f7]" />
+            <div key={i} className="h-12 animate-pulse rounded-lg bg-[#f0f2f5]" />
           ))}
         </div>
       ) : (
         <AnimatedSection>
           <AnimatedItem>
-            <div className="overflow-hidden rounded-2xl bg-white shadow-sm">
+            <div className="overflow-hidden rounded-[14px] border border-[var(--border)] bg-white">
               <Table>
                 <TableHeader>
-                  <TableRow className="border-b border-black/[0.06] bg-[#f5f5f7]">
-                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#86868b]">{t("name")}</TableHead>
-                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#86868b]">{t("modelId")}</TableHead>
-                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#86868b]">{t("provider")}</TableHead>
-                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#86868b]">{t("category")}</TableHead>
-                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-[#86868b]">{t("inputPrice")}</TableHead>
-                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-[#86868b]">{t("outputPrice")}</TableHead>
-                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-[#86868b]">{t("maxContext")}</TableHead>
+                  <TableRow className="border-b border-[var(--border)] bg-[#f8f9fb]">
+                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#7c8299]">{t("name")}</TableHead>
+                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#7c8299]">{t("modelId")}</TableHead>
+                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#7c8299]">{t("provider")}</TableHead>
+                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#7c8299]">{t("category")}</TableHead>
+                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-[#7c8299]">{t("inputPrice")}</TableHead>
+                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-[#7c8299]">{t("outputPrice")}</TableHead>
+                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-[#7c8299]">{t("maxContext")}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -127,33 +127,33 @@ export default function ModelListPage() {
                     <TableRow>
                       <TableCell
                         colSpan={7}
-                        className="py-10 text-center text-base text-[#86868b]"
+                        className="py-10 text-center text-base text-[#7c8299]"
                       >
                         {t("noResults")}
                       </TableCell>
                     </TableRow>
                   ) : (
                     filtered.map((m) => (
-                      <TableRow key={m.id} className="border-b border-black/[0.04] hover:bg-[#f5f5f7]/50">
-                        <TableCell className="font-medium text-[#1d1d1f]">
+                      <TableRow key={m.id} className="border-b border-[var(--border)] hover:bg-[#f8f9fb]/50">
+                        <TableCell className="font-medium text-[#0f1729]">
                           {m.displayName}
                         </TableCell>
-                        <TableCell className="font-mono text-xs text-[#86868b]">
+                        <TableCell className="font-mono text-xs text-[#7c8299]">
                           {m.modelId}
                         </TableCell>
                         <TableCell>
-                          <Badge variant="secondary">{m.providerName}</Badge>
+                          <Badge variant="secondary" className="rounded-md">{m.providerName}</Badge>
                         </TableCell>
                         <TableCell>
-                          <Badge variant="outline">{tc(m.category as string)}</Badge>
+                          <Badge variant="outline" className="rounded-md">{tc(m.category as string)}</Badge>
                         </TableCell>
-                        <TableCell className="text-right text-[#424245]">
+                        <TableCell className="text-right text-[#3d4663]">
                           ¥{m.sellPrice}/M tokens
                         </TableCell>
-                        <TableCell className="text-right text-[#424245]">
+                        <TableCell className="text-right text-[#3d4663]">
                           ¥{m.sellOutPrice}/M tokens
                         </TableCell>
-                        <TableCell className="text-right text-[#424245]">
+                        <TableCell className="text-right text-[#3d4663]">
                           {(m.maxContext / 1000).toFixed(0)}K
                         </TableCell>
                       </TableRow>

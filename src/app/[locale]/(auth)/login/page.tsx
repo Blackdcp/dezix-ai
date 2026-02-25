@@ -39,28 +39,31 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#f5f5f7] px-4">
+    <div className="flex min-h-screen items-center justify-center bg-[#f8f9fb] px-4">
       <motion.div
-        className="w-full max-w-md rounded-2xl bg-white p-10 shadow-lg"
+        className="w-full max-w-md rounded-[14px] border border-[var(--border)] bg-white p-10 shadow-xl shadow-black/5"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
       >
-        <div className="mb-6 text-center">
-          <Link href="/" className="text-2xl font-bold text-[#007AFF]">
-            Dezix AI
+        <div className="mb-8 text-center">
+          <Link href="/" className="inline-flex items-center gap-2">
+            <div className="gradient-brand flex h-8 w-8 items-center justify-center rounded-lg">
+              <span className="font-heading text-sm font-bold text-white">D</span>
+            </div>
+            <span className="font-heading text-xl font-bold text-[#0f1729]">Dezix AI</span>
           </Link>
-          <h1 className="mt-4 text-xl font-bold text-[#1d1d1f]">{t("loginTitle")}</h1>
-          <p className="mt-1 text-[15px] text-[#86868b]">{t("loginSubtitle")}</p>
+          <h1 className="font-heading mt-6 text-xl font-bold text-[#0f1729]">{t("loginTitle")}</h1>
+          <p className="mt-1.5 text-sm text-[#7c8299]">{t("loginSubtitle")}</p>
         </div>
         <form onSubmit={onSubmit} className="space-y-4">
           {error && (
-            <div className="rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-600">
+            <div className="rounded-[10px] border border-red-200 bg-red-50 p-3 text-sm text-red-600">
               {error}
             </div>
           )}
           <div className="space-y-2">
-            <label htmlFor="email" className="text-sm font-medium text-[#1d1d1f]">
+            <label htmlFor="email" className="text-sm font-medium text-[#0f1729]">
               {t("email")}
             </label>
             <input
@@ -69,11 +72,11 @@ export default function LoginPage() {
               type="email"
               placeholder="you@example.com"
               required
-              className="flex h-12 w-full rounded-xl border-0 bg-[#f5f5f7] px-3 py-2 text-sm text-[#1d1d1f] placeholder:text-[#86868b] focus:outline-none focus:ring-2 focus:ring-[#007AFF]/30"
+              className="flex h-11 w-full rounded-[10px] border border-[var(--border)] bg-white px-3 py-2 text-sm text-[#0f1729] placeholder:text-[#7c8299] focus:outline-none focus:ring-2 focus:ring-[#2563eb]/20 focus:border-[#2563eb]/50"
             />
           </div>
           <div className="space-y-2">
-            <label htmlFor="password" className="text-sm font-medium text-[#1d1d1f]">
+            <label htmlFor="password" className="text-sm font-medium text-[#0f1729]">
               {t("password")}
             </label>
             <input
@@ -82,12 +85,12 @@ export default function LoginPage() {
               type="password"
               placeholder="••••••••"
               required
-              className="flex h-12 w-full rounded-xl border-0 bg-[#f5f5f7] px-3 py-2 text-sm text-[#1d1d1f] placeholder:text-[#86868b] focus:outline-none focus:ring-2 focus:ring-[#007AFF]/30"
+              className="flex h-11 w-full rounded-[10px] border border-[var(--border)] bg-white px-3 py-2 text-sm text-[#0f1729] placeholder:text-[#7c8299] focus:outline-none focus:ring-2 focus:ring-[#2563eb]/20 focus:border-[#2563eb]/50"
             />
           </div>
           <button
             type="submit"
-            className="btn-primary flex h-12 w-full items-center justify-center rounded-full text-base font-medium disabled:opacity-50"
+            className="btn-primary flex h-11 w-full items-center justify-center text-sm font-medium disabled:opacity-50"
             disabled={loading}
           >
             {loading ? t("loggingIn") : t("loginButton")}
@@ -95,16 +98,16 @@ export default function LoginPage() {
         </form>
         <div className="relative my-6">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-[#d2d2d7]" />
+            <div className="w-full border-t border-[var(--border)]" />
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="bg-white px-4 text-[#86868b]">{t("orLoginWith")}</span>
+            <span className="bg-white px-4 text-[#7c8299]">{t("orLoginWith")}</span>
           </div>
         </div>
         <OAuthButtons mode="login" />
-        <div className="mt-4 text-center text-sm text-[#86868b]">
+        <div className="mt-6 text-center text-sm text-[#7c8299]">
           {t("noAccount")}{" "}
-          <Link href="/register" className="text-[#007AFF] hover:underline">
+          <Link href="/register" className="font-medium text-[#2563eb] hover:text-[#1d4ed8]">
             {t("register")}
           </Link>
         </div>

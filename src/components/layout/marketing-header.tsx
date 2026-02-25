@@ -28,14 +28,20 @@ export function MarketingHeader() {
   const t = useTranslations("Nav");
 
   return (
-    <header className="sticky top-0 z-50 border-b border-black/[0.04] bg-white/80 backdrop-blur-xl">
-      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
-        <Link href="/" className="text-lg font-bold text-[#1d1d1f]">
-          Dezix AI
+    <header className="sticky top-0 z-50 border-b border-[var(--border)] bg-white/80 backdrop-blur-xl">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-2">
+          <div className="gradient-brand flex h-8 w-8 items-center justify-center rounded-lg">
+            <span className="font-heading text-sm font-bold text-white">D</span>
+          </div>
+          <span className="font-heading text-lg font-bold text-[#0f1729]">
+            Dezix AI
+          </span>
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden items-center gap-6 md:flex">
+        <nav className="hidden items-center gap-1 md:flex">
           {navLinks.map((link) => {
             const isActive =
               link.href === "/"
@@ -46,10 +52,10 @@ export function MarketingHeader() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "text-sm font-medium transition-colors",
+                  "rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                   isActive
-                    ? "text-[#1d1d1f]"
-                    : "text-[#424245] hover:text-[#1d1d1f]"
+                    ? "text-[#2563eb]"
+                    : "text-[#3d4663] hover:text-[#0f1729] hover:bg-[#f0f2f5]"
                 )}
               >
                 {t(link.labelKey)}
@@ -58,14 +64,20 @@ export function MarketingHeader() {
           })}
         </nav>
 
-        <div className="hidden items-center gap-2 md:flex">
+        {/* Desktop actions */}
+        <div className="hidden items-center gap-3 md:flex">
           <LanguageSwitcher />
-          <Button variant="ghost" size="sm" className="text-[#424245] hover:text-[#1d1d1f]" asChild>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-[#3d4663] hover:text-[#0f1729] rounded-[10px]"
+            asChild
+          >
             <Link href="/login">{t("login")}</Link>
           </Button>
           <Link
             href="/register"
-            className="btn-primary inline-flex h-9 items-center justify-center rounded-full px-5 text-sm font-medium"
+            className="btn-primary inline-flex h-9 items-center justify-center px-5 text-sm font-medium"
           >
             {t("freeRegister")}
           </Link>
@@ -74,30 +86,30 @@ export function MarketingHeader() {
         {/* Mobile nav */}
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild className="md:hidden">
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" className="rounded-[10px]">
               <Menu className="h-5 w-5" />
             </Button>
           </SheetTrigger>
-          <SheetContent side="right" className="w-64">
+          <SheetContent side="right" className="w-72">
             <SheetTitle className="sr-only">{t("mobileMenu")}</SheetTitle>
-            <nav className="mt-8 flex flex-col gap-4">
+            <nav className="mt-8 flex flex-col gap-1">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className="text-sm font-medium text-[#424245] hover:text-[#1d1d1f]"
+                  className="rounded-[10px] px-3 py-2.5 text-sm font-medium text-[#3d4663] transition-colors hover:bg-[#f0f2f5] hover:text-[#0f1729]"
                 >
                   {t(link.labelKey)}
                 </Link>
               ))}
-              <div className="mt-4 flex flex-col gap-2">
-                <Button variant="outline" size="sm" asChild>
+              <div className="mt-6 flex flex-col gap-2">
+                <Button variant="outline" size="sm" className="rounded-[10px]" asChild>
                   <Link href="/login">{t("login")}</Link>
                 </Button>
                 <Link
                   href="/register"
-                  className="btn-primary inline-flex h-9 items-center justify-center rounded-full text-sm font-medium"
+                  className="btn-primary inline-flex h-9 items-center justify-center text-sm font-medium"
                 >
                   {t("freeRegister")}
                 </Link>

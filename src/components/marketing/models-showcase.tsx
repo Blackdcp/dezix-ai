@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Badge } from "@/components/ui/badge";
+import { ArrowRight } from "lucide-react";
 import {
   AnimatedSection,
   AnimatedItem,
@@ -40,14 +41,16 @@ export function ModelsShowcase() {
   }
 
   return (
-    <section className="py-16 md:py-24">
-      <div className="mx-auto max-w-6xl px-4">
+    <section className="py-20 md:py-28">
+      <div className="mx-auto max-w-7xl px-6">
         <AnimatedSection>
           <AnimatedItem>
-            <h2 className="mb-4 text-center text-3xl font-semibold tracking-[-0.01em] text-[#1d1d1f] md:text-[40px]">{t("title")}</h2>
+            <h2 className="font-heading mb-4 text-center text-3xl font-bold tracking-tight text-[#0f1729] md:text-4xl">
+              {t("title")}
+            </h2>
           </AnimatedItem>
           <AnimatedItem>
-            <p className="mb-12 text-center text-lg text-[#424245]">
+            <p className="mx-auto mb-14 max-w-2xl text-center text-lg text-[#3d4663]">
               {t("subtitle")}
             </p>
           </AnimatedItem>
@@ -55,17 +58,17 @@ export function ModelsShowcase() {
         <AnimatedSection className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {models.map((m) => (
             <AnimatedItem key={m.id}>
-              <div className="card-hover rounded-2xl bg-white p-6 shadow-sm">
+              <div className="card-elevated p-5">
                 <div className="mb-2 flex items-center justify-between">
-                  <span className="text-sm font-medium text-[#1d1d1f]">{m.displayName}</span>
-                  <Badge variant="secondary" className="text-xs">
+                  <span className="font-heading text-sm font-semibold text-[#0f1729]">{m.displayName}</span>
+                  <Badge variant="secondary" className="rounded-md text-[10px] font-medium">
                     {m.providerName}
                   </Badge>
                 </div>
-                <p className="mb-3 font-mono text-xs text-[#86868b]">
+                <p className="mb-3 font-mono text-xs text-[#7c8299]">
                   {m.modelId}
                 </p>
-                <div className="flex items-center justify-between text-xs text-[#86868b]">
+                <div className="flex items-center justify-between text-xs text-[#7c8299]">
                   <span>
                     ¥{m.sellPrice}/M {t("inputLabel")}
                   </span>
@@ -75,12 +78,12 @@ export function ModelsShowcase() {
             </AnimatedItem>
           ))}
         </AnimatedSection>
-        <div className="mt-8 text-center">
+        <div className="mt-10 text-center">
           <Link
             href="/model-list"
-            className="text-sm font-medium text-[#007AFF] hover:underline"
+            className="inline-flex items-center gap-1 text-sm font-medium text-[#2563eb] transition-colors hover:text-[#1d4ed8]"
           >
-            {t("viewAll")} &rarr;
+            {t("viewAll")} <ArrowRight className="h-3.5 w-3.5" />
           </Link>
         </div>
       </div>

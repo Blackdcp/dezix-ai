@@ -23,8 +23,8 @@ function UserMenu() {
   if (status === "loading") {
     return (
       <div className="flex items-center gap-2 px-3 py-1.5">
-        <div className="h-7 w-7 animate-pulse rounded-full bg-muted" />
-        <div className="h-4 w-16 animate-pulse rounded bg-muted" />
+        <div className="h-7 w-7 animate-pulse rounded-full bg-[#f0f2f5]" />
+        <div className="h-4 w-16 animate-pulse rounded bg-[#f0f2f5]" />
       </div>
     );
   }
@@ -32,22 +32,22 @@ function UserMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="gap-2">
+        <Button variant="ghost" className="gap-2 rounded-[8px]">
           <Avatar className="h-7 w-7">
-            <AvatarFallback className="text-xs">
+            <AvatarFallback className="bg-[#0f1729]/10 text-xs font-medium text-[#0f1729]">
               {user?.name?.charAt(0)?.toUpperCase() || "A"}
             </AvatarFallback>
           </Avatar>
-          <span className="text-sm">{user?.name || user?.email}</span>
+          <span className="text-sm text-[#3d4663]">{user?.name || user?.email}</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-48">
-        <DropdownMenuItem>
+      <DropdownMenuContent align="end" className="w-48 rounded-[10px]">
+        <DropdownMenuItem className="rounded-[6px]">
           <User className="mr-2 h-4 w-4" />
           {t("personalSettings")}
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/login" })}>
+        <DropdownMenuItem className="rounded-[6px]" onClick={() => signOut({ callbackUrl: "/login" })}>
           <LogOut className="mr-2 h-4 w-4" />
           {t("logout")}
         </DropdownMenuItem>
@@ -60,10 +60,10 @@ export function AdminHeader() {
   const t = useTranslations("Header");
 
   return (
-    <header className="flex h-14 items-center justify-between border-b bg-background px-6">
+    <header className="flex h-16 items-center justify-between border-b border-[var(--border)] bg-white px-6">
       <Link
         href="/dashboard"
-        className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
+        className="flex items-center gap-1.5 rounded-[8px] px-2 py-1 text-sm text-[#7c8299] transition-colors hover:bg-[#f0f2f5] hover:text-[#0f1729]"
       >
         <ArrowLeft className="h-4 w-4" />
         {t("backToConsole")}

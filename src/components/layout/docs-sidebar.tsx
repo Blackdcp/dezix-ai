@@ -26,11 +26,11 @@ export function DocsSidebar() {
   const t = useTranslations("DocsSidebar");
 
   return (
-    <aside className="hidden w-56 shrink-0 border-r border-black/[0.06] bg-[#f5f5f7] lg:block">
-      <nav className="sticky top-14 p-4">
+    <aside className="hidden w-56 shrink-0 border-r border-[var(--border)] bg-white lg:block">
+      <nav className="sticky top-16 p-4">
         {docNavItems.map((group) => (
           <div key={group.titleKey} className="mb-6">
-            <h4 className="mb-2 text-xs font-semibold uppercase text-[#86868b]">
+            <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-[#7c8299]">
               {t(group.titleKey)}
             </h4>
             <ul className="space-y-1">
@@ -41,10 +41,10 @@ export function DocsSidebar() {
                     <Link
                       href={item.href}
                       className={cn(
-                        "flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                        "flex items-center gap-2 rounded-[8px] px-3 py-2 text-sm font-medium transition-colors",
                         isActive
-                          ? "bg-[#007AFF]/10 text-[#007AFF]"
-                          : "text-[#424245] hover:bg-black/[0.03] hover:text-[#1d1d1f]"
+                          ? "bg-[#2563eb]/10 text-[#2563eb]"
+                          : "text-[#3d4663] hover:bg-[#f0f2f5] hover:text-[#0f1729]"
                       )}
                     >
                       <item.icon className="h-4 w-4" />

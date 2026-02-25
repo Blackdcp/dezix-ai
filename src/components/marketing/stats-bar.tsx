@@ -13,7 +13,7 @@ function CountUp({
   suffix: string;
   prefix?: string;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true });
   const [count, setCount] = useState(0);
 
@@ -37,11 +37,9 @@ function CountUp({
   }, [inView, target]);
 
   return (
-    <div ref={ref} className="text-3xl font-bold text-[#1d1d1f] md:text-4xl">
-      {prefix}
-      {count}
-      {suffix}
-    </div>
+    <span ref={ref}>
+      {prefix}{count}{suffix}
+    </span>
   );
 }
 
@@ -56,8 +54,8 @@ export function StatsBar() {
   ];
 
   return (
-    <section className="bg-[#f5f5f7] py-16">
-      <div className="mx-auto max-w-6xl px-4">
+    <section className="gradient-brand py-16">
+      <div className="mx-auto max-w-7xl px-6">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           {stats.map((s, i) => (
             <motion.div
@@ -68,12 +66,10 @@ export function StatsBar() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
             >
-              <CountUp
-                target={s.value}
-                suffix={s.suffix}
-                prefix={s.prefix}
-              />
-              <div className="mt-1 text-sm text-[#86868b]">
+              <div className="font-heading text-4xl font-bold text-white md:text-5xl">
+                <CountUp target={s.value} suffix={s.suffix} prefix={s.prefix} />
+              </div>
+              <div className="mt-2 text-sm font-medium text-white/70">
                 {s.label}
               </div>
             </motion.div>

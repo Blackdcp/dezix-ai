@@ -14,15 +14,15 @@ function FaqItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="border-b border-black/[0.04]">
+    <div className="border-b border-[var(--border)]">
       <button
         onClick={() => setOpen(!open)}
-        className="flex w-full items-center justify-between py-4 text-left"
+        className="flex w-full items-center justify-between py-5 text-left"
       >
-        <span className="text-[15px] font-medium text-[#1d1d1f]">{q}</span>
+        <span className="text-sm font-medium text-[#0f1729]">{q}</span>
         <ChevronDown
           className={cn(
-            "h-4 w-4 shrink-0 text-[#86868b] transition-transform duration-200",
+            "h-4 w-4 shrink-0 text-[#7c8299] transition-transform duration-200",
             open && "rotate-180"
           )}
         />
@@ -36,7 +36,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
             transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
-            <div className="pb-4 text-[15px] text-[#424245]">{a}</div>
+            <div className="pb-5 text-sm leading-relaxed text-[#3d4663]">{a}</div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -53,20 +53,20 @@ export default function FaqPage() {
   }));
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12">
+    <div className="mx-auto max-w-3xl px-6 py-16">
       <AnimatedSection>
         <AnimatedItem>
-          <h1 className="mb-2 text-5xl font-bold leading-[1.05] tracking-[-0.015em] text-[#1d1d1f] md:text-[56px]">{t("title")}</h1>
+          <h1 className="font-heading mb-3 text-4xl font-bold tracking-tight text-[#0f1729] md:text-5xl">{t("title")}</h1>
         </AnimatedItem>
         <AnimatedItem>
-          <p className="mb-8 text-lg text-[#424245]">
+          <p className="mb-10 text-lg text-[#3d4663]">
             {t("subtitle")}
           </p>
         </AnimatedItem>
       </AnimatedSection>
       <AnimatedSection>
         <AnimatedItem>
-          <div className="rounded-2xl bg-white shadow-sm">
+          <div className="rounded-[14px] border border-[var(--border)] bg-white">
             <div className="px-6">
               {faqs.map((faq) => (
                 <FaqItem key={faq.q} q={faq.q} a={faq.a} />
