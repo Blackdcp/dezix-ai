@@ -8,7 +8,7 @@ Dezix AI 是一个统一 LLM API 网关平台（仿 n1n.ai），面向国内开�
 
 ## 当前状态
 
-**Phase 1-12, 14 已完成。下一步: Phase 15 前端视觉重构。**
+**Phase 1-12, 14-15 全部完成。所有功能开发 + 视觉重构已完成。**
 
 **线上地址**: https://dezix-ai.vercel.app
 
@@ -27,6 +27,7 @@ Dezix AI 是一个统一 LLM API 网关平台（仿 n1n.ai），面向国内开�
 | Phase 11: 微信收款码充值 + 管理员审核 | ✅ 完成 | `783e6e7` |
 | Phase 12: 模型管理增强 (上游同步 + 批量调价) | ✅ 完成 | `2d20d7d` |
 | Phase 14: 多语言支持 (i18n) | ✅ 完成 | — |
+| Phase 15: 前端视觉重构 | ✅ 完成 | `bf2946e` |
 
 ## 技术栈
 
@@ -310,15 +311,40 @@ Base URL: `https://api.qnaigc.com/v1`
 新会话启动后，告诉 Claude:
 > 读一下 PROGRESS.md，继续上次的工作
 
-### 下一步: Phase 15 前端视觉重构
-所有功能开发已完成 (Phase 1-12, 14)，Phase 13 监控告警不做。
-剩余唯一工作: **前端视觉重构** — 营销首页、定价页、文档站、控制台。
+### Phase 15: 前端视觉重构 (已完成 ✅)
 
-**需要重构的页面范围:**
-- 营销页: `src/app/[locale]/(marketing)/` — 首页、定价、FAQ、模型列表
-- 营销组件: `src/components/marketing/` — hero, features, providers-bar, pricing, models-showcase, stats-bar, cta
-- 文档站: `src/app/[locale]/(docs)/` — 快速开始、API 参考、SDK 示例
-- 控制台: `src/app/[locale]/(console)/` — dashboard, models, playground, chat, billing, usage, api-keys, settings, referral
-- 管理后台: `src/app/[locale]/(admin)/admin/` — dashboard, users, models, channels, logs, orders
-- 布局组件: `src/components/layout/` — marketing-header/footer, console-sidebar/header, admin-sidebar/header, docs-sidebar
-- 登录/注册: `src/app/[locale]/(auth)/` — login, register
+所有功能开发已完成 (Phase 1-12, 14)，Phase 13 监控告警不做。
+Phase 15 前端视觉重构已全部完成。
+
+**配色方案: Electric Blue × Vivid Cyan (方案 C)**
+- 主色: `#0070F3` (Electric Blue, Vercel 级科技蓝)
+- 渐变: `#0070F3 → #00B4D8` (电光蓝→活力青)
+- 背景: `#FAF9F6` (Cloud Dancer 2026 潘通暖白)
+- CSS 变量: globals.css 集中管理, .tsx 文件使用 Tailwind 变量类 (text-primary, text-foreground, border-border 等)
+
+**已完成的视觉改动:**
+- Logo 移除: 6 处 D/A 图标全部移除, 改为纯文字 "Dezix AI"
+- Provider 品牌 SVG logos: OpenAI, Anthropic, Google, DeepSeek, xAI (正确官方 SVG)
+- Hero: 暗色代码预览, badge 标签, 紧凑标题
+- Features: h-7 w-7 大图标, 渐变色卡片背景, 改进文字对比度
+- Pricing: "Most Popular" 徽章, overflow-hidden, CTA 按钮底部对齐
+- CTA: 暗色背景 (#1C1917) + 蓝光径向渐变装饰
+- Models Showcase: 骨架屏加载, 可点击卡片, 价格格式化
+- Model List: overflow-x-auto, sticky header, 复制 model ID 按钮
+- Dashboard: 品牌色图表, 彩色统计图标 + 背景色块, 骨架屏
+- Console Models: 绿色 Active 徽章, provider logos, hover 阴影
+- Auth 页面: dot-grid 背景, gradient-brand 顶线, ring focus 样式
+- Marketing Header: 活动导航 pill (bg-primary/10 + text-primary)
+- CSS 变量重构: 25 个文件硬编码 hex → Tailwind CSS 变量类
+
+**关键 commits:**
+- `8c203b7` — Phase 15 基础视觉升级
+- `ae5e630` — Cloud Dancer 暖白 + 正确 provider SVG logos
+- `c67a027` — Electric Blue #0070F3 配色方案
+- `bf2946e` — CSS 变量重构 + feature 图标优化
+
+**关键文件:**
+- `src/app/globals.css` — 全局配色 (CSS 变量 + 工具类)
+- `src/components/icons/provider-logos.tsx` — 5 个品牌 SVG + GenericProviderLogo
+- `src/components/marketing/` — 7 个营销组件 (hero, features, providers-bar, pricing, models-showcase, stats-bar, cta)
+- `src/components/layout/` — 8 个布局组件 (header/footer/sidebar)

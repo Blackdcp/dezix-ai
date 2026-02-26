@@ -566,63 +566,37 @@
 ## Phase 15: 前端视觉重构
 
 ### 设计方向 (最终确定)
-- 用户提供了参考图 (`C:\Users\user\Desktop\39ada8279480c9ddee898c1ba01be537.jpg`)
-- **浅色、现代、活泼的 SaaS 风格** — 白色背景、彩色点缀、干净排版
-- 配色: Purple (#7C5CFC), Coral (#E8706A), Green (#2DB574), Dark text (#1a1a2e), 白色/浅灰背景
-- 品牌渐变: `linear-gradient(135deg, #7C5CFC 0%, #E8706A 100%)`
-- 按钮: `btn-primary` = 黑色(#1a1a2e) rounded-full 药丸形; `btn-secondary` = 白色边框 rounded-full
-- 卡片: 白色背景, #e4e4e7 边框, rounded-2xl, hover 阴影
-- 导航: rounded-xl 链接项, bg-[#f0ecff] + text-[#7C5CFC] 选中态
+- **配色方案 C: Electric Blue × Vivid Cyan**
+- 灵感来源: 2026 潘通年度色 Cloud Dancer (暖白) + Vercel/Framer 设计语言
+- 主色: `#0070F3` (Electric Blue), 渐变: `#0070F3 → #00B4D8`
+- 背景: `#FAF9F6` (Cloud Dancer 暖白), 边框: `#E7E5E0`
+- CSS 变量集中管理, .tsx 使用 Tailwind 语义类 (text-primary, text-foreground, border-border 等)
 
-### Part A: 第一次重构 (已废弃, 30/100 分)
-- 错误理解为深色未来感主题 (#0a0e1a 背景, cyan #00d4ff, neon purple, glass-morphism)
-- 用户明确否定: "你没有按照我给你的参考风格制作，我的参考是浅色背景的"
-- Git commit: `d4a2885` (已被 Part B 覆盖)
+### 完成的改动 (4 commits):
+- [x] `8c203b7` — Phase 15 基础视觉升级 (logo 移除, provider SVG, 结构优化)
+- [x] `ae5e630` — Cloud Dancer 暖白底色 + 正确的 provider SVG logos
+- [x] `c67a027` — Electric Blue #0070F3 配色方案 (方案 C)
+- [x] `bf2946e` — CSS 变量重构 + feature 图标优化 (25 文件硬编码 hex → 变量类)
 
-### Part B: 浅色主题重构 (进行中) — commit `59f5308`
-
-#### 已完成的文件 (27 个文件已改):
-- [x] `src/app/globals.css` — 完整重写: 白色背景, 新 CSS 变量, .gradient-brand, .btn-primary/.btn-secondary (pill), .card-elevated, .shape-blob, .badge-purple/.badge-coral/.badge-green
-- [x] `src/components/layout/marketing-header.tsx` — 白色 bg/80 backdrop-blur, #1a1a2e 文字, #7C5CFC 选中态, pill CTA
-- [x] `src/components/layout/marketing-footer.tsx` — bg-[#fafafa], border-[#e4e4e7], hover:text-[#7C5CFC]
-- [x] `src/components/layout/language-switcher.tsx` — rounded-full 触发器, rounded-xl 下拉, #7C5CFC 选中
-- [x] `src/components/marketing/grid-background.tsx` — 三个 .shape-blob (purple/coral/green)
-- [x] `src/components/marketing/hero-section.tsx` — #1a1a2e 标题, 彩色代码预览, gradient-brand 副标题
-- [x] `src/components/marketing/providers-bar.tsx` — bg-[#fafafa], #a1a1aa 文字
-- [x] `src/components/marketing/features-section.tsx` — 白色卡片, 每功能彩色 icon (purple/coral/green 循环)
-- [x] `src/components/marketing/stats-bar.tsx` — 保持 gradient-brand 背景 + 白字
-- [x] `src/components/marketing/pricing-section.tsx` — 白色卡片, #7C5CFC 高亮边框, #2DB574 绿色勾
-- [x] `src/components/marketing/models-showcase.tsx` — card-elevated 白色卡片
-- [x] `src/components/marketing/cta-section.tsx` — shape-blob 背景 (purple + coral)
-- [x] `src/app/[locale]/(marketing)/faq/page.tsx` — 白色手风琴, border-[#e4e4e7], rounded-2xl
-- [x] `src/app/[locale]/(marketing)/pricing/page.tsx` — 白色卡片, bg-[#fafafa] 表头
-- [x] `src/app/[locale]/(marketing)/model-list/page.tsx` — 浅色表格, rounded-full 徽章
-- [x] `src/app/[locale]/(auth)/login/page.tsx` — 白色卡片 on bg-[#fafafa], #7C5CFC 链接
-- [x] `src/app/[locale]/(auth)/register/page.tsx` — 同 login 处理
-- [x] `src/components/auth/oauth-buttons.tsx` — 白色边框 rounded-full 按钮
-- [x] `src/components/layout/docs-sidebar.tsx` — bg-[#fafafa], rounded-xl, bg-[#f0ecff] 选中
-- [x] `src/app/[locale]/(docs)/docs/quick-start/page.tsx` — 浅色文字颜色修复
-- [x] `src/app/[locale]/(docs)/docs/api-reference/page.tsx` — 浅色文字颜色修复
-- [x] `src/app/[locale]/(docs)/docs/sdk-examples/page.tsx` — 浅色文字颜色修复
-- [x] `src/components/layout/console-sidebar.tsx` — bg-[#fafafa], gradient-brand logo, #f0ecff 选中态, rounded-xl
-- [x] `src/components/layout/console-header.tsx` — 白色 bg, border-[#e4e4e7], #7C5CFC avatar, rounded-xl
-- [x] `src/app/[locale]/(console)/layout.tsx` — bg-[#f4f4f5] (从 #0a0e1a 改为浅色)
-- [x] `src/components/layout/admin-sidebar.tsx` — bg-[#fafafa], #7C5CFC 图标, rounded-xl, #f0ecff 选中
-- [x] `src/components/layout/admin-header.tsx` — 白色 bg, border-[#e4e4e7], #7C5CFC avatar, rounded-xl
-- [x] `src/app/[locale]/(admin)/layout.tsx` — bg-[#f4f4f5] (从 #0a0e1a 改为浅色)
-
-#### 已验证 (2026-02-26):
-- [x] 扫描残留深色主题引用 — 零残留 (#0a0e1a, #00d4ff, #111827, #94a3b8 等均已清除)
-- [x] 控制台 9 个内页 — 全部干净，使用 shadcn/ui 语义化颜色
-- [x] 管理后台 6 个内页 — 全部干净
-- [x] `npm run build` 构建验证通过 (76 页面)
-- [x] Phase 15 Part B 浅色主题重构完成
+### 改动清单:
+- [x] Logo 移除 (6 处 D/A 图标 → 纯文字 "Dezix AI")
+- [x] Provider 品牌 SVG logos (OpenAI, Anthropic, Google, DeepSeek, xAI + GenericProviderLogo)
+- [x] Hero: 暗色代码预览, badge 标签, 紧凑标题
+- [x] Features: h-7 w-7 大图标, 渐变色卡片背景, 改进文字对比度
+- [x] Pricing: "Most Popular" 徽章, overflow-hidden, CTA 底部对齐
+- [x] CTA: 暗色背景 + 蓝光径向渐变装饰
+- [x] Models Showcase: 骨架屏, 可点击卡片, 价格格式化
+- [x] Model List: overflow-x-auto, sticky header, 复制 model ID
+- [x] Dashboard: 品牌色图表, 彩色统计图标, 骨架屏
+- [x] Console Models: 绿色 Active 徽章, provider logos, hover 阴影
+- [x] Auth 页面: dot-grid 背景, gradient-brand 顶线
+- [x] Marketing Header: 活动导航 pill
+- [x] 25 个文件 CSS 变量重构
+- [x] `npm run build` 构建验证通过
 
 ### 注意事项
 - 项目路径: `E:\Claude code\dezix-ai`
-- 参考图: `C:\Users\user\Desktop\39ada8279480c9ddee898c1ba01be537.jpg`
-- 开发服务器运行在 port 3001
 - 使用 src/ 目录结构 + [locale] i18n 路由
-- Google Fonts `@import` 必须是 globals.css 的第一行 (在 tailwindcss import 之前)
-- CountUp 组件在 stats-bar 中必须使用 `<span>` 不能用 `<div>` (hydration 修复)
-- 导航必须从 `@/i18n/navigation` 导入 (不是 `next/navigation`)
+- Google Fonts `@import` 必须是 globals.css 的第一行
+- 导航必须从 `@/i18n/navigation` 导入
+- 改配色只需修改 `globals.css` 中的 CSS 变量 + .gradient-brand/.btn-primary 等工具类
