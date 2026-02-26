@@ -22,8 +22,8 @@ function UserMenu() {
   if (status === "loading") {
     return (
       <div className="flex items-center gap-2 px-3 py-1.5">
-        <div className="h-7 w-7 animate-pulse rounded-full bg-[#f4f4f5]" />
-        <div className="h-4 w-16 animate-pulse rounded bg-[#f4f4f5]" />
+        <div className="h-7 w-7 animate-pulse rounded-full bg-[#F5F3EF]" />
+        <div className="h-4 w-16 animate-pulse rounded bg-[#F5F3EF]" />
       </div>
     );
   }
@@ -31,16 +31,16 @@ function UserMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="gap-2 rounded-xl hover:bg-[#f4f4f5]">
+        <Button variant="ghost" className="gap-2 rounded-xl hover:bg-[#F5F3EF]">
           <Avatar className="h-7 w-7">
-            <AvatarFallback className="bg-[#7C5CFC]/10 text-xs font-medium text-[#7C5CFC]">
+            <AvatarFallback className="bg-[#6366F1]/10 text-xs font-medium text-[#6366F1]">
               {user?.name?.charAt(0)?.toUpperCase() || "U"}
             </AvatarFallback>
           </Avatar>
-          <span className="text-sm text-[#52525b]">{user?.name || user?.email}</span>
+          <span className="text-sm text-[#57534E]">{user?.name || user?.email}</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-48 rounded-xl border-[#e4e4e7] bg-white">
+      <DropdownMenuContent align="end" className="w-48 rounded-xl border-[#E7E5E0] bg-white">
         <DropdownMenuItem className="rounded-lg">
           <User className="mr-2 h-4 w-4" />
           {t("personalSettings")}
@@ -57,7 +57,7 @@ function UserMenu() {
 
 export function ConsoleHeader() {
   return (
-    <header className="flex h-16 items-center justify-between border-b border-[#e4e4e7] bg-white px-6">
+    <header className="flex h-16 items-center justify-between border-b border-[#E7E5E0] bg-white px-6">
       <div />
       <div className="flex items-center gap-2">
         <LanguageSwitcher />

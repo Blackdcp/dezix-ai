@@ -8,19 +8,19 @@ export default function SdkExamplesPage() {
 
   return (
     <article className="prose-sm max-w-none">
-      <h1 className="mb-2 text-3xl font-bold tracking-[-0.015em] text-[#1a1a2e]">{t("title")}</h1>
-      <p className="mb-8 text-[17px] leading-relaxed text-[#52525b]">
+      <h1 className="mb-2 text-3xl font-bold tracking-[-0.015em] text-[#1C1917]">{t("title")}</h1>
+      <p className="mb-8 text-[17px] leading-relaxed text-[#57534E]">
         {t("subtitle")}
       </p>
 
       {/* Python */}
-      <h2 className="mb-3 mt-8 text-xl font-bold text-[#1a1a2e]">Python</h2>
-      <p className="mb-4 text-[17px] leading-relaxed text-[#52525b]">
+      <h2 className="mb-3 mt-8 text-xl font-bold text-[#1C1917]">Python</h2>
+      <p className="mb-4 text-[17px] leading-relaxed text-[#57534E]">
         {t("installPython")}
       </p>
       <CodeBlock language="bash" title={t("install")} code="pip install openai" />
 
-      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1a1a2e]">{t("basicChat")}</h3>
+      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1C1917]">{t("basicChat")}</h3>
       <CodeBlock
         language="python"
         title="basic_chat.py"
@@ -44,7 +44,7 @@ response = client.chat.completions.create(
 print(response.choices[0].message.content)`}
       />
 
-      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1a1a2e]">{t("streamingResponse")}</h3>
+      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1C1917]">{t("streamingResponse")}</h3>
       <CodeBlock
         language="python"
         title="streaming.py"
@@ -69,7 +69,7 @@ for chunk in stream:
 print()`}
       />
 
-      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1a1a2e]">{t("multiTurn")}</h3>
+      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1C1917]">{t("multiTurn")}</h3>
       <CodeBlock
         language="python"
         title="multi_turn.py"
@@ -104,13 +104,13 @@ print(f"Assistant: {response.choices[0].message.content}")`}
       />
 
       {/* Node.js */}
-      <h2 className="mb-3 mt-10 text-xl font-bold text-[#1a1a2e]">Node.js</h2>
-      <p className="mb-4 text-[17px] leading-relaxed text-[#52525b]">
+      <h2 className="mb-3 mt-10 text-xl font-bold text-[#1C1917]">Node.js</h2>
+      <p className="mb-4 text-[17px] leading-relaxed text-[#57534E]">
         {t("installNode")}
       </p>
       <CodeBlock language="bash" title={t("install")} code="npm install openai" />
 
-      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1a1a2e]">{t("basicChat")}</h3>
+      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1C1917]">{t("basicChat")}</h3>
       <CodeBlock
         language="javascript"
         title="basic_chat.mjs"
@@ -134,7 +134,7 @@ const response = await client.chat.completions.create({
 console.log(response.choices[0].message.content);`}
       />
 
-      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1a1a2e]">{t("streamingResponse")}</h3>
+      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1C1917]">{t("streamingResponse")}</h3>
       <CodeBlock
         language="javascript"
         title="streaming.mjs"
@@ -163,9 +163,9 @@ console.log();`}
       />
 
       {/* cURL */}
-      <h2 className="mb-3 mt-10 text-xl font-bold text-[#1a1a2e]">cURL</h2>
+      <h2 className="mb-3 mt-10 text-xl font-bold text-[#1C1917]">cURL</h2>
 
-      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1a1a2e]">{t("nonStream")}</h3>
+      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1C1917]">{t("nonStream")}</h3>
       <CodeBlock
         language="bash"
         title={t("nonStream")}
@@ -180,7 +180,7 @@ console.log();`}
   }'`}
       />
 
-      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1a1a2e]">{t("streamRequest")}</h3>
+      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1C1917]">{t("streamRequest")}</h3>
       <CodeBlock
         language="bash"
         title={t("streamRequest")}
@@ -197,7 +197,7 @@ console.log();`}
   }'`}
       />
 
-      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1a1a2e]">{t("getModels")}</h3>
+      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1C1917]">{t("getModels")}</h3>
       <CodeBlock
         language="bash"
         title={t("getModels")}
@@ -206,8 +206,8 @@ console.log();`}
       />
 
       {/* Tips */}
-      <h2 className="mb-3 mt-10 text-xl font-bold text-[#1a1a2e]">{t("tipsTitle")}</h2>
-      <ul className="mb-4 ml-6 list-disc space-y-2 text-[17px] leading-relaxed text-[#52525b]">
+      <h2 className="mb-3 mt-10 text-xl font-bold text-[#1C1917]">{t("tipsTitle")}</h2>
+      <ul className="mb-4 ml-6 list-disc space-y-2 text-[17px] leading-relaxed text-[#57534E]">
         <li>{t("tip1")}</li>
         <li>{t("tip2")}</li>
         <li>{t("tip3")}</li>

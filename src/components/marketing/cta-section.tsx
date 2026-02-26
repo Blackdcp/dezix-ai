@@ -12,11 +12,11 @@ export function CtaSection() {
   const t = useTranslations("Cta");
 
   return (
-    <section className="relative overflow-hidden bg-[#1a1a2e] py-20 md:py-28">
+    <section className="relative overflow-hidden bg-[#1C1917] py-20 md:py-28">
       {/* Background decorations */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(124,92,252,0.15),transparent_60%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(232,112,106,0.10),transparent_60%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(99,102,241,0.15),transparent_60%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(232,123,106,0.10),transparent_60%)]" />
       </div>
 
       <div className="relative mx-auto max-w-7xl px-6 text-center">
@@ -28,7 +28,7 @@ export function CtaSection() {
             </h2>
           </AnimatedItem>
           <AnimatedItem>
-            <p className="mx-auto mt-5 max-w-xl text-lg text-[#a1a1aa]">
+            <p className="mx-auto mt-5 max-w-xl text-lg text-[#A8A29E]">
               {t("description")}
             </p>
           </AnimatedItem>
@@ -36,14 +36,14 @@ export function CtaSection() {
             <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link
                 href="/register"
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-white px-8 text-base font-medium text-[#1a1a2e] transition-all hover:bg-[#f4f4f5] hover:shadow-lg hover:shadow-white/10"
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-white px-8 text-base font-medium text-[#1C1917] transition-all hover:bg-[#F5F3EF] hover:shadow-lg hover:shadow-white/10"
               >
                 {t("freeRegister")}
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 href="/docs/quick-start"
-                className="inline-flex h-12 items-center justify-center rounded-full border border-[#3f3f5c] px-8 text-base font-medium text-white transition-all hover:border-[#52525b] hover:bg-[#2d2d44]"
+                className="inline-flex h-12 items-center justify-center rounded-full border border-[#44403C] px-8 text-base font-medium text-white transition-all hover:border-[#57534E] hover:bg-[#292524]"
               >
                 {t("readDocs")}
               </Link>

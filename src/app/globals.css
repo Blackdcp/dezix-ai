@@ -53,48 +53,48 @@
 
 :root {
   --radius: 0.75rem;
-  /* ─ Palette: Modern / Playful / Light ─ */
-  --background: #ffffff;
-  --foreground: #1a1a2e;
-  --card: #ffffff;
-  --card-foreground: #1a1a2e;
-  --popover: #ffffff;
-  --popover-foreground: #1a1a2e;
-  --primary: #7C5CFC;
-  --primary-foreground: #ffffff;
-  --secondary: #f4f4f5;
-  --secondary-foreground: #1a1a2e;
-  --muted: #f4f4f5;
-  --muted-foreground: #71717a;
-  --accent: #f4f4f5;
-  --accent-foreground: #1a1a2e;
-  --destructive: #ef4444;
-  --border: #e4e4e7;
-  --input: #e4e4e7;
-  --ring: #7C5CFC;
-  --chart-1: #7C5CFC;
-  --chart-2: #E8706A;
-  --chart-3: #2DB574;
-  --chart-4: #f59e0b;
-  --chart-5: #06b6d4;
-  --sidebar: #fafafa;
-  --sidebar-foreground: #52525b;
-  --sidebar-primary: #7C5CFC;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f0ecff;
-  --sidebar-accent-foreground: #7C5CFC;
-  --sidebar-border: #e4e4e7;
-  --sidebar-ring: #7C5CFC;
-  --accent-brand: #7C5CFC;
-  --accent-brand-hover: #6A4CE0;
+  /* ─ Palette: Cloud Dancer 2026 — warm whites, muted indigo, soft tones ─ */
+  --background: #FAFAF8;
+  --foreground: #1C1917;
+  --card: #FFFFFF;
+  --card-foreground: #1C1917;
+  --popover: #FFFFFF;
+  --popover-foreground: #1C1917;
+  --primary: #6366F1;
+  --primary-foreground: #FFFFFF;
+  --secondary: #F5F3EF;
+  --secondary-foreground: #1C1917;
+  --muted: #F5F3EF;
+  --muted-foreground: #78716C;
+  --accent: #F5F3EF;
+  --accent-foreground: #1C1917;
+  --destructive: #DC2626;
+  --border: #E7E5E0;
+  --input: #E7E5E0;
+  --ring: #6366F1;
+  --chart-1: #6366F1;
+  --chart-2: #E87B6A;
+  --chart-3: #059669;
+  --chart-4: #D97706;
+  --chart-5: #0891B2;
+  --sidebar: #F9F8F6;
+  --sidebar-foreground: #57534E;
+  --sidebar-primary: #6366F1;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #EEF2FF;
+  --sidebar-accent-foreground: #6366F1;
+  --sidebar-border: #E7E5E0;
+  --sidebar-ring: #6366F1;
+  --accent-brand: #6366F1;
+  --accent-brand-hover: #4F46E5;
 }
 
-/* ── Brand gradient (purple → coral) ── */
+/* ── Brand gradient (indigo → warm coral) ── */
 .gradient-brand {
-  background: linear-gradient(135deg, #7C5CFC 0%, #E8706A 100%);
+  background: linear-gradient(135deg, #6366F1 0%, #E87B6A 100%);
 }
 .text-gradient-brand {
-  background: linear-gradient(135deg, #7C5CFC 0%, #E8706A 100%);
+  background: linear-gradient(135deg, #6366F1 0%, #E87B6A 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -102,14 +102,14 @@
 
 /* ── Card system ── */
 .card-elevated {
-  background: #ffffff;
-  border: 1px solid #e4e4e7;
+  background: #FFFFFF;
+  border: 1px solid #E7E5E0;
   border-radius: 16px;
   transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
 }
 .card-elevated:hover {
-  border-color: #d4d4d8;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.04);
+  border-color: #D6D3CD;
+  box-shadow: 0 10px 40px rgba(28, 25, 23, 0.05), 0 2px 8px rgba(28, 25, 23, 0.03);
   transform: translateY(-2px);
 }
 
@@ -117,8 +117,8 @@
 .card-gradient-line {
   position: relative;
   overflow: hidden;
-  background: #ffffff;
-  border: 1px solid #e4e4e7;
+  background: #FFFFFF;
+  border: 1px solid #E7E5E0;
   border-radius: 16px;
   transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
 }
@@ -129,13 +129,13 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, #7C5CFC 0%, #E8706A 100%);
+  background: linear-gradient(90deg, #6366F1 0%, #E87B6A 100%);
   opacity: 0;
   transition: opacity 0.2s;
 }
 .card-gradient-line:hover {
-  border-color: #d4d4d8;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.04);
+  border-color: #D6D3CD;
+  box-shadow: 0 10px 40px rgba(28, 25, 23, 0.05), 0 2px 8px rgba(28, 25, 23, 0.03);
   transform: translateY(-2px);
 }
 .card-gradient-line:hover::before {
@@ -144,34 +144,34 @@
 
 /* ── Buttons ── */
 .btn-primary {
-  background: #1a1a2e;
-  color: #ffffff;
+  background: #1C1917;
+  color: #FAFAF8;
   border-radius: 100px;
   font-weight: 500;
   transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
 }
 .btn-primary:hover {
-  background: #2d2d44;
-  box-shadow: 0 4px 16px rgba(26, 26, 46, 0.2);
+  background: #292524;
+  box-shadow: 0 4px 16px rgba(28, 25, 23, 0.18);
   transform: translateY(-1px);
 }
 
 .btn-secondary {
-  background: #ffffff;
-  color: #1a1a2e;
-  border: 1.5px solid #e4e4e7;
+  background: #FFFFFF;
+  color: #1C1917;
+  border: 1.5px solid #E7E5E0;
   border-radius: 100px;
   font-weight: 500;
   transition: border-color 0.2s, background 0.2s;
 }
 .btn-secondary:hover {
-  border-color: #d4d4d8;
-  background: #fafafa;
+  border-color: #D6D3CD;
+  background: #F9F8F6;
 }
 
 /* ── Dot grid background ── */
 .dot-grid {
-  background-image: radial-gradient(circle, #e4e4e7 1px, transparent 1px);
+  background-image: radial-gradient(circle, #D6D3CD 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
@@ -180,22 +180,22 @@
   position: absolute;
   border-radius: 50%;
   filter: blur(80px);
-  opacity: 0.15;
+  opacity: 0.12;
   pointer-events: none;
 }
 
 /* ── Colored badges ── */
 .badge-purple {
-  background: #f0ecff;
-  color: #7C5CFC;
+  background: #EEF2FF;
+  color: #6366F1;
 }
 .badge-coral {
-  background: #fef0ef;
-  color: #E8706A;
+  background: #FEF2F0;
+  color: #E87B6A;
 }
 .badge-green {
-  background: #ecfdf3;
-  color: #2DB574;
+  background: #ECFDF5;
+  color: #059669;
 }
 
 @layer base {

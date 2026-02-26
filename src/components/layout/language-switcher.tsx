@@ -25,7 +25,7 @@ export function LanguageSwitcher() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button className="flex h-8 w-8 items-center justify-center rounded-full text-[#71717a] transition-colors hover:bg-[#f4f4f5] hover:text-[#1a1a2e]">
+        <button className="flex h-8 w-8 items-center justify-center rounded-full text-[#78716C] transition-colors hover:bg-[#F5F3EF] hover:text-[#1C1917]">
           <Globe className="h-4 w-4" />
         </button>
       </DropdownMenuTrigger>
@@ -34,7 +34,7 @@ export function LanguageSwitcher() {
           <DropdownMenuItem
             key={l}
             onClick={() => handleLocaleChange(l)}
-            className={`rounded-lg ${locale === l ? "font-semibold text-[#7C5CFC]" : ""}`}
+            className={`rounded-lg ${locale === l ? "font-semibold text-[#6366F1]" : ""}`}
           >
             {t(l)}
           </DropdownMenuItem>

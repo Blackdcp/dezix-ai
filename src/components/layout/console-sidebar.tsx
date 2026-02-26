@@ -36,8 +36,8 @@ export function ConsoleSidebar() {
   const t = useTranslations("ConsoleNav");
 
   return (
-    <aside className="flex h-full w-60 flex-col border-r border-[#e4e4e7] bg-[#fafafa]">
-      <div className="flex h-16 items-center gap-1 border-b border-[#e4e4e7] px-5">
+    <aside className="flex h-full w-60 flex-col border-r border-[#E7E5E0] bg-[#F9F8F6]">
+      <div className="flex h-16 items-center gap-1 border-b border-[#E7E5E0] px-5">
         <Link href="/dashboard" className="font-heading text-lg font-bold text-gradient-brand">
           Dezix AI
         </Link>
@@ -52,8 +52,8 @@ export function ConsoleSidebar() {
               className={cn(
                 "flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-colors",
                 isActive
-                  ? "bg-[#f0ecff] text-[#7C5CFC]"
-                  : "text-[#52525b] hover:bg-[#f4f4f5] hover:text-[#1a1a2e]"
+                  ? "bg-[#EEF2FF] text-[#6366F1]"
+                  : "text-[#57534E] hover:bg-[#F5F3EF] hover:text-[#1C1917]"
               )}
             >
               <item.icon className="h-4 w-4" />
@@ -63,12 +63,12 @@ export function ConsoleSidebar() {
         })}
       </nav>
       {isAdmin && (
-        <div className="border-t border-[#e4e4e7] p-3">
+        <div className="border-t border-[#E7E5E0] p-3">
           <Link
             href="/admin/dashboard"
             className={cn(
               "flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-colors",
-              "text-[#52525b] hover:bg-[#f4f4f5] hover:text-[#1a1a2e]"
+              "text-[#57534E] hover:bg-[#F5F3EF] hover:text-[#1C1917]"
             )}
           >
             <Shield className="h-4 w-4" />

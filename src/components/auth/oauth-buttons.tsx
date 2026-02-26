@@ -33,7 +33,7 @@ export function OAuthButtons({ mode, referralCode }: OAuthButtonsProps) {
         type="button"
         onClick={() => handleOAuth("github")}
         disabled={loadingProvider !== null}
-        className="flex h-12 w-full items-center justify-center gap-3 rounded-full border border-[#e4e4e7] bg-white text-sm font-medium text-[#1a1a2e] transition-colors hover:bg-[#fafafa] disabled:opacity-50"
+        className="flex h-12 w-full items-center justify-center gap-3 rounded-full border border-[#E7E5E0] bg-white text-sm font-medium text-[#1C1917] transition-colors hover:bg-[#F9F8F6] disabled:opacity-50"
       >
         {loadingProvider === "github" ? (
           <LoadingSpinner />
@@ -49,7 +49,7 @@ export function OAuthButtons({ mode, referralCode }: OAuthButtonsProps) {
         type="button"
         onClick={() => handleOAuth("google")}
         disabled={loadingProvider !== null}
-        className="flex h-12 w-full items-center justify-center gap-3 rounded-full border border-[#e4e4e7] bg-white text-sm font-medium text-[#1a1a2e] transition-colors hover:bg-[#fafafa] disabled:opacity-50"
+        className="flex h-12 w-full items-center justify-center gap-3 rounded-full border border-[#E7E5E0] bg-white text-sm font-medium text-[#1C1917] transition-colors hover:bg-[#F9F8F6] disabled:opacity-50"
       >
         {loadingProvider === "google" ? (
           <LoadingSpinner />

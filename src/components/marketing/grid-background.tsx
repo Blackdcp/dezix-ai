@@ -6,9 +6,9 @@ export function GridBackground() {
       {/* Gradient fade */}
       <div className="absolute inset-0 bg-gradient-to-b from-white via-transparent to-white" />
       {/* Decorative blobs */}
-      <div className="shape-blob left-[10%] top-[15%] h-[400px] w-[400px] bg-[#7C5CFC]" />
-      <div className="shape-blob right-[10%] top-[30%] h-[350px] w-[350px] bg-[#E8706A]" />
-      <div className="shape-blob left-[40%] bottom-[10%] h-[300px] w-[300px] bg-[#2DB574]" />
+      <div className="shape-blob left-[10%] top-[15%] h-[400px] w-[400px] bg-[#6366F1]" />
+      <div className="shape-blob right-[10%] top-[30%] h-[350px] w-[350px] bg-[#E87B6A]" />
+      <div className="shape-blob left-[40%] bottom-[10%] h-[300px] w-[300px] bg-[#059669]" />
     </div>
   );
 }

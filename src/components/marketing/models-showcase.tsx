@@ -24,15 +24,15 @@ interface Model {
 
 function ModelSkeleton() {
   return (
-    <div className="animate-pulse rounded-2xl border border-[#e4e4e7] bg-white p-5">
+    <div className="animate-pulse rounded-2xl border border-[#E7E5E0] bg-white p-5">
       <div className="mb-3 flex items-center justify-between">
-        <div className="h-4 w-28 rounded bg-[#f4f4f5]" />
-        <div className="h-5 w-14 rounded-full bg-[#f4f4f5]" />
+        <div className="h-4 w-28 rounded bg-[#F5F3EF]" />
+        <div className="h-5 w-14 rounded-full bg-[#F5F3EF]" />
       </div>
-      <div className="mb-4 h-3 w-40 rounded bg-[#f4f4f5]" />
+      <div className="mb-4 h-3 w-40 rounded bg-[#F5F3EF]" />
       <div className="flex items-center justify-between">
-        <div className="h-3 w-20 rounded bg-[#f4f4f5]" />
-        <div className="h-3 w-16 rounded bg-[#f4f4f5]" />
+        <div className="h-3 w-20 rounded bg-[#F5F3EF]" />
+        <div className="h-3 w-16 rounded bg-[#F5F3EF]" />
       </div>
     </div>
   );
@@ -66,12 +66,12 @@ export function ModelsShowcase() {
       <div className="mx-auto max-w-7xl px-6">
         <AnimatedSection>
           <AnimatedItem>
-            <h2 className="font-heading mb-4 text-center text-3xl font-bold tracking-tight text-[#1a1a2e] md:text-4xl">
+            <h2 className="font-heading mb-4 text-center text-3xl font-bold tracking-tight text-[#1C1917] md:text-4xl">
               {t("title")}
             </h2>
           </AnimatedItem>
           <AnimatedItem>
-            <p className="mx-auto mb-14 max-w-2xl text-center text-lg text-[#52525b]">
+            <p className="mx-auto mb-14 max-w-2xl text-center text-lg text-[#57534E]">
               {t("subtitle")}
             </p>
           </AnimatedItem>
@@ -92,16 +92,16 @@ export function ModelsShowcase() {
                   <Link href={`/model-list`}>
                     <div className="card-elevated cursor-pointer p-5">
                       <div className="mb-2 flex items-center justify-between">
-                        <span className="font-heading text-sm font-semibold text-[#1a1a2e]">{m.displayName}</span>
+                        <span className="font-heading text-sm font-semibold text-[#1C1917]">{m.displayName}</span>
                         <Badge variant="secondary" className="flex items-center gap-1 rounded-full text-[10px] font-medium">
                           <Logo className="h-3 w-3" style={{ color }} />
                           {m.providerName}
                         </Badge>
                       </div>
-                      <p className="mb-3 font-mono text-xs text-[#a1a1aa]">
+                      <p className="mb-3 font-mono text-xs text-[#A8A29E]">
                         {m.modelId}
                       </p>
-                      <div className="flex items-center justify-between text-xs text-[#71717a]">
+                      <div className="flex items-center justify-between text-xs text-[#78716C]">
                         <span>
                           ¥{formatDisplayPrice(m.sellPrice)}/M {t("inputLabel")}
                         </span>
@@ -117,7 +117,7 @@ export function ModelsShowcase() {
         <div className="mt-10 text-center">
           <Link
             href="/model-list"
-            className="inline-flex items-center gap-1 text-sm font-medium text-[#7C5CFC] transition-colors hover:text-[#6A4CE0]"
+            className="inline-flex items-center gap-1 text-sm font-medium text-[#6366F1] transition-colors hover:text-[#4F46E5]"
           >
             {t("viewAll")} <ArrowRight className="h-3.5 w-3.5" />
           </Link>

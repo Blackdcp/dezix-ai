@@ -42,16 +42,16 @@ export function PricingSection() {
   ];
 
   return (
-    <section className="bg-[#fafafa] py-20 md:py-28">
+    <section className="bg-[#F9F8F6] py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-6">
         <AnimatedSection>
           <AnimatedItem>
-            <h2 className="font-heading mb-4 text-center text-3xl font-bold tracking-tight text-[#1a1a2e] md:text-4xl">
+            <h2 className="font-heading mb-4 text-center text-3xl font-bold tracking-tight text-[#1C1917] md:text-4xl">
               {t("title")}
             </h2>
           </AnimatedItem>
           <AnimatedItem>
-            <p className="mx-auto mb-14 max-w-2xl text-center text-lg text-[#52525b]">
+            <p className="mx-auto mb-14 max-w-2xl text-center text-lg text-[#57534E]">
               {t("subtitle")}
             </p>
           </AnimatedItem>
@@ -62,27 +62,27 @@ export function PricingSection() {
               <div
                 className={`relative flex h-full flex-col overflow-hidden rounded-2xl border bg-white p-8 ${
                   plan.highlight
-                    ? "border-[#7C5CFC] shadow-lg shadow-[#7C5CFC]/10"
-                    : "border-[#e4e4e7]"
+                    ? "border-[#6366F1] shadow-lg shadow-[#6366F1]/10"
+                    : "border-[#E7E5E0]"
                 }`}
               >
                 {plan.highlight && (
                   <>
                     <div className="absolute inset-x-0 top-0 h-[3px] gradient-brand" />
-                    <div className="absolute -right-px -top-px rounded-bl-xl rounded-tr-2xl bg-[#7C5CFC] px-3 py-1">
+                    <div className="absolute -right-px -top-px rounded-bl-xl rounded-tr-2xl bg-[#6366F1] px-3 py-1">
                       <span className="text-[10px] font-semibold uppercase tracking-wider text-white">Most Popular</span>
                     </div>
                   </>
                 )}
-                <h3 className="font-heading text-lg font-semibold text-[#1a1a2e]">{plan.name}</h3>
-                <div className="mt-3 font-heading text-3xl font-bold text-[#1a1a2e]">{plan.price}</div>
-                <p className="mt-2 text-sm text-[#71717a]">
+                <h3 className="font-heading text-lg font-semibold text-[#1C1917]">{plan.name}</h3>
+                <div className="mt-3 font-heading text-3xl font-bold text-[#1C1917]">{plan.price}</div>
+                <p className="mt-2 text-sm text-[#78716C]">
                   {plan.desc}
                 </p>
                 <ul className="mt-6 flex-1 space-y-3">
                   {plan.features.map((f) => (
-                    <li key={f} className="flex items-start gap-2.5 text-sm text-[#52525b]">
-                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#2DB574]" />
+                    <li key={f} className="flex items-start gap-2.5 text-sm text-[#57534E]">
+                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#059669]" />
                       {f}
                     </li>
                   ))}

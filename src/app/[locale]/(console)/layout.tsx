@@ -10,7 +10,7 @@ export default function ConsoleLayout({
 }) {
   return (
     <SessionProvider>
-      <div className="flex h-screen bg-[#f4f4f5]">
+      <div className="flex h-screen bg-[#F5F3EF]">
         <ConsoleSidebar />
         <div className="flex flex-1 flex-col overflow-hidden">
           <ConsoleHeader />

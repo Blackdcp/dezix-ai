@@ -28,7 +28,7 @@ export function MarketingHeader() {
   const t = useTranslations("Nav");
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[#e4e4e7] bg-white/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-[#E7E5E0] bg-white/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-1">
@@ -51,8 +51,8 @@ export function MarketingHeader() {
                 className={cn(
                   "rounded-full px-4 py-2 text-sm font-medium transition-colors",
                   isActive
-                    ? "bg-[#f0ecff] text-[#7C5CFC]"
-                    : "text-[#52525b] hover:text-[#1a1a2e] hover:bg-[#f4f4f5]"
+                    ? "bg-[#EEF2FF] text-[#6366F1]"
+                    : "text-[#57534E] hover:text-[#1C1917] hover:bg-[#F5F3EF]"
                 )}
               >
                 {t(link.labelKey)}
@@ -66,7 +66,7 @@ export function MarketingHeader() {
           <LanguageSwitcher />
           <Link
             href="/login"
-            className="px-4 py-2 text-sm font-medium text-[#52525b] transition-colors hover:text-[#1a1a2e]"
+            className="px-4 py-2 text-sm font-medium text-[#57534E] transition-colors hover:text-[#1C1917]"
           >
             {t("login")}
           </Link>
@@ -93,7 +93,7 @@ export function MarketingHeader() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className="rounded-xl px-3 py-2.5 text-sm font-medium text-[#52525b] transition-colors hover:bg-[#f4f4f5] hover:text-[#1a1a2e]"
+                  className="rounded-xl px-3 py-2.5 text-sm font-medium text-[#57534E] transition-colors hover:bg-[#F5F3EF] hover:text-[#1C1917]"
                 >
                   {t(link.labelKey)}
                 </Link>

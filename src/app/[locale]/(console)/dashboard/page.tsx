@@ -35,9 +35,9 @@ interface DashboardData {
 }
 
 const statColors = [
-  { icon: "text-[#7C5CFC]", bg: "bg-[#f0ecff]" },
-  { icon: "text-[#E8706A]", bg: "bg-[#fef0ef]" },
-  { icon: "text-[#2DB574]", bg: "bg-[#ecfdf3]" },
+  { icon: "text-[#6366F1]", bg: "bg-[#EEF2FF]" },
+  { icon: "text-[#E87B6A]", bg: "bg-[#fef0ef]" },
+  { icon: "text-[#059669]", bg: "bg-[#ecfdf3]" },
   { icon: "text-[#f59e0b]", bg: "bg-[#fef9ec]" },
 ];
 
@@ -45,12 +45,12 @@ function StatSkeleton() {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between pb-2">
-        <div className="h-4 w-20 animate-pulse rounded bg-[#f4f4f5]" />
-        <div className="h-8 w-8 animate-pulse rounded-xl bg-[#f4f4f5]" />
+        <div className="h-4 w-20 animate-pulse rounded bg-[#F5F3EF]" />
+        <div className="h-8 w-8 animate-pulse rounded-xl bg-[#F5F3EF]" />
       </CardHeader>
       <CardContent>
-        <div className="h-7 w-24 animate-pulse rounded bg-[#f4f4f5]" />
-        <div className="mt-2 h-3 w-32 animate-pulse rounded bg-[#f4f4f5]" />
+        <div className="h-7 w-24 animate-pulse rounded bg-[#F5F3EF]" />
+        <div className="mt-2 h-3 w-32 animate-pulse rounded bg-[#F5F3EF]" />
       </CardContent>
     </Card>
   );
@@ -135,7 +135,7 @@ export default function DashboardPage() {
         <CardContent>
           {loading ? (
             <div className="flex h-[300px] items-center justify-center">
-              <div className="h-full w-full animate-pulse rounded-xl bg-[#f4f4f5]" />
+              <div className="h-full w-full animate-pulse rounded-xl bg-[#F5F3EF]" />
             </div>
           ) : (
             <ResponsiveContainer width="100%" height={300}>
@@ -145,41 +145,41 @@ export default function DashboardPage() {
               >
                 <defs>
                   <linearGradient id="colorRequests" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#7C5CFC" stopOpacity={0.2} />
-                    <stop offset="95%" stopColor="#7C5CFC" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#6366F1" stopOpacity={0.2} />
+                    <stop offset="95%" stopColor="#6366F1" stopOpacity={0} />
                   </linearGradient>
                   <linearGradient id="colorSpending" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#2DB574" stopOpacity={0.2} />
-                    <stop offset="95%" stopColor="#2DB574" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#059669" stopOpacity={0.2} />
+                    <stop offset="95%" stopColor="#059669" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e4e4e7" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#E7E5E0" />
                 <XAxis
                   dataKey="date"
                   tickFormatter={formatDate}
                   className="text-xs"
-                  tick={{ fill: "#a1a1aa" }}
+                  tick={{ fill: "#A8A29E" }}
                 />
                 <YAxis
                   yAxisId="left"
                   className="text-xs"
-                  tick={{ fill: "#a1a1aa" }}
+                  tick={{ fill: "#A8A29E" }}
                   allowDecimals={false}
                 />
                 <YAxis
                   yAxisId="right"
                   orientation="right"
                   className="text-xs"
-                  tick={{ fill: "#a1a1aa" }}
+                  tick={{ fill: "#A8A29E" }}
                   tickFormatter={(v: number) => `¥${v}`}
                 />
                 <Tooltip
                   contentStyle={{
                     backgroundColor: "#ffffff",
-                    border: "1px solid #e4e4e7",
+                    border: "1px solid #E7E5E0",
                     borderRadius: "12px",
                     boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
-                    color: "#1a1a2e",
+                    color: "#1C1917",
                   }}
                   labelFormatter={(label) => formatDate(String(label))}
                   formatter={(value, name) => {
@@ -194,7 +194,7 @@ export default function DashboardPage() {
                   yAxisId="left"
                   type="monotone"
                   dataKey="requests"
-                  stroke="#7C5CFC"
+                  stroke="#6366F1"
                   fill="url(#colorRequests)"
                   strokeWidth={2}
                 />
@@ -202,7 +202,7 @@ export default function DashboardPage() {
                   yAxisId="right"
                   type="monotone"
                   dataKey="spending"
-                  stroke="#2DB574"
+                  stroke="#059669"
                   fill="url(#colorSpending)"
                   strokeWidth={2}
                 />

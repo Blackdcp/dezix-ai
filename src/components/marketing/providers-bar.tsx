@@ -8,7 +8,6 @@ import {
   GoogleLogo,
   DeepSeekLogo,
   XAILogo,
-  MiniMaxLogo,
   GenericProviderLogo,
 } from "@/components/icons/provider-logos";
 import { type SVGProps } from "react";
@@ -24,20 +23,20 @@ const providers: { name?: string; nameKey?: string; Logo: LogoComp; color: strin
   { nameKey: "bytedance", Logo: GenericProviderLogo, color: "#3C8CFF" },
   { nameKey: "aliyun", Logo: GenericProviderLogo, color: "#FF6A00" },
   { nameKey: "zhipu", Logo: GenericProviderLogo, color: "#4F46E5" },
-  { nameKey: "moonshot", Logo: GenericProviderLogo, color: "#1a1a2e" },
-  { name: "MiniMax", Logo: MiniMaxLogo, color: "#4F46E5" },
+  { nameKey: "moonshot", Logo: GenericProviderLogo, color: "#1C1917" },
+  { name: "MiniMax", Logo: GenericProviderLogo, color: "#4F46E5" },
   { nameKey: "xiaomi", Logo: GenericProviderLogo, color: "#FF6900" },
   { nameKey: "meituan", Logo: GenericProviderLogo, color: "#FFD100" },
-  { nameKey: "stepfun", Logo: GenericProviderLogo, color: "#7C5CFC" },
+  { nameKey: "stepfun", Logo: GenericProviderLogo, color: "#6366F1" },
 ];
 
 export function ProvidersBar() {
   const t = useTranslations("Providers");
 
   return (
-    <section className="border-y border-[#e4e4e7] bg-[#fafafa] py-12">
+    <section className="border-y border-[#E7E5E0] bg-[#F9F8F6] py-12">
       <div className="mx-auto max-w-7xl px-6">
-        <p className="mb-8 text-center text-sm font-medium uppercase tracking-wider text-[#a1a1aa]">
+        <p className="mb-8 text-center text-sm font-medium uppercase tracking-wider text-[#A8A29E]">
           {t("title")}
         </p>
         <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-5 md:gap-x-12">
@@ -54,7 +53,7 @@ export function ProvidersBar() {
                 transition={{ delay: i * 0.04, duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
               >
                 <p.Logo className="h-5 w-5 transition-colors duration-300" style={{ color: p.color }} />
-                <span className="font-heading text-sm font-semibold text-[#52525b] transition-colors duration-300 group-hover:text-[#1a1a2e]">
+                <span className="font-heading text-sm font-semibold text-[#57534E] transition-colors duration-300 group-hover:text-[#1C1917]">
                   {label}
                 </span>
               </motion.div>

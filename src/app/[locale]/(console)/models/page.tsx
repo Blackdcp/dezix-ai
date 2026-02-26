@@ -55,16 +55,16 @@ function ModelSkeleton() {
     <Card>
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-2">
-          <div className="h-5 w-32 animate-pulse rounded bg-[#f4f4f5]" />
-          <div className="h-5 w-16 animate-pulse rounded-full bg-[#f4f4f5]" />
+          <div className="h-5 w-32 animate-pulse rounded bg-[#F5F3EF]" />
+          <div className="h-5 w-16 animate-pulse rounded-full bg-[#F5F3EF]" />
         </div>
-        <div className="mt-2 h-3 w-40 animate-pulse rounded bg-[#f4f4f5]" />
+        <div className="mt-2 h-3 w-40 animate-pulse rounded bg-[#F5F3EF]" />
       </CardHeader>
       <CardContent className="space-y-3">
-        <div className="h-5 w-24 animate-pulse rounded-full bg-[#f4f4f5]" />
+        <div className="h-5 w-24 animate-pulse rounded-full bg-[#F5F3EF]" />
         <div className="grid grid-cols-2 gap-2">
-          <div className="h-10 animate-pulse rounded bg-[#f4f4f5]" />
-          <div className="h-10 animate-pulse rounded bg-[#f4f4f5]" />
+          <div className="h-10 animate-pulse rounded bg-[#F5F3EF]" />
+          <div className="h-10 animate-pulse rounded bg-[#F5F3EF]" />
         </div>
       </CardContent>
     </Card>
@@ -198,7 +198,7 @@ export default function ModelsPage() {
                     </CardTitle>
                     <Badge
                       variant={model.isActive ? "default" : "secondary"}
-                      className={model.isActive ? "shrink-0 bg-[#2DB574] hover:bg-[#249960]" : "shrink-0"}
+                      className={model.isActive ? "shrink-0 bg-[#059669] hover:bg-[#249960]" : "shrink-0"}
                     >
                       {model.isActive ? t("available") : t("unavailable")}
                     </Badge>
