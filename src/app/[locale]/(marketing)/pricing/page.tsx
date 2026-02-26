@@ -78,10 +78,10 @@ export default function PricingPage() {
     <div className="mx-auto max-w-7xl px-6 py-16">
       <AnimatedSection>
         <AnimatedItem>
-          <h1 className="font-heading mb-3 text-center text-4xl font-bold tracking-tight text-[#1C1917] md:text-5xl">{t("title")}</h1>
+          <h1 className="font-heading mb-3 text-center text-4xl font-bold tracking-tight text-foreground md:text-5xl">{t("title")}</h1>
         </AnimatedItem>
         <AnimatedItem>
-          <p className="mx-auto mb-14 max-w-2xl text-center text-lg text-[#78716C]">
+          <p className="mx-auto mb-14 max-w-2xl text-center text-lg text-muted-foreground">
             {t("subtitle")}
           </p>
         </AnimatedItem>
@@ -94,15 +94,15 @@ export default function PricingPage() {
             <div
               className={`relative rounded-2xl border p-8 ${
                 plan.highlight
-                  ? "border-[#0070F3] bg-white shadow-lg shadow-[#0070F3]/10"
-                  : "border-[#E7E5E0] bg-white"
+                  ? "border-primary bg-white shadow-lg shadow-primary/10"
+                  : "border-border bg-white"
               }`}
             >
               {plan.highlight && (
-                <div className="absolute -top-px left-0 right-0 h-[3px] rounded-t-2xl bg-[#0070F3]" />
+                <div className="absolute -top-px left-0 right-0 h-[3px] rounded-t-2xl bg-primary" />
               )}
-              <h3 className="font-heading text-lg font-semibold text-[#1C1917]">{plan.name}</h3>
-              <div className="mt-3 font-heading text-3xl font-bold text-[#1C1917]">{plan.price}</div>
+              <h3 className="font-heading text-lg font-semibold text-foreground">{plan.name}</h3>
+              <div className="mt-3 font-heading text-3xl font-bold text-foreground">{plan.price}</div>
               <p className="mt-2 text-sm text-[#A8A29E]">{plan.desc}</p>
               <ul className="mt-6 space-y-3">
                 {plan.features.map((f) => (
@@ -117,7 +117,7 @@ export default function PricingPage() {
                 className={`mt-8 flex h-11 w-full items-center justify-center rounded-full text-sm font-medium transition-all ${
                   plan.highlight
                     ? "btn-primary"
-                    : "border border-[#E7E5E0] bg-white text-[#1C1917] hover:bg-[#F9F8F6]"
+                    : "border border-border bg-white text-foreground hover:bg-background"
                 }`}
               >
                 {plan.cta}
@@ -130,10 +130,10 @@ export default function PricingPage() {
       {/* Model pricing table */}
       <AnimatedSection>
         <AnimatedItem>
-          <h2 className="font-heading mb-3 text-2xl font-bold tracking-tight text-[#1C1917]">{tp("modelPricingTitle")}</h2>
+          <h2 className="font-heading mb-3 text-2xl font-bold tracking-tight text-foreground">{tp("modelPricingTitle")}</h2>
         </AnimatedItem>
         <AnimatedItem>
-          <p className="mb-8 text-lg text-[#78716C]">
+          <p className="mb-8 text-lg text-muted-foreground">
             {tp("modelPricingDesc")}
           </p>
         </AnimatedItem>
@@ -142,10 +142,10 @@ export default function PricingPage() {
       {models.length > 0 && (
         <AnimatedSection>
           <AnimatedItem>
-            <div className="overflow-hidden rounded-2xl border border-[#E7E5E0] bg-white">
+            <div className="overflow-hidden rounded-2xl border border-border bg-white">
               <Table>
                 <TableHeader>
-                  <TableRow className="border-b border-[#E7E5E0] bg-[#F9F8F6]">
+                  <TableRow className="border-b border-border bg-background">
                     <TableHead className="text-xs uppercase tracking-wider font-medium text-[#A8A29E]">{tp("modelName")}</TableHead>
                     <TableHead className="text-xs uppercase tracking-wider font-medium text-[#A8A29E]">{tp("provider")}</TableHead>
                     <TableHead className="text-xs uppercase tracking-wider font-medium text-[#A8A29E]">{tp("category")}</TableHead>
@@ -155,8 +155,8 @@ export default function PricingPage() {
                 </TableHeader>
                 <TableBody>
                   {models.map((m) => (
-                    <TableRow key={m.id} className="border-b border-[#E7E5E0] hover:bg-[#F9F8F6]/50">
-                      <TableCell className="font-medium text-[#1C1917]">
+                    <TableRow key={m.id} className="border-b border-border hover:bg-background/50">
+                      <TableCell className="font-medium text-foreground">
                         {m.displayName}
                       </TableCell>
                       <TableCell>
@@ -184,7 +184,7 @@ export default function PricingPage() {
       <AnimatedSection>
         <AnimatedItem>
           <div className="mt-16 text-center">
-            <p className="mb-5 text-lg text-[#78716C]">
+            <p className="mb-5 text-lg text-muted-foreground">
               {tp("readyToStart")}
             </p>
             <Link

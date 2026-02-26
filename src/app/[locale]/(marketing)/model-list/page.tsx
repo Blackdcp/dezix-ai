@@ -43,7 +43,7 @@ function CopyButton({ text }: { text: string }) {
   return (
     <button
       onClick={handleCopy}
-      className="ml-1.5 inline-flex items-center rounded p-0.5 text-[#A8A29E] transition-colors hover:text-[#0070F3]"
+      className="ml-1.5 inline-flex items-center rounded p-0.5 text-[#A8A29E] transition-colors hover:text-primary"
       title="Copy model ID"
     >
       {copied ? <Check className="h-3 w-3 text-[#16A34A]" /> : <Copy className="h-3 w-3" />}
@@ -85,7 +85,7 @@ export default function ModelListPage() {
     <div className="mx-auto max-w-7xl px-6 py-16">
       <AnimatedSection>
         <AnimatedItem>
-          <h1 className="font-heading mb-3 text-4xl font-bold tracking-tight text-[#1C1917] md:text-5xl">{t("title")}</h1>
+          <h1 className="font-heading mb-3 text-4xl font-bold tracking-tight text-foreground md:text-5xl">{t("title")}</h1>
         </AnimatedItem>
         <AnimatedItem>
           <p className="mb-10 text-lg text-[#57534E]">
@@ -101,7 +101,7 @@ export default function ModelListPage() {
               placeholder={t("searchPlaceholder")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="max-w-sm rounded-xl border-[#E7E5E0] bg-white focus:border-[#0070F3]/50 focus:ring-[#0070F3]/20"
+              className="max-w-sm rounded-xl border-border bg-white focus:border-primary/50 focus:ring-primary/20"
             />
             {categories.length > 0 && (
               <Tabs
@@ -131,10 +131,10 @@ export default function ModelListPage() {
       ) : (
         <AnimatedSection>
           <AnimatedItem>
-            <div className="overflow-x-auto rounded-2xl border border-[#E7E5E0] bg-white">
+            <div className="overflow-x-auto rounded-2xl border border-border bg-white">
               <Table>
                 <TableHeader className="sticky top-0 z-10">
-                  <TableRow className="border-b border-[#E7E5E0] bg-[#F9F8F6]">
+                  <TableRow className="border-b border-border bg-background">
                     <TableHead className="text-xs uppercase tracking-wider font-medium text-[#A8A29E]">{t("name")}</TableHead>
                     <TableHead className="text-xs uppercase tracking-wider font-medium text-[#A8A29E]">{t("modelId")}</TableHead>
                     <TableHead className="text-xs uppercase tracking-wider font-medium text-[#A8A29E]">{t("provider")}</TableHead>
@@ -158,8 +158,8 @@ export default function ModelListPage() {
                     filtered.map((m) => {
                       const { Logo, color } = getProviderLogo(m.providerName);
                       return (
-                        <TableRow key={m.id} className="border-b border-[#E7E5E0] transition-colors hover:bg-[#F9F8F6]/80">
-                          <TableCell className="font-medium text-[#1C1917]">
+                        <TableRow key={m.id} className="border-b border-border transition-colors hover:bg-background/80">
+                          <TableCell className="font-medium text-foreground">
                             {m.displayName}
                           </TableCell>
                           <TableCell>

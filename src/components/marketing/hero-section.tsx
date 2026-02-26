@@ -19,7 +19,7 @@ function CodePreview() {
           <div className="h-3 w-3 rounded-full bg-[#f59e0b]" />
           <div className="h-3 w-3 rounded-full bg-[#16A34A]" />
         </div>
-        <span className="ml-2 font-mono text-xs text-[#78716C]">request.py</span>
+        <span className="ml-2 font-mono text-xs text-muted-foreground">request.py</span>
       </div>
       {/* Code - dark */}
       <pre className="overflow-x-auto bg-[#0C0A09] p-5 text-sm leading-relaxed">
@@ -27,48 +27,48 @@ function CodePreview() {
           <span className="text-[#c084fc]">import</span>{" "}
           <span className="text-[#e2e8f0]">openai</span>{"\n\n"}
           <span className="text-[#e2e8f0]">client</span>{" "}
-          <span className="text-[#78716C]">=</span>{" "}
+          <span className="text-muted-foreground">=</span>{" "}
           <span className="text-[#e2e8f0]">openai</span>
-          <span className="text-[#78716C]">.</span>
+          <span className="text-muted-foreground">.</span>
           <span className="text-[#c084fc]">OpenAI</span>
-          <span className="text-[#78716C]">(</span>{"\n"}
+          <span className="text-muted-foreground">(</span>{"\n"}
           {"    "}
           <span className="text-[#e2e8f0]">base_url</span>
-          <span className="text-[#78716C]">=</span>
+          <span className="text-muted-foreground">=</span>
           <span className="text-[#4ade80]">&quot;https://api.dezix.ai/v1&quot;</span>
-          <span className="text-[#78716C]">,</span>{"\n"}
+          <span className="text-muted-foreground">,</span>{"\n"}
           {"    "}
           <span className="text-[#e2e8f0]">api_key</span>
-          <span className="text-[#78716C]">=</span>
+          <span className="text-muted-foreground">=</span>
           <span className="text-[#4ade80]">&quot;sk-dezix-...&quot;</span>{"\n"}
-          <span className="text-[#78716C]">)</span>{"\n\n"}
+          <span className="text-muted-foreground">)</span>{"\n\n"}
           <span className="text-[#e2e8f0]">response</span>{" "}
-          <span className="text-[#78716C]">=</span>{" "}
+          <span className="text-muted-foreground">=</span>{" "}
           <span className="text-[#e2e8f0]">client</span>
-          <span className="text-[#78716C]">.</span>
+          <span className="text-muted-foreground">.</span>
           <span className="text-[#e2e8f0]">chat</span>
-          <span className="text-[#78716C]">.</span>
+          <span className="text-muted-foreground">.</span>
           <span className="text-[#e2e8f0]">completions</span>
-          <span className="text-[#78716C]">.</span>
+          <span className="text-muted-foreground">.</span>
           <span className="text-[#c084fc]">create</span>
-          <span className="text-[#78716C]">(</span>{"\n"}
+          <span className="text-muted-foreground">(</span>{"\n"}
           {"    "}
           <span className="text-[#e2e8f0]">model</span>
-          <span className="text-[#78716C]">=</span>
+          <span className="text-muted-foreground">=</span>
           <span className="text-[#4ade80]">&quot;gpt-4o&quot;</span>
-          <span className="text-[#78716C]">,</span>{"\n"}
+          <span className="text-muted-foreground">,</span>{"\n"}
           {"    "}
           <span className="text-[#e2e8f0]">messages</span>
-          <span className="text-[#78716C]">=[&#123;</span>
+          <span className="text-muted-foreground">=[&#123;</span>
           <span className="text-[#4ade80]">&quot;role&quot;</span>
-          <span className="text-[#78716C]">:</span>{" "}
+          <span className="text-muted-foreground">:</span>{" "}
           <span className="text-[#4ade80]">&quot;user&quot;</span>
-          <span className="text-[#78716C]">,</span>{" "}
+          <span className="text-muted-foreground">,</span>{" "}
           <span className="text-[#4ade80]">&quot;content&quot;</span>
-          <span className="text-[#78716C]">:</span>{" "}
+          <span className="text-muted-foreground">:</span>{" "}
           <span className="text-[#4ade80]">&quot;Hello!&quot;</span>
-          <span className="text-[#78716C]">&#125;]</span>{"\n"}
-          <span className="text-[#78716C]">)</span>
+          <span className="text-muted-foreground">&#125;]</span>{"\n"}
+          <span className="text-muted-foreground">)</span>
         </code>
       </pre>
     </div>
@@ -85,9 +85,9 @@ export function HeroSection() {
         <AnimatedSection>
           {/* Badge */}
           <AnimatedItem>
-            <div className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-[#0070F3]/20 bg-[#EBF5FF] px-4 py-1.5">
-              <div className="h-1.5 w-1.5 rounded-full bg-[#0070F3] animate-pulse" />
-              <span className="text-xs font-medium text-[#0070F3]">
+            <div className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5">
+              <div className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+              <span className="text-xs font-medium text-primary">
                 {t("badge")}
               </span>
             </div>
@@ -95,7 +95,7 @@ export function HeroSection() {
 
           {/* Heading */}
           <AnimatedItem>
-            <h1 className="font-heading mx-auto max-w-3xl text-4xl font-bold leading-[1.08] tracking-tight text-[#1C1917] sm:text-5xl md:text-6xl">
+            <h1 className="font-heading mx-auto max-w-3xl text-4xl font-bold leading-[1.08] tracking-tight text-foreground sm:text-5xl md:text-6xl">
               {t("titleLine1")}
               <br />
               <span className="text-gradient-brand">{t("titleLine2")}</span>

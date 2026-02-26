@@ -35,7 +35,7 @@ interface DashboardData {
 }
 
 const statColors = [
-  { icon: "text-[#0070F3]", bg: "bg-[#EBF5FF]" },
+  { icon: "text-primary", bg: "bg-primary/10" },
   { icon: "text-[#D97706]", bg: "bg-[#fef0ef]" },
   { icon: "text-[#16A34A]", bg: "bg-[#ecfdf3]" },
   { icon: "text-[#f59e0b]", bg: "bg-[#fef9ec]" },

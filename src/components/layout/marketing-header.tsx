@@ -28,7 +28,7 @@ export function MarketingHeader() {
   const t = useTranslations("Nav");
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[#E7E5E0] bg-white/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-border bg-white/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-1">
@@ -51,8 +51,8 @@ export function MarketingHeader() {
                 className={cn(
                   "rounded-full px-4 py-2 text-sm font-medium transition-colors",
                   isActive
-                    ? "bg-[#EBF5FF] text-[#0070F3]"
-                    : "text-[#57534E] hover:text-[#1C1917] hover:bg-[#F5F3EF]"
+                    ? "bg-primary/10 text-primary"
+                    : "text-[#57534E] hover:text-foreground hover:bg-[#F5F3EF]"
                 )}
               >
                 {t(link.labelKey)}
@@ -66,7 +66,7 @@ export function MarketingHeader() {
           <LanguageSwitcher />
           <Link
             href="/login"
-            className="px-4 py-2 text-sm font-medium text-[#57534E] transition-colors hover:text-[#1C1917]"
+            className="px-4 py-2 text-sm font-medium text-[#57534E] transition-colors hover:text-foreground"
           >
             {t("login")}
           </Link>
@@ -93,7 +93,7 @@ export function MarketingHeader() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className="rounded-xl px-3 py-2.5 text-sm font-medium text-[#57534E] transition-colors hover:bg-[#F5F3EF] hover:text-[#1C1917]"
+                  className="rounded-xl px-3 py-2.5 text-sm font-medium text-[#57534E] transition-colors hover:bg-[#F5F3EF] hover:text-foreground"
                 >
                   {t(link.labelKey)}
                 </Link>

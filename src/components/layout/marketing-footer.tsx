@@ -22,7 +22,7 @@ export function MarketingFooter() {
   const t = useTranslations();
 
   return (
-    <footer className="border-t border-[#E7E5E0] bg-[#F9F8F6]">
+    <footer className="border-t border-border bg-background">
       <div className="mx-auto max-w-7xl px-6 py-16">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           {/* Brand */}
@@ -32,14 +32,14 @@ export function MarketingFooter() {
                 Dezix AI
               </span>
             </Link>
-            <p className="mt-3 text-sm leading-relaxed text-[#78716C]">
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
               {t("Footer.description")}
             </p>
           </div>
 
           {/* Product */}
           <div>
-            <h4 className="font-heading mb-4 text-sm font-semibold text-[#1C1917]">
+            <h4 className="font-heading mb-4 text-sm font-semibold text-foreground">
               {t("Footer.product")}
             </h4>
             <ul className="space-y-3">
@@ -47,7 +47,7 @@ export function MarketingFooter() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-[#78716C] transition-colors hover:text-[#0070F3]"
+                    className="text-sm text-muted-foreground transition-colors hover:text-primary"
                   >
                     {t(`Nav.${link.labelKey}`)}
                   </Link>
@@ -58,7 +58,7 @@ export function MarketingFooter() {
 
           {/* Docs */}
           <div>
-            <h4 className="font-heading mb-4 text-sm font-semibold text-[#1C1917]">
+            <h4 className="font-heading mb-4 text-sm font-semibold text-foreground">
               {t("Footer.docs")}
             </h4>
             <ul className="space-y-3">
@@ -66,7 +66,7 @@ export function MarketingFooter() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-[#78716C] transition-colors hover:text-[#0070F3]"
+                    className="text-sm text-muted-foreground transition-colors hover:text-primary"
                   >
                     {t(`Footer.${link.labelKey}`)}
                   </Link>
@@ -77,7 +77,7 @@ export function MarketingFooter() {
 
           {/* About */}
           <div>
-            <h4 className="font-heading mb-4 text-sm font-semibold text-[#1C1917]">
+            <h4 className="font-heading mb-4 text-sm font-semibold text-foreground">
               {t("Footer.about")}
             </h4>
             <ul className="space-y-3">
@@ -85,7 +85,7 @@ export function MarketingFooter() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-[#78716C] transition-colors hover:text-[#0070F3]"
+                    className="text-sm text-muted-foreground transition-colors hover:text-primary"
                   >
                     {t(`Nav.${link.labelKey}`)}
                   </Link>
@@ -95,7 +95,7 @@ export function MarketingFooter() {
           </div>
         </div>
 
-        <div className="mt-12 border-t border-[#E7E5E0] pt-8 text-center text-sm text-[#A8A29E]">
+        <div className="mt-12 border-t border-border pt-8 text-center text-sm text-[#A8A29E]">
           {t("Footer.copyright")}
         </div>
       </div>

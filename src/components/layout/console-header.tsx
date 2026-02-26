@@ -33,14 +33,14 @@ function UserMenu() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="gap-2 rounded-xl hover:bg-[#F5F3EF]">
           <Avatar className="h-7 w-7">
-            <AvatarFallback className="bg-[#0070F3]/10 text-xs font-medium text-[#0070F3]">
+            <AvatarFallback className="bg-primary/10 text-xs font-medium text-primary">
               {user?.name?.charAt(0)?.toUpperCase() || "U"}
             </AvatarFallback>
           </Avatar>
           <span className="text-sm text-[#57534E]">{user?.name || user?.email}</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-48 rounded-xl border-[#E7E5E0] bg-white">
+      <DropdownMenuContent align="end" className="w-48 rounded-xl border-border bg-white">
         <DropdownMenuItem className="rounded-lg">
           <User className="mr-2 h-4 w-4" />
           {t("personalSettings")}
@@ -57,7 +57,7 @@ function UserMenu() {
 
 export function ConsoleHeader() {
   return (
-    <header className="flex h-16 items-center justify-between border-b border-[#E7E5E0] bg-white px-6">
+    <header className="flex h-16 items-center justify-between border-b border-border bg-white px-6">
       <div />
       <div className="flex items-center gap-2">
         <LanguageSwitcher />

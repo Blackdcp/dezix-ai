@@ -8,13 +8,13 @@ export default function ApiReferencePage() {
 
   return (
     <article className="prose-sm max-w-none">
-      <h1 className="mb-2 text-3xl font-bold tracking-[-0.015em] text-[#1C1917]">{t("title")}</h1>
+      <h1 className="mb-2 text-3xl font-bold tracking-[-0.015em] text-foreground">{t("title")}</h1>
       <p className="mb-8 text-[17px] leading-relaxed text-[#57534E]">
         {t("subtitle")}
       </p>
 
       {/* Authentication */}
-      <h2 className="mb-3 mt-8 text-xl font-bold text-[#1C1917]">{t("authTitle")}</h2>
+      <h2 className="mb-3 mt-8 text-xl font-bold text-foreground">{t("authTitle")}</h2>
       <p className="mb-4 text-[17px] leading-relaxed text-[#57534E]">
         {t("authText")}
       </p>
@@ -25,7 +25,7 @@ export default function ApiReferencePage() {
       />
 
       {/* Base URL */}
-      <h2 className="mb-3 mt-8 text-xl font-bold text-[#1C1917]">Base URL</h2>
+      <h2 className="mb-3 mt-8 text-xl font-bold text-foreground">Base URL</h2>
       <CodeBlock
         language="text"
         title="Base URL"
@@ -33,18 +33,18 @@ export default function ApiReferencePage() {
       />
 
       {/* Chat Completions */}
-      <h2 className="mb-3 mt-8 text-xl font-bold text-[#1C1917]">Chat Completions</h2>
+      <h2 className="mb-3 mt-8 text-xl font-bold text-foreground">Chat Completions</h2>
       <p className="mb-2 text-[17px] leading-relaxed text-[#57534E]">
         {t("chatCompletionsDesc")}
       </p>
-      <div className="mb-4 rounded-lg bg-[#0070F3]/10 px-3 py-2">
-        <code className="text-sm font-semibold text-[#0070F3]">POST /chat/completions</code>
+      <div className="mb-4 rounded-lg bg-primary/10 px-3 py-2">
+        <code className="text-sm font-semibold text-primary">POST /chat/completions</code>
       </div>
 
-      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1C1917]">{t("requestParams")}</h3>
+      <h3 className="mb-2 mt-6 text-lg font-semibold text-foreground">{t("requestParams")}</h3>
       <div className="mb-4 overflow-x-auto">
         <table className="w-full border-collapse text-sm">
-          <thead className="border-b border-[#E7E5E0] bg-[#F9F8F6]">
+          <thead className="border-b border-border bg-background">
             <tr>
               <th className="px-3 py-2 text-left text-xs uppercase tracking-wider font-medium text-[#A8A29E]">{t("param")}</th>
               <th className="px-3 py-2 text-left text-xs uppercase tracking-wider font-medium text-[#A8A29E]">{t("type")}</th>
@@ -53,38 +53,38 @@ export default function ApiReferencePage() {
             </tr>
           </thead>
           <tbody>
-            <tr className="border-b border-[#F5F3EF] hover:bg-[#F9F8F6]/50">
-              <td className="px-3 py-2 font-mono text-xs text-[#0070F3]">model</td>
+            <tr className="border-b border-[#F5F3EF] hover:bg-background/50">
+              <td className="px-3 py-2 font-mono text-xs text-primary">model</td>
               <td className="px-3 py-2 text-[#57534E]">string</td>
               <td className="px-3 py-2 text-[#57534E]">{t("yes")}</td>
               <td className="px-3 py-2 text-[#A8A29E]">{t("modelDesc")}</td>
             </tr>
-            <tr className="border-b border-[#F5F3EF] hover:bg-[#F9F8F6]/50">
-              <td className="px-3 py-2 font-mono text-xs text-[#0070F3]">messages</td>
+            <tr className="border-b border-[#F5F3EF] hover:bg-background/50">
+              <td className="px-3 py-2 font-mono text-xs text-primary">messages</td>
               <td className="px-3 py-2 text-[#57534E]">array</td>
               <td className="px-3 py-2 text-[#57534E]">{t("yes")}</td>
               <td className="px-3 py-2 text-[#A8A29E]">{t("messagesDesc")}</td>
             </tr>
-            <tr className="border-b border-[#F5F3EF] hover:bg-[#F9F8F6]/50">
-              <td className="px-3 py-2 font-mono text-xs text-[#0070F3]">stream</td>
+            <tr className="border-b border-[#F5F3EF] hover:bg-background/50">
+              <td className="px-3 py-2 font-mono text-xs text-primary">stream</td>
               <td className="px-3 py-2 text-[#57534E]">boolean</td>
               <td className="px-3 py-2 text-[#57534E]">{t("no")}</td>
               <td className="px-3 py-2 text-[#A8A29E]">{t("streamDesc")}</td>
             </tr>
-            <tr className="border-b border-[#F5F3EF] hover:bg-[#F9F8F6]/50">
-              <td className="px-3 py-2 font-mono text-xs text-[#0070F3]">temperature</td>
+            <tr className="border-b border-[#F5F3EF] hover:bg-background/50">
+              <td className="px-3 py-2 font-mono text-xs text-primary">temperature</td>
               <td className="px-3 py-2 text-[#57534E]">number</td>
               <td className="px-3 py-2 text-[#57534E]">{t("no")}</td>
               <td className="px-3 py-2 text-[#A8A29E]">{t("temperatureDesc")}</td>
             </tr>
-            <tr className="border-b border-[#F5F3EF] hover:bg-[#F9F8F6]/50">
-              <td className="px-3 py-2 font-mono text-xs text-[#0070F3]">max_tokens</td>
+            <tr className="border-b border-[#F5F3EF] hover:bg-background/50">
+              <td className="px-3 py-2 font-mono text-xs text-primary">max_tokens</td>
               <td className="px-3 py-2 text-[#57534E]">integer</td>
               <td className="px-3 py-2 text-[#57534E]">{t("no")}</td>
               <td className="px-3 py-2 text-[#A8A29E]">{t("maxTokensDesc")}</td>
             </tr>
-            <tr className="border-b border-[#F5F3EF] hover:bg-[#F9F8F6]/50">
-              <td className="px-3 py-2 font-mono text-xs text-[#0070F3]">top_p</td>
+            <tr className="border-b border-[#F5F3EF] hover:bg-background/50">
+              <td className="px-3 py-2 font-mono text-xs text-primary">top_p</td>
               <td className="px-3 py-2 text-[#57534E]">number</td>
               <td className="px-3 py-2 text-[#57534E]">{t("no")}</td>
               <td className="px-3 py-2 text-[#A8A29E]">{t("topPDesc")}</td>
@@ -93,7 +93,7 @@ export default function ApiReferencePage() {
         </table>
       </div>
 
-      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1C1917]">{t("requestExample")}</h3>
+      <h3 className="mb-2 mt-6 text-lg font-semibold text-foreground">{t("requestExample")}</h3>
       <CodeBlock
         language="json"
         title={t("requestBody")}
@@ -109,7 +109,7 @@ export default function ApiReferencePage() {
 }`}
       />
 
-      <h3 className="mb-2 mt-6 text-lg font-semibold text-[#1C1917]">{t("responseExample")}</h3>
+      <h3 className="mb-2 mt-6 text-lg font-semibold text-foreground">{t("responseExample")}</h3>
       <CodeBlock
         language="json"
         title={t("nonStreamResponse")}
@@ -137,7 +137,7 @@ export default function ApiReferencePage() {
       />
 
       {/* Streaming */}
-      <h2 className="mb-3 mt-8 text-xl font-bold text-[#1C1917]">{t("streamTitle")}</h2>
+      <h2 className="mb-3 mt-8 text-xl font-bold text-foreground">{t("streamTitle")}</h2>
       <p className="mb-4 text-[17px] leading-relaxed text-[#57534E]">
         {t("streamText")}
       </p>
@@ -154,12 +154,12 @@ data: [DONE]`}
       />
 
       {/* Models List */}
-      <h2 className="mb-3 mt-8 text-xl font-bold text-[#1C1917]">Models List</h2>
+      <h2 className="mb-3 mt-8 text-xl font-bold text-foreground">Models List</h2>
       <p className="mb-2 text-[17px] leading-relaxed text-[#57534E]">
         {t("listModelsDesc")}
       </p>
-      <div className="mb-4 rounded-lg bg-[#0070F3]/10 px-3 py-2">
-        <code className="text-sm font-semibold text-[#0070F3]">GET /models</code>
+      <div className="mb-4 rounded-lg bg-primary/10 px-3 py-2">
+        <code className="text-sm font-semibold text-primary">GET /models</code>
       </div>
       <CodeBlock
         language="json"
@@ -182,42 +182,42 @@ data: [DONE]`}
       />
 
       {/* Error Codes */}
-      <h2 className="mb-3 mt-8 text-xl font-bold text-[#1C1917]">{t("errorCodes")}</h2>
+      <h2 className="mb-3 mt-8 text-xl font-bold text-foreground">{t("errorCodes")}</h2>
       <div className="overflow-x-auto">
         <table className="w-full border-collapse text-sm">
-          <thead className="border-b border-[#E7E5E0] bg-[#F9F8F6]">
+          <thead className="border-b border-border bg-background">
             <tr>
               <th className="px-3 py-2 text-left text-xs uppercase tracking-wider font-medium text-[#A8A29E]">{t("httpStatus")}</th>
               <th className="px-3 py-2 text-left text-xs uppercase tracking-wider font-medium text-[#A8A29E]">{t("errorDesc")}</th>
             </tr>
           </thead>
           <tbody>
-            <tr className="border-b border-[#F5F3EF] hover:bg-[#F9F8F6]/50">
-              <td className="px-3 py-2 font-mono text-[#0070F3]">400</td>
+            <tr className="border-b border-[#F5F3EF] hover:bg-background/50">
+              <td className="px-3 py-2 font-mono text-primary">400</td>
               <td className="px-3 py-2 text-[#A8A29E]">{t("error400")}</td>
             </tr>
-            <tr className="border-b border-[#F5F3EF] hover:bg-[#F9F8F6]/50">
-              <td className="px-3 py-2 font-mono text-[#0070F3]">401</td>
+            <tr className="border-b border-[#F5F3EF] hover:bg-background/50">
+              <td className="px-3 py-2 font-mono text-primary">401</td>
               <td className="px-3 py-2 text-[#A8A29E]">{t("error401")}</td>
             </tr>
-            <tr className="border-b border-[#F5F3EF] hover:bg-[#F9F8F6]/50">
-              <td className="px-3 py-2 font-mono text-[#0070F3]">402</td>
+            <tr className="border-b border-[#F5F3EF] hover:bg-background/50">
+              <td className="px-3 py-2 font-mono text-primary">402</td>
               <td className="px-3 py-2 text-[#A8A29E]">{t("error402")}</td>
             </tr>
-            <tr className="border-b border-[#F5F3EF] hover:bg-[#F9F8F6]/50">
-              <td className="px-3 py-2 font-mono text-[#0070F3]">404</td>
+            <tr className="border-b border-[#F5F3EF] hover:bg-background/50">
+              <td className="px-3 py-2 font-mono text-primary">404</td>
               <td className="px-3 py-2 text-[#A8A29E]">{t("error404")}</td>
             </tr>
-            <tr className="border-b border-[#F5F3EF] hover:bg-[#F9F8F6]/50">
-              <td className="px-3 py-2 font-mono text-[#0070F3]">429</td>
+            <tr className="border-b border-[#F5F3EF] hover:bg-background/50">
+              <td className="px-3 py-2 font-mono text-primary">429</td>
               <td className="px-3 py-2 text-[#A8A29E]">{t("error429")}</td>
             </tr>
-            <tr className="border-b border-[#F5F3EF] hover:bg-[#F9F8F6]/50">
-              <td className="px-3 py-2 font-mono text-[#0070F3]">500</td>
+            <tr className="border-b border-[#F5F3EF] hover:bg-background/50">
+              <td className="px-3 py-2 font-mono text-primary">500</td>
               <td className="px-3 py-2 text-[#A8A29E]">{t("error500")}</td>
             </tr>
-            <tr className="border-b border-[#F5F3EF] hover:bg-[#F9F8F6]/50">
-              <td className="px-3 py-2 font-mono text-[#0070F3]">502</td>
+            <tr className="border-b border-[#F5F3EF] hover:bg-background/50">
+              <td className="px-3 py-2 font-mono text-primary">502</td>
               <td className="px-3 py-2 text-[#A8A29E]">{t("error502")}</td>
             </tr>
           </tbody>

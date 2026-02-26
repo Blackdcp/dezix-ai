@@ -26,7 +26,7 @@ export function DocsSidebar() {
   const t = useTranslations("DocsSidebar");
 
   return (
-    <aside className="hidden w-56 shrink-0 border-r border-[#E7E5E0] bg-[#F9F8F6] lg:block">
+    <aside className="hidden w-56 shrink-0 border-r border-border bg-background lg:block">
       <nav className="sticky top-16 p-4">
         {docNavItems.map((group) => (
           <div key={group.titleKey} className="mb-6">
@@ -43,8 +43,8 @@ export function DocsSidebar() {
                       className={cn(
                         "flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium transition-colors",
                         isActive
-                          ? "bg-[#EBF5FF] text-[#0070F3]"
-                          : "text-[#57534E] hover:bg-[#F5F3EF] hover:text-[#1C1917]"
+                          ? "bg-primary/10 text-primary"
+                          : "text-[#57534E] hover:bg-[#F5F3EF] hover:text-foreground"
                       )}
                     >
                       <item.icon className="h-4 w-4" />

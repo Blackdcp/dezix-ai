@@ -47,13 +47,13 @@ function RegisterForm() {
     router.push("/login?registered=true");
   }
 
-  const inputClass = "flex h-11 w-full rounded-xl border border-[#E7E5E0] bg-white px-3 py-2 text-sm text-[#1C1917] placeholder:text-[#A8A29E] focus:outline-none focus:ring-2 focus:ring-[#0070F3]/20 focus:border-[#0070F3]/50";
+  const inputClass = "flex h-11 w-full rounded-xl border border-border bg-white px-3 py-2 text-sm text-foreground placeholder:text-[#A8A29E] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50";
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#F9F8F6] px-4">
       <div className="pointer-events-none fixed inset-0 dot-grid opacity-40" />
       <motion.div
-        className="relative w-full max-w-md overflow-hidden rounded-2xl border border-[#E7E5E0] bg-white p-10 shadow-xl shadow-black/5"
+        className="relative w-full max-w-md overflow-hidden rounded-2xl border border-border bg-white p-10 shadow-xl shadow-black/5"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
@@ -63,8 +63,8 @@ function RegisterForm() {
           <Link href="/" className="inline-flex items-center gap-1">
             <span className="font-heading text-xl font-bold text-gradient-brand">Dezix AI</span>
           </Link>
-          <h1 className="font-heading mt-6 text-2xl font-bold text-[#1C1917]">{t("registerTitle")}</h1>
-          <p className="mt-1.5 text-sm text-[#78716C]">{t("registerSubtitle")}</p>
+          <h1 className="font-heading mt-6 text-2xl font-bold text-foreground">{t("registerTitle")}</h1>
+          <p className="mt-1.5 text-sm text-muted-foreground">{t("registerSubtitle")}</p>
         </div>
         <form onSubmit={onSubmit} className="space-y-4">
           {error && (
@@ -73,12 +73,12 @@ function RegisterForm() {
             </div>
           )}
           {refCode && (
-            <div className="rounded-xl border border-[#0070F3]/20 bg-[#EBF5FF] p-3 text-sm text-[#0070F3]">
+            <div className="rounded-xl border border-primary/20 bg-primary/10 p-3 text-sm text-primary">
               {t("referralNotice", { code: refCode })}
             </div>
           )}
           <div className="space-y-2">
-            <label htmlFor="name" className="text-sm font-medium text-[#1C1917]">
+            <label htmlFor="name" className="text-sm font-medium text-foreground">
               {t("username")}
             </label>
             <input
@@ -91,7 +91,7 @@ function RegisterForm() {
             />
           </div>
           <div className="space-y-2">
-            <label htmlFor="email" className="text-sm font-medium text-[#1C1917]">
+            <label htmlFor="email" className="text-sm font-medium text-foreground">
               {t("email")}
             </label>
             <input
@@ -104,7 +104,7 @@ function RegisterForm() {
             />
           </div>
           <div className="space-y-2">
-            <label htmlFor="password" className="text-sm font-medium text-[#1C1917]">
+            <label htmlFor="password" className="text-sm font-medium text-foreground">
               {t("password")}
             </label>
             <input
@@ -127,16 +127,16 @@ function RegisterForm() {
         </form>
         <div className="relative my-6">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-[#E7E5E0]" />
+            <div className="w-full border-t border-border" />
           </div>
           <div className="relative flex justify-center text-sm">
             <span className="bg-white px-4 text-[#A8A29E]">{t("orRegisterWith")}</span>
           </div>
         </div>
         <OAuthButtons mode="register" referralCode={refCode || undefined} />
-        <div className="mt-6 text-center text-sm text-[#78716C]">
+        <div className="mt-6 text-center text-sm text-muted-foreground">
           {t("hasAccount")}{" "}
-          <Link href="/login" className="font-medium text-[#0070F3] hover:text-[#0060D0]">
+          <Link href="/login" className="font-medium text-primary hover:text-accent-brand-hover">
             {t("loginButton")}
           </Link>
         </div>

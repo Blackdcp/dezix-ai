@@ -36,7 +36,7 @@ export function CtaSection() {
             <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link
                 href="/register"
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-white px-8 text-base font-medium text-[#1C1917] transition-all hover:bg-[#F5F3EF] hover:shadow-lg hover:shadow-white/10"
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-white px-8 text-base font-medium text-foreground transition-all hover:bg-[#F5F3EF] hover:shadow-lg hover:shadow-white/10"
               >
                 {t("freeRegister")}
                 <ArrowRight className="h-4 w-4" />

@@ -42,11 +42,11 @@ export function PricingSection() {
   ];
 
   return (
-    <section className="bg-[#F9F8F6] py-20 md:py-28">
+    <section className="bg-background py-20 md:py-28">
       <div className="mx-auto max-w-7xl px-6">
         <AnimatedSection>
           <AnimatedItem>
-            <h2 className="font-heading mb-4 text-center text-3xl font-bold tracking-tight text-[#1C1917] md:text-4xl">
+            <h2 className="font-heading mb-4 text-center text-3xl font-bold tracking-tight text-foreground md:text-4xl">
               {t("title")}
             </h2>
           </AnimatedItem>
@@ -62,21 +62,21 @@ export function PricingSection() {
               <div
                 className={`relative flex h-full flex-col overflow-hidden rounded-2xl border bg-white p-8 ${
                   plan.highlight
-                    ? "border-[#0070F3] shadow-lg shadow-[#0070F3]/10"
-                    : "border-[#E7E5E0]"
+                    ? "border-primary shadow-lg shadow-primary/10"
+                    : "border-border"
                 }`}
               >
                 {plan.highlight && (
                   <>
                     <div className="absolute inset-x-0 top-0 h-[3px] gradient-brand" />
-                    <div className="absolute -right-px -top-px rounded-bl-xl rounded-tr-2xl bg-[#0070F3] px-3 py-1">
+                    <div className="absolute -right-px -top-px rounded-bl-xl rounded-tr-2xl bg-primary px-3 py-1">
                       <span className="text-[10px] font-semibold uppercase tracking-wider text-white">Most Popular</span>
                     </div>
                   </>
                 )}
-                <h3 className="font-heading text-lg font-semibold text-[#1C1917]">{plan.name}</h3>
-                <div className="mt-3 font-heading text-3xl font-bold text-[#1C1917]">{plan.price}</div>
-                <p className="mt-2 text-sm text-[#78716C]">
+                <h3 className="font-heading text-lg font-semibold text-foreground">{plan.name}</h3>
+                <div className="mt-3 font-heading text-3xl font-bold text-foreground">{plan.price}</div>
+                <p className="mt-2 text-sm text-muted-foreground">
                   {plan.desc}
                 </p>
                 <ul className="mt-6 flex-1 space-y-3">

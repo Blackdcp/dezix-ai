@@ -24,7 +24,7 @@ interface Model {
 
 function ModelSkeleton() {
   return (
-    <div className="animate-pulse rounded-2xl border border-[#E7E5E0] bg-white p-5">
+    <div className="animate-pulse rounded-2xl border border-border bg-white p-5">
       <div className="mb-3 flex items-center justify-between">
         <div className="h-4 w-28 rounded bg-[#F5F3EF]" />
         <div className="h-5 w-14 rounded-full bg-[#F5F3EF]" />
@@ -66,7 +66,7 @@ export function ModelsShowcase() {
       <div className="mx-auto max-w-7xl px-6">
         <AnimatedSection>
           <AnimatedItem>
-            <h2 className="font-heading mb-4 text-center text-3xl font-bold tracking-tight text-[#1C1917] md:text-4xl">
+            <h2 className="font-heading mb-4 text-center text-3xl font-bold tracking-tight text-foreground md:text-4xl">
               {t("title")}
             </h2>
           </AnimatedItem>
@@ -92,7 +92,7 @@ export function ModelsShowcase() {
                   <Link href={`/model-list`}>
                     <div className="card-elevated cursor-pointer p-5">
                       <div className="mb-2 flex items-center justify-between">
-                        <span className="font-heading text-sm font-semibold text-[#1C1917]">{m.displayName}</span>
+                        <span className="font-heading text-sm font-semibold text-foreground">{m.displayName}</span>
                         <Badge variant="secondary" className="flex items-center gap-1 rounded-full text-[10px] font-medium">
                           <Logo className="h-3 w-3" style={{ color }} />
                           {m.providerName}
@@ -101,7 +101,7 @@ export function ModelsShowcase() {
                       <p className="mb-3 font-mono text-xs text-[#A8A29E]">
                         {m.modelId}
                       </p>
-                      <div className="flex items-center justify-between text-xs text-[#78716C]">
+                      <div className="flex items-center justify-between text-xs text-muted-foreground">
                         <span>
                           ¥{formatDisplayPrice(m.sellPrice)}/M {t("inputLabel")}
                         </span>
@@ -117,7 +117,7 @@ export function ModelsShowcase() {
         <div className="mt-10 text-center">
           <Link
             href="/model-list"
-            className="inline-flex items-center gap-1 text-sm font-medium text-[#0070F3] transition-colors hover:text-[#0060D0]"
+            className="inline-flex items-center gap-1 text-sm font-medium text-primary transition-colors hover:text-accent-brand-hover"
           >
             {t("viewAll")} <ArrowRight className="h-3.5 w-3.5" />
           </Link>

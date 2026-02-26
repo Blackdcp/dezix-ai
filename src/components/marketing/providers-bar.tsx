@@ -34,7 +34,7 @@ export function ProvidersBar() {
   const t = useTranslations("Providers");
 
   return (
-    <section className="border-y border-[#E7E5E0] bg-[#F9F8F6] py-12">
+    <section className="border-y border-border bg-background py-12">
       <div className="mx-auto max-w-7xl px-6">
         <p className="mb-8 text-center text-sm font-medium uppercase tracking-wider text-[#A8A29E]">
           {t("title")}
@@ -53,7 +53,7 @@ export function ProvidersBar() {
                 transition={{ delay: i * 0.04, duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
               >
                 <p.Logo className="h-5 w-5 transition-colors duration-300" style={{ color: p.color }} />
-                <span className="font-heading text-sm font-semibold text-[#57534E] transition-colors duration-300 group-hover:text-[#1C1917]">
+                <span className="font-heading text-sm font-semibold text-[#57534E] transition-colors duration-300 group-hover:text-foreground">
                   {label}
                 </span>
               </motion.div>

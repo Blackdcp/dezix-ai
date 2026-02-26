@@ -36,8 +36,8 @@ export function ConsoleSidebar() {
   const t = useTranslations("ConsoleNav");
 
   return (
-    <aside className="flex h-full w-60 flex-col border-r border-[#E7E5E0] bg-[#F9F8F6]">
-      <div className="flex h-16 items-center gap-1 border-b border-[#E7E5E0] px-5">
+    <aside className="flex h-full w-60 flex-col border-r border-border bg-background">
+      <div className="flex h-16 items-center gap-1 border-b border-border px-5">
         <Link href="/dashboard" className="font-heading text-lg font-bold text-gradient-brand">
           Dezix AI
         </Link>
@@ -52,8 +52,8 @@ export function ConsoleSidebar() {
               className={cn(
                 "flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-colors",
                 isActive
-                  ? "bg-[#EBF5FF] text-[#0070F3]"
-                  : "text-[#57534E] hover:bg-[#F5F3EF] hover:text-[#1C1917]"
+                  ? "bg-primary/10 text-primary"
+                  : "text-[#57534E] hover:bg-[#F5F3EF] hover:text-foreground"
               )}
             >
               <item.icon className="h-4 w-4" />
@@ -63,12 +63,12 @@ export function ConsoleSidebar() {
         })}
       </nav>
       {isAdmin && (
-        <div className="border-t border-[#E7E5E0] p-3">
+        <div className="border-t border-border p-3">
           <Link
             href="/admin/dashboard"
             className={cn(
               "flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-colors",
-              "text-[#57534E] hover:bg-[#F5F3EF] hover:text-[#1C1917]"
+              "text-[#57534E] hover:bg-[#F5F3EF] hover:text-foreground"
             )}
           >
             <Shield className="h-4 w-4" />
