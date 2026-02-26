@@ -36,9 +36,14 @@ export async function authenticateRequest(
   const cacheKey = `apikey:${keyHash}`;
   const cached = await redis.get(cacheKey);
   if (cached) {
-    const data = typeof cached === "string" ? JSON.parse(cached) : cached;
-    validateKeyData(data as Record<string, unknown>);
-    return data as Pick<GatewayContext, "apiKey" | "user">;
+    try {
+      const data = typeof cached === "string" ? JSON.parse(cached) : cached;
+      validateKeyData(data as Record<string, unknown>);
+      return data as Pick<GatewayContext, "apiKey" | "user">;
+    } catch {
+      // Malformed cache data — delete and fall through to DB lookup
+      await redis.del(cacheKey);
+    }
   }
 
   // Query database
@@ -132,7 +137,11 @@ export async function getModelWhitelist(apiKeyId: string): Promise<string[]> {
   const cacheKey = `apikey:whitelist:${apiKeyId}`;
   const cached = await redis.get(cacheKey);
   if (cached) {
-    return typeof cached === "string" ? JSON.parse(cached) : (cached as string[]);
+    try {
+      return typeof cached === "string" ? JSON.parse(cached) : (cached as string[]);
+    } catch {
+      await redis.del(cacheKey);
+    }
   }
 
   const apiKey = await db.apiKey.findUnique({

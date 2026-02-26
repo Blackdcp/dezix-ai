@@ -73,7 +73,6 @@ function ModelSkeleton() {
 
 export default function ModelsPage() {
   const t = useTranslations("ConsoleModels");
-  const tc = useTranslations("Common");
   const tCat = useTranslations("Categories");
   const router = useRouter();
   const [models, setModels] = useState<ModelItem[]>([]);

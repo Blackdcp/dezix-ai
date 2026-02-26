@@ -23,25 +23,20 @@ export async function POST(
   const amountDecimal = new Prisma.Decimal(amount.toFixed(6));
   const description = parsed.data.description || `ADMIN_BALANCE_DESC:${amount > 0 ? "+" : ""}${amount.toFixed(2)}`;
 
-  // Atomic balance update
-  await db.$executeRaw`
+  // Atomic balance update with RETURNING
+  const rows = await db.$queryRaw<{ balance: Prisma.Decimal }[]>`
     UPDATE users
     SET balance = balance + ${amountDecimal}::decimal,
         "updatedAt" = NOW()
     WHERE id = ${id}
+    RETURNING balance
   `;
 
-  // Read new balance
-  const updatedUser = await db.user.findUnique({
-    where: { id },
-    select: { balance: true },
-  });
-
-  if (!updatedUser) {
+  if (rows.length === 0) {
     return NextResponse.json({ error: "USER_NOT_FOUND" }, { status: 404 });
   }
 
-  const newBalance = Number(updatedUser.balance);
+  const newBalance = Number(rows[0].balance);
 
   // Create ADMIN transaction
   await db.transaction.create({

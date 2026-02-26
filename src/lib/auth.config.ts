@@ -27,7 +27,7 @@ export const authConfig: NextAuthConfig = {
     },
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      let { pathname } = nextUrl;
+      const { pathname } = nextUrl;
 
       // Strip locale prefix (e.g., /en/dashboard → /dashboard)
       const localeMatch = pathname.match(/^\/(en)(\/|$)/);

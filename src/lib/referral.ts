@@ -27,19 +27,17 @@ export async function processReferralCommission(
 
     const commissionDecimal = new Prisma.Decimal(commission.toFixed(6));
 
-    // Add commission to referrer's balance
-    await db.$executeRaw`
+    // Atomic: update balance and get new value in one query
+    const rows = await db.$queryRaw<{ balance: Prisma.Decimal }[]>`
       UPDATE users
       SET balance = balance + ${commissionDecimal}::decimal,
           "updatedAt" = NOW()
       WHERE id = ${user.referredBy}
+      RETURNING balance
     `;
 
-    const referrer = await db.user.findUnique({
-      where: { id: user.referredBy },
-      select: { balance: true },
-    });
-    const referrerBalance = referrer ? Number(referrer.balance) : 0;
+    if (rows.length === 0) return;
+    const referrerBalance = Number(rows[0].balance);
 
     await db.transaction.create({
       data: {

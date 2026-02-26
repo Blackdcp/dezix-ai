@@ -48,6 +48,15 @@ export async function chargeUser(
 
   const revenueDecimal = new Prisma.Decimal(revenue.toFixed(8));
 
+  // Idempotency: check if this request was already charged (e.g. retry)
+  const existing = await db.transaction.findFirst({
+    where: { referenceId: ctx.requestId, type: "USAGE" },
+    select: { id: true },
+  });
+  if (existing) {
+    return { revenue, cost };
+  }
+
   // Atomic balance deduction with RETURNING to get the new balance in one query
   const rows = await db.$queryRaw<{ balance: Prisma.Decimal }[]>`
     UPDATE users

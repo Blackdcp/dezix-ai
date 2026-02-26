@@ -47,9 +47,15 @@ export function createStreamTransformer(
         return;
       }
 
+      const STREAM_TIMEOUT_MS = 5 * 60 * 1000; // 5 minutes
+
       try {
         while (true) {
-          const { done, value } = await reader.read();
+          const readPromise = reader.read();
+          const timeoutPromise = new Promise<never>((_, reject) =>
+            setTimeout(() => reject(new Error("Stream timeout")), STREAM_TIMEOUT_MS)
+          );
+          const { done, value } = await Promise.race([readPromise, timeoutPromise]);
           if (done) break;
 
           buffer += decoder.decode(value, { stream: true });

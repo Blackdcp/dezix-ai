@@ -226,8 +226,9 @@ export default function SettingsPage() {
             </div>
           ) : profile ? (
             <div className="flex items-start gap-4">
-              {/* Avatar */}
+              {/* Avatar - external OAuth URLs, <img> is intentional */}
               {profile.image ? (
+                // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={profile.image}
                   alt={tc("avatar")}
@@ -325,6 +326,7 @@ export default function SettingsPage() {
                           </div>
                         </div>
                         {isLinked && githubAvatarUrl && (
+                          // eslint-disable-next-line @next/next/no-img-element
                           <img
                             src={githubAvatarUrl}
                             alt="GitHub"

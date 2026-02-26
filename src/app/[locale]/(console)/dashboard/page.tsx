@@ -58,7 +58,6 @@ function StatSkeleton() {
 
 export default function DashboardPage() {
   const t = useTranslations("Dashboard");
-  const tc = useTranslations("Common");
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
 

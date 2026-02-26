@@ -11,6 +11,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { routing } from "@/i18n/routing";
 
+function setCookie(name: string, value: string, maxAge: number) {
+  globalThis.document.cookie = `${name}=${value};max-age=${maxAge};path=/`;
+}
+
 export function LanguageSwitcher() {
   const t = useTranslations("LanguageSwitcher");
   const locale = useLocale();
@@ -18,7 +22,7 @@ export function LanguageSwitcher() {
   const pathname = usePathname();
 
   function handleLocaleChange(newLocale: string) {
-    document.cookie = `NEXT_LOCALE=${newLocale};max-age=${365 * 24 * 60 * 60};path=/`;
+    setCookie("NEXT_LOCALE", newLocale, 365 * 24 * 60 * 60);
     router.replace(pathname, { locale: newLocale });
   }
 

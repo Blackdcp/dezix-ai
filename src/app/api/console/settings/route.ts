@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { Prisma } from "@prisma/client";
 import { updateSettingsSchema } from "@/lib/validations";
 
 export async function GET() {
@@ -83,16 +84,23 @@ export async function PATCH(req: Request) {
     updateData.email = parsed.data.email.trim();
   }
 
-  const updated = await db.user.update({
-    where: { id: session.user.id },
-    data: updateData,
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      createdAt: true,
-    },
-  });
+  try {
+    const updated = await db.user.update({
+      where: { id: session.user.id },
+      data: updateData,
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        createdAt: true,
+      },
+    });
 
-  return NextResponse.json(updated);
+    return NextResponse.json(updated);
+  } catch (e) {
+    if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {
+      return NextResponse.json({ error: "EMAIL_TAKEN" }, { status: 409 });
+    }
+    throw e;
+  }
 }

@@ -13,49 +13,37 @@ export async function POST(
 
   const { id } = await params;
 
-  // Atomic: only update if PENDING — prevents double approval
-  const result = await db.$executeRaw`
+  // Atomic: only update if PENDING and get order data in one query
+  const pendingOrders = await db.$queryRaw<{ userId: string; amount: Prisma.Decimal }[]>`
     UPDATE topup_orders
     SET status = 'APPROVED',
         "adminId" = ${session!.user.id},
         "updatedAt" = NOW()
     WHERE id = ${id} AND status = 'PENDING'
+    RETURNING "userId", amount
   `;
 
-  if (result === 0) {
+  if (pendingOrders.length === 0) {
     return NextResponse.json(
       { error: "ORDER_NOT_PENDING" },
       { status: 400 }
     );
   }
 
-  // Fetch the order to get amount and userId
-  const order = await db.topupOrder.findUnique({
-    where: { id },
-    select: { userId: true, amount: true },
-  });
-
-  if (!order) {
-    return NextResponse.json({ error: "ORDER_NOT_FOUND" }, { status: 404 });
-  }
-
+  const order = pendingOrders[0];
   const amount = Number(order.amount);
   const amountDecimal = new Prisma.Decimal(amount.toFixed(6));
 
-  // Add balance to user
-  await db.$executeRaw`
+  // Atomic: add balance and get new value in one query
+  const rows = await db.$queryRaw<{ balance: Prisma.Decimal }[]>`
     UPDATE users
     SET balance = balance + ${amountDecimal}::decimal,
         "updatedAt" = NOW()
     WHERE id = ${order.userId}
+    RETURNING balance
   `;
 
-  // Read new balance
-  const updatedUser = await db.user.findUnique({
-    where: { id: order.userId },
-    select: { balance: true },
-  });
-  const newBalance = updatedUser ? Number(updatedUser.balance) : 0;
+  const newBalance = rows.length > 0 ? Number(rows[0].balance) : 0;
 
   // Create transaction record
   await db.transaction.create({
