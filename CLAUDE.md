@@ -8,7 +8,7 @@ Dezix AI 是一个统一 LLM API 网关平台（仿 n1n.ai），面向国内开�
 
 ## 当前状态
 
-**Phase 1-12, 14-15 全部完成。所有功能开发 + 视觉重构已完成。**
+**Phase 1-12, 14-15 全部完成。Bug 修复轮已完成。项目处于生产就绪状态。**
 
 **线上地址**: https://dezix-ai.vercel.app
 
@@ -342,9 +342,25 @@ Phase 15 前端视觉重构已全部完成。
 - `ae5e630` — Cloud Dancer 暖白 + 正确 provider SVG logos
 - `c67a027` — Electric Blue #0070F3 配色方案
 - `bf2946e` — CSS 变量重构 + feature 图标优化
+- `13f510d` — Bug 修复轮 (4 CRITICAL + 3 HIGH + 2 MEDIUM + ESLint)
 
 **关键文件:**
 - `src/app/globals.css` — 全局配色 (CSS 变量 + 工具类)
 - `src/components/icons/provider-logos.tsx` — 5 个品牌 SVG + GenericProviderLogo
 - `src/components/marketing/` — 7 个营销组件 (hero, features, providers-bar, pricing, models-showcase, stats-bar, cta)
 - `src/components/layout/` — 8 个布局组件 (header/footer/sidebar)
+
+### Bug 修复轮 (已完成 ✅, commit `13f510d`)
+
+**修复的严重 Bug:**
+1. **流式扣费幂等** — `billing.ts` 扣费前查 referenceId 防止重复扣费
+2. **推荐返佣竞态** — `referral.ts` 用 UPDATE...RETURNING 原子化余额+记录
+3. **充值审批双重到账** — `approve/route.ts` 用 RETURNING 原子化订单状态+余额
+4. **OAuth 账号接管** — `auth.ts` 移除 allowDangerousEmailAccountLinking
+5. **Gateway JSON.parse 崩溃** — `gateway/auth.ts` try-catch + 删脏缓存回退 DB
+6. **管理员余额竞态** — `balance/route.ts` UPDATE...RETURNING
+7. **邮箱修改竞态** — `settings/route.ts` 捕获 Prisma P2002
+8. **流式超时** — `stream.ts` 5 分钟超时保护
+9. **ESLint** — 全部修复 (0 error, 0 warning)
+
+**验证:** ESLint 0 问题 / Build 0 错误 / 67 测试全通过
