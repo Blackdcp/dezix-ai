@@ -91,6 +91,7 @@
     "redirecting": "Redirecting..."
   },
   "Hero": {
+    "badge": "Unified AI Gateway",
     "titleLine1": "One API Key",
     "titleLine2": "Access All Mainstream AI Models",
     "description": "Dezix AI unified gateway lets you call 90+ models from 13+ providers including OpenAI, Anthropic, Google, and DeepSeek through an OpenAI-compatible API. Pay as you go, transparent pricing.",

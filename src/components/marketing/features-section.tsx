@@ -15,12 +15,12 @@ import {
 } from "@/components/ui/animated-section";
 
 const featureKeys = [
-  { icon: Globe, titleKey: "unifiedApi", descKey: "unifiedApiDesc", color: "#7C5CFC" },
-  { icon: Layers, titleKey: "multiModel", descKey: "multiModelDesc", color: "#E8706A" },
-  { icon: Zap, titleKey: "streaming", descKey: "streamingDesc", color: "#2DB574" },
-  { icon: Route, titleKey: "smartRouting", descKey: "smartRoutingDesc", color: "#7C5CFC" },
-  { icon: Receipt, titleKey: "transparentBilling", descKey: "transparentBillingDesc", color: "#E8706A" },
-  { icon: ShieldCheck, titleKey: "secure", descKey: "secureDesc", color: "#2DB574" },
+  { icon: Globe, titleKey: "unifiedApi", descKey: "unifiedApiDesc", color: "#7C5CFC", bg: "#f0ecff" },
+  { icon: Layers, titleKey: "multiModel", descKey: "multiModelDesc", color: "#E8706A", bg: "#fef0ef" },
+  { icon: Zap, titleKey: "streaming", descKey: "streamingDesc", color: "#2DB574", bg: "#ecfdf3" },
+  { icon: Route, titleKey: "smartRouting", descKey: "smartRoutingDesc", color: "#4D6BFE", bg: "#eef2ff" },
+  { icon: Receipt, titleKey: "transparentBilling", descKey: "transparentBillingDesc", color: "#f59e0b", bg: "#fef9ec" },
+  { icon: ShieldCheck, titleKey: "secure", descKey: "secureDesc", color: "#06b6d4", bg: "#ecfeff" },
 ] as const;
 
 export function FeaturesSection() {
@@ -46,13 +46,13 @@ export function FeaturesSection() {
             <AnimatedItem key={f.titleKey}>
               <div className="card-gradient-line p-7">
                 <div
-                  className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl"
-                  style={{ backgroundColor: `${f.color}15` }}
+                  className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl"
+                  style={{ backgroundColor: f.bg }}
                 >
-                  <f.icon className="h-5 w-5" style={{ color: f.color }} />
+                  <f.icon className="h-6 w-6" style={{ color: f.color }} />
                 </div>
                 <h3 className="font-heading mb-2 text-base font-semibold text-[#1a1a2e]">{t(f.titleKey)}</h3>
-                <p className="text-sm leading-relaxed text-[#71717a]">{t(f.descKey)}</p>
+                <p className="text-sm leading-relaxed text-[#52525b]">{t(f.descKey)}</p>
               </div>
             </AnimatedItem>
           ))}

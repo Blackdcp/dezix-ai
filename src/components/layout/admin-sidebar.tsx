@@ -28,10 +28,7 @@ export function AdminSidebar() {
   return (
     <aside className="flex h-full w-60 flex-col border-r border-[#e4e4e7] bg-[#fafafa]">
       <div className="flex h-16 items-center gap-2 border-b border-[#e4e4e7] px-5">
-        <div className="flex h-7 w-7 items-center justify-center rounded-xl bg-[#7C5CFC]/10">
-          <span className="font-heading text-xs font-bold text-[#7C5CFC]">A</span>
-        </div>
-        <Link href="/admin/dashboard" className="font-heading text-lg font-bold text-[#1a1a2e]">
+        <Link href="/admin/dashboard" className="font-heading text-lg font-bold text-[#7C5CFC]">
           {t("title")}
         </Link>
       </div>

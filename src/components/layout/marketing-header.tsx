@@ -31,11 +31,8 @@ export function MarketingHeader() {
     <header className="sticky top-0 z-50 border-b border-[#e4e4e7] bg-white/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2.5">
-          <div className="gradient-brand flex h-8 w-8 items-center justify-center rounded-xl">
-            <span className="font-heading text-sm font-bold text-white">D</span>
-          </div>
-          <span className="font-heading text-lg font-bold text-[#1a1a2e]">
+        <Link href="/" className="flex items-center gap-1">
+          <span className="font-heading text-xl font-bold text-gradient-brand">
             Dezix AI
           </span>
         </Link>
@@ -54,7 +51,7 @@ export function MarketingHeader() {
                 className={cn(
                   "rounded-full px-4 py-2 text-sm font-medium transition-colors",
                   isActive
-                    ? "text-[#7C5CFC]"
+                    ? "bg-[#f0ecff] text-[#7C5CFC]"
                     : "text-[#52525b] hover:text-[#1a1a2e] hover:bg-[#f4f4f5]"
                 )}
               >

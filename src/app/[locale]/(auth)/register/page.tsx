@@ -51,20 +51,19 @@ function RegisterForm() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#fafafa] px-4">
+      <div className="pointer-events-none fixed inset-0 dot-grid opacity-40" />
       <motion.div
-        className="w-full max-w-md rounded-2xl border border-[#e4e4e7] bg-white p-10 shadow-xl shadow-black/5"
+        className="relative w-full max-w-md overflow-hidden rounded-2xl border border-[#e4e4e7] bg-white p-10 shadow-xl shadow-black/5"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
       >
+        <div className="absolute inset-x-0 top-0 h-1 gradient-brand" />
         <div className="mb-8 text-center">
-          <Link href="/" className="inline-flex items-center gap-2.5">
-            <div className="gradient-brand flex h-8 w-8 items-center justify-center rounded-xl">
-              <span className="font-heading text-sm font-bold text-white">D</span>
-            </div>
-            <span className="font-heading text-xl font-bold text-[#1a1a2e]">Dezix AI</span>
+          <Link href="/" className="inline-flex items-center gap-1">
+            <span className="font-heading text-xl font-bold text-gradient-brand">Dezix AI</span>
           </Link>
-          <h1 className="font-heading mt-6 text-xl font-bold text-[#1a1a2e]">{t("registerTitle")}</h1>
+          <h1 className="font-heading mt-6 text-2xl font-bold text-[#1a1a2e]">{t("registerTitle")}</h1>
           <p className="mt-1.5 text-sm text-[#71717a]">{t("registerSubtitle")}</p>
         </div>
         <form onSubmit={onSubmit} className="space-y-4">

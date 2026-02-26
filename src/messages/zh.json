@@ -91,6 +91,7 @@
     "redirecting": "跳转中..."
   },
   "Hero": {
+    "badge": "统一 AI 网关平台",
     "titleLine1": "一个 API Key",
     "titleLine2": "访问所有主流 AI 模型",
     "description": "Dezix AI 统一网关让您通过 OpenAI 兼容接口，轻松调用 OpenAI、Anthropic、Google、DeepSeek 等 13 家厂商的 90+ 款模型，按量付费，透明计费。",

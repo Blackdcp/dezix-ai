@@ -60,21 +60,26 @@ export function PricingSection() {
           {plans.map((plan) => (
             <AnimatedItem key={plan.name}>
               <div
-                className={`relative rounded-2xl border bg-white p-8 ${
+                className={`relative flex h-full flex-col overflow-hidden rounded-2xl border bg-white p-8 ${
                   plan.highlight
                     ? "border-[#7C5CFC] shadow-lg shadow-[#7C5CFC]/10"
                     : "border-[#e4e4e7]"
                 }`}
               >
                 {plan.highlight && (
-                  <div className="absolute -top-px left-0 right-0 h-[3px] rounded-t-2xl gradient-brand" />
+                  <>
+                    <div className="absolute inset-x-0 top-0 h-[3px] gradient-brand" />
+                    <div className="absolute -right-px -top-px rounded-bl-xl rounded-tr-2xl bg-[#7C5CFC] px-3 py-1">
+                      <span className="text-[10px] font-semibold uppercase tracking-wider text-white">Most Popular</span>
+                    </div>
+                  </>
                 )}
                 <h3 className="font-heading text-lg font-semibold text-[#1a1a2e]">{plan.name}</h3>
                 <div className="mt-3 font-heading text-3xl font-bold text-[#1a1a2e]">{plan.price}</div>
                 <p className="mt-2 text-sm text-[#71717a]">
                   {plan.desc}
                 </p>
-                <ul className="mt-6 space-y-3">
+                <ul className="mt-6 flex-1 space-y-3">
                   {plan.features.map((f) => (
                     <li key={f} className="flex items-start gap-2.5 text-sm text-[#52525b]">
                       <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#2DB574]" />

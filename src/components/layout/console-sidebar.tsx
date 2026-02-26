@@ -37,11 +37,8 @@ export function ConsoleSidebar() {
 
   return (
     <aside className="flex h-full w-60 flex-col border-r border-[#e4e4e7] bg-[#fafafa]">
-      <div className="flex h-16 items-center gap-2.5 border-b border-[#e4e4e7] px-5">
-        <div className="gradient-brand flex h-7 w-7 items-center justify-center rounded-xl">
-          <span className="font-heading text-xs font-bold text-white">D</span>
-        </div>
-        <Link href="/dashboard" className="font-heading text-lg font-bold text-[#1a1a2e]">
+      <div className="flex h-16 items-center gap-1 border-b border-[#e4e4e7] px-5">
+        <Link href="/dashboard" className="font-heading text-lg font-bold text-gradient-brand">
           Dezix AI
         </Link>
       </div>

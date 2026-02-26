@@ -17,6 +17,8 @@ import {
   AnimatedItem,
 } from "@/components/ui/animated-section";
 import { useTranslations } from "next-intl";
+import { getProviderLogo } from "@/components/icons/provider-logos";
+import { Copy, Check } from "lucide-react";
 
 interface Model {
   id: string;
@@ -27,6 +29,26 @@ interface Model {
   sellPrice: number;
   sellOutPrice: number;
   maxContext: number;
+}
+
+function CopyButton({ text }: { text: string }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
+
+  return (
+    <button
+      onClick={handleCopy}
+      className="ml-1.5 inline-flex items-center rounded p-0.5 text-[#a1a1aa] transition-colors hover:text-[#7C5CFC]"
+      title="Copy model ID"
+    >
+      {copied ? <Check className="h-3 w-3 text-[#2DB574]" /> : <Copy className="h-3 w-3" />}
+    </button>
+  );
 }
 
 export default function ModelListPage() {
@@ -109,9 +131,9 @@ export default function ModelListPage() {
       ) : (
         <AnimatedSection>
           <AnimatedItem>
-            <div className="overflow-hidden rounded-2xl border border-[#e4e4e7] bg-white">
+            <div className="overflow-x-auto rounded-2xl border border-[#e4e4e7] bg-white">
               <Table>
-                <TableHeader>
+                <TableHeader className="sticky top-0 z-10">
                   <TableRow className="border-b border-[#e4e4e7] bg-[#fafafa]">
                     <TableHead className="text-xs uppercase tracking-wider font-medium text-[#a1a1aa]">{t("name")}</TableHead>
                     <TableHead className="text-xs uppercase tracking-wider font-medium text-[#a1a1aa]">{t("modelId")}</TableHead>
@@ -133,31 +155,40 @@ export default function ModelListPage() {
                       </TableCell>
                     </TableRow>
                   ) : (
-                    filtered.map((m) => (
-                      <TableRow key={m.id} className="border-b border-[#e4e4e7] hover:bg-[#fafafa]/50">
-                        <TableCell className="font-medium text-[#1a1a2e]">
-                          {m.displayName}
-                        </TableCell>
-                        <TableCell className="font-mono text-xs text-[#a1a1aa]">
-                          {m.modelId}
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant="secondary" className="rounded-full">{m.providerName}</Badge>
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant="outline" className="rounded-full">{tc(m.category as string)}</Badge>
-                        </TableCell>
-                        <TableCell className="text-right text-[#52525b]">
-                          ¥{m.sellPrice}/M tokens
-                        </TableCell>
-                        <TableCell className="text-right text-[#52525b]">
-                          ¥{m.sellOutPrice}/M tokens
-                        </TableCell>
-                        <TableCell className="text-right text-[#52525b]">
-                          {(m.maxContext / 1000).toFixed(0)}K
-                        </TableCell>
-                      </TableRow>
-                    ))
+                    filtered.map((m) => {
+                      const { Logo, color } = getProviderLogo(m.providerName);
+                      return (
+                        <TableRow key={m.id} className="border-b border-[#e4e4e7] transition-colors hover:bg-[#fafafa]/80">
+                          <TableCell className="font-medium text-[#1a1a2e]">
+                            {m.displayName}
+                          </TableCell>
+                          <TableCell>
+                            <span className="inline-flex items-center font-mono text-xs text-[#a1a1aa]">
+                              {m.modelId}
+                              <CopyButton text={m.modelId} />
+                            </span>
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant="secondary" className="inline-flex items-center gap-1 rounded-full">
+                              <Logo className="h-3 w-3" style={{ color }} />
+                              {m.providerName}
+                            </Badge>
+                          </TableCell>
+                          <TableCell>
+                            <Badge variant="outline" className="rounded-full">{tc(m.category as string)}</Badge>
+                          </TableCell>
+                          <TableCell className="text-right tabular-nums text-[#52525b]">
+                            ¥{(m.sellPrice * 1000).toFixed(2)}/M
+                          </TableCell>
+                          <TableCell className="text-right tabular-nums text-[#52525b]">
+                            ¥{(m.sellOutPrice * 1000).toFixed(2)}/M
+                          </TableCell>
+                          <TableCell className="text-right tabular-nums text-[#52525b]">
+                            {(m.maxContext / 1000).toFixed(0)}K
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })
                   )}
                 </TableBody>
               </Table>

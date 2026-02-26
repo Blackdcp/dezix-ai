@@ -27,11 +27,8 @@ export function MarketingFooter() {
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
-            <Link href="/" className="flex items-center gap-2.5">
-              <div className="gradient-brand flex h-7 w-7 items-center justify-center rounded-xl">
-                <span className="font-heading text-xs font-bold text-white">D</span>
-              </div>
-              <span className="font-heading text-lg font-bold text-[#1a1a2e]">
+            <Link href="/" className="flex items-center gap-1">
+              <span className="font-heading text-lg font-bold text-gradient-brand">
                 Dezix AI
               </span>
             </Link>

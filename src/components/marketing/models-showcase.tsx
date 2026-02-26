@@ -9,6 +9,7 @@ import {
   AnimatedSection,
   AnimatedItem,
 } from "@/components/ui/animated-section";
+import { getProviderLogo } from "@/components/icons/provider-logos";
 
 interface Model {
   id: string;
@@ -21,9 +22,32 @@ interface Model {
   maxContext: number;
 }
 
+function ModelSkeleton() {
+  return (
+    <div className="animate-pulse rounded-2xl border border-[#e4e4e7] bg-white p-5">
+      <div className="mb-3 flex items-center justify-between">
+        <div className="h-4 w-28 rounded bg-[#f4f4f5]" />
+        <div className="h-5 w-14 rounded-full bg-[#f4f4f5]" />
+      </div>
+      <div className="mb-4 h-3 w-40 rounded bg-[#f4f4f5]" />
+      <div className="flex items-center justify-between">
+        <div className="h-3 w-20 rounded bg-[#f4f4f5]" />
+        <div className="h-3 w-16 rounded bg-[#f4f4f5]" />
+      </div>
+    </div>
+  );
+}
+
+function formatDisplayPrice(price: number): string {
+  const perMillion = price * 1000;
+  if (perMillion < 0.01) return "<0.01";
+  return perMillion.toFixed(2);
+}
+
 export function ModelsShowcase() {
   const t = useTranslations("ModelsShowcase");
   const [models, setModels] = useState<Model[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch("/api/public/models")
@@ -33,12 +57,9 @@ export function ModelsShowcase() {
           setModels(data.models.slice(0, 8));
         }
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, []);
-
-  if (models.length === 0) {
-    return null;
-  }
 
   return (
     <section className="py-20 md:py-28">
@@ -55,29 +76,44 @@ export function ModelsShowcase() {
             </p>
           </AnimatedItem>
         </AnimatedSection>
-        <AnimatedSection className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {models.map((m) => (
-            <AnimatedItem key={m.id}>
-              <div className="card-elevated p-5">
-                <div className="mb-2 flex items-center justify-between">
-                  <span className="font-heading text-sm font-semibold text-[#1a1a2e]">{m.displayName}</span>
-                  <Badge variant="secondary" className="rounded-full text-[10px] font-medium">
-                    {m.providerName}
-                  </Badge>
-                </div>
-                <p className="mb-3 font-mono text-xs text-[#a1a1aa]">
-                  {m.modelId}
-                </p>
-                <div className="flex items-center justify-between text-xs text-[#71717a]">
-                  <span>
-                    ¥{m.sellPrice}/M {t("inputLabel")}
-                  </span>
-                  <span>{(m.maxContext / 1000).toFixed(0)}K {t("contextLabel")}</span>
-                </div>
-              </div>
-            </AnimatedItem>
-          ))}
-        </AnimatedSection>
+
+        {loading ? (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <ModelSkeleton key={i} />
+            ))}
+          </div>
+        ) : models.length === 0 ? null : (
+          <AnimatedSection className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {models.map((m) => {
+              const { Logo, color } = getProviderLogo(m.providerName);
+              return (
+                <AnimatedItem key={m.id}>
+                  <Link href={`/model-list`}>
+                    <div className="card-elevated cursor-pointer p-5">
+                      <div className="mb-2 flex items-center justify-between">
+                        <span className="font-heading text-sm font-semibold text-[#1a1a2e]">{m.displayName}</span>
+                        <Badge variant="secondary" className="flex items-center gap-1 rounded-full text-[10px] font-medium">
+                          <Logo className="h-3 w-3" style={{ color }} />
+                          {m.providerName}
+                        </Badge>
+                      </div>
+                      <p className="mb-3 font-mono text-xs text-[#a1a1aa]">
+                        {m.modelId}
+                      </p>
+                      <div className="flex items-center justify-between text-xs text-[#71717a]">
+                        <span>
+                          ¥{formatDisplayPrice(m.sellPrice)}/M {t("inputLabel")}
+                        </span>
+                        <span>{(m.maxContext / 1000).toFixed(0)}K {t("contextLabel")}</span>
+                      </div>
+                    </div>
+                  </Link>
+                </AnimatedItem>
+              );
+            })}
+          </AnimatedSection>
+        )}
         <div className="mt-10 text-center">
           <Link
             href="/model-list"

@@ -20,6 +20,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Search, Play, MessageSquare } from "lucide-react";
+import { getProviderLogo } from "@/components/icons/provider-logos";
 
 interface ModelItem {
   id: string;
@@ -40,7 +41,6 @@ interface ProviderItem {
 }
 
 function formatPrice(price: number): string {
-  // Price is per 1K tokens, convert to per 1M tokens for display
   return (price * 1000).toFixed(2);
 }
 
@@ -48,6 +48,27 @@ function formatContext(ctx: number): string {
   if (ctx >= 1000000) return `${(ctx / 1000000).toFixed(1)}M`;
   if (ctx >= 1000) return `${Math.round(ctx / 1000)}K`;
   return String(ctx);
+}
+
+function ModelSkeleton() {
+  return (
+    <Card>
+      <CardHeader className="pb-3">
+        <div className="flex items-start justify-between gap-2">
+          <div className="h-5 w-32 animate-pulse rounded bg-[#f4f4f5]" />
+          <div className="h-5 w-16 animate-pulse rounded-full bg-[#f4f4f5]" />
+        </div>
+        <div className="mt-2 h-3 w-40 animate-pulse rounded bg-[#f4f4f5]" />
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <div className="h-5 w-24 animate-pulse rounded-full bg-[#f4f4f5]" />
+        <div className="grid grid-cols-2 gap-2">
+          <div className="h-10 animate-pulse rounded bg-[#f4f4f5]" />
+          <div className="h-10 animate-pulse rounded bg-[#f4f4f5]" />
+        </div>
+      </CardContent>
+    </Card>
+  );
 }
 
 export default function ModelsPage() {
@@ -155,92 +176,102 @@ export default function ModelsPage() {
 
       {/* Model Grid */}
       {loading ? (
-        <div className="py-12 text-center text-muted-foreground">{tc("loading")}</div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <ModelSkeleton key={i} />
+          ))}
+        </div>
       ) : models.length === 0 ? (
         <div className="py-12 text-center text-muted-foreground">
           {t("noResults")}
         </div>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {models.map((model) => (
-            <Card key={model.id} className="relative flex flex-col">
-              <CardHeader className="pb-3">
-                <div className="flex items-start justify-between gap-2">
-                  <CardTitle className="text-base leading-snug">
-                    {model.displayName}
-                  </CardTitle>
-                  <Badge
-                    variant={model.isActive ? "default" : "secondary"}
-                    className="shrink-0"
-                  >
-                    {model.isActive ? t("available") : t("unavailable")}
-                  </Badge>
-                </div>
-                <code className="text-xs text-muted-foreground">
-                  {model.modelId}
-                </code>
-              </CardHeader>
-              <CardContent className="flex flex-1 flex-col space-y-3">
-                <div className="flex flex-wrap gap-1.5">
-                  <Badge variant="outline">{model.providerName}</Badge>
-                  <Badge variant="outline">
-                    {tCat(model.category as "chat" | "multimodal" | "code" | "reasoning" | "image" | "embedding" | "audio" | "video")}
-                  </Badge>
-                </div>
-                <div className="grid grid-cols-2 gap-2 text-sm">
-                  <div>
-                    <p className="text-muted-foreground">{t("inputPrice")}</p>
-                    <p className="font-medium">
-                      ¥{formatPrice(model.sellPrice)}/1M
-                    </p>
+          {models.map((model) => {
+            const { Logo, color } = getProviderLogo(model.providerName);
+            return (
+              <Card key={model.id} className="relative flex flex-col transition-shadow hover:shadow-md">
+                <CardHeader className="pb-3">
+                  <div className="flex items-start justify-between gap-2">
+                    <CardTitle className="text-base leading-snug">
+                      {model.displayName}
+                    </CardTitle>
+                    <Badge
+                      variant={model.isActive ? "default" : "secondary"}
+                      className={model.isActive ? "shrink-0 bg-[#2DB574] hover:bg-[#249960]" : "shrink-0"}
+                    >
+                      {model.isActive ? t("available") : t("unavailable")}
+                    </Badge>
                   </div>
-                  <div>
-                    <p className="text-muted-foreground">{t("outputPrice")}</p>
-                    <p className="font-medium">
-                      ¥{formatPrice(model.sellOutPrice)}/1M
-                    </p>
+                  <code className="text-xs text-muted-foreground">
+                    {model.modelId}
+                  </code>
+                </CardHeader>
+                <CardContent className="flex flex-1 flex-col space-y-3">
+                  <div className="flex flex-wrap gap-1.5">
+                    <Badge variant="outline" className="inline-flex items-center gap-1">
+                      <Logo className="h-3 w-3" style={{ color }} />
+                      {model.providerName}
+                    </Badge>
+                    <Badge variant="outline">
+                      {tCat(model.category as "chat" | "multimodal" | "code" | "reasoning" | "image" | "embedding" | "audio" | "video")}
+                    </Badge>
                   </div>
-                </div>
-                <div className="text-sm">
-                  <span className="text-muted-foreground">{t("maxContext")}</span>
-                  <span className="font-medium">
-                    {formatContext(model.maxContext)} tokens
-                  </span>
-                </div>
-                {/* Action buttons */}
-                <div className="mt-auto flex gap-2 pt-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="flex-1"
-                    disabled={!model.isActive}
-                    onClick={() =>
-                      router.push(
-                        `/playground?model=${encodeURIComponent(model.modelId)}`
-                      )
-                    }
-                  >
-                    <Play className="mr-1.5 h-3.5 w-3.5" />
-                    Playground
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="flex-1"
-                    disabled={!model.isActive}
-                    onClick={() =>
-                      router.push(
-                        `/chat?model=${encodeURIComponent(model.modelId)}`
-                      )
-                    }
-                  >
-                    <MessageSquare className="mr-1.5 h-3.5 w-3.5" />
-                    {t("chatButton")}
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                  <div className="grid grid-cols-2 gap-2 text-sm">
+                    <div>
+                      <p className="text-muted-foreground">{t("inputPrice")}</p>
+                      <p className="font-medium tabular-nums">
+                        ¥{formatPrice(model.sellPrice)}/1M
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-muted-foreground">{t("outputPrice")}</p>
+                      <p className="font-medium tabular-nums">
+                        ¥{formatPrice(model.sellOutPrice)}/1M
+                      </p>
+                    </div>
+                  </div>
+                  <div className="text-sm">
+                    <span className="text-muted-foreground">{t("maxContext")}</span>
+                    <span className="font-medium">
+                      {formatContext(model.maxContext)} tokens
+                    </span>
+                  </div>
+                  {/* Action buttons */}
+                  <div className="mt-auto flex gap-2 pt-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="flex-1"
+                      disabled={!model.isActive}
+                      onClick={() =>
+                        router.push(
+                          `/playground?model=${encodeURIComponent(model.modelId)}`
+                        )
+                      }
+                    >
+                      <Play className="mr-1.5 h-3.5 w-3.5" />
+                      Playground
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="flex-1"
+                      disabled={!model.isActive}
+                      onClick={() =>
+                        router.push(
+                          `/chat?model=${encodeURIComponent(model.modelId)}`
+                        )
+                      }
+                    >
+                      <MessageSquare className="mr-1.5 h-3.5 w-3.5" />
+                      {t("chatButton")}
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       )}
     </div>
