@@ -38,7 +38,7 @@ export default function LoginPage() {
     }
   }
 
-  const inputClass = "flex h-11 w-full rounded-xl border border-[#E7E5E0] bg-white px-3 py-2 text-sm text-[#1C1917] placeholder:text-[#A8A29E] focus:outline-none focus:ring-2 focus:ring-[#6366F1]/20 focus:border-[#6366F1]/50";
+  const inputClass = "flex h-11 w-full rounded-xl border border-[#E7E5E0] bg-white px-3 py-2 text-sm text-[#1C1917] placeholder:text-[#A8A29E] focus:outline-none focus:ring-2 focus:ring-[#0070F3]/20 focus:border-[#0070F3]/50";
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#F9F8F6] px-4">
@@ -108,7 +108,7 @@ export default function LoginPage() {
         <OAuthButtons mode="login" />
         <div className="mt-6 text-center text-sm text-[#78716C]">
           {t("noAccount")}{" "}
-          <Link href="/register" className="font-medium text-[#6366F1] hover:text-[#4F46E5]">
+          <Link href="/register" className="font-medium text-[#0070F3] hover:text-[#0060D0]">
             {t("register")}
           </Link>
         </div>

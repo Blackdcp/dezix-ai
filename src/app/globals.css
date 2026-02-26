@@ -53,14 +53,14 @@
 
 :root {
   --radius: 0.75rem;
-  /* ─ Palette: Cloud Dancer 2026 — warm whites, muted indigo, soft tones ─ */
-  --background: #FAFAF8;
+  /* ─ Palette C: Cloud Dancer × Electric Blue × Vivid Cyan ─ */
+  --background: #FAF9F6;
   --foreground: #1C1917;
   --card: #FFFFFF;
   --card-foreground: #1C1917;
   --popover: #FFFFFF;
   --popover-foreground: #1C1917;
-  --primary: #6366F1;
+  --primary: #0070F3;
   --primary-foreground: #FFFFFF;
   --secondary: #F5F3EF;
   --secondary-foreground: #1C1917;
@@ -71,30 +71,30 @@
   --destructive: #DC2626;
   --border: #E7E5E0;
   --input: #E7E5E0;
-  --ring: #6366F1;
-  --chart-1: #6366F1;
-  --chart-2: #E87B6A;
-  --chart-3: #059669;
-  --chart-4: #D97706;
-  --chart-5: #0891B2;
-  --sidebar: #F9F8F6;
+  --ring: #0070F3;
+  --chart-1: #0070F3;
+  --chart-2: #00B4D8;
+  --chart-3: #16A34A;
+  --chart-4: #F59E0B;
+  --chart-5: #9333EA;
+  --sidebar: #F9F8F5;
   --sidebar-foreground: #57534E;
-  --sidebar-primary: #6366F1;
+  --sidebar-primary: #0070F3;
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #EEF2FF;
-  --sidebar-accent-foreground: #6366F1;
+  --sidebar-accent: #EBF5FF;
+  --sidebar-accent-foreground: #0060D0;
   --sidebar-border: #E7E5E0;
-  --sidebar-ring: #6366F1;
-  --accent-brand: #6366F1;
-  --accent-brand-hover: #4F46E5;
+  --sidebar-ring: #0070F3;
+  --accent-brand: #0070F3;
+  --accent-brand-hover: #0060D0;
 }
 
-/* ── Brand gradient (indigo → warm coral) ── */
+/* ── Brand gradient (electric blue → vivid cyan) ── */
 .gradient-brand {
-  background: linear-gradient(135deg, #6366F1 0%, #E87B6A 100%);
+  background: linear-gradient(135deg, #0070F3 0%, #00B4D8 100%);
 }
 .text-gradient-brand {
-  background: linear-gradient(135deg, #6366F1 0%, #E87B6A 100%);
+  background: linear-gradient(135deg, #0070F3 0%, #00B4D8 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -129,7 +129,7 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, #6366F1 0%, #E87B6A 100%);
+  background: linear-gradient(90deg, #0070F3 0%, #00B4D8 100%);
   opacity: 0;
   transition: opacity 0.2s;
 }
@@ -144,15 +144,15 @@
 
 /* ── Buttons ── */
 .btn-primary {
-  background: #1C1917;
-  color: #FAFAF8;
+  background: #0070F3;
+  color: #FFFFFF;
   border-radius: 100px;
   font-weight: 500;
   transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
 }
 .btn-primary:hover {
-  background: #292524;
-  box-shadow: 0 4px 16px rgba(28, 25, 23, 0.18);
+  background: #0060D0;
+  box-shadow: 0 4px 16px rgba(0, 112, 243, 0.30);
   transform: translateY(-1px);
 }
 
@@ -166,7 +166,7 @@
 }
 .btn-secondary:hover {
   border-color: #D6D3CD;
-  background: #F9F8F6;
+  background: #F9F8F5;
 }
 
 /* ── Dot grid background ── */
@@ -185,17 +185,17 @@
 }
 
 /* ── Colored badges ── */
-.badge-purple {
-  background: #EEF2FF;
-  color: #6366F1;
+.badge-teal {
+  background: #EBF5FF;
+  color: #0070F3;
 }
-.badge-coral {
-  background: #FEF2F0;
-  color: #E87B6A;
+.badge-amber {
+  background: #ECFEFF;
+  color: #00B4D8;
 }
 .badge-green {
   background: #ECFDF5;
-  color: #059669;
+  color: #16A34A;
 }
 
 @layer base {

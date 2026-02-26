@@ -43,7 +43,7 @@ export function DocsSidebar() {
                       className={cn(
                         "flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium transition-colors",
                         isActive
-                          ? "bg-[#EEF2FF] text-[#6366F1]"
+                          ? "bg-[#EBF5FF] text-[#0070F3]"
                           : "text-[#57534E] hover:bg-[#F5F3EF] hover:text-[#1C1917]"
                       )}
                     >

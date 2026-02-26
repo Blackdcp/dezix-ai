@@ -15,8 +15,8 @@ export function CtaSection() {
     <section className="relative overflow-hidden bg-[#1C1917] py-20 md:py-28">
       {/* Background decorations */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(99,102,241,0.15),transparent_60%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(232,123,106,0.10),transparent_60%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(0,112,243,0.15),transparent_60%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(0,180,216,0.12),transparent_60%)]" />
       </div>
 
       <div className="relative mx-auto max-w-7xl px-6 text-center">

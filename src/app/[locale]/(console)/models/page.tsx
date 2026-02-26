@@ -198,7 +198,7 @@ export default function ModelsPage() {
                     </CardTitle>
                     <Badge
                       variant={model.isActive ? "default" : "secondary"}
-                      className={model.isActive ? "shrink-0 bg-[#059669] hover:bg-[#249960]" : "shrink-0"}
+                      className={model.isActive ? "shrink-0 bg-[#16A34A] hover:bg-[#249960]" : "shrink-0"}
                     >
                       {model.isActive ? t("available") : t("unavailable")}
                     </Badge>

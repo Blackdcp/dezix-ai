@@ -62,14 +62,14 @@ export function PricingSection() {
               <div
                 className={`relative flex h-full flex-col overflow-hidden rounded-2xl border bg-white p-8 ${
                   plan.highlight
-                    ? "border-[#6366F1] shadow-lg shadow-[#6366F1]/10"
+                    ? "border-[#0070F3] shadow-lg shadow-[#0070F3]/10"
                     : "border-[#E7E5E0]"
                 }`}
               >
                 {plan.highlight && (
                   <>
                     <div className="absolute inset-x-0 top-0 h-[3px] gradient-brand" />
-                    <div className="absolute -right-px -top-px rounded-bl-xl rounded-tr-2xl bg-[#6366F1] px-3 py-1">
+                    <div className="absolute -right-px -top-px rounded-bl-xl rounded-tr-2xl bg-[#0070F3] px-3 py-1">
                       <span className="text-[10px] font-semibold uppercase tracking-wider text-white">Most Popular</span>
                     </div>
                   </>
@@ -82,7 +82,7 @@ export function PricingSection() {
                 <ul className="mt-6 flex-1 space-y-3">
                   {plan.features.map((f) => (
                     <li key={f} className="flex items-start gap-2.5 text-sm text-[#57534E]">
-                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#059669]" />
+                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#16A34A]" />
                       {f}
                     </li>
                   ))}

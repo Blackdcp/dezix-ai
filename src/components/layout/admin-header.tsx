@@ -34,7 +34,7 @@ function UserMenu() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="gap-2 rounded-xl hover:bg-[#F5F3EF]">
           <Avatar className="h-7 w-7">
-            <AvatarFallback className="bg-[#6366F1]/10 text-xs font-medium text-[#6366F1]">
+            <AvatarFallback className="bg-[#0070F3]/10 text-xs font-medium text-[#0070F3]">
               {user?.name?.charAt(0)?.toUpperCase() || "A"}
             </AvatarFallback>
           </Avatar>

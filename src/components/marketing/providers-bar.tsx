@@ -22,12 +22,12 @@ const providers: { name?: string; nameKey?: string; Logo: LogoComp; color: strin
   { name: "xAI", Logo: XAILogo, color: "#000000" },
   { nameKey: "bytedance", Logo: GenericProviderLogo, color: "#3C8CFF" },
   { nameKey: "aliyun", Logo: GenericProviderLogo, color: "#FF6A00" },
-  { nameKey: "zhipu", Logo: GenericProviderLogo, color: "#4F46E5" },
+  { nameKey: "zhipu", Logo: GenericProviderLogo, color: "#0060D0" },
   { nameKey: "moonshot", Logo: GenericProviderLogo, color: "#1C1917" },
-  { name: "MiniMax", Logo: GenericProviderLogo, color: "#4F46E5" },
+  { name: "MiniMax", Logo: GenericProviderLogo, color: "#0060D0" },
   { nameKey: "xiaomi", Logo: GenericProviderLogo, color: "#FF6900" },
   { nameKey: "meituan", Logo: GenericProviderLogo, color: "#FFD100" },
-  { nameKey: "stepfun", Logo: GenericProviderLogo, color: "#6366F1" },
+  { nameKey: "stepfun", Logo: GenericProviderLogo, color: "#0070F3" },
 ];
 
 export function ProvidersBar() {

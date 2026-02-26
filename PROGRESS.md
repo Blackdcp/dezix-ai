@@ -559,7 +559,7 @@
 - [x] Phase 12: 模型管理增强 (自动同步上游模型列表、批量调价)
 - ~~Phase 13: 监控告警~~ (不做)
 - [x] Phase 14: 多语言支持 (i18n)
-- [ ] **Phase 15: 前端视觉重构** (营销首页、定价、文档站、控制台) ← 下一步
+- [x] **Phase 15: 前端视觉重构** (浅色 SaaS 风格, 27 个文件重构) ← 已完成
 
 ---
 
@@ -611,11 +611,12 @@
 - [x] `src/components/layout/admin-header.tsx` — 白色 bg, border-[#e4e4e7], #7C5CFC avatar, rounded-xl
 - [x] `src/app/[locale]/(admin)/layout.tsx` — bg-[#f4f4f5] (从 #0a0e1a 改为浅色)
 
-#### 待完成:
-- [ ] 扫描残留深色主题引用 (#0a0e1a, #00d4ff, white/[0.06], #111827, #94a3b8 等)
-- [ ] `npm run build` 构建验证
-- [ ] 控制台内页 (dashboard, models, usage, playground, chat, billing, api-keys, settings, referral) 可能还有深色引用
-- [ ] 管理后台内页 (admin/dashboard, admin/users, admin/models, admin/channels, admin/logs, admin/orders) 可能还有深色引用
+#### 已验证 (2026-02-26):
+- [x] 扫描残留深色主题引用 — 零残留 (#0a0e1a, #00d4ff, #111827, #94a3b8 等均已清除)
+- [x] 控制台 9 个内页 — 全部干净，使用 shadcn/ui 语义化颜色
+- [x] 管理后台 6 个内页 — 全部干净
+- [x] `npm run build` 构建验证通过 (76 页面)
+- [x] Phase 15 Part B 浅色主题重构完成
 
 ### 注意事项
 - 项目路径: `E:\Claude code\dezix-ai`

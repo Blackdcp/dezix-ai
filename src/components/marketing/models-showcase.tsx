@@ -117,7 +117,7 @@ export function ModelsShowcase() {
         <div className="mt-10 text-center">
           <Link
             href="/model-list"
-            className="inline-flex items-center gap-1 text-sm font-medium text-[#6366F1] transition-colors hover:text-[#4F46E5]"
+            className="inline-flex items-center gap-1 text-sm font-medium text-[#0070F3] transition-colors hover:text-[#0060D0]"
           >
             {t("viewAll")} <ArrowRight className="h-3.5 w-3.5" />
           </Link>

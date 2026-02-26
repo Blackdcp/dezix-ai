@@ -18,7 +18,7 @@ export default function QuickStartPage() {
       <h2 className="mb-3 mt-8 text-xl font-bold text-[#1C1917]">{t("step1Title")}</h2>
       <p className="mb-4 text-[17px] leading-relaxed text-[#57534E]">
         {t("step1Text1")}{" "}
-        <Link href="/register" className="text-[#6366F1] hover:underline">
+        <Link href="/register" className="text-[#0070F3] hover:underline">
           {t("step1Link")}
         </Link>
         {" "}{t("step1Text2")}
@@ -97,25 +97,25 @@ console.log(response.choices[0].message.content);`}
       <h2 className="mb-3 mt-8 text-xl font-bold text-[#1C1917]">{t("step4Title")}</h2>
       <ul className="mb-4 ml-6 list-disc space-y-2 text-[17px] leading-relaxed text-[#57534E]">
         <li>
-          <Link href="/docs/api-reference" className="text-[#6366F1] hover:underline">
+          <Link href="/docs/api-reference" className="text-[#0070F3] hover:underline">
             {t("step4ApiRef")}
           </Link>
           {" "}{t("step4ApiRefDesc")}
         </li>
         <li>
-          <Link href="/docs/sdk-examples" className="text-[#6366F1] hover:underline">
+          <Link href="/docs/sdk-examples" className="text-[#0070F3] hover:underline">
             {t("step4Sdk")}
           </Link>
           {" "}{t("step4SdkDesc")}
         </li>
         <li>
-          <Link href="/model-list" className="text-[#6366F1] hover:underline">
+          <Link href="/model-list" className="text-[#0070F3] hover:underline">
             {t("step4Models")}
           </Link>
           {" "}{t("step4ModelsDesc")}
         </li>
         <li>
-          <Link href="/playground" className="text-[#6366F1] hover:underline">
+          <Link href="/playground" className="text-[#0070F3] hover:underline">
             {t("step4Playground")}
           </Link>
           {" "}{t("step4PlaygroundDesc")}

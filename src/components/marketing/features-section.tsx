@@ -15,9 +15,9 @@ import {
 } from "@/components/ui/animated-section";
 
 const featureKeys = [
-  { icon: Globe, titleKey: "unifiedApi", descKey: "unifiedApiDesc", color: "#6366F1", bg: "#EEF2FF" },
-  { icon: Layers, titleKey: "multiModel", descKey: "multiModelDesc", color: "#E87B6A", bg: "#fef0ef" },
-  { icon: Zap, titleKey: "streaming", descKey: "streamingDesc", color: "#059669", bg: "#ecfdf3" },
+  { icon: Globe, titleKey: "unifiedApi", descKey: "unifiedApiDesc", color: "#0070F3", bg: "#EBF5FF" },
+  { icon: Layers, titleKey: "multiModel", descKey: "multiModelDesc", color: "#D97706", bg: "#fef0ef" },
+  { icon: Zap, titleKey: "streaming", descKey: "streamingDesc", color: "#16A34A", bg: "#ecfdf3" },
   { icon: Route, titleKey: "smartRouting", descKey: "smartRoutingDesc", color: "#4D6BFE", bg: "#eef2ff" },
   { icon: Receipt, titleKey: "transparentBilling", descKey: "transparentBillingDesc", color: "#f59e0b", bg: "#fef9ec" },
   { icon: ShieldCheck, titleKey: "secure", descKey: "secureDesc", color: "#06b6d4", bg: "#ecfeff" },

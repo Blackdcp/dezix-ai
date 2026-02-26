@@ -15,9 +15,9 @@ function CodePreview() {
       {/* Title bar - dark */}
       <div className="flex items-center gap-2 border-b border-[#292524] bg-[#1C1917] px-4 py-3">
         <div className="flex gap-1.5">
-          <div className="h-3 w-3 rounded-full bg-[#E87B6A]" />
+          <div className="h-3 w-3 rounded-full bg-[#D97706]" />
           <div className="h-3 w-3 rounded-full bg-[#f59e0b]" />
-          <div className="h-3 w-3 rounded-full bg-[#059669]" />
+          <div className="h-3 w-3 rounded-full bg-[#16A34A]" />
         </div>
         <span className="ml-2 font-mono text-xs text-[#78716C]">request.py</span>
       </div>
@@ -85,9 +85,9 @@ export function HeroSection() {
         <AnimatedSection>
           {/* Badge */}
           <AnimatedItem>
-            <div className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-[#6366F1]/20 bg-[#EEF2FF] px-4 py-1.5">
-              <div className="h-1.5 w-1.5 rounded-full bg-[#6366F1] animate-pulse" />
-              <span className="text-xs font-medium text-[#6366F1]">
+            <div className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-[#0070F3]/20 bg-[#EBF5FF] px-4 py-1.5">
+              <div className="h-1.5 w-1.5 rounded-full bg-[#0070F3] animate-pulse" />
+              <span className="text-xs font-medium text-[#0070F3]">
                 {t("badge")}
               </span>
             </div>

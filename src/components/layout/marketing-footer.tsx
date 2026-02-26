@@ -47,7 +47,7 @@ export function MarketingFooter() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-[#78716C] transition-colors hover:text-[#6366F1]"
+                    className="text-sm text-[#78716C] transition-colors hover:text-[#0070F3]"
                   >
                     {t(`Nav.${link.labelKey}`)}
                   </Link>
@@ -66,7 +66,7 @@ export function MarketingFooter() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-[#78716C] transition-colors hover:text-[#6366F1]"
+                    className="text-sm text-[#78716C] transition-colors hover:text-[#0070F3]"
                   >
                     {t(`Footer.${link.labelKey}`)}
                   </Link>
@@ -85,7 +85,7 @@ export function MarketingFooter() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-[#78716C] transition-colors hover:text-[#6366F1]"
+                    className="text-sm text-[#78716C] transition-colors hover:text-[#0070F3]"
                   >
                     {t(`Nav.${link.labelKey}`)}
                   </Link>

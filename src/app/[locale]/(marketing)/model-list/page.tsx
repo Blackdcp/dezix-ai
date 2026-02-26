@@ -43,10 +43,10 @@ function CopyButton({ text }: { text: string }) {
   return (
     <button
       onClick={handleCopy}
-      className="ml-1.5 inline-flex items-center rounded p-0.5 text-[#A8A29E] transition-colors hover:text-[#6366F1]"
+      className="ml-1.5 inline-flex items-center rounded p-0.5 text-[#A8A29E] transition-colors hover:text-[#0070F3]"
       title="Copy model ID"
     >
-      {copied ? <Check className="h-3 w-3 text-[#059669]" /> : <Copy className="h-3 w-3" />}
+      {copied ? <Check className="h-3 w-3 text-[#16A34A]" /> : <Copy className="h-3 w-3" />}
     </button>
   );
 }
@@ -101,7 +101,7 @@ export default function ModelListPage() {
               placeholder={t("searchPlaceholder")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="max-w-sm rounded-xl border-[#E7E5E0] bg-white focus:border-[#6366F1]/50 focus:ring-[#6366F1]/20"
+              className="max-w-sm rounded-xl border-[#E7E5E0] bg-white focus:border-[#0070F3]/50 focus:ring-[#0070F3]/20"
             />
             {categories.length > 0 && (
               <Tabs

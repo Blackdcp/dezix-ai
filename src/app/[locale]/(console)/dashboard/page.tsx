@@ -35,9 +35,9 @@ interface DashboardData {
 }
 
 const statColors = [
-  { icon: "text-[#6366F1]", bg: "bg-[#EEF2FF]" },
-  { icon: "text-[#E87B6A]", bg: "bg-[#fef0ef]" },
-  { icon: "text-[#059669]", bg: "bg-[#ecfdf3]" },
+  { icon: "text-[#0070F3]", bg: "bg-[#EBF5FF]" },
+  { icon: "text-[#D97706]", bg: "bg-[#fef0ef]" },
+  { icon: "text-[#16A34A]", bg: "bg-[#ecfdf3]" },
   { icon: "text-[#f59e0b]", bg: "bg-[#fef9ec]" },
 ];
 
@@ -145,12 +145,12 @@ export default function DashboardPage() {
               >
                 <defs>
                   <linearGradient id="colorRequests" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#6366F1" stopOpacity={0.2} />
-                    <stop offset="95%" stopColor="#6366F1" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#0070F3" stopOpacity={0.2} />
+                    <stop offset="95%" stopColor="#0070F3" stopOpacity={0} />
                   </linearGradient>
                   <linearGradient id="colorSpending" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#059669" stopOpacity={0.2} />
-                    <stop offset="95%" stopColor="#059669" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#16A34A" stopOpacity={0.2} />
+                    <stop offset="95%" stopColor="#16A34A" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="#E7E5E0" />
@@ -194,7 +194,7 @@ export default function DashboardPage() {
                   yAxisId="left"
                   type="monotone"
                   dataKey="requests"
-                  stroke="#6366F1"
+                  stroke="#0070F3"
                   fill="url(#colorRequests)"
                   strokeWidth={2}
                 />
@@ -202,7 +202,7 @@ export default function DashboardPage() {
                   yAxisId="right"
                   type="monotone"
                   dataKey="spending"
-                  stroke="#059669"
+                  stroke="#16A34A"
                   fill="url(#colorSpending)"
                   strokeWidth={2}
                 />

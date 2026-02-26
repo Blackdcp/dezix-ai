@@ -94,12 +94,12 @@ export default function PricingPage() {
             <div
               className={`relative rounded-2xl border p-8 ${
                 plan.highlight
-                  ? "border-[#6366F1] bg-white shadow-lg shadow-[#6366F1]/10"
+                  ? "border-[#0070F3] bg-white shadow-lg shadow-[#0070F3]/10"
                   : "border-[#E7E5E0] bg-white"
               }`}
             >
               {plan.highlight && (
-                <div className="absolute -top-px left-0 right-0 h-[3px] rounded-t-2xl bg-[#6366F1]" />
+                <div className="absolute -top-px left-0 right-0 h-[3px] rounded-t-2xl bg-[#0070F3]" />
               )}
               <h3 className="font-heading text-lg font-semibold text-[#1C1917]">{plan.name}</h3>
               <div className="mt-3 font-heading text-3xl font-bold text-[#1C1917]">{plan.price}</div>
@@ -107,7 +107,7 @@ export default function PricingPage() {
               <ul className="mt-6 space-y-3">
                 {plan.features.map((f) => (
                   <li key={f} className="flex items-start gap-2.5 text-sm text-[#57534E]">
-                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#059669]" />
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#16A34A]" />
                     {f}
                   </li>
                 ))}

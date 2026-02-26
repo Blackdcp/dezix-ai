@@ -34,7 +34,7 @@ export function LanguageSwitcher() {
           <DropdownMenuItem
             key={l}
             onClick={() => handleLocaleChange(l)}
-            className={`rounded-lg ${locale === l ? "font-semibold text-[#6366F1]" : ""}`}
+            className={`rounded-lg ${locale === l ? "font-semibold text-[#0070F3]" : ""}`}
           >
             {t(l)}
           </DropdownMenuItem>
