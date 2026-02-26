@@ -364,3 +364,18 @@ Phase 15 前端视觉重构已全部完成。
 9. **ESLint** — 全部修复 (0 error, 0 warning)
 
 **验证:** ESLint 0 问题 / Build 0 错误 / 67 测试全通过
+
+### CI/部署修复 (已完成 ✅, commit `66c8feb`)
+
+**问题**: 每次 push 到 GitHub，CI 在 `npm ci` 步骤立即失败 (6秒)；Vercel 部署全部 Canceled。
+**根因**:
+1. 本地 Node 24 / npm 11.6 生成的 `package-lock.json` 与 CI 的 Node 20 (npm 10.x) 不兼容
+2. Vercel Dashboard 启用了 "Require Verified Commits"，拒绝未 GPG 签名的 commit
+
+**修复**:
+- CI workflow Node 20 → 24，匹配本地 npm 版本
+- `.nvmrc` 设为 `24`，Vercel 使用正确 Node 版本
+- `package.json` 添加 `"engines": { "node": ">=24.0.0" }`
+- Vercel Dashboard 关闭 "Require Verified Commits"
+
+**验证:** CI 全部通过 (lint → tsc → test → build)
