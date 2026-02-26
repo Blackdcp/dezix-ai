@@ -561,6 +561,7 @@
 - [x] Phase 14: 多语言支持 (i18n)
 - [x] **Phase 15: 前端视觉重构** (Electric Blue #0070F3, 25+ 文件重构) ← 已完成
 - [x] **Bug 修复轮** (4 CRITICAL + 3 HIGH + 2 MEDIUM, commit `13f510d`) ← 已完成
+- [x] **CI/部署修复** (Node 24 + Vercel Require Verified Commits, commit `66c8feb`) ← 已完成
 
 ---
 
@@ -601,3 +602,26 @@
 - Google Fonts `@import` 必须是 globals.css 的第一行
 - 导航必须从 `@/i18n/navigation` 导入
 - 改配色只需修改 `globals.css` 中的 CSS 变量 + .gradient-brand/.btn-primary 等工具类
+
+---
+
+## CI/部署修复 (2026-02-26) ✅
+
+### 问题
+- GitHub Actions CI 每次 push 后 `npm ci` 步骤在 6 秒内失败
+- Vercel 部署全部显示 "Canceled from the Vercel Dashboard"
+
+### 根因
+1. 本地 Node 24 / npm 11.6 生成的 `package-lock.json` 与 CI 的 Node 20 (npm 10.x) 不兼容
+2. Vercel Dashboard 启用了 "Require Verified Commits"，拒绝未 GPG 签名的 commit
+
+### 修复
+- [x] CI workflow: Node 20 → 24 (`.github/workflows/ci.yml`)
+- [x] `.nvmrc`: 创建文件，值为 `24`，Vercel 读取此文件选择 Node 版本
+- [x] `package.json`: 添加 `"engines": { "node": ">=24.0.0" }`
+- [x] Vercel Dashboard: 关闭 "Require Verified Commits" 设置
+- [x] Git commits: `3142eff` (Node 22 尝试), `66c8feb` (Node 24 修复), `15649a7` (文档更新)
+
+### 验证
+- [x] GitHub Actions CI 全绿通过 (lint → tsc → test → build)
+- [x] Vercel 部署成功 (SHA `15649a7`, State: success)
