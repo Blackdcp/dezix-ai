@@ -562,8 +562,8 @@
 - [x] **Phase 15: 前端视觉重构** (Electric Blue #0070F3, 25+ 文件重构) ← 已完成
 - [x] **Bug 修复轮** (4 CRITICAL + 3 HIGH + 2 MEDIUM, commit `13f510d`) ← 已完成
 - [x] **CI/部署修复** (Node 24 + Vercel Require Verified Commits, commit `66c8feb`) ← 已完成
-- [x] **配色方案切换** (Electric Blue → Brand Orange #F26522) ← 未提交到线上
-- [x] **Provider Logo 修复 + SVG 替换 + i18n 统一** ← 已完成，未提交到线上
+- [x] **配色方案切换** (Electric Blue → Brand Orange #F26522) ← 已上线 (`3a269e2`)
+- [x] **Provider Logo 修复 + SVG 替换 + i18n 统一** ← 已上线 (`3a269e2`)
 
 ---
 
@@ -632,7 +632,7 @@
 
 ## 配色方案切换: Electric Blue → Brand Orange (2026-03-01)
 
-### 状态: 本地已完成，未提交到线上
+### 状态: 已上线 ✅ (commit `3a269e2`)
 
 - [x] `globals.css` 配色从 `#0070F3` (Electric Blue) 切换为 `#F26522` (Brand Orange)
 - [x] `.gradient-brand` / `.btn-primary` / `.card-gradient-line` / `.badge-teal` 等工具类全部更新为橙色系
@@ -685,15 +685,14 @@
 - [x] 中文模式: 字节跳动/阿里云/智谱 AI 等正确显示
 - [x] 英文模式: ByteDance/Alibaba Cloud/Zhipu AI 等正确显示
 
-### 待完成
-- [ ] Git commit
-- [ ] `git push` 到 GitHub 触发 Vercel 部署
-- [ ] 线上 Supabase 执行 seed 更新 displayName (`豆包`→`Doubao`, `美团`→`Meituan`)
-- [ ] 线上验证: logo + i18n + 配色
+### 已完成 ✅
+- [x] Git commit: `3a269e2`
+- [x] `git push` 到 GitHub → Vercel 自动部署
+- [x] 线上 Supabase seed 已执行 (91 模型 displayName 全英文)
+- [x] 线上验证通过: 91 模型 / 14 providers / 0 Chinese displayName / 0 "Other"
 
 ### 下次启动备注
 - 本地 Docker 需启动: `docker compose up -d`
 - Dev server: `node node_modules/next/dist/bin/next dev`
-- 线上 seed 命令: `DATABASE_URL="postgresql://postgres:DezixAI2026db@db.kkwawbsibpgdqqdirbmv.supabase.co:5432/postgres" npx prisma db seed`
-- 共 16 个文件改动 + `public/icons/` 新目录 (PNG 备份，可选删除)
+- `public/icons/providers/` 下有 16 个旧 PNG 文件 (未跟踪, 可删除, 已改用内联 SVG)
 

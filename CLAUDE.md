@@ -8,7 +8,7 @@ Dezix AI 是一个统一 LLM API 网关平台（仿 n1n.ai），面向国内开�
 
 ## 当前状态
 
-**Phase 1-12, 14-15 全部完成。Bug 修复轮已完成。项目处于生产就绪状态。**
+**Phase 1-12, 14-15 全部完成。Bug 修复轮已完成。Provider Logo SVG + i18n + 橙色配色已上线。项目处于生产就绪状态。**
 
 **线上地址**: https://dezix-ai.vercel.app
 
@@ -207,6 +207,7 @@ npm run test:watch           # Vitest 监听模式
 - curl 代理: `curl --proxy http://127.0.0.1:7897`
 - **Phase 9 部署已完成**，线上健康检查 + 页面 + 模型 API 全部通过
 - **Phase 10 OAuth 代码已完成** (commit `c2d925e`)，已推送 GitHub + Vercel 自动部署
+- **最新上线 commit: `3a269e2`** — SVG provider logos + brand i18n + Brand Orange 配色 + displayName 全英文
 
 ### Phase 10 OAuth 待办 (需用户手动操作)
 - [ ] 创建 GitHub OAuth App: https://github.com/settings/developers → callback `https://dezix-ai.vercel.app/api/auth/callback/github`
@@ -235,9 +236,9 @@ npm run test:watch           # Vitest 监听模式
 - 官方 SVG (CC0): OpenAI, Anthropic, Google/Gemini, ByteDance, Alibaba, Xiaomi, Meituan
 - 几何 fallback: DeepSeek, xAI, Zhipu, Moonshot, MiniMax, StepFun, Kling, OpenRouter, Vidu
 
-### 配色方案 (2026-03-01 本地切换，未上线)
-- 本地 `globals.css` 已从 Electric Blue (#0070F3) 切换为 Brand Orange (#F26522)
-- 线上仍为蓝色方案
+### 配色方案 (已上线, commit `3a269e2`)
+- `globals.css` 配色已从 Electric Blue (#0070F3) 切换为 Brand Orange (#F26522)
+- 线上已部署橙色方案
 - 切换配色只需修改 `globals.css` 中的 CSS 变量
 
 **测试用 Dezix API Key:**
