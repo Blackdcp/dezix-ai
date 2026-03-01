@@ -8,7 +8,7 @@ Dezix AI 是一个统一 LLM API 网关平台（仿 n1n.ai），面向国内开�
 
 ## 当前状态
 
-**Phase 1-12, 14-15 全部完成。Bug 修复轮已完成。Provider Logo SVG + i18n + 橙色配色已上线。项目处于生产就绪状态。**
+**Phase 1-12, 14-15 全部完成。Bug 修复轮 + 全站测试修复轮已完成。网关已恢复正常。项目处于生产就绪状态。**
 
 **线上地址**: https://dezix-ai.vercel.app
 
@@ -207,7 +207,8 @@ npm run test:watch           # Vitest 监听模式
 - curl 代理: `curl --proxy http://127.0.0.1:7897`
 - **Phase 9 部署已完成**，线上健康检查 + 页面 + 模型 API 全部通过
 - **Phase 10 OAuth 代码已完成** (commit `c2d925e`)，已推送 GitHub + Vercel 自动部署
-- **最新上线 commit: `3a269e2`** — SVG provider logos + brand i18n + Brand Orange 配色 + displayName 全英文
+- **最新上线 commit: `e45101c`** — 全站测试修复轮 (网关 API Key 加密 + middleware 正则 + 定价修复 + SEO + i18n + 安全)
+- 前一个 commit: `3a269e2` — SVG provider logos + brand i18n + Brand Orange 配色 + displayName 全英文
 
 ### Phase 10 OAuth 待办 (需用户手动操作)
 - [ ] 创建 GitHub OAuth App: https://github.com/settings/developers → callback `https://dezix-ai.vercel.app/api/auth/callback/github`
@@ -266,7 +267,14 @@ Base URL: `https://api.qnaigc.com/v1`
 - Windows 下 npx 有 PATH 问题，可用 `node node_modules/next/dist/bin/next dev`
 - 前端展示页视觉效果待后续优化（用户已提出）
 - Vercel 部署命令: `npx vercel --prod --yes` (Vercel CLI 已链接项目)
-- seed 执行需指定直连串: `DATABASE_URL="postgresql://postgres:DezixAI2026db@db.kkwawbsibpgdqqdirbmv.supabase.co:5432/postgres" npx prisma db seed`
+- seed 执行需指定直连串 + ENCRYPTION_KEY + QINIU_API_KEY:
+  ```
+  DATABASE_URL="postgresql://postgres:DezixAI2026db@db.kkwawbsibpgdqqdirbmv.supabase.co:5432/postgres" \
+  ENCRYPTION_KEY="48cf6d5ddc1fd79812bf1e6fd0c857a917645efa384e78000d51e2b0d2fe4b89" \
+  QINIU_API_KEY="sk-d08a4b67a1c5f82b5162661919ad7e981eaf2a5896012a28efbbe66583025708" \
+  npx prisma db seed
+  ```
+- Vercel 环境变量可通过 `npx vercel env pull .env.vercel` 拉取到本地
 
 ### Phase 14: i18n 多语言支持 (已完成 ✅)
 
@@ -392,3 +400,33 @@ Phase 15 前端视觉重构已全部完成。
 - Vercel Dashboard 关闭 "Require Verified Commits"
 
 **验证:** CI 全部通过 (lint → tsc → test → build)
+
+### 全站测试修复轮 (已完成 ✅, commit `e45101c`)
+
+**触发**: 以用户视角对线上站点每一项功能进行全面测试，发现并修复 15+ 个问题。
+
+**CRITICAL 修复:**
+1. **网关 503 全部模型不可用** — 渠道 API Key 为 `placeholder-qiniu-key`，seed.ts 未加密存储。修复: seed.ts 新增 `encryptApiKey()` 用 AES-256-GCM 加密，重新 seed 线上 DB。
+2. **`/api-keys` 页面 404** — middleware.ts 正则 `(?!api|...)` 误匹配 `/api-keys` 页面路由。修复: 改为 `(?!api/|...)`。
+
+**HIGH 修复:**
+3. **定价页价格 1000x 错误** — `pricing/page.tsx` 缺少 `*1000`。
+4. **"Most Popular" 硬编码英文** — 改为 `t("mostPopular")`，zh.json 新增 `"最受欢迎"`。
+5. **所有页面共享 SEO title** — 为 5 个页面新建 layout.tsx + generateMetadata，根 layout 加 `title.template`。
+
+**MEDIUM 修复:**
+6. 定价页 category 徽章未翻译 → `tCat(m.category)`
+7. 注册 API 中文错误信息 → 改为英文错误码 (`INVALID_EMAIL` / `PASSWORD_TOO_SHORT` / `NAME_REQUIRED`)
+8. 网关 auth 在 body 校验之后 → 调换顺序，auth 优先
+
+**LOW 修复:**
+9. 版权年份 2025→2026
+10. `<100ms` CountUp 动画 → 静态显示
+11. "Copy model ID" tooltip 翻译
+12. 文档 Base URL `your-domain.com` → `dezix-ai.vercel.app`
+
+**未修复 (需独立实现):**
+- 忘记密码功能 (需完整邮件重置流程)
+- FAQ JSON-LD 结构化数据 (SEO 优化)
+
+**验证:** Build 0 错误 / 67 测试全通过 / 网关非流式+流式均正常

@@ -564,6 +564,11 @@
 - [x] **CI/部署修复** (Node 24 + Vercel Require Verified Commits, commit `66c8feb`) ← 已完成
 - [x] **配色方案切换** (Electric Blue → Brand Orange #F26522) ← 已上线 (`3a269e2`)
 - [x] **Provider Logo 修复 + SVG 替换 + i18n 统一** ← 已上线 (`3a269e2`)
+- [x] **全站测试修复轮** (2 CRITICAL + 3 HIGH + 3 MEDIUM + 4 LOW, commit `e45101c`) ← 已上线
+
+### 待实现功能
+- [ ] 忘记密码功能 (密码重置邮件 + 重置页面 + token 验证)
+- [ ] FAQ JSON-LD 结构化数据 (SEO 优化)
 
 ---
 
@@ -691,8 +696,62 @@
 - [x] 线上 Supabase seed 已执行 (91 模型 displayName 全英文)
 - [x] 线上验证通过: 91 模型 / 14 providers / 0 Chinese displayName / 0 "Other"
 
-### 下次启动备注
-- 本地 Docker 需启动: `docker compose up -d`
-- Dev server: `node node_modules/next/dist/bin/next dev`
-- `public/icons/providers/` 下有 16 个旧 PNG 文件 (未跟踪, 可删除, 已改用内联 SVG)
+---
+
+## 全站测试修复轮 (2026-03-01) ✅
+
+### 测试范围
+- 营销页面 (首页/定价/FAQ/模型列表) 中英文
+- 认证页面 (登录/注册) 中英文
+- 控制台 API (7 个端点) + 管理后台 API (4 个端点) 认证验证
+- 网关 API (v1/models + v1/chat/completions) 非流式+流式
+- CORS/安全头/限流
+
+### 修复清单 (commit `e45101c`)
+
+#### CRITICAL
+- [x] **网关 503: 渠道 API Key 为 placeholder** — `seed.ts` 新增 `encryptApiKey()` AES-256-GCM 加密，线上已重新 seed
+- [x] **`/api-keys` 路由 404** — `middleware.ts` 正则 `(?!api|...)` → `(?!api/|...)`
+
+#### HIGH
+- [x] **定价页价格 1000x 错误** — `pricing/page.tsx` 加 `*1000 + .toFixed(2)`
+- [x] **"Most Popular" 硬编码英文** — 改为 `t("mostPopular")`，两语言文件新增翻译
+- [x] **所有页面共享 SEO title** — 5 个 layout.tsx + generateMetadata + title.template
+
+#### MEDIUM
+- [x] 定价页 category 徽章未翻译 → `tCat(m.category)`
+- [x] 注册 API 中文错误 → 英文错误码 (`INVALID_EMAIL` / `PASSWORD_TOO_SHORT` / `NAME_REQUIRED`)
+- [x] 网关 auth 顺序 → authenticate 在 body validate 之前
+
+#### LOW
+- [x] 版权年 2025→2026
+- [x] `<100ms` 动画 → 静态显示
+- [x] "Copy model ID" tooltip i18n
+- [x] 文档 Base URL → `dezix-ai.vercel.app`
+
+### 未修复 (需独立实现)
+- [ ] 忘记密码功能 (完整邮件重置流程)
+- [ ] FAQ JSON-LD 结构化数据
+
+### 验证
+- [x] Build 0 错误 / 67 测试全通过
+- [x] 网关非流式 (deepseek-v3) + 流式 (qwen-turbo) 均正常
+- [x] Git commit `e45101c` + push + Vercel 自动部署
+
+### 关键文件变更
+- `prisma/seed.ts` — 新增 `encryptApiKey()` 函数
+- `src/middleware.ts` — 正则修复
+- `src/app/[locale]/(marketing)/pricing/page.tsx` — 价格公式 + category 翻译 + Most Popular i18n
+- `src/components/marketing/pricing-section.tsx` — Most Popular i18n
+- `src/components/marketing/stats-bar.tsx` — 延迟静态显示
+- `src/app/[locale]/layout.tsx` — title.template
+- `src/app/[locale]/(marketing)/pricing/layout.tsx` — SEO metadata (新建)
+- `src/app/[locale]/(marketing)/faq/layout.tsx` — SEO metadata (新建)
+- `src/app/[locale]/(marketing)/model-list/layout.tsx` — SEO metadata (新建)
+- `src/app/[locale]/(auth)/login/layout.tsx` — SEO metadata (新建)
+- `src/app/[locale]/(auth)/register/layout.tsx` — SEO metadata (新建)
+- `src/lib/gateway/index.ts` — auth 顺序调换
+- `src/lib/validations/common.ts` — 中文错误→英文错误码
+- `src/messages/zh.json` / `en.json` — mostPopular, copyModelId, 版权年, Metadata 扩展, base URL
+- 3 个 docs 页面 — base URL 替换
 
