@@ -18,7 +18,8 @@
     "docsApiRefTitle": "API Reference",
     "docsSdkTitle": "SDK Examples",
     "forgotPasswordTitle": "Forgot Password",
-    "resetPasswordTitle": "Reset Password"
+    "resetPasswordTitle": "Reset Password",
+    "notFoundTitle": "Page Not Found"
   },
   "Nav": {
     "home": "Home",
@@ -928,5 +929,11 @@
   "LanguageSwitcher": {
     "zh": "中文",
     "en": "English"
+  },
+  "NotFound": {
+    "title": "Page Not Found",
+    "description": "Sorry, the page you're looking for doesn't exist or has been removed.",
+    "backHome": "Back to Home",
+    "errorCode": "404"
   }
 }

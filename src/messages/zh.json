@@ -18,7 +18,8 @@
     "docsApiRefTitle": "API 参考",
     "docsSdkTitle": "SDK 示例",
     "forgotPasswordTitle": "忘记密码",
-    "resetPasswordTitle": "重置密码"
+    "resetPasswordTitle": "重置密码",
+    "notFoundTitle": "页面未找到"
   },
   "Nav": {
     "home": "首页",
@@ -928,5 +929,11 @@
   "LanguageSwitcher": {
     "zh": "中文",
     "en": "English"
+  },
+  "NotFound": {
+    "title": "页面未找到",
+    "description": "抱歉，你访问的页面不存在或已被移除。",
+    "backHome": "返回首页",
+    "errorCode": "404"
   }
 }
