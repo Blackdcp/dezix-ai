@@ -11,7 +11,8 @@ export default auth((req) => {
   const { pathname } = req.nextUrl;
 
   // Skip API routes entirely — no locale processing needed
-  if (pathname.startsWith("/api")) {
+  // Use "/api/" (with slash) to avoid matching page routes like /api-keys
+  if (pathname.startsWith("/api/")) {
     return NextResponse.next();
   }
 
@@ -53,5 +54,5 @@ export default auth((req) => {
 });
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  matcher: ["/((?!api/|_next/static|_next/image|favicon.ico).*)"],
 };

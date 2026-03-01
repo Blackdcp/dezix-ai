@@ -18,7 +18,10 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: "Metadata" });
 
   return {
-    title: t("title"),
+    title: {
+      default: t("title"),
+      template: `%s | Dezix AI`,
+    },
     description: t("description"),
     keywords: [
       "AI Gateway",

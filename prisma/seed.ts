@@ -1,6 +1,21 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from "pg";
+import { createCipheriv, randomBytes } from "crypto";
+
+function encryptApiKey(plaintext: string): string {
+  const hex = process.env.ENCRYPTION_KEY;
+  if (!hex || hex.length !== 64) {
+    console.warn("  ⚠️ ENCRYPTION_KEY not set, storing API key as plaintext");
+    return plaintext;
+  }
+  const key = Buffer.from(hex, "hex");
+  const iv = randomBytes(12);
+  const cipher = createCipheriv("aes-256-gcm", key, iv, { authTagLength: 16 });
+  const encrypted = Buffer.concat([cipher.update(plaintext, "utf8"), cipher.final()]);
+  const authTag = cipher.getAuthTag();
+  return `${iv.toString("base64")}:${encrypted.toString("base64")}:${authTag.toString("base64")}`;
+}
 
 const pool = new Pool({
   connectionString:
@@ -221,7 +236,8 @@ async function main() {
   }
 
   // --- Step 5: Create Qiniu channel ---
-  const apiKeyValue = process.env.QINIU_API_KEY || "placeholder-qiniu-key";
+  const rawKey = process.env.QINIU_API_KEY || "placeholder-qiniu-key";
+  const apiKeyValue = encryptApiKey(rawKey);
 
   const existingChannel = await prisma.channel.findFirst({
     where: { providerId: qiniuProvider.id, name: "Qiniu Primary" },

@@ -29,7 +29,7 @@ export default function ApiReferencePage() {
       <CodeBlock
         language="text"
         title="Base URL"
-        code={`https://your-domain.com/api/v1`}
+        code={`https://dezix-ai.vercel.app/api/v1`}
       />
 
       {/* Chat Completions */}

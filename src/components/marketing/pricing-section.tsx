@@ -70,7 +70,7 @@ export function PricingSection() {
                   <>
                     <div className="absolute inset-x-0 top-0 h-[3px] gradient-brand" />
                     <div className="absolute -right-px -top-px rounded-bl-xl rounded-tr-2xl bg-primary px-3 py-1">
-                      <span className="text-[10px] font-semibold uppercase tracking-wider text-white">Most Popular</span>
+                      <span className="text-[10px] font-semibold uppercase tracking-wider text-white">{t("mostPopular")}</span>
                     </div>
                   </>
                 )}

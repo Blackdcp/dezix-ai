@@ -28,7 +28,7 @@ export default function SdkExamplesPage() {
 
 client = OpenAI(
     api_key="sk-dezix-your-api-key",
-    base_url="https://your-domain.com/api/v1"
+    base_url="https://dezix-ai.vercel.app/api/v1"
 )
 
 response = client.chat.completions.create(
@@ -52,7 +52,7 @@ print(response.choices[0].message.content)`}
 
 client = OpenAI(
     api_key="sk-dezix-your-api-key",
-    base_url="https://your-domain.com/api/v1"
+    base_url="https://dezix-ai.vercel.app/api/v1"
 )
 
 stream = client.chat.completions.create(
@@ -77,7 +77,7 @@ print()`}
 
 client = OpenAI(
     api_key="sk-dezix-your-api-key",
-    base_url="https://your-domain.com/api/v1"
+    base_url="https://dezix-ai.vercel.app/api/v1"
 )
 
 messages = [
@@ -118,7 +118,7 @@ print(f"Assistant: {response.choices[0].message.content}")`}
 
 const client = new OpenAI({
   apiKey: "sk-dezix-your-api-key",
-  baseURL: "https://your-domain.com/api/v1",
+  baseURL: "https://dezix-ai.vercel.app/api/v1",
 });
 
 const response = await client.chat.completions.create({
@@ -142,7 +142,7 @@ console.log(response.choices[0].message.content);`}
 
 const client = new OpenAI({
   apiKey: "sk-dezix-your-api-key",
-  baseURL: "https://your-domain.com/api/v1",
+  baseURL: "https://dezix-ai.vercel.app/api/v1",
 });
 
 const stream = await client.chat.completions.create({
@@ -169,7 +169,7 @@ console.log();`}
       <CodeBlock
         language="bash"
         title={t("nonStream")}
-        code={`curl https://your-domain.com/api/v1/chat/completions \\\\
+        code={`curl https://dezix-ai.vercel.app/api/v1/chat/completions \\\\
   -H "Content-Type: application/json" \\\\
   -H "Authorization: Bearer sk-dezix-your-api-key" \\\\
   -d '{
@@ -184,7 +184,7 @@ console.log();`}
       <CodeBlock
         language="bash"
         title={t("streamRequest")}
-        code={`curl https://your-domain.com/api/v1/chat/completions \\\\
+        code={`curl https://dezix-ai.vercel.app/api/v1/chat/completions \\\\
   -H "Content-Type: application/json" \\\\
   -H "Authorization: Bearer sk-dezix-your-api-key" \\\\
   -N \\\\
@@ -201,7 +201,7 @@ console.log();`}
       <CodeBlock
         language="bash"
         title={t("getModels")}
-        code={`curl https://your-domain.com/api/v1/models \\\\
+        code={`curl https://dezix-ai.vercel.app/api/v1/models \\\\
   -H "Authorization: Bearer sk-dezix-your-api-key"`}
       />
 

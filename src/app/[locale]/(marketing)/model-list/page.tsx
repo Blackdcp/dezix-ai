@@ -31,7 +31,7 @@ interface Model {
   maxContext: number;
 }
 
-function CopyButton({ text }: { text: string }) {
+function CopyButton({ text, label }: { text: string; label: string }) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -44,7 +44,7 @@ function CopyButton({ text }: { text: string }) {
     <button
       onClick={handleCopy}
       className="ml-1.5 inline-flex items-center rounded p-0.5 text-[#A8A29E] transition-colors hover:text-primary"
-      title="Copy model ID"
+      title={label}
     >
       {copied ? <Check className="h-3 w-3 text-[#16A34A]" /> : <Copy className="h-3 w-3" />}
     </button>
@@ -166,7 +166,7 @@ export default function ModelListPage() {
                           <TableCell>
                             <span className="inline-flex items-center font-mono text-xs text-[#A8A29E]">
                               {m.modelId}
-                              <CopyButton text={m.modelId} />
+                              <CopyButton text={m.modelId} label={t("copyModelId")} />
                             </span>
                           </TableCell>
                           <TableCell>

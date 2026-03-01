@@ -5,7 +5,18 @@
     "ogTitle": "Dezix AI — 统一 AI 模型网关",
     "ogDescription": "一个 API Key，访问所有主流 AI 模型",
     "twitterTitle": "Dezix AI — 统一 AI 模型网关",
-    "twitterDescription": "一个 API Key，访问所有主流 AI 模型"
+    "twitterDescription": "一个 API Key，访问所有主流 AI 模型",
+    "pricingTitle": "定价方案",
+    "pricingDesc": "按量付费，无月费，无隐藏费用。查看全部模型定价。",
+    "faqTitle": "常见问题",
+    "faqDesc": "关于 Dezix AI 统一 API 网关的常见问题解答。",
+    "modelListTitle": "模型列表",
+    "modelListDesc": "查看 Dezix AI 支持的 90+ 款 AI 模型和定价。",
+    "loginTitle": "登录",
+    "registerTitle": "注册",
+    "docsQuickStartTitle": "快速开始",
+    "docsApiRefTitle": "API 参考",
+    "docsSdkTitle": "SDK 示例"
   },
   "Nav": {
     "home": "首页",
@@ -52,7 +63,7 @@
     "apiReference": "API 参考",
     "sdkExamples": "SDK 示例",
     "description": "统一 AI 模型网关平台，一个 API Key 访问所有主流 AI 模型。",
-    "copyright": "© 2025 Dezix AI. All rights reserved."
+    "copyright": "© 2026 Dezix AI. All rights reserved."
   },
   "DocsSidebar": {
     "gettingStarted": "入门",
@@ -151,7 +162,8 @@
     "provider": "供应商",
     "category": "分类",
     "inputPrice": "输入价格",
-    "outputPrice": "输出价格"
+    "outputPrice": "输出价格",
+    "mostPopular": "最受欢迎"
   },
   "PricingPage": {
     "title": "定价方案",
@@ -235,7 +247,8 @@
     "inputPrice": "输入价格",
     "outputPrice": "输出价格",
     "maxContext": "最大上下文",
-    "noResults": "未找到匹配的模型"
+    "noResults": "未找到匹配的模型",
+    "copyModelId": "复制模型 ID"
   },
   "Categories": {
     "chat": "对话",
@@ -798,7 +811,7 @@
     "streamRequest": "流式请求",
     "getModels": "获取模型列表",
     "tipsTitle": "使用提示",
-    "tip1": "将 your-domain.com 替换为实际的 Dezix AI 域名",
+    "tip1": "Base URL 为 https://dezix-ai.vercel.app/api/v1",
     "tip2": "将 sk-dezix-your-api-key 替换为您的真实 API Key",
     "tip3": "可以通过切换 model 参数来使用不同的模型",
     "tip4": "建议将 API Key 存储在环境变量中，避免硬编码在代码里",

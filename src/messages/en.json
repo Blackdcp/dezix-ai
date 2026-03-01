@@ -5,7 +5,18 @@
     "ogTitle": "Dezix AI — Unified AI Model Gateway",
     "ogDescription": "One API Key to access all mainstream AI models",
     "twitterTitle": "Dezix AI — Unified AI Model Gateway",
-    "twitterDescription": "One API Key to access all mainstream AI models"
+    "twitterDescription": "One API Key to access all mainstream AI models",
+    "pricingTitle": "Pricing",
+    "pricingDesc": "Pay as you go. No monthly fees. View all model pricing.",
+    "faqTitle": "FAQ",
+    "faqDesc": "Frequently asked questions about the Dezix AI unified API gateway.",
+    "modelListTitle": "Model List",
+    "modelListDesc": "Browse 90+ AI models and pricing supported by Dezix AI.",
+    "loginTitle": "Sign In",
+    "registerTitle": "Sign Up",
+    "docsQuickStartTitle": "Quick Start",
+    "docsApiRefTitle": "API Reference",
+    "docsSdkTitle": "SDK Examples"
   },
   "Nav": {
     "home": "Home",
@@ -52,7 +63,7 @@
     "apiReference": "API Reference",
     "sdkExamples": "SDK Examples",
     "description": "Unified AI model gateway platform. One API Key to access all mainstream AI models.",
-    "copyright": "© 2025 Dezix AI. All rights reserved."
+    "copyright": "© 2026 Dezix AI. All rights reserved."
   },
   "DocsSidebar": {
     "gettingStarted": "Getting Started",
@@ -151,7 +162,8 @@
     "provider": "Provider",
     "category": "Category",
     "inputPrice": "Input Price",
-    "outputPrice": "Output Price"
+    "outputPrice": "Output Price",
+    "mostPopular": "Most Popular"
   },
   "PricingPage": {
     "title": "Pricing Plans",
@@ -235,7 +247,8 @@
     "inputPrice": "Input Price",
     "outputPrice": "Output Price",
     "maxContext": "Max Context",
-    "noResults": "No matching models found"
+    "noResults": "No matching models found",
+    "copyModelId": "Copy model ID"
   },
   "Categories": {
     "chat": "Chat",
@@ -798,7 +811,7 @@
     "streamRequest": "Streaming Request",
     "getModels": "Get Model List",
     "tipsTitle": "Tips",
-    "tip1": "Replace your-domain.com with the actual Dezix AI domain",
+    "tip1": "Base URL is https://dezix-ai.vercel.app/api/v1",
     "tip2": "Replace sk-dezix-your-api-key with your real API Key",
     "tip3": "Switch between models by changing the model parameter",
     "tip4": "Store your API Key in environment variables instead of hardcoding",

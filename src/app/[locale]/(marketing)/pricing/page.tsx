@@ -32,6 +32,7 @@ export default function PricingPage() {
   const t = useTranslations("PricingPage");
   const tp = useTranslations("Pricing");
   const tProv = useTranslations("Providers");
+  const tCat = useTranslations("Categories");
   const [models, setModels] = useState<Model[]>([]);
 
   const freeFeatures = t.raw("freeFeatures") as string[];
@@ -101,7 +102,7 @@ export default function PricingPage() {
             >
               {plan.highlight && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-primary px-4 py-1">
-                  <span className="text-[10px] font-semibold uppercase tracking-wider text-white">Most Popular</span>
+                  <span className="text-[10px] font-semibold uppercase tracking-wider text-white">{tp("mostPopular")}</span>
                 </div>
               )}
               <h3 className="font-heading text-lg font-semibold text-foreground">{plan.name}</h3>
@@ -166,13 +167,13 @@ export default function PricingPage() {
                         <Badge variant="default">{tProv(m.providerName)}</Badge>
                       </TableCell>
                       <TableCell>
-                        <Badge variant="default">{m.category}</Badge>
+                        <Badge variant="default">{tCat(m.category as "chat" | "multimodal" | "code" | "reasoning" | "image")}</Badge>
                       </TableCell>
-                      <TableCell className="text-right text-[#57534E]">
-                        ¥{m.sellPrice}/M
+                      <TableCell className="text-right tabular-nums text-[#57534E]">
+                        ¥{(m.sellPrice * 1000).toFixed(2)}/M
                       </TableCell>
-                      <TableCell className="text-right text-[#57534E]">
-                        ¥{m.sellOutPrice}/M
+                      <TableCell className="text-right tabular-nums text-[#57534E]">
+                        ¥{(m.sellOutPrice * 1000).toFixed(2)}/M
                       </TableCell>
                     </TableRow>
                   ))}

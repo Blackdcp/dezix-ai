@@ -43,7 +43,10 @@ export async function processCompletionRequest(
   const startTime = Date.now();
 
   try {
-    // 1. Validate request
+    // 1. Authenticate (check auth before processing body)
+    const { apiKey, user } = await authenticateRequest(authHeader);
+
+    // 2. Validate request
     const parsed = chatCompletionRequestSchema.safeParse(request);
     if (!parsed.success) {
       const issue = parsed.error.issues[0];
@@ -52,9 +55,6 @@ export async function processCompletionRequest(
         issue?.path?.[0]?.toString()
       );
     }
-
-    // 2. Authenticate
-    const { apiKey, user } = await authenticateRequest(authHeader);
 
     // 3. Rate limit
     await checkRateLimit(apiKey.id, apiKey.rateLimit);

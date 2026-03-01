@@ -40,7 +40,7 @@ export default function QuickStartPage() {
       <CodeBlock
         language="bash"
         title="cURL"
-        code={`curl https://your-domain.com/api/v1/chat/completions \\\\
+        code={`curl https://dezix-ai.vercel.app/api/v1/chat/completions \\\\
   -H "Content-Type: application/json" \\\\
   -H "Authorization: Bearer sk-dezix-your-api-key" \\\\
   -d '{
@@ -59,7 +59,7 @@ export default function QuickStartPage() {
 
 client = OpenAI(
     api_key="sk-dezix-your-api-key",
-    base_url="https://your-domain.com/api/v1"
+    base_url="https://dezix-ai.vercel.app/api/v1"
 )
 
 response = client.chat.completions.create(
@@ -80,7 +80,7 @@ print(response.choices[0].message.content)`}
 
 const client = new OpenAI({
   apiKey: "sk-dezix-your-api-key",
-  baseURL: "https://your-domain.com/api/v1",
+  baseURL: "https://dezix-ai.vercel.app/api/v1",
 });
 
 const response = await client.chat.completions.create({
