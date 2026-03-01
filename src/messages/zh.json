@@ -16,7 +16,9 @@
     "registerTitle": "注册",
     "docsQuickStartTitle": "快速开始",
     "docsApiRefTitle": "API 参考",
-    "docsSdkTitle": "SDK 示例"
+    "docsSdkTitle": "SDK 示例",
+    "forgotPasswordTitle": "忘记密码",
+    "resetPasswordTitle": "重置密码"
   },
   "Nav": {
     "home": "首页",
@@ -99,7 +101,24 @@
     "githubRegister": "使用 GitHub 注册",
     "googleLogin": "使用 Google 登录",
     "googleRegister": "使用 Google 注册",
-    "redirecting": "跳转中..."
+    "redirecting": "跳转中...",
+    "forgotPassword": "忘记密码？",
+    "forgotPasswordTitle": "重置密码",
+    "forgotPasswordSubtitle": "输入你的注册邮箱，我们将发送重置链接",
+    "sendResetLink": "发送重置链接",
+    "sending": "发送中...",
+    "resetEmailSent": "如果该邮箱已注册，你将收到一封重置密码的邮件。请检查收件箱（含垃圾邮件文件夹）。",
+    "backToLogin": "返回登录",
+    "resetPasswordTitle": "设置新密码",
+    "resetPasswordSubtitle": "请输入你的新密码",
+    "newPassword": "新密码",
+    "confirmPassword": "确认密码",
+    "resetPassword": "重置密码",
+    "resetting": "重置中...",
+    "passwordResetSuccess": "密码重置成功！正在跳转到登录页...",
+    "passwordMismatch": "两次输入的密码不一致",
+    "invalidToken": "重置链接无效或已过期，请重新申请",
+    "tokenExpired": "重置链接已过期，请重新申请"
   },
   "Hero": {
     "badge": "统一 AI 网关平台",
@@ -863,7 +882,13 @@
     "ADMIN_BALANCE_DESC": "管理员调整余额 {sign}¥{amount}",
     "ORDER_NOT_PENDING": "该订单不是待审核状态",
     "ORDER_NOT_FOUND": "订单不存在",
-    "TOPUP_ORDER_DESC": "微信充值 ¥{amount}"
+    "TOPUP_ORDER_DESC": "微信充值 ¥{amount}",
+    "RESET_EMAIL_SENT": "重置邮件已发送",
+    "INVALID_TOKEN": "重置链接无效或已过期",
+    "TOKEN_EXPIRED": "重置链接已过期",
+    "TOKEN_REQUIRED": "缺少重置令牌",
+    "PASSWORD_RESET_SUCCESS": "密码重置成功",
+    "EMAIL_SEND_FAILED": "邮件发送失败，请稍后重试"
   },
   "AdminOrders": {
     "title": "充值订单",

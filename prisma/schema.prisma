@@ -239,6 +239,19 @@ model SystemConfig {
   @@map("system_configs")
 }
 
+// ==================== 密码重置令牌 ====================
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  email     String
+  token     String   @unique
+  expires   DateTime
+  createdAt DateTime @default(now())
+
+  @@index([email])
+  @@map("password_reset_tokens")
+}
+
 // ==================== 充值订单 ====================
 
 enum TopupOrderStatus {

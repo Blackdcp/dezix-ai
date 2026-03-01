@@ -7,3 +7,12 @@ export const registerSchema = z.object({
   password: passwordSchema,
   referralCode: z.string().optional(),
 });
+
+export const forgotPasswordSchema = z.object({
+  email: emailSchema,
+});
+
+export const resetPasswordSchema = z.object({
+  token: z.string().min(1, "TOKEN_REQUIRED"),
+  password: passwordSchema,
+});

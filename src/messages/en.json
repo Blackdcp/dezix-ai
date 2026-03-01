@@ -16,7 +16,9 @@
     "registerTitle": "Sign Up",
     "docsQuickStartTitle": "Quick Start",
     "docsApiRefTitle": "API Reference",
-    "docsSdkTitle": "SDK Examples"
+    "docsSdkTitle": "SDK Examples",
+    "forgotPasswordTitle": "Forgot Password",
+    "resetPasswordTitle": "Reset Password"
   },
   "Nav": {
     "home": "Home",
@@ -99,7 +101,24 @@
     "githubRegister": "Sign up with GitHub",
     "googleLogin": "Sign in with Google",
     "googleRegister": "Sign up with Google",
-    "redirecting": "Redirecting..."
+    "redirecting": "Redirecting...",
+    "forgotPassword": "Forgot password?",
+    "forgotPasswordTitle": "Reset Password",
+    "forgotPasswordSubtitle": "Enter your email and we'll send you a reset link",
+    "sendResetLink": "Send Reset Link",
+    "sending": "Sending...",
+    "resetEmailSent": "If that email is registered, you'll receive a password reset link. Please check your inbox (and spam folder).",
+    "backToLogin": "Back to Sign In",
+    "resetPasswordTitle": "Set New Password",
+    "resetPasswordSubtitle": "Enter your new password below",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm Password",
+    "resetPassword": "Reset Password",
+    "resetting": "Resetting...",
+    "passwordResetSuccess": "Password reset successfully! Redirecting to sign in...",
+    "passwordMismatch": "Passwords do not match",
+    "invalidToken": "Invalid or expired reset link. Please request a new one.",
+    "tokenExpired": "Reset link has expired. Please request a new one."
   },
   "Hero": {
     "badge": "Unified AI Gateway",
@@ -863,7 +882,13 @@
     "ADMIN_BALANCE_DESC": "Admin balance adjustment {sign}¥{amount}",
     "ORDER_NOT_PENDING": "Order is not in pending status",
     "ORDER_NOT_FOUND": "Order not found",
-    "TOPUP_ORDER_DESC": "WeChat top-up ¥{amount}"
+    "TOPUP_ORDER_DESC": "WeChat top-up ¥{amount}",
+    "RESET_EMAIL_SENT": "Reset email sent",
+    "INVALID_TOKEN": "Invalid or expired reset link",
+    "TOKEN_EXPIRED": "Reset link has expired",
+    "TOKEN_REQUIRED": "Missing reset token",
+    "PASSWORD_RESET_SUCCESS": "Password reset successfully",
+    "EMAIL_SEND_FAILED": "Failed to send email, please try again later"
   },
   "AdminOrders": {
     "title": "Topup Orders",

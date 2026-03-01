@@ -1,5 +1,5 @@
 export { paginationSchema, emailSchema, passwordSchema, nameSchema } from "./common";
-export { registerSchema } from "./auth";
+export { registerSchema, forgotPasswordSchema, resetPasswordSchema } from "./auth";
 export { chatCompletionRequestSchema } from "./gateway";
 export {
   createApiKeySchema,
