@@ -935,5 +935,11 @@
     "description": "Sorry, the page you're looking for doesn't exist or has been removed.",
     "backHome": "Back to Home",
     "errorCode": "404"
+  },
+  "ErrorBoundary": {
+    "title": "Something went wrong",
+    "description": "An error occurred while loading this page. You can try again or go back to the homepage.",
+    "tryAgain": "Try Again",
+    "backHome": "Back to Home"
   }
 }
