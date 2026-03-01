@@ -2,6 +2,7 @@
 
 import { signOut, useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
+import { useRouter } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -18,6 +19,7 @@ function UserMenu() {
   const { data: session, status } = useSession();
   const user = session?.user;
   const t = useTranslations("Header");
+  const router = useRouter();
 
   if (status === "loading") {
     return (
@@ -41,7 +43,7 @@ function UserMenu() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48 rounded-xl border-border bg-white">
-        <DropdownMenuItem className="rounded-lg">
+        <DropdownMenuItem className="rounded-lg" onClick={() => router.push("/settings")}>
           <User className="mr-2 h-4 w-4" />
           {t("personalSettings")}
         </DropdownMenuItem>

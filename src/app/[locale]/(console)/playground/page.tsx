@@ -336,7 +336,7 @@ ${stream ? `for await (const chunk of response) {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Playground</h1>
+      <h1 className="text-2xl font-bold">{t("title")}</h1>
 
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Left: Request Builder */}
@@ -415,7 +415,7 @@ ${stream ? `for await (const chunk of response) {
               {/* Parameters */}
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="grid gap-2">
-                  <Label>Temperature: {temperature.toFixed(1)}</Label>
+                  <Label>{t("temperature")}: {temperature.toFixed(1)}</Label>
                   <Slider
                     value={[temperature]}
                     onValueChange={([v]) => setTemperature(v)}
@@ -425,7 +425,7 @@ ${stream ? `for await (const chunk of response) {
                   />
                 </div>
                 <div className="grid gap-2">
-                  <Label>Top P: {topP.toFixed(1)}</Label>
+                  <Label>{t("topP")}: {topP.toFixed(1)}</Label>
                   <Slider
                     value={[topP]}
                     onValueChange={([v]) => setTopP(v)}
@@ -435,7 +435,7 @@ ${stream ? `for await (const chunk of response) {
                   />
                 </div>
                 <div className="grid gap-2">
-                  <Label htmlFor="max-tokens">Max Tokens</Label>
+                  <Label htmlFor="max-tokens">{t("maxTokens")}</Label>
                   <Input
                     id="max-tokens"
                     type="number"
@@ -453,7 +453,7 @@ ${stream ? `for await (const chunk of response) {
 
               {/* API Key */}
               <div className="grid gap-2">
-                <Label htmlFor="api-key">API Key</Label>
+                <Label htmlFor="api-key">{t("apiKeyLabel")}</Label>
                 <Input
                   id="api-key"
                   type="password"

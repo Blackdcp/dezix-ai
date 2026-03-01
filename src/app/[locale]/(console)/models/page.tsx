@@ -251,7 +251,7 @@ export default function ModelsPage() {
                       }
                     >
                       <Play className="mr-1.5 h-3.5 w-3.5" />
-                      Playground
+                      {t("playgroundButton")}
                     </Button>
                     <Button
                       variant="outline"

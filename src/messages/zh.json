@@ -397,7 +397,9 @@
     "time": "时间",
     "success": "成功",
     "failed": "失败",
-    "token": "Token"
+    "token": "Token",
+    "promptTokensDesc": "请求输入的 Token 总量",
+    "completionTokensDesc": "模型输出的 Token 总量"
   },
   "ConsoleModels": {
     "title": "模型市场",
@@ -412,7 +414,8 @@
     "inputPrice": "输入价格",
     "outputPrice": "输出价格",
     "maxContext": "最大上下文: ",
-    "chatButton": "对话"
+    "chatButton": "对话",
+    "playgroundButton": "Playground"
   },
   "Playground": {
     "requestConfig": "请求配置",
@@ -439,7 +442,12 @@
     "messageRequired": "请输入至少一条消息",
     "requestFailed": "请求失败",
     "errorPrefix": "错误: {message}",
-    "copiedSuccess": "已复制"
+    "copiedSuccess": "已复制",
+    "title": "Playground",
+    "temperature": "温度",
+    "topP": "Top P",
+    "maxTokens": "最大 Token 数",
+    "apiKeyLabel": "API Key"
   },
   "Chat": {
     "newChat": "新对话",
@@ -453,7 +461,8 @@
     "apiKeyRequired": "请输入 API Key",
     "modelRequired": "请选择模型",
     "requestFailed": "请求失败",
-    "errorPrefix": "错误: {message}"
+    "errorPrefix": "错误: {message}",
+    "apiKeyLabel": "API Key"
   },
   "Billing": {
     "title": "充值计费",

@@ -397,7 +397,9 @@
     "time": "Time",
     "success": "Success",
     "failed": "Failed",
-    "token": "Token"
+    "token": "Token",
+    "promptTokensDesc": "Total prompt tokens consumed",
+    "completionTokensDesc": "Total completion tokens generated"
   },
   "ConsoleModels": {
     "title": "Model Market",
@@ -412,7 +414,8 @@
     "inputPrice": "Input Price",
     "outputPrice": "Output Price",
     "maxContext": "Max Context: ",
-    "chatButton": "Chat"
+    "chatButton": "Chat",
+    "playgroundButton": "Playground"
   },
   "Playground": {
     "requestConfig": "Request Config",
@@ -439,7 +442,12 @@
     "messageRequired": "Please enter at least one message",
     "requestFailed": "Request failed",
     "errorPrefix": "Error: {message}",
-    "copiedSuccess": "Copied"
+    "copiedSuccess": "Copied",
+    "title": "Playground",
+    "temperature": "Temperature",
+    "topP": "Top P",
+    "maxTokens": "Max Tokens",
+    "apiKeyLabel": "API Key"
   },
   "Chat": {
     "newChat": "New Chat",
@@ -453,7 +461,8 @@
     "apiKeyRequired": "Please enter an API Key",
     "modelRequired": "Please select a model",
     "requestFailed": "Request failed",
-    "errorPrefix": "Error: {message}"
+    "errorPrefix": "Error: {message}",
+    "apiKeyLabel": "API Key"
   },
   "Billing": {
     "title": "Billing",

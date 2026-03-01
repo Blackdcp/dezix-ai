@@ -200,13 +200,13 @@ export default function UsagePage() {
     {
       title: t("inputTokens"),
       value: (summary?.promptTokens ?? 0).toLocaleString(),
-      desc: "Prompt tokens",
+      desc: t("promptTokensDesc"),
       icon: ArrowDownToLine,
     },
     {
       title: t("outputTokens"),
       value: (summary?.completionTokens ?? 0).toLocaleString(),
-      desc: "Completion tokens",
+      desc: t("completionTokensDesc"),
       icon: ArrowUpFromLine,
     },
   ];

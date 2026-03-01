@@ -447,7 +447,7 @@ function ChatPageInner() {
             </Select>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-sm text-muted-foreground">API Key</span>
+            <span className="text-sm text-muted-foreground">{t("apiKeyLabel")}</span>
             <Input
               type="password"
               placeholder="sk-dezix-..."
