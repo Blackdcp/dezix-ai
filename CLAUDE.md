@@ -8,7 +8,7 @@ Dezix AI 是一个统一 LLM API 网关平台（仿 n1n.ai），面向国内开�
 
 ## 当前状态
 
-**Phase 1-12, 14-15 全部完成。Bug 修复轮 + 全站测试修复轮已完成。网关已恢复正常。忘记密码 + SEO + 404 + Error Boundary 已上线。**
+**Phase 1-12, 14-15 全部完成。Bug 修复轮 + 全站测试修复轮已完成。网关已恢复正常。忘记密码 + SEO + 404 + Error Boundary + 控制台优化 已上线。**
 
 **线上地址**: https://dezix-ai.vercel.app
 
@@ -207,7 +207,9 @@ npm run test:watch           # Vitest 监听模式
 - curl 代理: `curl --proxy http://127.0.0.1:7897`
 - **Phase 9 部署已完成**，线上健康检查 + 页面 + 模型 API 全部通过
 - **Phase 10 OAuth 代码已完成** (commit `c2d925e`)，已推送 GitHub + Vercel 自动部署
-- **最新上线 commit: `2ef8b07`** — 忘记密码 + 404 页面 + SEO (robots/sitemap/OG image) + Error Boundary
+- **最新上线 commit: `ea58cbd`** — 控制台优化: 错误提示 toast 替代静默 catch
+- 前一个 commit: `74ff5b2` — 控制台优化: i18n + loading skeleton + header 设置跳转
+- 前一个 commit: `2ef8b07` — 忘记密码 + 404 页面 + SEO (robots/sitemap/OG image) + Error Boundary
 - 前一个 commit: `e45101c` — 全站测试修复轮
 - 前一个 commit: `3a269e2` — SVG provider logos + brand i18n + Brand Orange 配色 + displayName 全英文
 
@@ -455,3 +457,18 @@ Phase 15 前端视觉重构已全部完成。
 - `src/app/[locale]/not-found.tsx` — locale 404 (带 i18n)
 - `src/app/[locale]/error.tsx` — 全局错误边界 (重试按钮 + 返回首页)
 - `src/middleware.ts` — matcher 排除 robots.txt/sitemap.xml/opengraph-image
+
+### 控制台优化 (已完成 ✅, commits `74ff5b2` + `ea58cbd`)
+
+**i18n 修复 (commit `74ff5b2`):**
+- Playground: title, temperature, topP, maxTokens, apiKeyLabel 从硬编码英文改为 `t()` 调用
+- Usage: promptTokensDesc, completionTokensDesc 改为 `t()` 调用
+- Models: playgroundButton 改为 `t()` 调用
+- Chat: apiKeyLabel 改为 `t()` 调用
+- Console Header: "个人设置" 按钮现在跳转到 `/settings`
+- 新增 `(console)/loading.tsx` 骨架屏 (页面切换 loading 状态)
+
+**错误处理修复 (commit `ea58cbd`):**
+- Dashboard/ApiKeys/Billing/Usage/Models/Referral: 6 个页面的空 `catch {}` 改为 `toast.error(t("loadFailed"))`
+- Referral: `generateCode` 添加 try/catch/finally (原来 fetch 抛异常无 catch)
+- 新增 `loadFailed` i18n 翻译到 Dashboard/ApiKeys/Usage/ConsoleModels/Referral 命名空间
