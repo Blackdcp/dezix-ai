@@ -8,7 +8,7 @@ Dezix AI 是一个统一 LLM API 网关平台（仿 n1n.ai），面向国内开�
 
 ## 当前状态
 
-**Phase 1-12, 14-15 全部完成。Bug 修复轮 + 全站测试修复轮已完成。网关已恢复正常。项目处于生产就绪状态。**
+**Phase 1-12, 14-15 全部完成。Bug 修复轮 + 全站测试修复轮已完成。网关已恢复正常。忘记密码 + SEO + 404 + Error Boundary 已上线。**
 
 **线上地址**: https://dezix-ai.vercel.app
 
@@ -207,7 +207,8 @@ npm run test:watch           # Vitest 监听模式
 - curl 代理: `curl --proxy http://127.0.0.1:7897`
 - **Phase 9 部署已完成**，线上健康检查 + 页面 + 模型 API 全部通过
 - **Phase 10 OAuth 代码已完成** (commit `c2d925e`)，已推送 GitHub + Vercel 自动部署
-- **最新上线 commit: `e45101c`** — 全站测试修复轮 (网关 API Key 加密 + middleware 正则 + 定价修复 + SEO + i18n + 安全)
+- **最新上线 commit: `2ef8b07`** — 忘记密码 + 404 页面 + SEO (robots/sitemap/OG image) + Error Boundary
+- 前一个 commit: `e45101c` — 全站测试修复轮
 - 前一个 commit: `3a269e2` — SVG provider logos + brand i18n + Brand Orange 配色 + displayName 全英文
 
 ### Phase 10 OAuth 待办 (需用户手动操作)
@@ -425,8 +426,32 @@ Phase 15 前端视觉重构已全部完成。
 11. "Copy model ID" tooltip 翻译
 12. 文档 Base URL `your-domain.com` → `dezix-ai.vercel.app`
 
-**未修复 (需独立实现):**
-- 忘记密码功能 (需完整邮件重置流程)
+**未修复 (低优先级):**
 - FAQ JSON-LD 结构化数据 (SEO 优化)
 
 **验证:** Build 0 错误 / 67 测试全通过 / 网关非流式+流式均正常
+
+### 忘记密码功能 (已完成 ✅, commit `87116a0`)
+
+**技术方案**: Resend 邮件服务 + SHA-256 token 哈希 + 1 小时过期
+
+**关键文件:**
+- `prisma/schema.prisma` — 新增 `PasswordResetToken` 表 (email, token SHA-256, expires)
+- `src/lib/email.ts` — Resend 懒初始化 + 品牌 HTML 邮件模板
+- `src/app/api/forgot-password/route.ts` — IP 限流 3/min, 防枚举, 邮件失败静默
+- `src/app/api/reset-password/route.ts` — token 验证 + bcrypt + Prisma 事务
+- `src/app/[locale]/(auth)/forgot-password/page.tsx` — 邮箱输入表单
+- `src/app/[locale]/(auth)/reset-password/page.tsx` — 新密码表单 (Suspense)
+- `src/lib/validations/auth.ts` — forgotPasswordSchema + resetPasswordSchema
+
+**注意**: Resend 免费版 `onboarding@resend.dev` 只能发给注册邮箱。买域名后改 `src/lib/email.ts` from 字段即可。
+
+### SEO + 404 + Error Boundary (已完成 ✅, commit `2ef8b07`)
+
+- `src/app/robots.ts` — robots.txt (允许公开页, 禁止 /api/ /admin/ 控制台)
+- `src/app/sitemap.ts` — sitemap.xml (营销/文档/认证页, zh/en hreflang)
+- `src/app/opengraph-image.tsx` — 动态 OG 图片 (暗色背景 + 品牌渐变)
+- `src/app/not-found.tsx` — 全局 404 (品牌化, 大字 "404" + 返回首页)
+- `src/app/[locale]/not-found.tsx` — locale 404 (带 i18n)
+- `src/app/[locale]/error.tsx` — 全局错误边界 (重试按钮 + 返回首页)
+- `src/middleware.ts` — matcher 排除 robots.txt/sitemap.xml/opengraph-image
