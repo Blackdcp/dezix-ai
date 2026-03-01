@@ -10,6 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { CreditCard, Activity, Key, TrendingUp } from "lucide-react";
+import { toast } from "sonner";
 import {
   AreaChart,
   Area,
@@ -65,7 +66,7 @@ export default function DashboardPage() {
     fetch("/api/console/dashboard")
       .then((res) => res.json())
       .then((d) => setData(d))
-      .catch(() => {})
+      .catch(() => toast.error(t("loadFailed")))
       .finally(() => setLoading(false));
   }, []);
 

@@ -299,7 +299,8 @@
     "step1": "1. Go to \"API Keys\" to create your first API Key",
     "step2": "2. Browse available AI models in \"Model Market\"",
     "step3": "3. Test API calls in \"Playground\"",
-    "step4": "4. Integrate the API Key into your application"
+    "step4": "4. Integrate the API Key into your application",
+    "loadFailed": "Failed to load dashboard data"
   },
   "ApiKeys": {
     "title": "API Keys",
@@ -362,7 +363,8 @@
     "disableSuccess": "Key disabled",
     "enableSuccess": "Key enabled",
     "operationFailed": "Operation failed",
-    "clickToCopy": "Click to copy"
+    "clickToCopy": "Click to copy",
+    "loadFailed": "Failed to load API keys"
   },
   "Usage": {
     "title": "Usage",
@@ -399,7 +401,8 @@
     "failed": "Failed",
     "token": "Token",
     "promptTokensDesc": "Total prompt tokens consumed",
-    "completionTokensDesc": "Total completion tokens generated"
+    "completionTokensDesc": "Total completion tokens generated",
+    "loadFailed": "Failed to load usage data"
   },
   "ConsoleModels": {
     "title": "Model Market",
@@ -415,7 +418,8 @@
     "outputPrice": "Output Price",
     "maxContext": "Max Context: ",
     "chatButton": "Chat",
-    "playgroundButton": "Playground"
+    "playgroundButton": "Playground",
+    "loadFailed": "Failed to load models"
   },
   "Playground": {
     "requestConfig": "Request Config",
@@ -578,7 +582,8 @@
     "noRewards": "No commission records",
     "codeGenerated": "Referral code generated",
     "generateFailed": "Generation failed",
-    "linkCopied": "Referral link copied"
+    "linkCopied": "Referral link copied",
+    "loadFailed": "Failed to load referral data"
   },
   "AdminDashboard": {
     "title": "Admin Dashboard",

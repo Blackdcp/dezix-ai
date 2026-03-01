@@ -20,6 +20,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Search, Play, MessageSquare } from "lucide-react";
+import { toast } from "sonner";
 import { getProviderLogo } from "@/components/icons/provider-logos";
 
 interface ModelItem {
@@ -101,7 +102,7 @@ export default function ModelsPage() {
           setCategories(data.categories);
         }
       } catch {
-        // ignore
+        toast.error(t("loadFailed"));
       } finally {
         setLoading(false);
       }

@@ -99,7 +99,7 @@ export default function BillingPage() {
       setOrdersTotal(data.total);
       setOrdersPage(data.page);
     } catch {
-      // silent
+      toast.error(t("loadFailed"));
     } finally {
       setOrdersLoading(false);
     }

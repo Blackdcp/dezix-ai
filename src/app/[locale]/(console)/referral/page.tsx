@@ -50,7 +50,7 @@ export default function ReferralPage() {
     fetch("/api/console/referral")
       .then((r) => r.json())
       .then((d) => setData(d))
-      .catch(() => {})
+      .catch(() => toast.error(t("loadFailed")))
       .finally(() => setLoading(false));
   };
 
@@ -60,14 +60,19 @@ export default function ReferralPage() {
 
   const generateCode = async () => {
     setGenerating(true);
-    const res = await fetch("/api/console/referral/generate", { method: "POST" });
-    if (res.ok) {
-      toast.success(t("codeGenerated"));
-      fetchData();
-    } else {
+    try {
+      const res = await fetch("/api/console/referral/generate", { method: "POST" });
+      if (res.ok) {
+        toast.success(t("codeGenerated"));
+        fetchData();
+      } else {
+        toast.error(t("generateFailed"));
+      }
+    } catch {
       toast.error(t("generateFailed"));
+    } finally {
+      setGenerating(false);
     }
-    setGenerating(false);
   };
 
   const referralLink = data?.referralCode

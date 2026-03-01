@@ -299,7 +299,8 @@
     "step1": "1. 前往「API 密钥」页面创建你的第一个 API Key",
     "step2": "2. 在「模型市场」浏览可用的 AI 模型",
     "step3": "3. 使用「Playground」测试 API 调用",
-    "step4": "4. 将 API Key 集成到你的应用中"
+    "step4": "4. 将 API Key 集成到你的应用中",
+    "loadFailed": "加载仪表盘数据失败"
   },
   "ApiKeys": {
     "title": "API 密钥",
@@ -362,7 +363,8 @@
     "disableSuccess": "密钥已禁用",
     "enableSuccess": "密钥已启用",
     "operationFailed": "操作失败",
-    "clickToCopy": "点击复制"
+    "clickToCopy": "点击复制",
+    "loadFailed": "加载 API 密钥失败"
   },
   "Usage": {
     "title": "用量统计",
@@ -399,7 +401,8 @@
     "failed": "失败",
     "token": "Token",
     "promptTokensDesc": "请求输入的 Token 总量",
-    "completionTokensDesc": "模型输出的 Token 总量"
+    "completionTokensDesc": "模型输出的 Token 总量",
+    "loadFailed": "加载用量数据失败"
   },
   "ConsoleModels": {
     "title": "模型市场",
@@ -415,7 +418,8 @@
     "outputPrice": "输出价格",
     "maxContext": "最大上下文: ",
     "chatButton": "对话",
-    "playgroundButton": "Playground"
+    "playgroundButton": "Playground",
+    "loadFailed": "加载模型列表失败"
   },
   "Playground": {
     "requestConfig": "请求配置",
@@ -578,7 +582,8 @@
     "noRewards": "暂无返佣记录",
     "codeGenerated": "推荐码已生成",
     "generateFailed": "生成失败",
-    "linkCopied": "推荐链接已复制"
+    "linkCopied": "推荐链接已复制",
+    "loadFailed": "加载推荐数据失败"
   },
   "AdminDashboard": {
     "title": "管理仪表盘",

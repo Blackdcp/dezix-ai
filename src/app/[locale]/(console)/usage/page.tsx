@@ -33,6 +33,7 @@ import {
   ArrowDownToLine,
   ArrowUpFromLine,
 } from "lucide-react";
+import { toast } from "sonner";
 import {
   AreaChart,
   Area,
@@ -130,7 +131,7 @@ export default function UsagePage() {
           }))
         );
       })
-      .catch(() => {});
+      .catch(() => toast.error(t("loadFailed")));
   }, []);
 
   const fetchUsage = useCallback(async () => {
@@ -150,7 +151,7 @@ export default function UsagePage() {
         setRecentLogs(data.recentLogs);
       }
     } catch {
-      // ignore
+      toast.error(t("loadFailed"));
     } finally {
       setLoading(false);
     }

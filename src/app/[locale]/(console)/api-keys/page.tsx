@@ -495,7 +495,7 @@ export default function ApiKeysPage() {
         setKeys(data);
       }
     } catch {
-      // ignore
+      toast.error(t("loadFailed"));
     } finally {
       setLoading(false);
     }
