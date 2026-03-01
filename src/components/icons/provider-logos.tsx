@@ -1,27 +1,44 @@
 import { type SVGProps } from "react";
 
-type LogoProps = SVGProps<SVGSVGElement>;
+/* ─── Brand colors ─── */
+const brandColors: Record<string, string> = {
+  OpenAI: "#10a37f",
+  Anthropic: "#d97757",
+  Google: "#4285F4",
+  DeepSeek: "#4D6BFE",
+  xAI: "#000000",
+  ByteDance: "#3C8CFF",
+  Alibaba: "#FF6A00",
+  Zhipu: "#0060D0",
+  Moonshot: "#1C1917",
+  MiniMax: "#0060D0",
+  Xiaomi: "#FF6900",
+  Meituan: "#FFD100",
+  StepFun: "#6366F1",
+  OpenRouter: "#8B5CF6",
+  Kling: "#000000",
+  Vidu: "#6366F1",
+};
 
-// Source: svgl.app/library/openai.svg (official OpenAI swirl mark)
-export function OpenAILogo(props: LogoProps) {
-  return (
-    <svg viewBox="0 0 256 260" fill="currentColor" {...props}>
-      <path d="M239.184 106.203a64.716 64.716 0 0 0-5.576-53.103C219.452 28.459 191 15.784 163.213 21.74A65.586 65.586 0 0 0 52.096 45.22a64.716 64.716 0 0 0-43.23 31.36c-14.31 24.602-11.061 55.634 8.033 76.74a64.665 64.665 0 0 0 5.525 53.102c14.174 24.65 42.644 37.324 70.446 31.36a64.72 64.72 0 0 0 48.754 21.744c28.481.025 53.714-18.361 62.414-45.481a64.767 64.767 0 0 0 43.229-31.36c14.137-24.558 10.875-55.423-8.083-76.483Zm-97.56 136.338a48.397 48.397 0 0 1-31.105-11.255l1.535-.87 51.67-29.825a8.595 8.595 0 0 0 4.247-7.367v-72.85l21.845 12.636c.218.111.37.32.409.563v60.367c-.056 26.818-21.783 48.545-48.601 48.601Zm-104.466-44.61a48.345 48.345 0 0 1-5.781-32.589l1.534.921 51.722 29.826a8.339 8.339 0 0 0 8.441 0l63.181-36.425v25.221a.87.87 0 0 1-.358.665l-52.335 30.184c-23.257 13.398-52.97 5.431-66.404-17.803ZM23.549 85.38a48.499 48.499 0 0 1 25.58-21.333v61.39a8.288 8.288 0 0 0 4.195 7.316l62.874 36.272-21.845 12.636a.819.819 0 0 1-.767 0L41.353 151.53c-23.211-13.454-31.171-43.144-17.804-66.405v.256Zm179.466 41.695-63.08-36.63L161.73 77.86a.819.819 0 0 1 .768 0l52.233 30.184a48.6 48.6 0 0 1-7.316 87.635v-61.391a8.544 8.544 0 0 0-4.4-7.213Zm21.742-32.69-1.535-.922-51.619-30.081a8.39 8.39 0 0 0-8.492 0L99.98 99.808V74.587a.716.716 0 0 1 .307-.665l52.233-30.133a48.652 48.652 0 0 1 72.236 50.391v.205ZM88.061 139.097l-21.845-12.585a.87.87 0 0 1-.41-.614V65.685a48.652 48.652 0 0 1 79.757-37.346l-1.535.87-51.67 29.825a8.595 8.595 0 0 0-4.246 7.367l-.051 72.697Zm11.868-25.58 28.138-16.217 28.188 16.218v32.434l-28.086 16.218-28.188-16.218-.052-32.434Z" />
-    </svg>
-  );
-}
+/* ─── SVG path data (Simple Icons CC0 where available, geometric fallback otherwise) ─── */
 
-// Source: simple-icons (official Anthropic "A" mark)
-export function AnthropicLogo(props: LogoProps) {
+function OpenAILogo(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-      <path d="M17.3041 3.541h-3.6718l6.696 16.918H24Zm-10.6082 0L0 20.459h3.7442l1.3693-3.5527h7.0052l1.3693 3.5528h3.7442L10.5363 3.5409Zm-.3712 10.2232 2.2914-5.9456 2.2914 5.9456Z" />
+      <path d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.18a5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .743 7.097 5.98 5.98 0 0 0 .51 4.911 6.051 6.051 0 0 0 6.515 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.99 5.99 0 0 0 3.997-2.9 6.056 6.056 0 0 0-.747-7.073zM13.26 22.43a4.476 4.476 0 0 1-2.876-1.04l.14-.081 4.779-2.758a.795.795 0 0 0 .392-.681v-6.737l2.02 1.168a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.494 4.494zM3.6 18.304a4.47 4.47 0 0 1-.535-3.014l.142.085 4.783 2.759a.771.771 0 0 0 .78 0l5.843-3.369v2.332a.08.08 0 0 1-.033.062L9.74 19.95a4.5 4.5 0 0 1-6.14-1.646zM2.34 7.896a4.485 4.485 0 0 1 2.366-1.973V11.6a.766.766 0 0 0 .388.676l5.815 3.355-2.02 1.168a.076.076 0 0 1-.071 0l-4.83-2.786A4.504 4.504 0 0 1 2.34 7.872zm16.597 3.855L13.1 8.364l2.02-1.166a.076.076 0 0 1 .071 0l4.83 2.791a4.494 4.494 0 0 1-.676 8.105v-5.678a.79.79 0 0 0-.407-.667zm2.01-3.023l-.141-.085-4.774-2.782a.776.776 0 0 0-.785 0L9.409 9.23V6.897a.066.066 0 0 1 .028-.061l4.83-2.787a4.5 4.5 0 0 1 6.68 4.66zM8.306 12.863l-2.02-1.164a.08.08 0 0 1-.038-.057V6.074a4.5 4.5 0 0 1 7.376-3.453l-.142.08-4.778 2.758a.795.795 0 0 0-.393.681zm1.098-2.365l2.602-1.5 2.607 1.5v2.999l-2.597 1.5-2.607-1.5z" />
     </svg>
   );
 }
 
-// Source: simple-icons (official Google Gemini sparkle mark)
-export function GoogleLogo(props: LogoProps) {
+function AnthropicLogo(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path d="M17.304 3.541h-3.672l6.696 16.918H24zm-10.608 0L0 20.459h3.744l1.37-3.553h7.005l1.37 3.553h3.744L10.536 3.541zm-.371 10.223l2.291-5.946 2.292 5.946z" />
+    </svg>
+  );
+}
+
+function GoogleLogo(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
       <path d="M11.04 19.32Q12 21.51 12 24q0-2.49.93-4.68.96-2.19 2.58-3.81t3.81-2.55Q21.51 12 24 12q-2.49 0-4.68-.93a12.3 12.3 0 0 1-3.81-2.58 12.3 12.3 0 0 1-2.58-3.81Q12 2.49 12 0q0 2.49-.96 4.68-.93 2.19-2.55 3.81a12.3 12.3 0 0 1-3.81 2.58Q2.49 12 0 12q2.49 0 4.68.96 2.19.93 3.81 2.55t2.55 3.81" />
@@ -29,42 +46,153 @@ export function GoogleLogo(props: LogoProps) {
   );
 }
 
-// Source: svgl.app/library/deepseek.svg (official DeepSeek whale mark)
-export function DeepSeekLogo(props: LogoProps) {
+function DeepSeekLogo(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-      <path d="M23.748 4.482c-.254-.124-.364.113-.512.234-.051.039-.094.09-.137.136-.372.397-.806.657-1.373.626-.829-.046-1.537.214-2.163.848-.133-.782-.575-1.248-1.247-1.548-.352-.156-.708-.311-.955-.65-.172-.241-.219-.51-.305-.774-.055-.16-.11-.323-.293-.35-.2-.031-.278.136-.356.276-.313.572-.434 1.202-.422 1.84.027 1.436.633 2.58 1.838 3.393.137.093.172.187.129.323-.082.28-.18.552-.266.833-.055.179-.137.217-.329.14a5.526 5.526 0 0 1-1.736-1.18c-.857-.828-1.631-1.742-2.597-2.458a11.365 11.365 0 0 0-.689-.471c-.985-.957.13-1.743.388-1.836.27-.098.093-.432-.779-.428-.872.004-1.67.295-2.687.684a3.055 3.055 0 0 1-.465.137 9.597 9.597 0 0 0-2.883-.102c-1.885.21-3.39 1.102-4.497 2.623C.082 8.606-.231 10.684.152 12.85c.403 2.284 1.569 4.175 3.36 5.653 1.858 1.533 3.997 2.284 6.438 2.14 1.482-.085 3.133-.284 4.994-1.86.47.234.962.327 1.78.397.63.059 1.236-.03 1.705-.128.735-.156.684-.837.419-.961-2.155-1.004-1.682-.595-2.113-.926 1.096-1.296 2.746-2.642 3.392-7.003.05-.347.007-.565 0-.845-.004-.17.035-.237.23-.256a4.173 4.173 0 0 0 1.545-.475c1.396-.763 1.96-2.015 2.093-3.517.02-.23-.004-.467-.247-.588zM11.581 18c-2.089-1.642-3.102-2.183-3.52-2.16-.392.024-.321.471-.235.763.09.288.207.486.371.739.114.167.192.416-.113.603-.673.416-1.842-.14-1.897-.167-1.361-.802-2.5-1.86-3.301-3.307-.774-1.393-1.224-2.887-1.298-4.482-.02-.386.093-.522.477-.592a4.696 4.696 0 0 1 1.529-.039c2.132.312 3.946 1.265 5.468 2.774.868.86 1.525 1.887 2.202 2.891.72 1.066 1.494 2.082 2.48 2.914.348.292.625.514.891.677-.802.09-2.14.11-3.054-.614zm1-6.44a.306.306 0 0 1 .415-.287.302.302 0 0 1 .2.288.306.306 0 0 1-.31.307.303.303 0 0 1-.304-.308zm3.11 1.596c-.2.081-.399.151-.59.16a1.245 1.245 0 0 1-.798-.254c-.274-.23-.47-.358-.552-.758a1.73 1.73 0 0 1 .016-.588c.07-.327-.008-.537-.239-.727-.187-.156-.426-.199-.688-.199a.559.559 0 0 1-.254-.078.253.253 0 0 1-.114-.358c.028-.054.16-.186.192-.21.356-.202.767-.136 1.146.016.352.144.618.408 1.001.782.391.451.462.576.685.914.176.265.336.537.445.848.067.195-.019.354-.25.452z" />
+      <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.5 13.5c-.69.69-1.79.84-2.65.38l-2.1-1.15a.75.75 0 0 0-.7 0l-2.1 1.15c-.86.46-1.96.31-2.65-.38a2.02 2.02 0 0 1-.38-2.28L8.1 10.8a.75.75 0 0 0 0-.6L6.92 7.78A2.02 2.02 0 0 1 7.3 5.5c.69-.69 1.79-.84 2.65-.38l2.1 1.15a.75.75 0 0 0 .7 0l2.1-1.15c.86-.46 1.96-.31 2.65.38.69.69.84 1.79.38 2.28L15.9 10.2a.75.75 0 0 0 0 .6l1.18 2.42c.46.86.31 1.96-.38 2.28z" />
     </svg>
   );
 }
 
-// Source: svgl.app/library/x.svg (X/xAI logo mark)
-export function XAILogo(props: LogoProps) {
-  return (
-    <svg viewBox="0 0 1200 1227" fill="currentColor" {...props}>
-      <path d="M714.163 519.284 1160.89 0h-105.86L667.137 450.887 357.328 0H0l468.492 681.821L0 1226.37h105.866l409.625-476.152 327.181 476.152H1200L714.137 519.284h.026ZM569.165 687.828l-47.468-67.894-377.686-540.24h162.604l304.797 435.991 47.468 67.894 396.2 566.721H892.476L569.165 687.854v-.026Z" />
-    </svg>
-  );
-}
-
-// Generic provider logo for Chinese providers (ByteDance, Aliyun, Zhipu, Moonshot, etc.)
-export function GenericProviderLogo(props: LogoProps) {
+function XAILogo(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
-      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+      <path d="M2.3 2L10.1 12.9L2 22H3.8L10.9 14L16.7 22H22L13.8 10.6L21.4 2H19.6L13 9.4L7.6 2H2.3zM4.6 3.5H6.9L19.6 20.5H17.3L4.6 3.5z" />
     </svg>
   );
 }
 
-// Map provider names to their logo components and brand colors
-export const providerConfig: Record<string, { Logo: (props: LogoProps) => React.ReactElement; color: string }> = {
-  OpenAI: { Logo: OpenAILogo, color: "#10a37f" },
-  Anthropic: { Logo: AnthropicLogo, color: "#d97757" },
-  Google: { Logo: GoogleLogo, color: "#4285F4" },
-  DeepSeek: { Logo: DeepSeekLogo, color: "#4D6BFE" },
-  xAI: { Logo: XAILogo, color: "#1C1917" },
+function ByteDanceLogo(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path d="M19.877 1.469L24 2.533v18.943l-4.123 1.056V1.469zm-13.348 9.428l4.115 1.064v8.979l-4.115 1.064v-11.107zM0 2.572l4.115 1.064v16.735L0 21.428V2.572zm17.455 5.621v11.107l-4.123-1.064V9.257l4.123-1.064z" />
+    </svg>
+  );
+}
+
+function AlibabaCloudLogo(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path d="M3.996 4.517h5.291L8.01 6.324 4.153 7.506a1.668 1.668 0 0 0-1.165 1.601v5.786a1.668 1.668 0 0 0 1.165 1.6l3.857 1.183 1.277 1.807H3.996A3.996 3.996 0 0 1 0 15.487V8.513a3.996 3.996 0 0 1 3.996-3.996m16.008 0h-5.291l1.277 1.807 3.857 1.182c.715.227 1.17.889 1.165 1.601v5.786a1.668 1.668 0 0 1-1.165 1.6l-3.857 1.183-1.277 1.807h5.291A3.996 3.996 0 0 0 24 15.487V8.513a3.996 3.996 0 0 0-3.996-3.996m-4.007 8.345H8.002v-1.804h7.995z" />
+    </svg>
+  );
+}
+
+function ZhipuLogo(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <rect x="2" y="3" width="20" height="3.5" rx="1" />
+      <rect x="6" y="9" width="12" height="3" rx="1" />
+      <rect x="9" y="14.5" width="6" height="3" rx="1" />
+      <rect x="10.5" y="20" width="3" height="2" rx="0.5" />
+    </svg>
+  );
+}
+
+function MoonshotLogo(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 2a8 8 0 0 1 0 16C8.5 20 5.8 16.5 7 12c.8-3 3-5.2 5-5.8A8 8 0 0 1 12 4z" />
+      <circle cx="14" cy="10" r="2.5" />
+    </svg>
+  );
+}
+
+function MiniMaxLogo(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path d="M2 6h4v12H2zm8-2h4v16h-4zm8 4h4v8h-4z" />
+    </svg>
+  );
+}
+
+function XiaomiLogo(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path d="M12 0C8.016 0 4.756.255 2.493 2.516.23 4.776 0 8.033 0 12.012c0 3.98.23 7.235 2.494 9.497C4.757 23.77 8.017 24 12 24c3.983 0 7.243-.23 9.506-2.491C23.77 19.247 24 15.99 24 12.012c0-3.984-.233-7.243-2.502-9.504C19.234.252 15.978 0 12 0zM4.906 7.405h5.624c1.47 0 3.007.068 3.764.827.746.746.827 2.233.83 3.676v4.54a.15.15 0 0 1-.152.147h-1.947a.15.15 0 0 1-.152-.148V11.83c-.002-.806-.048-1.634-.464-2.051-.358-.36-1.026-.441-1.72-.458H7.158a.15.15 0 0 0-.151.147v6.98a.15.15 0 0 1-.152.148H4.906a.15.15 0 0 1-.15-.148V7.554a.15.15 0 0 1 .15-.149zm12.131 0h1.949a.15.15 0 0 1 .15.15v8.892a.15.15 0 0 1-.15.148h-1.949a.15.15 0 0 1-.151-.148V7.554a.15.15 0 0 1 .151-.149zM8.92 10.948h2.046c.083 0 .15.066.15.147v5.352a.15.15 0 0 1-.15.148H8.92a.15.15 0 0 1-.152-.148v-5.352a.15.15 0 0 1 .152-.147z" />
+    </svg>
+  );
+}
+
+function MeituanLogo(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path d="M6.923 0c-2.408 0-3.28.25-4.16.721A4.906 4.907 0 0 0 .722 2.763C.25 3.643 0 4.516 0 6.923v10.154c0 2.407.25 3.28.72 4.16a4.905 4.906 0 0 0 2.042 2.042c.88.47 1.752.721 4.16.721h10.156c2.407 0 3.28-.25 4.16-.721a4.906 4.907 0 0 0 2.04-2.042c.471-.88.722-1.753.722-4.16V6.923c0-2.407-.25-3.28-.722-4.16A4.906 4.907 0 0 0 21.238.72C20.357.251 19.484 0 17.077 0zM4.17 7.51h1.084c.04.24.07.488.11.737h3.47c.05-.25.08-.497.1-.736h1.105a9.849 9.85 0 0 1-.09.736h1.562v.866H7.62v.696h3.642v.855h-3.64v.667h3.64v.854h-3.64v.816h3.89v.865H7.88c.775.935 2.218 1.532 3.78 1.651l-.538.936c-1.442-.17-3.103-.846-4.028-2.04-.856 1.194-2.487 1.92-4.525 2.07l.318-1.005c1.382-.02 2.814-.736 3.431-1.612h-3.62v-.865h3.86v-.816h-3.64v-.854h3.64v-.667h-3.64v-.855h3.64v-.697H2.7v-.866h1.56zm8.603.182h7.976c.358 0 .567.198.567.547v8.146H13.33c-.358 0-.557-.199-.557-.547zm1.044.885V15.5h6.455V8.577zm3.999.476h1.024v.756h.975v.835h-.975V13c0 .806-.1 1.402-.318 2.02h-1.113c.338-.717.408-1.224.408-1.99v-2.387h-.935c-.14 1.541-.736 3.451-1.363 4.376h-1.134c.607-.855 1.303-2.526 1.472-4.376h-1.512v-.835h3.472z" />
+    </svg>
+  );
+}
+
+function StepFunLogo(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path d="M4 18V14h4v-4h4V6h4v4h4v4h4v4H4z" />
+    </svg>
+  );
+}
+
+function OpenRouterLogo(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM7 17.5a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm10 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" />
+      <path d="M12 9.5l-3.5 4h2v3h3v-3h2z" opacity="0.6" />
+    </svg>
+  );
+}
+
+function KlingLogo(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.36L19.64 8 12 11.64 4.36 8 12 4.36zM4 9.24l7 3.5v7.52l-7-3.5V9.24zm16 0v7.52l-7 3.5v-7.52l7-3.5z" />
+    </svg>
+  );
+}
+
+function GenericLogo(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1 5h2v2h2v2h-2v2h2v2h-2v2h-2v-2H9v-2h2v-2H9V9h2V7z" />
+    </svg>
+  );
+}
+
+/* ─── Registry: brand name → { Logo component, color } ─── */
+
+const logoRegistry: Record<string, { Logo: (props: SVGProps<SVGSVGElement>) => React.JSX.Element; color: string }> = {
+  OpenAI:    { Logo: OpenAILogo,        color: "#10a37f" },
+  Anthropic: { Logo: AnthropicLogo,      color: "#d97757" },
+  Google:    { Logo: GoogleLogo,         color: "#4285F4" },
+  DeepSeek:  { Logo: DeepSeekLogo,       color: "#4D6BFE" },
+  xAI:       { Logo: XAILogo,            color: "#000000" },
+  ByteDance: { Logo: ByteDanceLogo,      color: "#3C8CFF" },
+  Alibaba:   { Logo: AlibabaCloudLogo,   color: "#FF6A00" },
+  Zhipu:     { Logo: ZhipuLogo,         color: "#0060D0" },
+  Moonshot:  { Logo: MoonshotLogo,       color: "#1C1917" },
+  MiniMax:   { Logo: MiniMaxLogo,        color: "#0060D0" },
+  Xiaomi:    { Logo: XiaomiLogo,         color: "#FF6900" },
+  Meituan:   { Logo: MeituanLogo,        color: "#FFD100" },
+  StepFun:   { Logo: StepFunLogo,        color: "#6366F1" },
+  OpenRouter:{ Logo: OpenRouterLogo,     color: "#8B5CF6" },
+  Kling:     { Logo: KlingLogo,          color: "#000000" },
+  Vidu:      { Logo: GenericLogo,         color: "#6366F1" },
 };
 
-export function getProviderLogo(name: string) {
-  return providerConfig[name] || { Logo: GenericProviderLogo, color: "#8c8c9a" };
+/* ─── Public API ─── */
+
+/** Render an inline SVG provider logo. Always crisp, no external files needed. */
+export function ProviderIcon({ name, className }: { name: string; className?: string }) {
+  const entry = logoRegistry[name];
+  if (entry) {
+    return <entry.Logo className={className} style={{ color: entry.color }} />;
+  }
+  return <GenericLogo className={className} style={{ color: "#8c8c9a" }} />;
+}
+
+/** Get provider logo info. Use ProviderIcon component when possible. */
+export function getProviderLogo(name: string): { color: string; Logo: (props: SVGProps<SVGSVGElement>) => React.JSX.Element } {
+  return logoRegistry[name] || { Logo: GenericLogo, color: "#8c8c9a" };
+}
+
+/** Get brand color by name */
+export function getBrandColor(name: string): string {
+  return brandColors[name] || "#8c8c9a";
 }

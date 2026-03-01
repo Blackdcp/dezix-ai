@@ -15,12 +15,12 @@ import {
 } from "@/components/ui/animated-section";
 
 const featureKeys = [
-  { icon: Globe, titleKey: "unifiedApi", descKey: "unifiedApiDesc", color: "#0070F3", bg: "#EBF5FF", cardBg: "#FAFCFF" },
-  { icon: Layers, titleKey: "multiModel", descKey: "multiModelDesc", color: "#D97706", bg: "#FEF3C7", cardBg: "#FFFCF5" },
+  { icon: Globe, titleKey: "unifiedApi", descKey: "unifiedApiDesc", color: "#F26522", bg: "#FFF4ED", cardBg: "#FFFCF9" },
+  { icon: Layers, titleKey: "multiModel", descKey: "multiModelDesc", color: "#0D9488", bg: "#CCFBF1", cardBg: "#F5FDFB" },
   { icon: Zap, titleKey: "streaming", descKey: "streamingDesc", color: "#16A34A", bg: "#D1FAE5", cardBg: "#F8FDF9" },
-  { icon: Route, titleKey: "smartRouting", descKey: "smartRoutingDesc", color: "#0070F3", bg: "#DBEAFE", cardBg: "#F8FBFF" },
+  { icon: Route, titleKey: "smartRouting", descKey: "smartRoutingDesc", color: "#F26522", bg: "#FFF4ED", cardBg: "#FFFCF9" },
   { icon: Receipt, titleKey: "transparentBilling", descKey: "transparentBillingDesc", color: "#F59E0B", bg: "#FEF3C7", cardBg: "#FFFDF7" },
-  { icon: ShieldCheck, titleKey: "secure", descKey: "secureDesc", color: "#00B4D8", bg: "#CFFAFE", cardBg: "#F5FDFE" },
+  { icon: ShieldCheck, titleKey: "secure", descKey: "secureDesc", color: "#FF8C42", bg: "#FFF8F0", cardBg: "#FFFDF9" },
 ] as const;
 
 export function FeaturesSection() {
@@ -44,7 +44,7 @@ export function FeaturesSection() {
         <AnimatedSection className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {featureKeys.map((f) => (
             <AnimatedItem key={f.titleKey}>
-              <div className="card-gradient-line p-7" style={{ backgroundColor: f.cardBg }}>
+              <div className="card-premium p-7" style={{ backgroundColor: f.cardBg }}>
                 <div
                   className="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-xl"
                   style={{ backgroundColor: f.bg }}

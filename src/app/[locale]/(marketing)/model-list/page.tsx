@@ -54,6 +54,7 @@ function CopyButton({ text }: { text: string }) {
 export default function ModelListPage() {
   const t = useTranslations("ModelList");
   const tc = useTranslations("Categories");
+  const tp = useTranslations("Providers");
   const [models, setModels] = useState<Model[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [search, setSearch] = useState("");
@@ -171,7 +172,7 @@ export default function ModelListPage() {
                           <TableCell>
                             <Badge variant="secondary" className="inline-flex items-center gap-1 rounded-full">
                               <Logo className="h-3 w-3" style={{ color }} />
-                              {m.providerName}
+                              {tp(m.providerName)}
                             </Badge>
                           </TableCell>
                           <TableCell>

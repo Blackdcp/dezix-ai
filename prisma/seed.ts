@@ -120,17 +120,17 @@ async function main() {
     { modelId: "x-ai/grok-4-fast",                 displayName: "Grok 4 Fast",                 category: "chat", maxContext: 128000, ...t3 },
     { modelId: "x-ai/grok-code-fast-1",            displayName: "Grok Code Fast 1",            category: "code", maxContext: 128000, ...t3 },
 
-    // ==================== ByteDance 豆包 (10) ====================
-    { modelId: "doubao-seed-2.0-pro",      displayName: "豆包 Seed 2.0 Pro",      category: "chat", maxContext: 32000, ...t2 },
-    { modelId: "doubao-seed-2.0-code",     displayName: "豆包 Seed 2.0 Code",     category: "code", maxContext: 32000, ...t2 },
-    { modelId: "doubao-seed-2.0-mini",     displayName: "豆包 Seed 2.0 Mini",     category: "chat", maxContext: 32000, ...t1 },
-    { modelId: "doubao-seed-2.0-lite",     displayName: "豆包 Seed 2.0 Lite",     category: "chat", maxContext: 32000, ...t1 },
-    { modelId: "doubao-seed-1.6",          displayName: "豆包 Seed 1.6",          category: "chat", maxContext: 32000, ...t1 },
-    { modelId: "doubao-seed-1.6-flash",    displayName: "豆包 Seed 1.6 Flash",    category: "chat", maxContext: 32000, ...t1 },
-    { modelId: "doubao-seed-1.6-thinking", displayName: "豆包 Seed 1.6 Thinking", category: "reasoning", maxContext: 32000, ...t2 },
-    { modelId: "doubao-1.5-thinking-pro",  displayName: "豆包 1.5 Thinking Pro",  category: "reasoning", maxContext: 32000, ...t2 },
-    { modelId: "doubao-1.5-vision-pro",    displayName: "豆包 1.5 Vision Pro",    category: "multimodal", maxContext: 32000, ...t2 },
-    { modelId: "doubao-1.5-pro-32k",       displayName: "豆包 1.5 Pro",           category: "chat", maxContext: 32000, ...t1 },
+    // ==================== ByteDance Doubao (10) ====================
+    { modelId: "doubao-seed-2.0-pro",      displayName: "Doubao Seed 2.0 Pro",      category: "chat", maxContext: 32000, ...t2 },
+    { modelId: "doubao-seed-2.0-code",     displayName: "Doubao Seed 2.0 Code",     category: "code", maxContext: 32000, ...t2 },
+    { modelId: "doubao-seed-2.0-mini",     displayName: "Doubao Seed 2.0 Mini",     category: "chat", maxContext: 32000, ...t1 },
+    { modelId: "doubao-seed-2.0-lite",     displayName: "Doubao Seed 2.0 Lite",     category: "chat", maxContext: 32000, ...t1 },
+    { modelId: "doubao-seed-1.6",          displayName: "Doubao Seed 1.6",          category: "chat", maxContext: 32000, ...t1 },
+    { modelId: "doubao-seed-1.6-flash",    displayName: "Doubao Seed 1.6 Flash",    category: "chat", maxContext: 32000, ...t1 },
+    { modelId: "doubao-seed-1.6-thinking", displayName: "Doubao Seed 1.6 Thinking", category: "reasoning", maxContext: 32000, ...t2 },
+    { modelId: "doubao-1.5-thinking-pro",  displayName: "Doubao 1.5 Thinking Pro",  category: "reasoning", maxContext: 32000, ...t2 },
+    { modelId: "doubao-1.5-vision-pro",    displayName: "Doubao 1.5 Vision Pro",    category: "multimodal", maxContext: 32000, ...t2 },
+    { modelId: "doubao-1.5-pro-32k",       displayName: "Doubao 1.5 Pro",           category: "chat", maxContext: 32000, ...t1 },
 
     // ==================== Qwen 阿里 (20) ====================
     { modelId: "qwen3-vl-30b-a3b-thinking",       displayName: "Qwen3 VL 30B Thinking",    category: "multimodal", maxContext: 32000, ...t2 },
@@ -177,8 +177,8 @@ async function main() {
     // ==================== Xiaomi 小米 (1) ====================
     { modelId: "xiaomi/mimo-v2-flash", displayName: "MiMo V2 Flash", category: "chat", maxContext: 32000, ...t1 },
 
-    // ==================== Meituan 美团 (1) ====================
-    { modelId: "meituan/longcat-flash-lite", displayName: "美团 LongCat Flash Lite", category: "chat", maxContext: 64000, ...t1 },
+    // ==================== Meituan (1) ====================
+    { modelId: "meituan/longcat-flash-lite", displayName: "Meituan LongCat Flash Lite", category: "chat", maxContext: 64000, ...t1 },
 
     // ==================== OpenRouter (1) ====================
     { modelId: "openrouter/pony-alpha", displayName: "Pony Alpha", category: "chat", maxContext: 32000, ...t2 },

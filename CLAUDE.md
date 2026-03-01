@@ -222,11 +222,23 @@ npm run test:watch           # Vitest 监听模式
 
 ### 品牌映射 + 模型分类 (已完成 ✅, commit `b50a35b`)
 - `src/lib/brand.ts` — `getModelBrand()` 从 modelId 前缀推断品牌名，隐藏 qiniu 上游
-- API 路由 `providerName` 改用品牌映射，providers 列表从 modelId 推断
+- **Brand key 为英文标识符** (ByteDance/Alibaba/Zhipu/Moonshot/Xiaomi/Meituan/StepFun/Kling 等)
+- 前端通过 `useTranslations("Providers")` 翻译显示名 (zh: 字节跳动, en: ByteDance)
+- API 路由 `providerName` 返回英文 key，前端负责 i18n 翻译
 - 91 个模型分为 5 类: chat(59) / multimodal(14) / reasoning(12) / code(5) / image(1)
 - 模型广场新增 Playground + 对话 跳转按钮，支持 `?model=` URL query
 - 营销页更新: 90+ 模型、13+ 供应商、最新模型名称
-- 线上验证: 14 个品牌正确显示，无 qiniu 泄露
+
+### Provider Logo (内联 SVG, 2026-03-01 更新)
+- `src/components/icons/provider-logos.tsx` — 16 个内联 SVG React 组件 (不再使用 PNG)
+- `getProviderLogo(name)` 返回 `{ Logo, color }`, 用法: `<Logo className="h-3 w-3" style={{ color }} />`
+- 官方 SVG (CC0): OpenAI, Anthropic, Google/Gemini, ByteDance, Alibaba, Xiaomi, Meituan
+- 几何 fallback: DeepSeek, xAI, Zhipu, Moonshot, MiniMax, StepFun, Kling, OpenRouter, Vidu
+
+### 配色方案 (2026-03-01 本地切换，未上线)
+- 本地 `globals.css` 已从 Electric Blue (#0070F3) 切换为 Brand Orange (#F26522)
+- 线上仍为蓝色方案
+- 切换配色只需修改 `globals.css` 中的 CSS 变量
 
 **测试用 Dezix API Key:**
 `sk-dezix-0afa2d524f6b04a6eeabdbdcbb6e33cf6e2a5f2392aeeb96`

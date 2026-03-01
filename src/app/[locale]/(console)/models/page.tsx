@@ -74,6 +74,7 @@ function ModelSkeleton() {
 export default function ModelsPage() {
   const t = useTranslations("ConsoleModels");
   const tCat = useTranslations("Categories");
+  const tp = useTranslations("Providers");
   const router = useRouter();
   const [models, setModels] = useState<ModelItem[]>([]);
   const [providers, setProviders] = useState<ProviderItem[]>([]);
@@ -166,7 +167,7 @@ export default function ModelsPage() {
             <SelectItem value="all">{t("allProviders")}</SelectItem>
             {providers.map((p) => (
               <SelectItem key={p.id} value={p.id}>
-                {p.name}
+                {tp(p.name)}
               </SelectItem>
             ))}
           </SelectContent>
@@ -210,7 +211,7 @@ export default function ModelsPage() {
                   <div className="flex flex-wrap gap-1.5">
                     <Badge variant="outline" className="inline-flex items-center gap-1">
                       <Logo className="h-3 w-3" style={{ color }} />
-                      {model.providerName}
+                      {tp(model.providerName)}
                     </Badge>
                     <Badge variant="outline">
                       {tCat(model.category as "chat" | "multimodal" | "code" | "reasoning" | "image" | "embedding" | "audio" | "video")}

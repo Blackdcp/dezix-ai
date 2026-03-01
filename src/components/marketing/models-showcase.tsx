@@ -46,6 +46,7 @@ function formatDisplayPrice(price: number): string {
 
 export function ModelsShowcase() {
   const t = useTranslations("ModelsShowcase");
+  const tp = useTranslations("Providers");
   const [models, setModels] = useState<Model[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -95,7 +96,7 @@ export function ModelsShowcase() {
                         <span className="font-heading text-sm font-semibold text-foreground">{m.displayName}</span>
                         <Badge variant="secondary" className="flex items-center gap-1 rounded-full text-[10px] font-medium">
                           <Logo className="h-3 w-3" style={{ color }} />
-                          {m.providerName}
+                          {tp(m.providerName)}
                         </Badge>
                       </div>
                       <p className="mb-3 font-mono text-xs text-[#A8A29E]">

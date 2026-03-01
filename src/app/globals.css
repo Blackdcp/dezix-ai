@@ -53,14 +53,14 @@
 
 :root {
   --radius: 0.75rem;
-  /* ─ Palette C: Cloud Dancer × Electric Blue × Vivid Cyan ─ */
+  /* ─ Palette: Cloud Dancer × Brand Orange ─ */
   --background: #FAF9F6;
   --foreground: #1C1917;
   --card: #FFFFFF;
   --card-foreground: #1C1917;
   --popover: #FFFFFF;
   --popover-foreground: #1C1917;
-  --primary: #0070F3;
+  --primary: #F26522;
   --primary-foreground: #FFFFFF;
   --secondary: #F5F3EF;
   --secondary-foreground: #1C1917;
@@ -71,30 +71,30 @@
   --destructive: #DC2626;
   --border: #E7E5E0;
   --input: #E7E5E0;
-  --ring: #0070F3;
-  --chart-1: #0070F3;
-  --chart-2: #00B4D8;
+  --ring: #F26522;
+  --chart-1: #F26522;
+  --chart-2: #FF8C42;
   --chart-3: #16A34A;
-  --chart-4: #F59E0B;
+  --chart-4: #3B82F6;
   --chart-5: #9333EA;
   --sidebar: #F9F8F5;
   --sidebar-foreground: #57534E;
-  --sidebar-primary: #0070F3;
+  --sidebar-primary: #F26522;
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #EBF5FF;
-  --sidebar-accent-foreground: #0060D0;
+  --sidebar-accent: #FFF4ED;
+  --sidebar-accent-foreground: #D9551A;
   --sidebar-border: #E7E5E0;
-  --sidebar-ring: #0070F3;
-  --accent-brand: #0070F3;
-  --accent-brand-hover: #0060D0;
+  --sidebar-ring: #F26522;
+  --accent-brand: #F26522;
+  --accent-brand-hover: #D9551A;
 }
 
-/* ── Brand gradient (electric blue → vivid cyan) ── */
+/* ── Brand gradient (orange) ── */
 .gradient-brand {
-  background: linear-gradient(135deg, #0070F3 0%, #00B4D8 100%);
+  background: linear-gradient(135deg, #F26522 0%, #FF8C42 100%);
 }
 .text-gradient-brand {
-  background: linear-gradient(135deg, #0070F3 0%, #00B4D8 100%);
+  background: linear-gradient(135deg, #F26522 0%, #FF8C42 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -129,7 +129,7 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, #0070F3 0%, #00B4D8 100%);
+  background: linear-gradient(90deg, #F26522 0%, #FF8C42 100%);
   opacity: 0;
   transition: opacity 0.2s;
 }
@@ -142,17 +142,29 @@
   opacity: 1;
 }
 
+/* Premium card (clean, no gradient top-line) */
+.card-premium {
+  background: #FFFFFF;
+  border: 1px solid #EEECE8;
+  border-radius: 20px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.card-premium:hover {
+  border-color: #D6D3CD;
+  box-shadow: 0 8px 32px rgba(28, 25, 23, 0.06);
+}
+
 /* ── Buttons ── */
 .btn-primary {
-  background: #0070F3;
+  background: #1C1917;
   color: #FFFFFF;
   border-radius: 100px;
   font-weight: 500;
   transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
 }
 .btn-primary:hover {
-  background: #0060D0;
-  box-shadow: 0 4px 16px rgba(0, 112, 243, 0.30);
+  background: #F26522;
+  box-shadow: 0 4px 16px rgba(242, 101, 34, 0.30);
   transform: translateY(-1px);
 }
 
@@ -186,12 +198,12 @@
 
 /* ── Colored badges ── */
 .badge-teal {
-  background: #EBF5FF;
-  color: #0070F3;
+  background: #FFF4ED;
+  color: #F26522;
 }
 .badge-amber {
-  background: #ECFEFF;
-  color: #00B4D8;
+  background: #FFF8F0;
+  color: #FF8C42;
 }
 .badge-green {
   background: #ECFDF5;

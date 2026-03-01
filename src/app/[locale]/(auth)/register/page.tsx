@@ -58,7 +58,6 @@ function RegisterForm() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
       >
-        <div className="absolute inset-x-0 top-0 h-1 gradient-brand" />
         <div className="mb-8 text-center">
           <Link href="/" className="inline-flex items-center gap-1">
             <span className="font-heading text-xl font-bold text-gradient-brand">Dezix AI</span>

@@ -31,6 +31,7 @@ interface Model {
 export default function PricingPage() {
   const t = useTranslations("PricingPage");
   const tp = useTranslations("Pricing");
+  const tProv = useTranslations("Providers");
   const [models, setModels] = useState<Model[]>([]);
 
   const freeFeatures = t.raw("freeFeatures") as string[];
@@ -94,12 +95,14 @@ export default function PricingPage() {
             <div
               className={`relative rounded-2xl border p-8 ${
                 plan.highlight
-                  ? "border-primary bg-white shadow-lg shadow-primary/10"
+                  ? "border-border bg-white shadow-md shadow-black/[0.04] ring-1 ring-primary/15 pt-10"
                   : "border-border bg-white"
               }`}
             >
               {plan.highlight && (
-                <div className="absolute -top-px left-0 right-0 h-[3px] rounded-t-2xl bg-primary" />
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-primary px-4 py-1">
+                  <span className="text-[10px] font-semibold uppercase tracking-wider text-white">Most Popular</span>
+                </div>
               )}
               <h3 className="font-heading text-lg font-semibold text-foreground">{plan.name}</h3>
               <div className="mt-3 font-heading text-3xl font-bold text-foreground">{plan.price}</div>
@@ -160,7 +163,7 @@ export default function PricingPage() {
                         {m.displayName}
                       </TableCell>
                       <TableCell>
-                        <Badge variant="default">{m.providerName}</Badge>
+                        <Badge variant="default">{tProv(m.providerName)}</Badge>
                       </TableCell>
                       <TableCell>
                         <Badge variant="default">{m.category}</Badge>

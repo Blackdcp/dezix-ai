@@ -562,6 +562,8 @@
 - [x] **Phase 15: 前端视觉重构** (Electric Blue #0070F3, 25+ 文件重构) ← 已完成
 - [x] **Bug 修复轮** (4 CRITICAL + 3 HIGH + 2 MEDIUM, commit `13f510d`) ← 已完成
 - [x] **CI/部署修复** (Node 24 + Vercel Require Verified Commits, commit `66c8feb`) ← 已完成
+- [x] **配色方案切换** (Electric Blue → Brand Orange #F26522) ← 未提交到线上
+- [x] **Provider Logo 修复 + SVG 替换 + i18n 统一** ← 已完成，未提交到线上
 
 ---
 
@@ -625,3 +627,73 @@
 ### 验证
 - [x] GitHub Actions CI 全绿通过 (lint → tsc → test → build)
 - [x] Vercel 部署成功 (SHA `15649a7`, State: success)
+
+---
+
+## 配色方案切换: Electric Blue → Brand Orange (2026-03-01)
+
+### 状态: 本地已完成，未提交到线上
+
+- [x] `globals.css` 配色从 `#0070F3` (Electric Blue) 切换为 `#F26522` (Brand Orange)
+- [x] `.gradient-brand` / `.btn-primary` / `.card-gradient-line` / `.badge-teal` 等工具类全部更新为橙色系
+- [x] 营销组件 (cta-section, features-section, dashboard 等) 配合更新
+
+---
+
+## Provider Logo 修复 + SVG 替换 + i18n 统一 (2026-03-01)
+
+### 问题
+1. 模型列表页 provider logo 全部失效 — `brand.ts` 返回 "Other" 导致 logo fallback
+2. 使用 PNG 文件加载，部分缺失或模糊
+3. provider 名称为硬编码中文（字节跳动/阿里云等），英文模式下不翻译
+
+### 修复
+
+#### 1. Brand 匹配规则修复 (`src/lib/brand.ts`)
+- [x] 新增无前缀模型匹配: `gpt-*`, `o1`, `o3`, `chatgpt-*` → OpenAI; `grok-*` → xAI
+- [x] 合并冗余规则（智谱/月之暗面/MiniMax）
+- [x] **所有 brand key 改为英文标识符**: `字节跳动`→`ByteDance`, `阿里云`→`Alibaba`, `智谱 AI`→`Zhipu`, `月之暗面`→`Moonshot`, `小米`→`Xiaomi`, `美团`→`Meituan`, `阶跃星辰`→`StepFun`, `可灵`→`Kling`, `七牛云`→`Qiniu`
+
+#### 2. PNG → 内联 SVG 替换 (`src/components/icons/provider-logos.tsx`)
+- [x] 16 个 provider 全部改为内联 SVG React 组件
+- [x] 官方 SVG (Simple Icons CC0): OpenAI, Anthropic, Google (Gemini), ByteDance, Alibaba Cloud, Xiaomi, Meituan
+- [x] 几何 SVG fallback: DeepSeek, xAI, 智谱, Kimi, MiniMax, StepFun, Kling, OpenRouter, Vidu
+- [x] 删除旧 `providerConfig` 导出 (PNG path 方式)，新增 `getProviderLogo()` 返回 `{ Logo, color }`
+
+#### 3. i18n Provider 名称翻译
+- [x] `zh.json` Providers 命名空间: 补全 19 个 key (如 `"ByteDance": "字节跳动"`)
+- [x] `en.json` Providers 命名空间: 补全 19 个 key (如 `"Alibaba": "Alibaba Cloud"`)
+- [x] 5 个消费页面 `{m.providerName}` → `{tp(m.providerName)}` 走 i18n:
+  - `models-showcase.tsx` (首页)
+  - `model-list/page.tsx` (模型列表)
+  - `console/models/page.tsx` (控制台模型市场 + provider 下拉筛选)
+  - `pricing/page.tsx` (定价页模型表)
+  - `providers-bar.tsx` (供应商横条，简化为纯 key 驱动)
+
+#### 4. 模型 displayName 去中文 (`prisma/seed.ts`)
+- [x] `豆包` → `Doubao` (10 个模型)
+- [x] `美团` → `Meituan` (1 个模型)
+- [x] 本地 `prisma db seed` 已执行，91 个模型 displayName 全部英文
+
+#### 5. 本地数据库同步
+- [x] `prisma db push` 同步 `isManual` 字段到本地 Docker PG
+- [x] `prisma db seed` 填充 91 个模型 (含新 displayName)
+
+### 验证
+- [x] `npm run build` 通过
+- [x] 本地 API: 91 个模型, 0 个 "Other" provider, 0 个中文 displayName
+- [x] 中文模式: 字节跳动/阿里云/智谱 AI 等正确显示
+- [x] 英文模式: ByteDance/Alibaba Cloud/Zhipu AI 等正确显示
+
+### 待完成
+- [ ] Git commit
+- [ ] `git push` 到 GitHub 触发 Vercel 部署
+- [ ] 线上 Supabase 执行 seed 更新 displayName (`豆包`→`Doubao`, `美团`→`Meituan`)
+- [ ] 线上验证: logo + i18n + 配色
+
+### 下次启动备注
+- 本地 Docker 需启动: `docker compose up -d`
+- Dev server: `node node_modules/next/dist/bin/next dev`
+- 线上 seed 命令: `DATABASE_URL="postgresql://postgres:DezixAI2026db@db.kkwawbsibpgdqqdirbmv.supabase.co:5432/postgres" npx prisma db seed`
+- 共 16 个文件改动 + `public/icons/` 新目录 (PNG 备份，可选删除)
+
