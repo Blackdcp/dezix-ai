@@ -62,8 +62,12 @@ export async function POST(req: Request) {
         },
       });
 
-      // Send email with raw token
-      await sendPasswordResetEmail(email, rawToken, locale);
+      // Send email with raw token (don't leak failure to client)
+      try {
+        await sendPasswordResetEmail(email, rawToken, locale);
+      } catch (emailError) {
+        console.error("Failed to send reset email:", emailError);
+      }
     }
 
     // Always return success (prevent email enumeration)
