@@ -1,4 +1,5 @@
 import "./globals.css";
+import Link from "next/link";
 
 export default function GlobalNotFound() {
   return (
@@ -17,12 +18,12 @@ export default function GlobalNotFound() {
               Sorry, the page you&apos;re looking for doesn&apos;t exist or has been removed.
             </p>
             <div className="mt-8">
-              <a
+              <Link
                 href="/"
                 className="btn-primary inline-flex h-11 items-center justify-center px-8 text-sm font-medium"
               >
                 Back to Home
-              </a>
+              </Link>
             </div>
           </div>
         </div>

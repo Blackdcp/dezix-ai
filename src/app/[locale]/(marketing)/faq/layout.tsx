@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://dezix-ai.vercel.app";
-
 export async function generateMetadata({
   params,
 }: {

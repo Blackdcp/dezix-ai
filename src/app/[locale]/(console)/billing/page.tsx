@@ -103,7 +103,7 @@ export default function BillingPage() {
     } finally {
       setOrdersLoading(false);
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     fetchBilling(1);

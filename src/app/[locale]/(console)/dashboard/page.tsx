@@ -69,7 +69,7 @@ export default function DashboardPage() {
       .then((d) => setData(d))
       .catch(() => toast.error(t("loadFailed")))
       .finally(() => setLoading(false));
-  }, []);
+  }, [t]);
 
   const stats = [
     {

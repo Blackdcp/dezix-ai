@@ -499,7 +499,7 @@ export default function ApiKeysPage() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     fetchKeys();

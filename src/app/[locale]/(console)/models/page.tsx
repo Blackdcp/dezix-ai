@@ -107,7 +107,7 @@ export default function ModelsPage() {
         setLoading(false);
       }
     },
-    []
+    [t]
   );
 
   useEffect(() => {

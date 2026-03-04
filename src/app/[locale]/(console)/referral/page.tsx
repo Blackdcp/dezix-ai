@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import {
   Card,
@@ -45,18 +45,18 @@ export default function ReferralPage() {
   const [loading, setLoading] = useState(true);
   const [generating, setGenerating] = useState(false);
 
-  const fetchData = () => {
+  const fetchData = useCallback(() => {
     setLoading(true);
     fetch("/api/console/referral")
       .then((r) => r.json())
       .then((d) => setData(d))
       .catch(() => toast.error(t("loadFailed")))
       .finally(() => setLoading(false));
-  };
+  }, [t]);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   const generateCode = async () => {
     setGenerating(true);

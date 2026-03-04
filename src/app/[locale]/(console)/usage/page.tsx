@@ -134,7 +134,7 @@ export default function UsagePage() {
         );
       })
       .catch(() => toast.error(t("loadFailed")));
-  }, []);
+  }, [t]);
 
   const fetchUsage = useCallback(async () => {
     setLoading(true);
@@ -158,7 +158,7 @@ export default function UsagePage() {
     } finally {
       setLoading(false);
     }
-  }, [startDate, endDate, modelFilter]);
+  }, [startDate, endDate, modelFilter, t]);
 
   useEffect(() => {
     fetchUsage();
