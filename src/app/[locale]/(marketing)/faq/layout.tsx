@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://dezix-ai.vercel.app";
+
 export async function generateMetadata({
   params,
 }: {
@@ -14,10 +16,38 @@ export async function generateMetadata({
   };
 }
 
-export default function FaqLayout({
+export default async function FaqLayout({
   children,
+  params,
 }: {
   children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }) {
-  return children;
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "Faq" });
+
+  const faqs = Array.from({ length: 8 }, (_, i) => ({
+    "@type": "Question" as const,
+    name: t(`q${i + 1}`),
+    acceptedAnswer: {
+      "@type": "Answer" as const,
+      text: t(`a${i + 1}`),
+    },
+  }));
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs,
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      {children}
+    </>
+  );
 }
