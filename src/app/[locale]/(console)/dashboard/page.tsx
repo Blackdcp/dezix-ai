@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import { CreditCard, Activity, Key, TrendingUp } from "lucide-react";
 import { toast } from "sonner";
+import { Link } from "@/i18n/navigation";
 import {
   AreaChart,
   Area,
@@ -219,10 +220,18 @@ export default function DashboardPage() {
           <CardDescription>{t("quickStartDesc")}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-3 text-sm text-muted-foreground">
-          <p>{t("step1")}</p>
-          <p>{t("step2")}</p>
-          <p>{t("step3")}</p>
-          <p>{t("step4")}</p>
+          <p>
+            {t("step1Prefix")}<Link href="/api-keys" className="text-primary underline underline-offset-4 hover:text-primary/80">{t("step1Link")}</Link>{t("step1Suffix")}
+          </p>
+          <p>
+            {t("step2Prefix")}<Link href="/models" className="text-primary underline underline-offset-4 hover:text-primary/80">{t("step2Link")}</Link>{t("step2Suffix")}
+          </p>
+          <p>
+            {t("step3Prefix")}<Link href="/playground" className="text-primary underline underline-offset-4 hover:text-primary/80">{t("step3Link")}</Link>{t("step3Suffix")}
+          </p>
+          <p>
+            {t("step4Prefix")}<Link href="/docs/quick-start" className="text-primary underline underline-offset-4 hover:text-primary/80">{t("step4Link")}</Link>{t("step4Suffix")}
+          </p>
         </CardContent>
       </Card>
     </div>

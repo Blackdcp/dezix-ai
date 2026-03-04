@@ -82,9 +82,9 @@ export default function AdminUsersPage() {
         setUsers(d.users || []);
         setTotalPages(d.totalPages || 1);
       })
-      .catch(() => {})
+      .catch(() => toast.error(t("loadFailed")))
       .finally(() => setLoading(false));
-  }, [page, search, roleFilter]);
+  }, [page, search, roleFilter, t]);
 
   useEffect(() => {
     void fetchUsers();

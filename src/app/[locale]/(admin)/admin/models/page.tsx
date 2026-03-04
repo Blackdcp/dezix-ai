@@ -114,9 +114,9 @@ export default function AdminModelsPage() {
         setModels(d.models || []);
         setTotalPages(d.totalPages || 1);
       })
-      .catch(() => {})
+      .catch(() => toast.error(t("loadFailed")))
       .finally(() => setLoading(false));
-  }, [page, search]);
+  }, [page, search, t]);
 
   useEffect(() => {
     void fetchModels();

@@ -110,6 +110,8 @@ export default function UsagePage() {
   const [modelBreakdown, setModelBreakdown] = useState<ModelBreakdown[]>([]);
   const [recentLogs, setRecentLogs] = useState<LogItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [logPage, setLogPage] = useState(1);
+  const logsPerPage = 10;
 
   // Filters
   const [preset, setPreset] = useState("7");
@@ -149,6 +151,7 @@ export default function UsagePage() {
         setDailyTrends(data.dailyTrends);
         setModelBreakdown(data.modelBreakdown);
         setRecentLogs(data.recentLogs);
+        setLogPage(1);
       }
     } catch {
       toast.error(t("loadFailed"));
@@ -469,57 +472,85 @@ export default function UsagePage() {
               {t("noLogs")}
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>{t("model")}</TableHead>
-                    <TableHead className="text-right">{t("inputToken")}</TableHead>
-                    <TableHead className="text-right">{t("outputToken")}</TableHead>
-                    <TableHead className="text-right">{t("cost")}</TableHead>
-                    <TableHead>{t("statusCol")}</TableHead>
-                    <TableHead className="text-right">{t("duration")}</TableHead>
-                    <TableHead>{t("time")}</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {recentLogs.map((log) => (
-                    <TableRow key={log.id}>
-                      <TableCell className="font-medium">
-                        {log.displayName}
-                        <div className="text-xs text-muted-foreground">
-                          {log.modelId}
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        {log.promptTokens.toLocaleString()}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        {log.completionTokens.toLocaleString()}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        ¥{log.revenue.toFixed(6)}
-                      </TableCell>
-                      <TableCell>
-                        <Badge
-                          variant={
-                            log.status === "success" ? "default" : "destructive"
-                          }
-                        >
-                          {log.status === "success" ? t("success") : t("failed")}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        {log.duration}ms
-                      </TableCell>
-                      <TableCell className="whitespace-nowrap">
-                        {formatDateTime(log.createdAt)}
-                      </TableCell>
+            <>
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>{t("model")}</TableHead>
+                      <TableHead className="text-right">{t("inputToken")}</TableHead>
+                      <TableHead className="text-right">{t("outputToken")}</TableHead>
+                      <TableHead className="text-right">{t("cost")}</TableHead>
+                      <TableHead>{t("statusCol")}</TableHead>
+                      <TableHead className="text-right">{t("duration")}</TableHead>
+                      <TableHead>{t("time")}</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
+                  </TableHeader>
+                  <TableBody>
+                    {recentLogs
+                      .slice((logPage - 1) * logsPerPage, logPage * logsPerPage)
+                      .map((log) => (
+                      <TableRow key={log.id}>
+                        <TableCell className="font-medium">
+                          {log.displayName}
+                          <div className="text-xs text-muted-foreground">
+                            {log.modelId}
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {log.promptTokens.toLocaleString()}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {log.completionTokens.toLocaleString()}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          ¥{log.revenue.toFixed(6)}
+                        </TableCell>
+                        <TableCell>
+                          <Badge
+                            variant={
+                              log.status === "success" ? "default" : "destructive"
+                            }
+                          >
+                            {log.status === "success" ? t("success") : t("failed")}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {log.duration}ms
+                        </TableCell>
+                        <TableCell className="whitespace-nowrap">
+                          {formatDateTime(log.createdAt)}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+
+              {recentLogs.length > logsPerPage && (
+                <div className="flex items-center justify-end gap-2 pt-4">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={logPage <= 1}
+                    onClick={() => setLogPage(logPage - 1)}
+                  >
+                    {t("prevPage")}
+                  </Button>
+                  <span className="text-sm text-muted-foreground">
+                    {logPage} / {Math.ceil(recentLogs.length / logsPerPage)}
+                  </span>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={logPage >= Math.ceil(recentLogs.length / logsPerPage)}
+                    onClick={() => setLogPage(logPage + 1)}
+                  >
+                    {t("nextPage")}
+                  </Button>
+                </div>
+              )}
+            </>
           )}
         </CardContent>
       </Card>

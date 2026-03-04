@@ -296,10 +296,18 @@
     "spending": "消费",
     "quickStart": "快速开始",
     "quickStartDesc": "跟着下面的步骤开始使用 Dezix AI",
-    "step1": "1. 前往「API 密钥」页面创建你的第一个 API Key",
-    "step2": "2. 在「模型市场」浏览可用的 AI 模型",
-    "step3": "3. 使用「Playground」测试 API 调用",
-    "step4": "4. 将 API Key 集成到你的应用中",
+    "step1Prefix": "1. 前往",
+    "step1Link": "API 密钥",
+    "step1Suffix": "页面创建你的第一个 API Key",
+    "step2Prefix": "2. 在",
+    "step2Link": "模型市场",
+    "step2Suffix": "浏览可用的 AI 模型",
+    "step3Prefix": "3. 使用",
+    "step3Link": "Playground",
+    "step3Suffix": "测试 API 调用",
+    "step4Prefix": "4. 查看",
+    "step4Link": "快速开始文档",
+    "step4Suffix": "将 API Key 集成到你的应用中",
     "loadFailed": "加载仪表盘数据失败"
   },
   "ApiKeys": {
@@ -402,7 +410,9 @@
     "token": "Token",
     "promptTokensDesc": "请求输入的 Token 总量",
     "completionTokensDesc": "模型输出的 Token 总量",
-    "loadFailed": "加载用量数据失败"
+    "loadFailed": "加载用量数据失败",
+    "prevPage": "上一页",
+    "nextPage": "下一页"
   },
   "ConsoleModels": {
     "title": "模型市场",
@@ -603,7 +613,8 @@
     "trendsDesc": "收入、成本与请求数",
     "requestCount": "请求数",
     "revenue": "收入",
-    "cost": "成本"
+    "cost": "成本",
+    "loadFailed": "加载仪表盘数据失败"
   },
   "AdminChannels": {
     "title": "渠道管理",
@@ -648,7 +659,11 @@
     "deleteSuccess": "渠道已删除",
     "deleteFailed": "删除失败",
     "enableSuccess": "已启用",
-    "disableSuccess": "已禁用"
+    "disableSuccess": "已禁用",
+    "loadFailed": "加载渠道数据失败",
+    "searchPlaceholder": "搜索渠道名称或供应商...",
+    "copyApiKey": "复制 API Key",
+    "copied": "已复制"
   },
   "AdminLogs": {
     "title": "请求日志",
@@ -671,7 +686,8 @@
     "status": "状态",
     "noLogs": "暂无日志",
     "prevPage": "上一页",
-    "nextPage": "下一页"
+    "nextPage": "下一页",
+    "loadFailed": "加载日志数据失败"
   },
   "AdminModels": {
     "title": "模型管理",
@@ -734,7 +750,8 @@
     "applyPrice": "应用价格",
     "batchSuccess": "批量调价成功",
     "manualBadge": "手动",
-    "upstreamTotal": "上游共 {count} 个模型"
+    "upstreamTotal": "上游共 {count} 个模型",
+    "loadFailed": "加载模型数据失败"
   },
   "AdminUsers": {
     "title": "用户管理",
@@ -769,7 +786,8 @@
     "confirmAdjust": "确认调整",
     "roleChangeSuccess": "已将 {email} 设为 {role}",
     "operationFailed": "操作失败",
-    "adjustSuccess": "余额调整成功"
+    "adjustSuccess": "余额调整成功",
+    "loadFailed": "加载用户数据失败"
   },
   "QuickStart": {
     "title": "快速开始",

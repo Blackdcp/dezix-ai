@@ -10,6 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Users, TrendingUp, DollarSign, Activity, BarChart3, Zap } from "lucide-react";
+import { toast } from "sonner";
 import {
   AreaChart,
   Area,
@@ -50,9 +51,9 @@ export default function AdminDashboardPage() {
     fetch("/api/admin/dashboard")
       .then((res) => res.json())
       .then((d) => setData(d))
-      .catch(() => {})
+      .catch(() => toast.error(t("loadFailed")))
       .finally(() => setLoading(false));
-  }, []);
+  }, [t]);
 
   const stats = [
     {

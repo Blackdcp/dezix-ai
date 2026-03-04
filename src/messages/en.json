@@ -296,10 +296,18 @@
     "spending": "Spending",
     "quickStart": "Quick Start",
     "quickStartDesc": "Follow these steps to get started with Dezix AI",
-    "step1": "1. Go to \"API Keys\" to create your first API Key",
-    "step2": "2. Browse available AI models in \"Model Market\"",
-    "step3": "3. Test API calls in \"Playground\"",
-    "step4": "4. Integrate the API Key into your application",
+    "step1Prefix": "1. Go to ",
+    "step1Link": "API Keys",
+    "step1Suffix": " to create your first API Key",
+    "step2Prefix": "2. Browse available AI models in ",
+    "step2Link": "Model Market",
+    "step2Suffix": "",
+    "step3Prefix": "3. Test API calls in ",
+    "step3Link": "Playground",
+    "step3Suffix": "",
+    "step4Prefix": "4. Check ",
+    "step4Link": "Quick Start Docs",
+    "step4Suffix": " to integrate the API Key into your app",
     "loadFailed": "Failed to load dashboard data"
   },
   "ApiKeys": {
@@ -402,7 +410,9 @@
     "token": "Token",
     "promptTokensDesc": "Total prompt tokens consumed",
     "completionTokensDesc": "Total completion tokens generated",
-    "loadFailed": "Failed to load usage data"
+    "loadFailed": "Failed to load usage data",
+    "prevPage": "Previous",
+    "nextPage": "Next"
   },
   "ConsoleModels": {
     "title": "Model Market",
@@ -603,7 +613,8 @@
     "trendsDesc": "Revenue, cost, and requests",
     "requestCount": "Requests",
     "revenue": "Revenue",
-    "cost": "Cost"
+    "cost": "Cost",
+    "loadFailed": "Failed to load dashboard data"
   },
   "AdminChannels": {
     "title": "Channel Management",
@@ -648,7 +659,11 @@
     "deleteSuccess": "Channel deleted",
     "deleteFailed": "Deletion failed",
     "enableSuccess": "Enabled",
-    "disableSuccess": "Disabled"
+    "disableSuccess": "Disabled",
+    "loadFailed": "Failed to load channels",
+    "searchPlaceholder": "Search channel name or provider...",
+    "copyApiKey": "Copy API Key",
+    "copied": "Copied"
   },
   "AdminLogs": {
     "title": "Request Logs",
@@ -671,7 +686,8 @@
     "status": "Status",
     "noLogs": "No logs",
     "prevPage": "Previous",
-    "nextPage": "Next"
+    "nextPage": "Next",
+    "loadFailed": "Failed to load logs"
   },
   "AdminModels": {
     "title": "Model Management",
@@ -734,7 +750,8 @@
     "applyPrice": "Apply Price",
     "batchSuccess": "Batch pricing updated",
     "manualBadge": "Manual",
-    "upstreamTotal": "{count} models upstream"
+    "upstreamTotal": "{count} models upstream",
+    "loadFailed": "Failed to load models"
   },
   "AdminUsers": {
     "title": "User Management",
@@ -769,7 +786,8 @@
     "confirmAdjust": "Confirm",
     "roleChangeSuccess": "Set {email} as {role}",
     "operationFailed": "Operation failed",
-    "adjustSuccess": "Balance adjusted successfully"
+    "adjustSuccess": "Balance adjusted successfully",
+    "loadFailed": "Failed to load users"
   },
   "QuickStart": {
     "title": "Quick Start",

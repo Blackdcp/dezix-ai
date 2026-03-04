@@ -19,6 +19,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
 import {
   Select,
   SelectContent,
@@ -78,9 +79,9 @@ export default function AdminLogsPage() {
         setTotalPages(d.totalPages || 1);
         setTotal(d.total || 0);
       })
-      .catch(() => {})
+      .catch(() => toast.error(t("loadFailed")))
       .finally(() => setLoading(false));
-  }, [page, userId, modelId, status, dateFrom, dateTo]);
+  }, [page, userId, modelId, status, dateFrom, dateTo, t]);
 
   useEffect(() => {
     void fetchLogs();

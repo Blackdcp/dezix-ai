@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { useTranslations } from "next-intl";
 import {
   Card,
@@ -30,6 +30,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
+import { Copy, Check } from "lucide-react";
 
 interface ChannelItem {
   id: string;
@@ -62,6 +63,20 @@ export default function AdminChannelsPage() {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [search, setSearch] = useState("");
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  const maskApiKey = (key: string) => {
+    if (!key || key.length <= 8) return "sk-****";
+    return `${key.slice(0, 4)}...${key.slice(-4)}`;
+  };
+
+  const copyApiKey = async (key: string, channelId: string) => {
+    await navigator.clipboard.writeText(key);
+    setCopiedId(channelId);
+    toast.success(t("copied"));
+    setTimeout(() => setCopiedId(null), 2000);
+  };
 
   // Dialog
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -72,6 +87,16 @@ export default function AdminChannelsPage() {
   // Delete
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
+  const filteredChannels = useMemo(() => {
+    if (!search.trim()) return channels;
+    const q = search.toLowerCase();
+    return channels.filter(
+      (c) =>
+        c.name.toLowerCase().includes(q) ||
+        c.provider.name.toLowerCase().includes(q)
+    );
+  }, [channels, search]);
+
   const fetchChannels = useCallback(() => {
     setLoading(true);
     fetch(`/api/admin/channels?page=${page}&pageSize=20`)
@@ -80,9 +105,9 @@ export default function AdminChannelsPage() {
         setChannels(d.channels || []);
         setTotalPages(d.totalPages || 1);
       })
-      .catch(() => {})
+      .catch(() => toast.error(t("loadFailed")))
       .finally(() => setLoading(false));
-  }, [page]);
+  }, [page, t]);
 
   useEffect(() => {
     void fetchChannels();
@@ -179,7 +204,15 @@ export default function AdminChannelsPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>{t("channelList")}</CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle>{t("channelList")}</CardTitle>
+            <Input
+              placeholder={t("searchPlaceholder")}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-60"
+            />
+          </div>
         </CardHeader>
         <CardContent>
           {loading ? (
@@ -201,13 +234,29 @@ export default function AdminChannelsPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {channels.map((c) => (
+                  {filteredChannels.map((c) => (
                     <TableRow key={c.id}>
                       <TableCell className="font-medium">{c.name}</TableCell>
                       <TableCell>
                         <Badge variant="secondary">{c.provider.name}</Badge>
                       </TableCell>
-                      <TableCell className="font-mono text-sm">{c.apiKey}</TableCell>
+                      <TableCell className="font-mono text-sm">
+                        <div className="flex items-center gap-1">
+                          <span>{maskApiKey(c.apiKey)}</span>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-6 w-6 p-0"
+                            onClick={() => copyApiKey(c.apiKey, c.id)}
+                          >
+                            {copiedId === c.id ? (
+                              <Check className="h-3 w-3 text-green-600" />
+                            ) : (
+                              <Copy className="h-3 w-3" />
+                            )}
+                          </Button>
+                        </div>
+                      </TableCell>
                       <TableCell className="text-sm max-w-32 truncate">{c.baseUrl || "-"}</TableCell>
                       <TableCell>{c.priority}</TableCell>
                       <TableCell>{c.weight}</TableCell>
@@ -229,7 +278,7 @@ export default function AdminChannelsPage() {
                       </TableCell>
                     </TableRow>
                   ))}
-                  {channels.length === 0 && (
+                  {filteredChannels.length === 0 && (
                     <TableRow>
                       <TableCell colSpan={9} className="text-center text-muted-foreground py-8">
                         {t("noChannels")}
