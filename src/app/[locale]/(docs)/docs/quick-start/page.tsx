@@ -10,13 +10,13 @@ export default function QuickStartPage() {
   return (
     <article className="prose-sm max-w-none">
       <h1 className="mb-2 text-3xl font-bold tracking-[-0.015em] text-foreground">{t("title")}</h1>
-      <p className="mb-8 text-[17px] leading-relaxed text-[#57534E]">
+      <p className="mb-8 text-[17px] leading-relaxed text-muted-foreground">
         {t("subtitle")}
       </p>
 
       {/* Step 1 */}
       <h2 className="mb-3 mt-8 text-xl font-bold text-foreground">{t("step1Title")}</h2>
-      <p className="mb-4 text-[17px] leading-relaxed text-[#57534E]">
+      <p className="mb-4 text-[17px] leading-relaxed text-muted-foreground">
         {t("step1Text1")}{" "}
         <Link href="/register" className="text-primary hover:underline">
           {t("step1Link")}
@@ -26,13 +26,13 @@ export default function QuickStartPage() {
 
       {/* Step 2 */}
       <h2 className="mb-3 mt-8 text-xl font-bold text-foreground">{t("step2Title")}</h2>
-      <p className="mb-4 text-[17px] leading-relaxed text-[#57534E]">
+      <p className="mb-4 text-[17px] leading-relaxed text-muted-foreground">
         {t("step2Text")}
       </p>
 
       {/* Step 3 */}
       <h2 className="mb-3 mt-8 text-xl font-bold text-foreground">{t("step3Title")}</h2>
-      <p className="mb-4 text-[17px] leading-relaxed text-[#57534E]">
+      <p className="mb-4 text-[17px] leading-relaxed text-muted-foreground">
         {t("step3Text")}
       </p>
 
@@ -95,7 +95,7 @@ console.log(response.choices[0].message.content);`}
 
       {/* Step 4 */}
       <h2 className="mb-3 mt-8 text-xl font-bold text-foreground">{t("step4Title")}</h2>
-      <ul className="mb-4 ml-6 list-disc space-y-2 text-[17px] leading-relaxed text-[#57534E]">
+      <ul className="mb-4 ml-6 list-disc space-y-2 text-[17px] leading-relaxed text-muted-foreground">
         <li>
           <Link href="/docs/api-reference" className="text-primary hover:underline">
             {t("step4ApiRef")}

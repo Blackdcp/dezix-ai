@@ -64,13 +64,13 @@ function ResetPasswordForm() {
   }
 
   const inputClass =
-    "flex h-11 w-full rounded-xl border border-border bg-white px-3 py-2 text-sm text-foreground placeholder:text-[#A8A29E] focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50";
+    "flex h-11 w-full rounded-xl border border-border bg-card px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50";
 
   // No token in URL
   if (!token) {
     return (
       <motion.div
-        className="relative w-full max-w-md overflow-hidden rounded-2xl border border-border bg-white p-10 shadow-xl shadow-black/5"
+        className="relative w-full max-w-md overflow-hidden rounded-2xl border border-border bg-card p-10 shadow-xl shadow-black/5"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
@@ -99,7 +99,7 @@ function ResetPasswordForm() {
 
   return (
     <motion.div
-      className="relative w-full max-w-md overflow-hidden rounded-2xl border border-border bg-white p-10 shadow-xl shadow-black/5"
+      className="relative w-full max-w-md overflow-hidden rounded-2xl border border-border bg-card p-10 shadow-xl shadow-black/5"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
@@ -187,11 +187,11 @@ function ResetPasswordForm() {
 
 export default function ResetPasswordPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#F9F8F6] px-4">
+    <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="pointer-events-none fixed inset-0 dot-grid opacity-40" />
       <Suspense
         fallback={
-          <div className="w-full max-w-md animate-pulse rounded-2xl border border-border bg-white p-10 shadow-xl shadow-black/5">
+          <div className="w-full max-w-md animate-pulse rounded-2xl border border-border bg-card p-10 shadow-xl shadow-black/5">
             <div className="mx-auto mb-8 h-6 w-24 rounded bg-gray-200" />
             <div className="mb-4 h-8 w-48 rounded bg-gray-200" />
             <div className="space-y-4">

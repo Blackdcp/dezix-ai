@@ -9,13 +9,13 @@ export default function SdkExamplesPage() {
   return (
     <article className="prose-sm max-w-none">
       <h1 className="mb-2 text-3xl font-bold tracking-[-0.015em] text-foreground">{t("title")}</h1>
-      <p className="mb-8 text-[17px] leading-relaxed text-[#57534E]">
+      <p className="mb-8 text-[17px] leading-relaxed text-muted-foreground">
         {t("subtitle")}
       </p>
 
       {/* Python */}
       <h2 className="mb-3 mt-8 text-xl font-bold text-foreground">Python</h2>
-      <p className="mb-4 text-[17px] leading-relaxed text-[#57534E]">
+      <p className="mb-4 text-[17px] leading-relaxed text-muted-foreground">
         {t("installPython")}
       </p>
       <CodeBlock language="bash" title={t("install")} code="pip install openai" />
@@ -105,7 +105,7 @@ print(f"Assistant: {response.choices[0].message.content}")`}
 
       {/* Node.js */}
       <h2 className="mb-3 mt-10 text-xl font-bold text-foreground">Node.js</h2>
-      <p className="mb-4 text-[17px] leading-relaxed text-[#57534E]">
+      <p className="mb-4 text-[17px] leading-relaxed text-muted-foreground">
         {t("installNode")}
       </p>
       <CodeBlock language="bash" title={t("install")} code="npm install openai" />
@@ -207,7 +207,7 @@ console.log();`}
 
       {/* Tips */}
       <h2 className="mb-3 mt-10 text-xl font-bold text-foreground">{t("tipsTitle")}</h2>
-      <ul className="mb-4 ml-6 list-disc space-y-2 text-[17px] leading-relaxed text-[#57534E]">
+      <ul className="mb-4 ml-6 list-disc space-y-2 text-[17px] leading-relaxed text-muted-foreground">
         <li>{t("tip1")}</li>
         <li>{t("tip2")}</li>
         <li>{t("tip3")}</li>

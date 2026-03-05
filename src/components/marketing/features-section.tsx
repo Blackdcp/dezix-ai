@@ -52,7 +52,7 @@ export function FeaturesSection() {
                   <f.icon className="h-7 w-7" style={{ color: f.color }} />
                 </div>
                 <h3 className="font-heading mb-2 text-base font-semibold text-foreground">{t(f.titleKey)}</h3>
-                <p className="text-sm leading-relaxed text-[#44403C]">{t(f.descKey)}</p>
+                <p className="text-sm leading-relaxed text-muted-foreground">{t(f.descKey)}</p>
               </div>
             </AnimatedItem>
           ))}

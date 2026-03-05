@@ -22,7 +22,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
         <span className="text-sm font-medium text-foreground">{q}</span>
         <ChevronDown
           className={cn(
-            "h-4 w-4 shrink-0 text-[#A8A29E] transition-transform duration-200",
+            "h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200",
             open && "rotate-180"
           )}
         />
@@ -36,7 +36,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
             transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
-            <div className="pb-5 text-sm leading-relaxed text-[#57534E]">{a}</div>
+            <div className="pb-5 text-sm leading-relaxed text-muted-foreground">{a}</div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -59,14 +59,14 @@ export default function FaqPage() {
           <h1 className="font-heading mb-3 text-4xl font-bold tracking-tight text-foreground md:text-5xl">{t("title")}</h1>
         </AnimatedItem>
         <AnimatedItem>
-          <p className="mb-10 text-lg text-[#57534E]">
+          <p className="mb-10 text-lg text-muted-foreground">
             {t("subtitle")}
           </p>
         </AnimatedItem>
       </AnimatedSection>
       <AnimatedSection>
         <AnimatedItem>
-          <div className="rounded-2xl border border-border bg-white">
+          <div className="rounded-2xl border border-border bg-card">
             <div className="px-6">
               {faqs.map((faq) => (
                 <FaqItem key={faq.q} q={faq.q} a={faq.a} />

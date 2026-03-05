@@ -30,7 +30,7 @@ export function DocsSidebar() {
       <nav className="sticky top-16 p-4">
         {docNavItems.map((group) => (
           <div key={group.titleKey} className="mb-6">
-            <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-[#A8A29E]">
+            <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               {t(group.titleKey)}
             </h4>
             <ul className="space-y-1">
@@ -44,7 +44,7 @@ export function DocsSidebar() {
                         "flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium transition-colors",
                         isActive
                           ? "bg-primary/10 text-primary"
-                          : "text-[#57534E] hover:bg-[#F5F3EF] hover:text-foreground"
+                          : "text-muted-foreground hover:bg-muted hover:text-foreground"
                       )}
                     >
                       <item.icon className="h-4 w-4" />

@@ -68,7 +68,7 @@ export function ConsoleSidebar() {
             href="/admin/dashboard"
             className={cn(
               "flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition-colors",
-              "text-[#57534E] hover:bg-[#F5F3EF] hover:text-foreground"
+              "text-muted-foreground hover:bg-muted hover:text-foreground"
             )}
           >
             <Shield className="h-4 w-4" />

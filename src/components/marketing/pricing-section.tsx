@@ -60,7 +60,7 @@ export function PricingSection() {
           {plans.map((plan) => (
             <AnimatedItem key={plan.name}>
               <div
-                className={`relative flex h-full flex-col overflow-hidden rounded-2xl border bg-white p-8 ${
+                className={`relative flex h-full flex-col overflow-hidden rounded-2xl border bg-card p-8 ${
                   plan.highlight
                     ? "border-primary shadow-lg shadow-primary/10"
                     : "border-border"
@@ -82,7 +82,7 @@ export function PricingSection() {
                 <ul className="mt-6 flex-1 space-y-3">
                   {plan.features.map((f) => (
                     <li key={f} className="flex items-start gap-2.5 text-sm text-muted-foreground">
-                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#16A34A]" />
+                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-chart-3" />
                       {f}
                     </li>
                   ))}

@@ -38,21 +38,21 @@ interface DashboardData {
 
 const statColors = [
   { icon: "text-primary", bg: "bg-primary/10" },
-  { icon: "text-[#D97706]", bg: "bg-[#fef0ef]" },
-  { icon: "text-[#16A34A]", bg: "bg-[#ecfdf3]" },
-  { icon: "text-[#f59e0b]", bg: "bg-[#fef9ec]" },
+  { icon: "text-chart-1", bg: "bg-chart-1/10" },
+  { icon: "text-chart-3", bg: "bg-chart-3/10" },
+  { icon: "text-chart-2", bg: "bg-chart-2/10" },
 ];
 
 function StatSkeleton() {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between pb-2">
-        <div className="h-4 w-20 animate-pulse rounded bg-[#F5F3EF]" />
-        <div className="h-8 w-8 animate-pulse rounded-xl bg-[#F5F3EF]" />
+        <div className="h-4 w-20 animate-pulse rounded bg-muted" />
+        <div className="h-8 w-8 animate-pulse rounded-xl bg-muted" />
       </CardHeader>
       <CardContent>
-        <div className="h-7 w-24 animate-pulse rounded bg-[#F5F3EF]" />
-        <div className="mt-2 h-3 w-32 animate-pulse rounded bg-[#F5F3EF]" />
+        <div className="h-7 w-24 animate-pulse rounded bg-muted" />
+        <div className="mt-2 h-3 w-32 animate-pulse rounded bg-muted" />
       </CardContent>
     </Card>
   );
@@ -136,7 +136,7 @@ export default function DashboardPage() {
         <CardContent>
           {loading ? (
             <div className="flex h-[300px] items-center justify-center">
-              <div className="h-full w-full animate-pulse rounded-xl bg-[#F5F3EF]" />
+              <div className="h-full w-full animate-pulse rounded-xl bg-muted" />
             </div>
           ) : (
             <ResponsiveContainer width="100%" height={300}>

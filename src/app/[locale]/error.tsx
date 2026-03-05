@@ -30,7 +30,7 @@ export default function GlobalError({
           </button>
           <Link
             href="/"
-            className="inline-flex h-10 items-center justify-center rounded-full border border-border px-6 text-sm font-medium text-foreground hover:bg-[#F5F3EF]"
+            className="inline-flex h-10 items-center justify-center rounded-full border border-border px-6 text-sm font-medium text-foreground hover:bg-muted"
           >
             {t("backHome")}
           </Link>

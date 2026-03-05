@@ -7,7 +7,7 @@ export default function NotFound() {
   return (
     <html>
       <body className="font-sans antialiased">
-        <div className="flex min-h-screen flex-col items-center justify-center bg-[#F9F8F6] px-4">
+        <div className="flex min-h-screen flex-col items-center justify-center bg-background px-4">
           <div className="pointer-events-none fixed inset-0 dot-grid opacity-40" />
           <div className="relative text-center">
             <p className="text-[120px] font-bold leading-none tracking-tighter text-gradient-brand sm:text-[160px]">

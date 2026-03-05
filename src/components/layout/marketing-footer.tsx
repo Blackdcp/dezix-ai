@@ -95,7 +95,7 @@ export function MarketingFooter() {
           </div>
         </div>
 
-        <div className="mt-12 border-t border-border pt-8 text-center text-sm text-[#A8A29E]">
+        <div className="mt-12 border-t border-border pt-8 text-center text-sm text-muted-foreground">
           {t("Footer.copyright")}
         </div>
       </div>

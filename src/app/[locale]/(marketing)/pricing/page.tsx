@@ -96,8 +96,8 @@ export default function PricingPage() {
             <div
               className={`relative rounded-2xl border p-8 ${
                 plan.highlight
-                  ? "border-border bg-white shadow-md shadow-black/[0.04] ring-1 ring-primary/15 pt-10"
-                  : "border-border bg-white"
+                  ? "border-border bg-card shadow-md shadow-black/[0.04] ring-1 ring-primary/15 pt-10"
+                  : "border-border bg-card"
               }`}
             >
               {plan.highlight && (
@@ -107,11 +107,11 @@ export default function PricingPage() {
               )}
               <h3 className="font-heading text-lg font-semibold text-foreground">{plan.name}</h3>
               <div className="mt-3 font-heading text-3xl font-bold text-foreground">{plan.price}</div>
-              <p className="mt-2 text-sm text-[#A8A29E]">{plan.desc}</p>
+              <p className="mt-2 text-sm text-muted-foreground">{plan.desc}</p>
               <ul className="mt-6 space-y-3">
                 {plan.features.map((f) => (
-                  <li key={f} className="flex items-start gap-2.5 text-sm text-[#57534E]">
-                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#16A34A]" />
+                  <li key={f} className="flex items-start gap-2.5 text-sm text-muted-foreground">
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-chart-3" />
                     {f}
                   </li>
                 ))}
@@ -121,7 +121,7 @@ export default function PricingPage() {
                 className={`mt-8 flex h-11 w-full items-center justify-center rounded-full text-sm font-medium transition-all ${
                   plan.highlight
                     ? "btn-primary"
-                    : "border border-border bg-white text-foreground hover:bg-background"
+                    : "border border-border bg-card text-foreground hover:bg-background"
                 }`}
               >
                 {plan.cta}
@@ -146,15 +146,15 @@ export default function PricingPage() {
       {models.length > 0 && (
         <AnimatedSection>
           <AnimatedItem>
-            <div className="overflow-hidden rounded-2xl border border-border bg-white">
+            <div className="overflow-hidden rounded-2xl border border-border bg-card">
               <Table>
                 <TableHeader>
                   <TableRow className="border-b border-border bg-background">
-                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#A8A29E]">{tp("modelName")}</TableHead>
-                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#A8A29E]">{tp("provider")}</TableHead>
-                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#A8A29E]">{tp("category")}</TableHead>
-                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-[#A8A29E]">{tp("inputPrice")}</TableHead>
-                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-[#A8A29E]">{tp("outputPrice")}</TableHead>
+                    <TableHead className="text-xs uppercase tracking-wider font-medium text-muted-foreground">{tp("modelName")}</TableHead>
+                    <TableHead className="text-xs uppercase tracking-wider font-medium text-muted-foreground">{tp("provider")}</TableHead>
+                    <TableHead className="text-xs uppercase tracking-wider font-medium text-muted-foreground">{tp("category")}</TableHead>
+                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-muted-foreground">{tp("inputPrice")}</TableHead>
+                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-muted-foreground">{tp("outputPrice")}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -169,10 +169,10 @@ export default function PricingPage() {
                       <TableCell>
                         <Badge variant="default">{tCat(m.category as "chat" | "multimodal" | "code" | "reasoning" | "image")}</Badge>
                       </TableCell>
-                      <TableCell className="text-right tabular-nums text-[#57534E]">
+                      <TableCell className="text-right tabular-nums text-muted-foreground">
                         ¥{(m.sellPrice * 1000).toFixed(2)}/M
                       </TableCell>
-                      <TableCell className="text-right tabular-nums text-[#57534E]">
+                      <TableCell className="text-right tabular-nums text-muted-foreground">
                         ¥{(m.sellOutPrice * 1000).toFixed(2)}/M
                       </TableCell>
                     </TableRow>

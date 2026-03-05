@@ -43,10 +43,10 @@ function CopyButton({ text, label }: { text: string; label: string }) {
   return (
     <button
       onClick={handleCopy}
-      className="ml-1.5 inline-flex items-center rounded p-0.5 text-[#A8A29E] transition-colors hover:text-primary"
+      className="ml-1.5 inline-flex items-center rounded p-0.5 text-muted-foreground transition-colors hover:text-primary"
       title={label}
     >
-      {copied ? <Check className="h-3 w-3 text-[#16A34A]" /> : <Copy className="h-3 w-3" />}
+      {copied ? <Check className="h-3 w-3 text-chart-3" /> : <Copy className="h-3 w-3" />}
     </button>
   );
 }
@@ -89,7 +89,7 @@ export default function ModelListPage() {
           <h1 className="font-heading mb-3 text-4xl font-bold tracking-tight text-foreground md:text-5xl">{t("title")}</h1>
         </AnimatedItem>
         <AnimatedItem>
-          <p className="mb-10 text-lg text-[#57534E]">
+          <p className="mb-10 text-lg text-muted-foreground">
             {t("subtitle")}
           </p>
         </AnimatedItem>
@@ -102,7 +102,7 @@ export default function ModelListPage() {
               placeholder={t("searchPlaceholder")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="max-w-sm rounded-xl border-border bg-white focus:border-primary/50 focus:ring-primary/20"
+              className="max-w-sm rounded-xl border-border bg-card focus:border-primary/50 focus:ring-primary/20"
             />
             {categories.length > 0 && (
               <Tabs
@@ -126,23 +126,23 @@ export default function ModelListPage() {
       {loading ? (
         <div className="space-y-3 py-8">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="h-12 animate-pulse rounded-xl bg-[#F5F3EF]" />
+            <div key={i} className="h-12 animate-pulse rounded-xl bg-muted" />
           ))}
         </div>
       ) : (
         <AnimatedSection>
           <AnimatedItem>
-            <div className="overflow-x-auto rounded-2xl border border-border bg-white">
+            <div className="overflow-x-auto rounded-2xl border border-border bg-card">
               <Table>
                 <TableHeader className="sticky top-0 z-10">
                   <TableRow className="border-b border-border bg-background">
-                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#A8A29E]">{t("name")}</TableHead>
-                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#A8A29E]">{t("modelId")}</TableHead>
-                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#A8A29E]">{t("provider")}</TableHead>
-                    <TableHead className="text-xs uppercase tracking-wider font-medium text-[#A8A29E]">{t("category")}</TableHead>
-                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-[#A8A29E]">{t("inputPrice")}</TableHead>
-                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-[#A8A29E]">{t("outputPrice")}</TableHead>
-                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-[#A8A29E]">{t("maxContext")}</TableHead>
+                    <TableHead className="text-xs uppercase tracking-wider font-medium text-muted-foreground">{t("name")}</TableHead>
+                    <TableHead className="text-xs uppercase tracking-wider font-medium text-muted-foreground">{t("modelId")}</TableHead>
+                    <TableHead className="text-xs uppercase tracking-wider font-medium text-muted-foreground">{t("provider")}</TableHead>
+                    <TableHead className="text-xs uppercase tracking-wider font-medium text-muted-foreground">{t("category")}</TableHead>
+                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-muted-foreground">{t("inputPrice")}</TableHead>
+                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-muted-foreground">{t("outputPrice")}</TableHead>
+                    <TableHead className="text-right text-xs uppercase tracking-wider font-medium text-muted-foreground">{t("maxContext")}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -150,7 +150,7 @@ export default function ModelListPage() {
                     <TableRow>
                       <TableCell
                         colSpan={7}
-                        className="py-10 text-center text-base text-[#A8A29E]"
+                        className="py-10 text-center text-base text-muted-foreground"
                       >
                         {t("noResults")}
                       </TableCell>
@@ -164,7 +164,7 @@ export default function ModelListPage() {
                             {m.displayName}
                           </TableCell>
                           <TableCell>
-                            <span className="inline-flex items-center font-mono text-xs text-[#A8A29E]">
+                            <span className="inline-flex items-center font-mono text-xs text-muted-foreground">
                               {m.modelId}
                               <CopyButton text={m.modelId} label={t("copyModelId")} />
                             </span>
@@ -178,13 +178,13 @@ export default function ModelListPage() {
                           <TableCell>
                             <Badge variant="outline" className="rounded-full">{tc(m.category as string)}</Badge>
                           </TableCell>
-                          <TableCell className="text-right tabular-nums text-[#57534E]">
+                          <TableCell className="text-right tabular-nums text-muted-foreground">
                             ¥{(m.sellPrice * 1000).toFixed(2)}/M
                           </TableCell>
-                          <TableCell className="text-right tabular-nums text-[#57534E]">
+                          <TableCell className="text-right tabular-nums text-muted-foreground">
                             ¥{(m.sellOutPrice * 1000).toFixed(2)}/M
                           </TableCell>
-                          <TableCell className="text-right tabular-nums text-[#57534E]">
+                          <TableCell className="text-right tabular-nums text-muted-foreground">
                             {(m.maxContext / 1000).toFixed(0)}K
                           </TableCell>
                         </TableRow>
