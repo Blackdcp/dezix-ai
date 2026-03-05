@@ -4,6 +4,9 @@ import createNextIntlPlugin from "next-intl/plugin";
 const withNextIntl = createNextIntlPlugin();
 
 const nextConfig: NextConfig = {
+  experimental: {
+    optimizePackageImports: ["recharts", "lucide-react", "react-syntax-highlighter"],
+  },
   async headers() {
     return [
       {

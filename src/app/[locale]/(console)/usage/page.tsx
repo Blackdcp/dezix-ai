@@ -32,8 +32,10 @@ import {
   CreditCard,
   ArrowDownToLine,
   ArrowUpFromLine,
+  FileText,
 } from "lucide-react";
 import { toast } from "sonner";
+import { EmptyState } from "@/components/ui/empty-state";
 import {
   AreaChart,
   Area,
@@ -44,7 +46,7 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-} from "recharts";
+} from "@/components/ui/lazy-charts";
 
 interface Summary {
   totalRequests: number;
@@ -468,9 +470,10 @@ export default function UsagePage() {
               {tc("loading")}
             </div>
           ) : recentLogs.length === 0 ? (
-            <div className="py-8 text-center text-muted-foreground">
-              {t("noLogs")}
-            </div>
+            <EmptyState
+              icon={FileText}
+              title={t("noLogs")}
+            />
           ) : (
             <>
               <div className="overflow-x-auto">

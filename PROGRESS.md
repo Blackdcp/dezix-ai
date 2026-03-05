@@ -567,8 +567,8 @@
 - [x] **全站测试修复轮** (2 CRITICAL + 3 HIGH + 3 MEDIUM + 4 LOW, commit `e45101c`) ← 已上线
 
 ### 待实现功能
-- [ ] 忘记密码功能 (密码重置邮件 + 重置页面 + token 验证)
-- [ ] FAQ JSON-LD 结构化数据 (SEO 优化)
+- [x] 忘记密码功能 (密码重置邮件 + 重置页面 + token 验证) ← 已完成 (commit `87116a0`)
+- [x] FAQ JSON-LD 结构化数据 (SEO 优化) ← 已完成 (commit `c917166`)
 
 ---
 
@@ -730,8 +730,8 @@
 - [x] 文档 Base URL → `dezix-ai.vercel.app`
 
 ### 未修复 (需独立实现)
-- [ ] 忘记密码功能 (完整邮件重置流程)
-- [ ] FAQ JSON-LD 结构化数据
+- [x] 忘记密码功能 (完整邮件重置流程) ← 已完成 (commit `87116a0`)
+- [x] FAQ JSON-LD 结构化数据 ← 已完成 (commit `c917166`)
 
 ### 验证
 - [x] Build 0 错误 / 67 测试全通过
@@ -754,4 +754,15 @@
 - `src/lib/validations/common.ts` — 中文错误→英文错误码
 - `src/messages/zh.json` / `en.json` — mostPopular, copyModelId, 版权年, Metadata 扩展, base URL
 - 3 个 docs 页面 — base URL 替换
+
+---
+
+## FAQ JSON-LD + 清理 (2026-03-04) ✅
+
+### 已完成
+- [x] `src/app/[locale]/(marketing)/faq/layout.tsx` — 注入 FAQPage schema.org JSON-LD (8 条 Q&A, 跟随 locale 动态生成中/英文)
+- [x] 删除 `public/icons/` 目录 (16 个旧 PNG provider logos, 已被内联 SVG 替代, 无代码引用)
+- [x] `npm run build` 通过
+- [x] Git commit: `c917166`
+- [x] `git push` → Vercel 自动部署
 

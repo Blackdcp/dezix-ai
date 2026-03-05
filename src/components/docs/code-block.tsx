@@ -1,10 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import dynamic from "next/dynamic";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { Copy, Check } from "lucide-react";
 import { useTranslations } from "next-intl";
+
+const SyntaxHighlighter = dynamic(
+  () => import("react-syntax-highlighter").then((m) => m.Prism),
+  { ssr: false, loading: () => <div className="animate-pulse rounded-b-md bg-zinc-900 p-4 h-20" /> }
+);
 
 interface CodeBlockProps {
   code: string;

@@ -37,8 +37,9 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Pencil, Trash2, Copy, Check } from "lucide-react";
+import { Plus, Pencil, Trash2, Copy, Check, Key } from "lucide-react";
 import { toast } from "sonner";
+import { EmptyState } from "@/components/ui/empty-state";
 
 interface ApiKeyItem {
   id: string;
@@ -552,9 +553,17 @@ export default function ApiKeysPage() {
               {tc("loading")}
             </div>
           ) : keys.length === 0 ? (
-            <div className="py-8 text-center text-muted-foreground">
-              {t("noKeys")}
-            </div>
+            <EmptyState
+              icon={Key}
+              title={t("noKeys")}
+              description={t("noKeysDesc")}
+              action={
+                <Button size="sm" onClick={() => setCreateOpen(true)}>
+                  <Plus className="mr-2 h-4 w-4" />
+                  {t("createKey")}
+                </Button>
+              }
+            />
           ) : (
             <Table>
               <TableHeader>

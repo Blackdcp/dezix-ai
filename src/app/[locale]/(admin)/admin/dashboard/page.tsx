@@ -19,7 +19,7 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-} from "recharts";
+} from "@/components/ui/lazy-charts";
 
 interface TrendItem {
   date: string;

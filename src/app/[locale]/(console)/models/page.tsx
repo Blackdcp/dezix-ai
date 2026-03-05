@@ -19,9 +19,10 @@ import {
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Search, Play, MessageSquare } from "lucide-react";
+import { Search, Play, MessageSquare, PackageSearch } from "lucide-react";
 import { toast } from "sonner";
 import { getProviderLogo } from "@/components/icons/provider-logos";
+import { EmptyState } from "@/components/ui/empty-state";
 
 interface ModelItem {
   id: string;
@@ -183,9 +184,10 @@ export default function ModelsPage() {
           ))}
         </div>
       ) : models.length === 0 ? (
-        <div className="py-12 text-center text-muted-foreground">
-          {t("noResults")}
-        </div>
+        <EmptyState
+          icon={PackageSearch}
+          title={t("noResults")}
+        />
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {models.map((model) => {
