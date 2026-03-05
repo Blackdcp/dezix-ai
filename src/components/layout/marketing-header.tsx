@@ -13,6 +13,7 @@ import {
 import { Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
+import { ThemeToggle } from "@/components/layout/theme-toggle";
 
 const navLinks = [
   { href: "/", labelKey: "home" },
@@ -28,7 +29,7 @@ export function MarketingHeader() {
   const t = useTranslations("Nav");
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-white/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-1">
@@ -63,6 +64,7 @@ export function MarketingHeader() {
 
         {/* Desktop actions */}
         <div className="hidden items-center gap-3 md:flex">
+          <ThemeToggle />
           <LanguageSwitcher />
           <Link
             href="/login"
@@ -85,7 +87,7 @@ export function MarketingHeader() {
               <Menu className="h-5 w-5" />
             </Button>
           </SheetTrigger>
-          <SheetContent side="right" className="w-72 bg-white">
+          <SheetContent side="right" className="w-72 bg-background">
             <SheetTitle className="sr-only">{t("mobileMenu")}</SheetTitle>
             <nav className="mt-8 flex flex-col gap-1">
               {navLinks.map((link) => (
