@@ -104,7 +104,7 @@ export function HeroSection() {
 
           {/* Subtitle */}
           <AnimatedItem>
-            <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-[#57534E] md:text-lg">
+            <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-muted-foreground md:text-lg">
               {t("description")}
             </p>
           </AnimatedItem>

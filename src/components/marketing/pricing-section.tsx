@@ -51,7 +51,7 @@ export function PricingSection() {
             </h2>
           </AnimatedItem>
           <AnimatedItem>
-            <p className="mx-auto mb-14 max-w-2xl text-center text-lg text-[#57534E]">
+            <p className="mx-auto mb-14 max-w-2xl text-center text-lg text-muted-foreground">
               {t("subtitle")}
             </p>
           </AnimatedItem>
@@ -81,7 +81,7 @@ export function PricingSection() {
                 </p>
                 <ul className="mt-6 flex-1 space-y-3">
                   {plan.features.map((f) => (
-                    <li key={f} className="flex items-start gap-2.5 text-sm text-[#57534E]">
+                    <li key={f} className="flex items-start gap-2.5 text-sm text-muted-foreground">
                       <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#16A34A]" />
                       {f}
                     </li>

@@ -72,7 +72,7 @@ export function ModelsShowcase() {
             </h2>
           </AnimatedItem>
           <AnimatedItem>
-            <p className="mx-auto mb-14 max-w-2xl text-center text-lg text-[#57534E]">
+            <p className="mx-auto mb-14 max-w-2xl text-center text-lg text-muted-foreground">
               {t("subtitle")}
             </p>
           </AnimatedItem>
@@ -99,7 +99,7 @@ export function ModelsShowcase() {
                           {tp(m.providerName)}
                         </Badge>
                       </div>
-                      <p className="mb-3 font-mono text-xs text-[#A8A29E]">
+                      <p className="mb-3 font-mono text-xs text-muted-foreground">
                         {m.modelId}
                       </p>
                       <div className="flex items-center justify-between text-xs text-muted-foreground">
