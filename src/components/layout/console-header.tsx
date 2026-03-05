@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { signOut, useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
@@ -12,9 +13,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOut, User } from "lucide-react";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import { LogOut, Menu, User } from "lucide-react";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
+import { ConsoleSidebar } from "@/components/layout/console-sidebar";
 
 function UserMenu() {
   const { data: session, status } = useSession();
@@ -40,7 +48,7 @@ function UserMenu() {
               {user?.name?.charAt(0)?.toUpperCase() || "U"}
             </AvatarFallback>
           </Avatar>
-          <span className="text-sm text-muted-foreground">{user?.name || user?.email}</span>
+          <span className="hidden text-sm text-muted-foreground sm:inline">{user?.name || user?.email}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48 rounded-xl border-border bg-popover">
@@ -59,10 +67,23 @@ function UserMenu() {
 }
 
 export function ConsoleHeader() {
+  const [open, setOpen] = useState(false);
+
   return (
-    <header className="flex h-16 items-center justify-between border-b border-border bg-background px-6">
-      <div />
-      <div className="flex items-center gap-2">
+    <header className="flex h-14 items-center justify-between border-b border-border bg-background px-4 md:h-16 md:px-6">
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetTrigger asChild className="md:hidden">
+          <Button variant="ghost" size="icon">
+            <Menu className="h-5 w-5" />
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="left" className="w-60 p-0 bg-background">
+          <SheetTitle className="sr-only">Navigation</SheetTitle>
+          <ConsoleSidebar />
+        </SheetContent>
+      </Sheet>
+      <div className="hidden md:block" />
+      <div className="flex items-center gap-1 md:gap-2">
         <ThemeToggle />
         <LanguageSwitcher />
         <UserMenu />

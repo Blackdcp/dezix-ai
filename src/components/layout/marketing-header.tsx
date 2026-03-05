@@ -53,7 +53,7 @@ export function MarketingHeader() {
                   "rounded-full px-4 py-2 text-sm font-medium transition-colors",
                   isActive
                     ? "bg-primary/10 text-primary"
-                    : "text-[#57534E] hover:text-foreground hover:bg-[#F5F3EF]"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
                 )}
               >
                 {t(link.labelKey)}
@@ -68,7 +68,7 @@ export function MarketingHeader() {
           <LanguageSwitcher />
           <Link
             href="/login"
-            className="px-4 py-2 text-sm font-medium text-[#57534E] transition-colors hover:text-foreground"
+            className="px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
           >
             {t("login")}
           </Link>
@@ -95,7 +95,7 @@ export function MarketingHeader() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className="rounded-xl px-3 py-2.5 text-sm font-medium text-[#57534E] transition-colors hover:bg-[#F5F3EF] hover:text-foreground"
+                  className="rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                 >
                   {t(link.labelKey)}
                 </Link>
