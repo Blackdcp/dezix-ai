@@ -569,6 +569,7 @@
 ### 待实现功能
 - [x] 忘记密码功能 (密码重置邮件 + 重置页面 + token 验证) ← 已完成 (commit `87116a0`)
 - [x] FAQ JSON-LD 结构化数据 (SEO 优化) ← 已完成 (commit `c917166`)
+- [x] **综合优化轮** (测试扩展 + 性能优化 + 空状态 + 管理后台增强) ← 已完成 (`83377e0` + `f7120db`)
 
 ---
 
@@ -765,4 +766,43 @@
 - [x] `npm run build` 通过
 - [x] Git commit: `c917166`
 - [x] `git push` → Vercel 自动部署
+
+---
+
+## 综合优化轮 (2026-03-05) ✅
+
+### 第 1 步: 测试覆盖率扩展 ✅ (commit `83377e0`)
+- [x] `src/lib/gateway/__tests__/errors.test.ts` — GatewayError 类 + 9 个错误工厂 (19 用例)
+- [x] `src/lib/__tests__/cors.test.ts` — addCorsHeaders + corsOptionsResponse (7 用例)
+- [x] `src/lib/__tests__/admin.test.ts` — requireAdmin() 鉴权 (5 用例)
+- [x] `src/lib/gateway/__tests__/auth.test.ts` — authenticateRequest + key 验证 + 白名单 (14 用例)
+- [x] `src/lib/gateway/__tests__/router.test.ts` — selectChannel + 权重选择 + 失败排除 (9 用例)
+- [x] 测试总数: 67 → 121 (12 个文件)
+
+### 第 2 步: 性能优化 ✅ (commit `83377e0`)
+- [x] `next.config.ts` 添加 `optimizePackageImports` (recharts, lucide-react, react-syntax-highlighter)
+- [ ] Google Fonts @import → next/font/google — 跳过 (构建时需下载字体，中国网络不可达)
+- [x] Recharts 懒加载 → `src/components/ui/lazy-charts.tsx` (dynamic import, ssr: false)
+  - 更新: admin/dashboard, console/dashboard, console/usage 3 个页面
+- [x] SyntaxHighlighter 懒加载 → `next/dynamic` in code-block.tsx + markdown-renderer.tsx
+
+### 第 3 步: 控制台空状态打磨 ✅ (commit `83377e0`)
+- [x] `src/components/ui/empty-state.tsx` — 可复用 EmptyState 组件 (icon + title + description + action)
+- [x] 更新 api-keys (Key 图标 + 创建按钮), usage (FileText 图标), models (PackageSearch 图标)
+- [x] 新增 i18n: `noKeysDesc` (zh/en)
+
+### 第 4 步: 管理后台增强 ✅ (commit `f7120db`)
+- [x] API `/api/admin/dashboard` 新增:
+  - `errorRate` / `todayErrorRate`: 错误率百分比 (总 + 今日)
+  - `topModels`: 近 30 日请求量 Top 5 模型 (displayName + requests + revenue)
+- [x] 页面: 错误率卡片 (AlertTriangle 图标) 替换重复的"今日请求"卡片
+- [x] 页面: 热门模型水平 BarChart (primary 色, 4px 圆角)
+- [x] 新增 i18n: `errorRate`, `todayErrorRate`, `topModelsTitle`, `topModelsDesc` (zh/en)
+
+### 验证
+- [x] 12 个测试文件, 121 个用例全部通过
+- [x] ESLint 0 errors, 0 warnings
+- [x] `npm run build` 0 errors
+- [x] Git commit `83377e0` + `f7120db` + push + Vercel 自动部署
+
 

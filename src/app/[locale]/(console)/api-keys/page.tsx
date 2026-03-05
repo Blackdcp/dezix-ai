@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { Button } from "@/components/ui/button";
 import {
@@ -37,7 +37,7 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Pencil, Trash2, Copy, Check, Key } from "lucide-react";
+import { Plus, Pencil, Trash2, Copy, Check, Key, BarChart3 } from "lucide-react";
 import { toast } from "sonner";
 import { EmptyState } from "@/components/ui/empty-state";
 
@@ -416,6 +416,55 @@ function EditKeyDialog({
   );
 }
 
+// ─── Key Stats Panel ─────────────────────────────────────────────
+function KeyStatsPanel({ apiKeyId }: { apiKeyId: string }) {
+  const t = useTranslations("ApiKeys");
+  const [stats, setStats] = useState<{
+    totalRequests: number;
+    totalRevenue: number;
+    totalTokens: number;
+    avgDuration: number;
+    errorCount: number;
+  } | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`/api/console/api-keys/${apiKeyId}/stats`)
+      .then((r) => r.json())
+      .then((d) => setStats(d))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, [apiKeyId]);
+
+  if (loading) return <div className="py-3 text-sm text-muted-foreground">{t("loadingStats")}</div>;
+  if (!stats) return null;
+
+  return (
+    <div className="grid grid-cols-5 gap-3 py-3">
+      <div className="text-center">
+        <p className="text-xs text-muted-foreground">{t("statsRequests")}</p>
+        <p className="text-sm font-semibold">{stats.totalRequests}</p>
+      </div>
+      <div className="text-center">
+        <p className="text-xs text-muted-foreground">{t("statsRevenue")}</p>
+        <p className="text-sm font-semibold">¥{stats.totalRevenue.toFixed(4)}</p>
+      </div>
+      <div className="text-center">
+        <p className="text-xs text-muted-foreground">{t("statsTokens")}</p>
+        <p className="text-sm font-semibold">{stats.totalTokens.toLocaleString()}</p>
+      </div>
+      <div className="text-center">
+        <p className="text-xs text-muted-foreground">{t("statsAvgLatency")}</p>
+        <p className="text-sm font-semibold">{stats.avgDuration}ms</p>
+      </div>
+      <div className="text-center">
+        <p className="text-xs text-muted-foreground">{t("statsErrors")}</p>
+        <p className="text-sm font-semibold">{stats.errorCount}</p>
+      </div>
+    </div>
+  );
+}
+
 // ─── Delete Confirm Dialog ──────────────────────────────────────────
 function DeleteKeyDialog({
   apiKey,
@@ -487,6 +536,7 @@ export default function ApiKeysPage() {
   const [editOpen, setEditOpen] = useState(false);
   const [deleteKey, setDeleteKey] = useState<ApiKeyItem | null>(null);
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [expandedKeyId, setExpandedKeyId] = useState<string | null>(null);
 
   const fetchKeys = useCallback(async () => {
     try {
@@ -580,73 +630,90 @@ export default function ApiKeysPage() {
               </TableHeader>
               <TableBody>
                 {keys.map((key) => (
-                  <TableRow key={key.id}>
-                    <TableCell className="font-medium">{key.name}</TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-1">
-                        <code className="rounded bg-muted px-1.5 py-0.5 text-xs max-w-[280px] truncate block">
-                          {key.fullKey || key.keyPrefix}
-                        </code>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-6 w-6 shrink-0"
-                          onClick={async () => {
-                            const text = key.fullKey || key.keyPrefix;
-                            await navigator.clipboard.writeText(text);
-                            toast.success(t("copiedToClipboard"));
-                          }}
-                        >
-                          <Copy className="h-3 w-3" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant={key.isActive ? "default" : "secondary"}>
-                        {key.isActive ? t("active") : t("inactive")}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      ¥{key.usedQuota.toFixed(4)}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      {key.totalQuota != null
-                        ? `¥${key.totalQuota.toFixed(2)}`
-                        : t("unlimited")}
-                    </TableCell>
-                    <TableCell>
-                      {key.expiresAt ? formatDate(key.expiresAt) : t("never")}
-                    </TableCell>
-                    <TableCell>{formatDate(key.createdAt)}</TableCell>
-                    <TableCell>
-                      <div className="flex items-center justify-end gap-2">
-                        <Switch
-                          checked={key.isActive}
-                          onCheckedChange={() => handleToggle(key)}
-                        />
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => {
-                            setEditKey(key);
-                            setEditOpen(true);
-                          }}
-                        >
-                          <Pencil className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => {
-                            setDeleteKey(key);
-                            setDeleteOpen(true);
-                          }}
-                        >
-                          <Trash2 className="h-4 w-4 text-destructive" />
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
+                  <React.Fragment key={key.id}>
+                    <TableRow>
+                      <TableCell className="font-medium">{key.name}</TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-1">
+                          <code className="rounded bg-muted px-1.5 py-0.5 text-xs max-w-[280px] truncate block">
+                            {key.fullKey || key.keyPrefix}
+                          </code>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-6 w-6 shrink-0"
+                            onClick={async () => {
+                              const text = key.fullKey || key.keyPrefix;
+                              await navigator.clipboard.writeText(text);
+                              toast.success(t("copiedToClipboard"));
+                            }}
+                          >
+                            <Copy className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant={key.isActive ? "default" : "secondary"}>
+                          {key.isActive ? t("active") : t("inactive")}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        ¥{key.usedQuota.toFixed(4)}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {key.totalQuota != null
+                          ? `¥${key.totalQuota.toFixed(2)}`
+                          : t("unlimited")}
+                      </TableCell>
+                      <TableCell>
+                        {key.expiresAt ? formatDate(key.expiresAt) : t("never")}
+                      </TableCell>
+                      <TableCell>{formatDate(key.createdAt)}</TableCell>
+                      <TableCell>
+                        <div className="flex items-center justify-end gap-2">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => setExpandedKeyId(expandedKeyId === key.id ? null : key.id)}
+                            title={t("viewStats")}
+                          >
+                            <BarChart3 className="h-4 w-4" />
+                          </Button>
+                          <Switch
+                            checked={key.isActive}
+                            onCheckedChange={() => handleToggle(key)}
+                          />
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => {
+                              setEditKey(key);
+                              setEditOpen(true);
+                            }}
+                          >
+                            <Pencil className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => {
+                              setDeleteKey(key);
+                              setDeleteOpen(true);
+                            }}
+                          >
+                            <Trash2 className="h-4 w-4 text-destructive" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                    {expandedKeyId === key.id && (
+                      <TableRow>
+                        <TableCell colSpan={8} className="bg-muted/30">
+                          <KeyStatsPanel apiKeyId={key.id} />
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </React.Fragment>
                 ))}
               </TableBody>
             </Table>

@@ -31,7 +31,13 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw, Activity } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface ModelItem {
   id: string;
@@ -46,6 +52,15 @@ interface ModelItem {
   maxContext: number;
   isActive: boolean;
   isManual: boolean;
+}
+
+interface ModelHealth {
+  modelId: string;
+  requests24h: number;
+  errors24h: number;
+  errorRate: number;
+  avgDuration: number;
+  revenue24h: number;
 }
 
 interface SyncPreview {
@@ -103,6 +118,9 @@ export default function AdminModelsPage() {
   const [priceForm, setPriceForm] = useState(emptyPriceForm);
   const [batchSaving, setBatchSaving] = useState(false);
 
+  // Health monitoring
+  const [healthMap, setHealthMap] = useState<Map<string, ModelHealth>>(new Map());
+
   const fetchModels = useCallback(() => {
     setLoading(true);
     const params = new URLSearchParams({ page: String(page), pageSize: "20" });
@@ -121,6 +139,18 @@ export default function AdminModelsPage() {
   useEffect(() => {
     void fetchModels();
   }, [fetchModels]);
+
+  // Fetch health data once on mount
+  useEffect(() => {
+    fetch("/api/admin/models/health")
+      .then((r) => r.json())
+      .then((data: ModelHealth[]) => {
+        const map = new Map<string, ModelHealth>();
+        for (const h of data) map.set(h.modelId, h);
+        setHealthMap(map);
+      })
+      .catch(() => {});
+  }, []);
 
   // Clear selection when page/search changes
   useEffect(() => {
@@ -359,6 +389,7 @@ export default function AdminModelsPage() {
                     <TableHead className="text-right">{t("sellPrice")}</TableHead>
                     <TableHead>{t("context")}</TableHead>
                     <TableHead>{t("status")}</TableHead>
+                    <TableHead>{t("health24h")}</TableHead>
                     <TableHead>{t("actions")}</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -397,6 +428,33 @@ export default function AdminModelsPage() {
                         />
                       </TableCell>
                       <TableCell>
+                        {(() => {
+                          const h = healthMap.get(m.id);
+                          if (!h || h.requests24h === 0) return <span className="text-xs text-muted-foreground">—</span>;
+                          const isHealthy = h.errorRate < 5;
+                          return (
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger>
+                                  <div className="flex items-center gap-1">
+                                    <Activity className={`h-3 w-3 ${isHealthy ? "text-green-500" : "text-red-500"}`} />
+                                    <span className="text-xs">{h.requests24h}</span>
+                                  </div>
+                                </TooltipTrigger>
+                                <TooltipContent side="left">
+                                  <div className="text-xs space-y-0.5">
+                                    <p>{t("healthRequests")}: {h.requests24h}</p>
+                                    <p>{t("healthErrors")}: {h.errors24h} ({h.errorRate}%)</p>
+                                    <p>{t("healthLatency")}: {h.avgDuration}ms</p>
+                                    <p>{t("healthRevenue")}: ¥{h.revenue24h.toFixed(4)}</p>
+                                  </div>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          );
+                        })()}
+                      </TableCell>
+                      <TableCell>
                         <div className="flex gap-1">
                           <Button variant="outline" size="sm" onClick={() => openEdit(m)}>
                             {t("edit")}
@@ -410,7 +468,7 @@ export default function AdminModelsPage() {
                   ))}
                   {models.length === 0 && (
                     <TableRow>
-                      <TableCell colSpan={9} className="text-center text-muted-foreground py-8">
+                      <TableCell colSpan={10} className="text-center text-muted-foreground py-8">
                         {t("noModels")}
                       </TableCell>
                     </TableRow>

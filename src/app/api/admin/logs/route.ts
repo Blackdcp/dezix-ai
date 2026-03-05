@@ -38,7 +38,7 @@ export async function GET(req: Request) {
     where.createdAt = createdAt;
   }
 
-  const [logs, total] = await Promise.all([
+  const [logs, total, agg, errorCount] = await Promise.all([
     db.usageLog.findMany({
       where,
       select: {
@@ -63,6 +63,12 @@ export async function GET(req: Request) {
       take: pageSize,
     }),
     db.usageLog.count({ where }),
+    db.usageLog.aggregate({
+      where,
+      _sum: { revenue: true, cost: true, totalTokens: true },
+      _avg: { duration: true },
+    }),
+    db.usageLog.count({ where: { ...where, status: "error" } }),
   ]);
 
   return NextResponse.json({
@@ -75,5 +81,12 @@ export async function GET(req: Request) {
     page,
     pageSize,
     totalPages: Math.ceil(total / pageSize),
+    stats: {
+      totalRevenue: Math.round(Number(agg._sum.revenue ?? 0) * 1e6) / 1e6,
+      totalCost: Math.round(Number(agg._sum.cost ?? 0) * 1e6) / 1e6,
+      totalTokens: Number(agg._sum.totalTokens ?? 0),
+      avgDuration: Math.round(Number(agg._avg.duration ?? 0)),
+      errorCount,
+    },
   });
 }

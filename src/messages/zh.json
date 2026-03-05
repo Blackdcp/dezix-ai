@@ -373,7 +373,14 @@
     "enableSuccess": "密钥已启用",
     "operationFailed": "操作失败",
     "clickToCopy": "点击复制",
-    "loadFailed": "加载 API 密钥失败"
+    "loadFailed": "加载 API 密钥失败",
+    "viewStats": "查看用量统计",
+    "loadingStats": "加载统计中...",
+    "statsRequests": "总请求",
+    "statsRevenue": "总消费",
+    "statsTokens": "总 Token",
+    "statsAvgLatency": "平均延迟",
+    "statsErrors": "错误数"
   },
   "Usage": {
     "title": "用量统计",
@@ -690,7 +697,14 @@
     "noLogs": "暂无日志",
     "prevPage": "上一页",
     "nextPage": "下一页",
-    "loadFailed": "加载日志数据失败"
+    "loadFailed": "加载日志数据失败",
+    "ip": "IP",
+    "statsRequests": "总请求",
+    "statsRevenue": "总收入",
+    "statsCost": "总成本",
+    "statsTokens": "总 Token",
+    "statsAvgLatency": "平均延迟",
+    "statsErrors": "错误数"
   },
   "AdminModels": {
     "title": "模型管理",
@@ -754,7 +768,12 @@
     "batchSuccess": "批量调价成功",
     "manualBadge": "手动",
     "upstreamTotal": "上游共 {count} 个模型",
-    "loadFailed": "加载模型数据失败"
+    "loadFailed": "加载模型数据失败",
+    "health24h": "24h 健康",
+    "healthRequests": "请求数",
+    "healthErrors": "错误",
+    "healthLatency": "延迟",
+    "healthRevenue": "收入"
   },
   "AdminUsers": {
     "title": "用户管理",

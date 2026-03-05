@@ -373,7 +373,14 @@
     "enableSuccess": "Key enabled",
     "operationFailed": "Operation failed",
     "clickToCopy": "Click to copy",
-    "loadFailed": "Failed to load API keys"
+    "loadFailed": "Failed to load API keys",
+    "viewStats": "View usage stats",
+    "loadingStats": "Loading stats...",
+    "statsRequests": "Requests",
+    "statsRevenue": "Revenue",
+    "statsTokens": "Tokens",
+    "statsAvgLatency": "Avg Latency",
+    "statsErrors": "Errors"
   },
   "Usage": {
     "title": "Usage",
@@ -690,7 +697,14 @@
     "noLogs": "No logs",
     "prevPage": "Previous",
     "nextPage": "Next",
-    "loadFailed": "Failed to load logs"
+    "loadFailed": "Failed to load logs",
+    "ip": "IP",
+    "statsRequests": "Requests",
+    "statsRevenue": "Revenue",
+    "statsCost": "Cost",
+    "statsTokens": "Tokens",
+    "statsAvgLatency": "Avg Latency",
+    "statsErrors": "Errors"
   },
   "AdminModels": {
     "title": "Model Management",
@@ -754,7 +768,12 @@
     "batchSuccess": "Batch pricing updated",
     "manualBadge": "Manual",
     "upstreamTotal": "{count} models upstream",
-    "loadFailed": "Failed to load models"
+    "loadFailed": "Failed to load models",
+    "health24h": "24h Health",
+    "healthRequests": "Requests",
+    "healthErrors": "Errors",
+    "healthLatency": "Latency",
+    "healthRevenue": "Revenue"
   },
   "AdminUsers": {
     "title": "User Management",
