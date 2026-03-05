@@ -39,10 +39,45 @@ export async function GET() {
   const todayCost = Number(todayStats._sum.cost ?? 0);
   const todayRequests = todayStats._count;
 
-  // 30-day trends
+  // Error rates
+  const totalErrors = await db.usageLog.count({
+    where: { status: "error" },
+  });
+  const todayErrors = await db.usageLog.count({
+    where: { status: "error", createdAt: { gte: todayStart } },
+  });
+  const errorRate = totalRequests > 0 ? totalErrors / totalRequests : 0;
+  const todayErrorRate = todayRequests > 0 ? todayErrors / todayRequests : 0;
+
+  // Top 5 models by request count (last 30 days)
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setUTCHours(0, 0, 0, 0);
   thirtyDaysAgo.setUTCDate(thirtyDaysAgo.getUTCDate() - 29);
+
+  const topModelsRaw = await db.usageLog.groupBy({
+    by: ["modelId"],
+    where: { createdAt: { gte: thirtyDaysAgo } },
+    _count: true,
+    _sum: { revenue: true },
+    orderBy: { _count: { modelId: "desc" } },
+    take: 5,
+  });
+
+  const topModelIds = topModelsRaw.map((m) => m.modelId);
+  const modelNames = await db.model.findMany({
+    where: { id: { in: topModelIds } },
+    select: { id: true, displayName: true },
+  });
+  const nameMap = new Map(modelNames.map((m) => [m.id, m.displayName]));
+
+  const topModels = topModelsRaw.map((m) => ({
+    modelId: m.modelId,
+    displayName: nameMap.get(m.modelId) ?? m.modelId,
+    requests: m._count,
+    revenue: Math.round(Number(m._sum.revenue ?? 0) * 1e6) / 1e6,
+  }));
+
+  // 30-day trends
 
   const logs = await db.usageLog.findMany({
     where: { createdAt: { gte: thirtyDaysAgo } },
@@ -84,6 +119,9 @@ export async function GET() {
     todayRevenue: Math.round(todayRevenue * 1e6) / 1e6,
     todayCost: Math.round(todayCost * 1e6) / 1e6,
     todayRequests,
+    errorRate: Math.round(errorRate * 10000) / 100,
+    todayErrorRate: Math.round(todayErrorRate * 10000) / 100,
+    topModels,
     trends,
   });
 }

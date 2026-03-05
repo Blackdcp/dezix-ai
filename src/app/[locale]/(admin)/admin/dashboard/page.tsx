@@ -9,11 +9,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Users, TrendingUp, DollarSign, Activity, BarChart3, Zap } from "lucide-react";
+import { Users, TrendingUp, DollarSign, Activity, BarChart3, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 import {
   AreaChart,
   Area,
+  BarChart,
+  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -28,6 +30,13 @@ interface TrendItem {
   requests: number;
 }
 
+interface TopModel {
+  modelId: string;
+  displayName: string;
+  requests: number;
+  revenue: number;
+}
+
 interface DashboardData {
   totalUsers: number;
   todayUsers: number;
@@ -38,6 +47,9 @@ interface DashboardData {
   todayRevenue: number;
   todayCost: number;
   todayRequests: number;
+  errorRate: number;
+  todayErrorRate: number;
+  topModels: TopModel[];
   trends: TrendItem[];
 }
 
@@ -87,10 +99,10 @@ export default function AdminDashboardPage() {
       icon: Activity,
     },
     {
-      title: t("todayRequestsTitle"),
-      value: String(data?.todayRequests ?? 0),
-      desc: t("todayRequestsDesc"),
-      icon: Zap,
+      title: t("errorRate"),
+      value: `${data?.errorRate ?? 0}%`,
+      desc: t("todayErrorRate", { rate: data?.todayErrorRate ?? 0 }),
+      icon: AlertTriangle,
     },
   ];
 
@@ -214,6 +226,54 @@ export default function AdminDashboardPage() {
           )}
         </CardContent>
       </Card>
+
+      {/* Top Models */}
+      {!loading && (data?.topModels?.length ?? 0) > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>{t("topModelsTitle")}</CardTitle>
+            <CardDescription>{t("topModelsDesc")}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ResponsiveContainer width="100%" height={Math.max(200, (data?.topModels?.length ?? 0) * 48)}>
+              <BarChart
+                data={data?.topModels ?? []}
+                layout="vertical"
+                margin={{ top: 5, right: 30, left: 120, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
+                <XAxis
+                  type="number"
+                  className="text-xs"
+                  tick={{ fill: "hsl(var(--muted-foreground))" }}
+                  allowDecimals={false}
+                />
+                <YAxis
+                  type="category"
+                  dataKey="displayName"
+                  className="text-xs"
+                  tick={{ fill: "hsl(var(--muted-foreground))" }}
+                  width={115}
+                />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "hsl(var(--popover))",
+                    border: "1px solid hsl(var(--border))",
+                    borderRadius: "8px",
+                    color: "hsl(var(--popover-foreground))",
+                  }}
+                  formatter={(value, name) => {
+                    const v = Number(value);
+                    if (name === "requests") return [v, t("requestCount")];
+                    return [`¥${v.toFixed(4)}`, t("revenue")];
+                  }}
+                />
+                <Bar dataKey="requests" fill="hsl(var(--primary))" radius={[0, 4, 4, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }
