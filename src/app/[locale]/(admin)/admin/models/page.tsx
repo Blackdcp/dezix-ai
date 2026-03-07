@@ -86,6 +86,8 @@ const emptyPriceForm = {
   sellOutPrice: "",
   inputPrice: "",
   outputPrice: "",
+  mode: "multiplier" as "multiplier" | "absolute",
+  multiplier: "1.5",
 };
 
 export default function AdminModelsPage() {
@@ -308,10 +310,21 @@ export default function AdminModelsPage() {
     const payload: Record<string, unknown> = {
       modelIds: Array.from(selectedIds),
     };
-    if (priceForm.sellPrice) payload.sellPrice = parseFloat(priceForm.sellPrice);
-    if (priceForm.sellOutPrice) payload.sellOutPrice = parseFloat(priceForm.sellOutPrice);
-    if (priceForm.inputPrice) payload.inputPrice = parseFloat(priceForm.inputPrice);
-    if (priceForm.outputPrice) payload.outputPrice = parseFloat(priceForm.outputPrice);
+
+    if (priceForm.mode === "multiplier") {
+      const m = parseFloat(priceForm.multiplier);
+      if (!m || m < 1) {
+        toast.error(t("invalidMultiplier"));
+        setBatchSaving(false);
+        return;
+      }
+      payload.multiplier = m;
+    } else {
+      if (priceForm.sellPrice) payload.sellPrice = parseFloat(priceForm.sellPrice);
+      if (priceForm.sellOutPrice) payload.sellOutPrice = parseFloat(priceForm.sellOutPrice);
+      if (priceForm.inputPrice) payload.inputPrice = parseFloat(priceForm.inputPrice);
+      if (priceForm.outputPrice) payload.outputPrice = parseFloat(priceForm.outputPrice);
+    }
 
     try {
       const res = await fetch("/api/admin/models/batch-price", {
@@ -387,6 +400,7 @@ export default function AdminModelsPage() {
                     <TableHead>{t("category")}</TableHead>
                     <TableHead className="text-right">{t("costPrice")}</TableHead>
                     <TableHead className="text-right">{t("sellPrice")}</TableHead>
+                    <TableHead className="text-right">{t("margin")}</TableHead>
                     <TableHead>{t("context")}</TableHead>
                     <TableHead>{t("status")}</TableHead>
                     <TableHead>{t("health24h")}</TableHead>
@@ -419,6 +433,18 @@ export default function AdminModelsPage() {
                       </TableCell>
                       <TableCell className="text-right text-sm">
                         ¥{m.sellPrice} / ¥{m.sellOutPrice}
+                      </TableCell>
+                      <TableCell className="text-right text-sm">
+                        {(() => {
+                          if (m.inputPrice <= 0) return <span className="text-muted-foreground">—</span>;
+                          const ratio = m.sellPrice / m.inputPrice;
+                          const pct = ((ratio - 1) * 100).toFixed(0);
+                          return (
+                            <span className={Number(pct) > 0 ? "text-green-600 font-medium" : "text-red-600 font-medium"}>
+                              {ratio.toFixed(1)}x ({pct}%)
+                            </span>
+                          );
+                        })()}
                       </TableCell>
                       <TableCell>{(m.maxContext / 1000).toFixed(0)}K</TableCell>
                       <TableCell>
@@ -468,7 +494,7 @@ export default function AdminModelsPage() {
                   ))}
                   {models.length === 0 && (
                     <TableRow>
-                      <TableCell colSpan={10} className="text-center text-muted-foreground py-8">
+                      <TableCell colSpan={11} className="text-center text-muted-foreground py-8">
                         {t("noModels")}
                       </TableCell>
                     </TableRow>
@@ -678,51 +704,91 @@ export default function AdminModelsPage() {
               {t("batchPriceDesc", { count: selectedIds.size })}
             </DialogDescription>
           </DialogHeader>
-          <div className="grid gap-4 py-2">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label>{t("sellInputLabel")}</Label>
-                <Input
-                  type="number"
-                  step="0.00000001"
-                  placeholder="0.002"
-                  value={priceForm.sellPrice}
-                  onChange={(e) => setPriceForm({ ...priceForm, sellPrice: e.target.value })}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label>{t("sellOutputLabel")}</Label>
-                <Input
-                  type="number"
-                  step="0.00000001"
-                  placeholder="0.006"
-                  value={priceForm.sellOutPrice}
-                  onChange={(e) => setPriceForm({ ...priceForm, sellOutPrice: e.target.value })}
-                />
-              </div>
+          <div className="space-y-4 py-2">
+            {/* Mode toggle */}
+            <div className="flex gap-2">
+              <Button
+                variant={priceForm.mode === "multiplier" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setPriceForm({ ...priceForm, mode: "multiplier" })}
+              >
+                {t("multiplierMode")}
+              </Button>
+              <Button
+                variant={priceForm.mode === "absolute" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setPriceForm({ ...priceForm, mode: "absolute" })}
+              >
+                {t("absoluteMode")}
+              </Button>
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label>{t("costInputLabel")}</Label>
-                <Input
-                  type="number"
-                  step="0.00000001"
-                  placeholder="0.001"
-                  value={priceForm.inputPrice}
-                  onChange={(e) => setPriceForm({ ...priceForm, inputPrice: e.target.value })}
-                />
+
+            {priceForm.mode === "multiplier" ? (
+              <div className="space-y-3">
+                <p className="text-sm text-muted-foreground">{t("multiplierDesc")}</p>
+                <div className="space-y-2">
+                  <Label>{t("multiplierLabel")}</Label>
+                  <Input
+                    type="number"
+                    step="0.1"
+                    min="1"
+                    placeholder="1.5"
+                    value={priceForm.multiplier}
+                    onChange={(e) => setPriceForm({ ...priceForm, multiplier: e.target.value })}
+                  />
+                  <p className="text-xs text-muted-foreground">
+                    {t("multiplierExample", { multiplier: priceForm.multiplier || "1.5", profit: (((parseFloat(priceForm.multiplier) || 1.5) - 1) * 100).toFixed(0) })}
+                  </p>
+                </div>
               </div>
-              <div className="space-y-2">
-                <Label>{t("costOutputLabel")}</Label>
-                <Input
-                  type="number"
-                  step="0.00000001"
-                  placeholder="0.004"
-                  value={priceForm.outputPrice}
-                  onChange={(e) => setPriceForm({ ...priceForm, outputPrice: e.target.value })}
-                />
+            ) : (
+              <div className="grid gap-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label>{t("sellInputLabel")}</Label>
+                    <Input
+                      type="number"
+                      step="0.00000001"
+                      placeholder="0.002"
+                      value={priceForm.sellPrice}
+                      onChange={(e) => setPriceForm({ ...priceForm, sellPrice: e.target.value })}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>{t("sellOutputLabel")}</Label>
+                    <Input
+                      type="number"
+                      step="0.00000001"
+                      placeholder="0.006"
+                      value={priceForm.sellOutPrice}
+                      onChange={(e) => setPriceForm({ ...priceForm, sellOutPrice: e.target.value })}
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label>{t("costInputLabel")}</Label>
+                    <Input
+                      type="number"
+                      step="0.00000001"
+                      placeholder="0.001"
+                      value={priceForm.inputPrice}
+                      onChange={(e) => setPriceForm({ ...priceForm, inputPrice: e.target.value })}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>{t("costOutputLabel")}</Label>
+                    <Input
+                      type="number"
+                      step="0.00000001"
+                      placeholder="0.004"
+                      value={priceForm.outputPrice}
+                      onChange={(e) => setPriceForm({ ...priceForm, outputPrice: e.target.value })}
+                    />
+                  </div>
+                </div>
               </div>
-            </div>
+            )}
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setBatchDialogOpen(false)}>{t("cancel")}</Button>

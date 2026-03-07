@@ -107,8 +107,10 @@ export interface GatewayContext {
   model: {
     id: string;
     modelId: string;
-    sellPrice: number;   // per 1K input tokens
-    sellOutPrice: number; // per 1K output tokens
+    sellPrice: number;   // per 1K input tokens (what user pays)
+    sellOutPrice: number; // per 1K output tokens (what user pays)
+    inputPrice: number;  // per 1K input tokens (what we pay upstream)
+    outputPrice: number; // per 1K output tokens (what we pay upstream)
   };
   channel?: {
     id: string;

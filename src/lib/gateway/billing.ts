@@ -38,9 +38,10 @@ export async function chargeUser(
     (usage.prompt_tokens / 1000) * ctx.model.sellPrice +
     (usage.completion_tokens / 1000) * ctx.model.sellOutPrice;
 
-  // Cost is what we pay upstream — for logging purposes
-  // For now we use a simple ratio (sell price is the revenue, cost is tracked separately)
-  const cost = revenue * 0.6; // Rough estimate; actual cost from Model.inputPrice/outputPrice
+  // Cost is what we pay upstream — calculated from real cost prices
+  const cost =
+    (usage.prompt_tokens / 1000) * ctx.model.inputPrice +
+    (usage.completion_tokens / 1000) * ctx.model.outputPrice;
 
   if (revenue <= 0) {
     return { revenue: 0, cost: 0 };

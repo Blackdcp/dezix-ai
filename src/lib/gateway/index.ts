@@ -85,6 +85,8 @@ export async function processCompletionRequest(
         modelId: modelRecord.modelId,
         sellPrice: Number(modelRecord.sellPrice),
         sellOutPrice: Number(modelRecord.sellOutPrice),
+        inputPrice: Number(modelRecord.inputPrice),
+        outputPrice: Number(modelRecord.outputPrice),
       },
       requestIp,
     };

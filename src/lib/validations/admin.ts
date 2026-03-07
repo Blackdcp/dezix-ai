@@ -106,4 +106,5 @@ export const adminBatchPriceSchema = z.object({
   sellOutPrice: z.number().min(0).optional(),
   inputPrice: z.number().min(0).optional(),
   outputPrice: z.number().min(0).optional(),
+  multiplier: z.number().min(1).optional(), // sell = cost × multiplier
 });

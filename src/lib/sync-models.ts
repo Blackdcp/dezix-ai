@@ -1,5 +1,4 @@
 import { db } from "@/lib/db";
-import { decrypt } from "@/lib/encryption";
 import { getModelBrand } from "@/lib/brand";
 
 // Pricing tiers (per 1K tokens) — same as seed.ts
@@ -12,13 +11,6 @@ const PRICING_TIERS = {
 } as const;
 
 type PricingTier = keyof typeof PRICING_TIERS;
-
-interface UpstreamModel {
-  id: string;
-  object?: string;
-  created?: number;
-  owned_by?: string;
-}
 
 export interface ModelDefaults {
   displayName: string;
@@ -36,71 +28,147 @@ export interface SyncResult {
   total: number;
 }
 
+// ============================================================
+// Sufy page scraping — extract model IDs from HTML
+// ============================================================
+
+/** Known model ID patterns that appear on the Sufy page */
+const MODEL_ID_PATTERNS: RegExp[] = [
+  /openai\/[\w.-]+/g,
+  /gpt-oss-[\w]+/g,
+  /sora-[\w.-]+/g,
+  /claude-\d[\w.-]*/g,
+  /gemini-\d[\w.-]*/g,
+  /veo-\d[\w.-]*/g,
+  /deepseek-[\w.-]+/g,
+  /x-ai\/[\w.-]+/g,
+  /doubao-[\w.-]+/g,
+  /qwen[\d][\w.-]*/g,
+  /qwen-[\w.-]+/g,
+  /z-ai\/[\w.-]+/g,
+  /glm-\d[\w.-]*/g,
+  /moonshotai\/[\w.-]+/g,
+  /kimi-[\w.-]+/g,
+  /minimax\/[\w.-]+/g,
+  /minimax-[\w]+/g,
+  /kling-[\w.-]+/g,
+  /viduq?\d[\w.-]*/g,
+  /xiaomi\/[\w.-]+/g,
+  /meituan\/[\w.-]+/g,
+  /stepfun\/[\w.-]+/g,
+  /arcee-ai\/[\w.-]+/g,
+];
+
+/** IDs to exclude — CSS classes, HTML fragments, false positives */
+const EXCLUDE_IDS = new Set([
+  "qwen", "minimax", "deepseek", "kimi",
+]);
+
 /**
- * Fetch upstream model list from /v1/models endpoint
+ * Fetch model IDs from the Sufy models page.
+ * Scrapes https://sufy.com/services/ai-inference/models and extracts
+ * model IDs from the embedded Next.js RSC payload.
  */
-export async function fetchUpstreamModels(apiKey: string, baseUrl: string): Promise<string[]> {
-  const url = `${baseUrl.replace(/\/$/, "")}/models`;
+export async function fetchSufyModels(): Promise<string[]> {
+  const url = "https://sufy.com/services/ai-inference/models";
   const res = await fetch(url, {
-    headers: { Authorization: `Bearer ${apiKey}` },
-    signal: AbortSignal.timeout(15000),
+    headers: {
+      "User-Agent": "Mozilla/5.0 (compatible; DezixAI/1.0)",
+      "Accept": "text/html",
+    },
+    signal: AbortSignal.timeout(30000),
   });
 
   if (!res.ok) {
-    throw new Error(`Upstream API returned ${res.status}: ${res.statusText}`);
+    throw new Error(`Sufy page returned ${res.status}: ${res.statusText}`);
   }
 
-  const data = await res.json();
-  const models: UpstreamModel[] = data.data || [];
-  return models.map((m) => m.id).filter(Boolean);
+  const html = await res.text();
+  const modelIds = new Set<string>();
+
+  // Extract model IDs using known patterns
+  for (const pattern of MODEL_ID_PATTERNS) {
+    // Reset regex state for global patterns
+    pattern.lastIndex = 0;
+    const matches = html.matchAll(new RegExp(pattern.source, "g"));
+    for (const match of matches) {
+      const id = match[0];
+      // Filter out obvious false positives
+      if (id.length >= 3 && id.length < 60 && !EXCLUDE_IDS.has(id)) {
+        modelIds.add(id);
+      }
+    }
+  }
+
+  // Also check for "asr" and "tts" specifically (simple IDs)
+  if (html.includes('"asr"') || html.includes("'asr'")) modelIds.add("asr");
+  if (html.includes('"tts"') || html.includes("'tts'")) modelIds.add("tts");
+
+  if (modelIds.size === 0) {
+    throw new Error("No models found on Sufy page — page structure may have changed");
+  }
+
+  return [...modelIds].sort();
 }
 
-/**
- * Infer display name from modelId:
- * - Remove vendor prefix (e.g., "deepseek/" or "openai/")
- * - Capitalize first letters of segments
- */
+// ============================================================
+// Model defaults inference
+// ============================================================
+
 function inferDisplayName(modelId: string): string {
-  // Remove prefix like "vendor/"
   const slashIdx = modelId.indexOf("/");
   const raw = slashIdx > 0 ? modelId.slice(slashIdx + 1) : modelId;
 
-  // Split by hyphens and capitalize
   return raw
     .split("-")
     .map((seg) => seg.charAt(0).toUpperCase() + seg.slice(1))
     .join(" ");
 }
 
-/**
- * Infer category from modelId keywords
- */
 function inferCategory(modelId: string): string {
   const lower = modelId.toLowerCase();
-  if (/-vl-|vision|vl-/.test(lower)) return "multimodal";
-  if (/-thinking|-r1|thinking/.test(lower)) return "reasoning";
+  if (/sora-|veo-|kling-(?!image)|viduq?/.test(lower)) return "video";
+  if (/kling-image/.test(lower)) return "image";
+  if (/^asr$|^tts$/.test(lower)) return "audio";
+  if (/-vl-|vision|-image/.test(lower)) {
+    if (/-image/.test(lower)) return "image";
+    return "multimodal";
+  }
+  if (/-thinking|-r1|reasoning/.test(lower)) return "reasoning";
   if (/-code|-codex|coder/.test(lower)) return "code";
-  if (/-image/.test(lower)) return "image";
   return "chat";
 }
 
-/**
- * Infer pricing tier based on brand
- */
 function inferPricingTier(modelId: string): PricingTier {
   const brand = getModelBrand(modelId);
   const lower = modelId.toLowerCase();
 
+  // Video models
+  if (["video", "image"].includes(inferCategory(modelId))) {
+    if (brand === "OpenAI") return "t5";
+    if (lower.includes("pro") || lower.includes("3.1") || lower.includes("v3")) return "t4";
+    if (lower.includes("turbo") || lower.includes("v1")) return "t1";
+    return "t3";
+  }
+
   // Premium/flagship brands
-  if (brand === "OpenAI" || brand === "Anthropic" || brand === "xAI") return "t4";
+  if (brand === "OpenAI" || brand === "Anthropic") {
+    if (lower.includes("nano")) return "t2";
+    if (lower.includes("mini")) return "t3";
+    if (lower.includes("haiku")) return "t2";
+    if (lower.includes("sonnet")) return "t4";
+    return "t5";
+  }
+  if (brand === "xAI") return "t4";
   if (brand === "Google") {
     if (lower.includes("pro")) return "t4";
+    if (lower.includes("flash-lite")) return "t1";
     return "t2";
   }
 
   // Check for specific keywords that suggest higher tier
   if (lower.includes("max") || lower.includes("pro")) return "t3";
-  if (lower.includes("235b") || lower.includes("480b")) return "t3";
+  if (lower.includes("235b") || lower.includes("480b") || lower.includes("397b")) return "t4";
 
   // Budget models
   if (lower.includes("lite") || lower.includes("mini") || lower.includes("flash")) return "t1";
@@ -110,24 +178,18 @@ function inferPricingTier(modelId: string): PricingTier {
   return "t2";
 }
 
-/**
- * Infer max context from modelId keywords
- */
 function inferMaxContext(modelId: string): number {
   const brand = getModelBrand(modelId);
+  const category = inferCategory(modelId);
+  if (["video", "image", "audio"].includes(category)) return 0;
   if (brand === "Google") return 1000000;
   if (brand === "Anthropic") return 200000;
-  if (brand === "OpenAI" || brand === "xAI") return 128000;
-  if (brand === "智谱 AI") return 128000;
-  if (brand === "月之暗面") return 128000;
-  if (brand === "MiniMax") return 64000;
-  if (brand === "DeepSeek") return 64000;
+  if (brand === "OpenAI" || brand === "xAI" || brand === "Arcee") return 128000;
+  if (brand === "Zhipu" || brand === "Moonshot") return 128000;
+  if (brand === "MiniMax" || brand === "DeepSeek") return 64000;
   return 32000;
 }
 
-/**
- * Infer all default attributes for a new model
- */
 export function inferModelDefaults(modelId: string): ModelDefaults {
   const tier = inferPricingTier(modelId);
   const pricing = PRICING_TIERS[tier];
@@ -140,10 +202,14 @@ export function inferModelDefaults(modelId: string): ModelDefaults {
   };
 }
 
+// ============================================================
+// Sync orchestrator
+// ============================================================
+
 /**
- * Sync upstream models for a given provider.
- * - Fetches model list from upstream API
- * - Compares with DB (isManual=false models only)
+ * Sync models from the Sufy page.
+ * - Fetches model list by scraping the Sufy models page
+ * - Compares with ALL models in DB for this provider
  * - Creates new models, deactivates removed ones
  * - Updates channel model lists
  *
@@ -153,37 +219,19 @@ export async function syncUpstreamModels(
   providerId: string,
   dryRun = false
 ): Promise<SyncResult> {
-  // 1. Find active channel for this provider
-  const channel = await db.channel.findFirst({
-    where: { providerId, isActive: true },
-    orderBy: { priority: "desc" },
-  });
+  // 1. Fetch model list from Sufy page
+  const upstreamIds = await fetchSufyModels();
 
-  if (!channel) {
-    throw new Error("No active channel found for this provider");
-  }
-
-  // 2. Get provider baseUrl
-  const provider = await db.provider.findUnique({ where: { id: providerId } });
-  if (!provider) {
-    throw new Error("Provider not found");
-  }
-
-  // 3. Decrypt API key and fetch upstream models
-  const apiKey = decrypt(channel.apiKey);
-  const baseUrl = channel.baseUrl || provider.baseUrl;
-  const upstreamIds = await fetchUpstreamModels(apiKey, baseUrl);
-
-  // 4. Get current non-manual models in DB
+  // 2. Get ALL current models in DB for this provider
   const dbModels = await db.model.findMany({
-    where: { providerId, isManual: false },
+    where: { providerId },
     select: { modelId: true, isActive: true },
   });
 
   const dbModelIds = new Set(dbModels.map((m) => m.modelId));
   const upstreamSet = new Set(upstreamIds);
 
-  // 5. Find new models (upstream has, DB doesn't)
+  // 3. Find new models (Sufy has, DB doesn't)
   const added: string[] = [];
   for (const id of upstreamIds) {
     if (!dbModelIds.has(id)) {
@@ -191,7 +239,7 @@ export async function syncUpstreamModels(
     }
   }
 
-  // 6. Find deactivated models (DB has active, upstream doesn't)
+  // 4. Find deactivated models (DB has active, Sufy doesn't)
   const deactivated: string[] = [];
   for (const m of dbModels) {
     if (m.isActive && !upstreamSet.has(m.modelId)) {
@@ -203,7 +251,7 @@ export async function syncUpstreamModels(
     return { added, deactivated, total: upstreamIds.length };
   }
 
-  // 7. Create new models
+  // 5. Create new models
   for (const modelId of added) {
     const defaults = inferModelDefaults(modelId);
     await db.model.create({
@@ -223,7 +271,7 @@ export async function syncUpstreamModels(
     });
   }
 
-  // 8. Deactivate removed models
+  // 6. Deactivate removed models
   if (deactivated.length > 0) {
     await db.model.updateMany({
       where: { modelId: { in: deactivated }, providerId },
@@ -231,7 +279,7 @@ export async function syncUpstreamModels(
     });
   }
 
-  // 9. Re-activate models that were previously deactivated but are now back
+  // 7. Re-activate models that were previously deactivated but are now back
   const reactivateIds: string[] = [];
   for (const m of dbModels) {
     if (!m.isActive && upstreamSet.has(m.modelId)) {
@@ -245,14 +293,13 @@ export async function syncUpstreamModels(
     });
   }
 
-  // 10. Update channel models list = all active models for this provider
+  // 8. Update channel models list = all active models for this provider
   const allActiveModels = await db.model.findMany({
     where: { providerId, isActive: true },
     select: { modelId: true },
   });
   const allModelIds = allActiveModels.map((m) => m.modelId);
 
-  // Update all active channels for this provider
   await db.channel.updateMany({
     where: { providerId, isActive: true },
     data: { models: allModelIds },
