@@ -29,8 +29,9 @@ export async function GET(req: NextRequest) {
       sellPrice: true,
       sellOutPrice: true,
       maxContext: true,
+      createdAt: true,
     },
-    orderBy: { displayName: "asc" },
+    orderBy: { createdAt: "desc" },
   });
 
   const allModels = await db.model.findMany({
@@ -47,6 +48,9 @@ export async function GET(req: NextRequest) {
   });
   const brands = getBrandList(allActiveModels.map((m) => m.modelId));
 
+  // "New" threshold: models created within last 7 days
+  const newThreshold = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+
   return NextResponse.json(
     {
       models: models.map((m) => ({
@@ -58,6 +62,8 @@ export async function GET(req: NextRequest) {
         sellPrice: Number(m.sellPrice),
         sellOutPrice: Number(m.sellOutPrice),
         maxContext: m.maxContext,
+        isNew: m.createdAt >= newThreshold,
+        createdAt: m.createdAt.toISOString(),
       })),
       providers: brands.map((b) => ({ id: b, name: b })),
       categories,
