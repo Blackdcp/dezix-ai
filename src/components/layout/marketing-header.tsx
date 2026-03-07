@@ -14,6 +14,7 @@ import { Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
+import { ContactDialog } from "@/components/marketing/contact-dialog";
 
 const navLinks = [
   { href: "/", labelKey: "home" },
@@ -60,6 +61,14 @@ export function MarketingHeader() {
               </Link>
             );
           })}
+          <ContactDialog>
+            <button
+              type="button"
+              className="rounded-full px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground hover:bg-muted"
+            >
+              {t("contact")}
+            </button>
+          </ContactDialog>
         </nav>
 
         {/* Desktop actions */}
@@ -100,6 +109,15 @@ export function MarketingHeader() {
                   {t(link.labelKey)}
                 </Link>
               ))}
+              <ContactDialog>
+                <button
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  className="rounded-xl px-3 py-2.5 text-left text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                >
+                  {t("contact")}
+                </button>
+              </ContactDialog>
               <div className="mt-6 flex flex-col gap-2">
                 <Button variant="outline" size="sm" className="rounded-full" asChild>
                   <Link href="/login">{t("login")}</Link>

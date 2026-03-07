@@ -211,6 +211,7 @@ enum TransactionType {
   REFUND   // 退款
   REFERRAL // 推荐奖励
   ADMIN    // 管理员调整
+  BONUS    // 注册赠送
 }
 
 // ==================== 推荐返佣 ====================

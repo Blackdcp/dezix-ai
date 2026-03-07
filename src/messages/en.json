@@ -27,6 +27,7 @@
     "pricing": "Pricing",
     "docs": "Docs",
     "faq": "FAQ",
+    "contact": "Contact",
     "login": "Login",
     "register": "Sign Up",
     "freeRegister": "Sign Up Free",
@@ -65,8 +66,17 @@
     "quickStart": "Quick Start",
     "apiReference": "API Reference",
     "sdkExamples": "SDK Examples",
+    "contactUs": "Contact Us",
     "description": "Unified AI model gateway platform. One API Key to access all mainstream AI models.",
     "copyright": "© 2026 Dezix AI. All rights reserved."
+  },
+  "Contact": {
+    "title": "Contact Us",
+    "subtitle": "For inquiries or partnerships, feel free to reach out to our sales team",
+    "wechat": "WeChat",
+    "phone": "Phone",
+    "email": "Email",
+    "workingHours": "Business hours: Mon - Fri 9:00 AM - 6:00 PM (CST)"
   },
   "DocsSidebar": {
     "gettingStarted": "Getting Started",

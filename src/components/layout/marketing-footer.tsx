@@ -1,5 +1,6 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { ContactDialog } from "@/components/marketing/contact-dialog";
 
 const productLinks = [
   { href: "/model-list", labelKey: "modelList" },
@@ -91,6 +92,16 @@ export function MarketingFooter() {
                   </Link>
                 </li>
               ))}
+              <li>
+                <ContactDialog>
+                  <button
+                    type="button"
+                    className="text-sm text-muted-foreground transition-colors hover:text-primary"
+                  >
+                    {t("Footer.contactUs")}
+                  </button>
+                </ContactDialog>
+              </li>
             </ul>
           </div>
         </div>

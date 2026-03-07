@@ -7,6 +7,7 @@ import {
   AnimatedSection,
   AnimatedItem,
 } from "@/components/ui/animated-section";
+import { ContactDialog } from "@/components/marketing/contact-dialog";
 
 export function PricingSection() {
   const t = useTranslations("Pricing");
@@ -20,6 +21,7 @@ export function PricingSection() {
       cta: t("freeRegister"),
       href: "/register" as const,
       highlight: false,
+      isContact: false,
     },
     {
       name: t("payAsYouGo"),
@@ -29,6 +31,7 @@ export function PricingSection() {
       cta: t("topUpNow"),
       href: "/register" as const,
       highlight: true,
+      isContact: false,
     },
     {
       name: t("enterprise"),
@@ -38,6 +41,7 @@ export function PricingSection() {
       cta: t("contactSales"),
       href: "/faq" as const,
       highlight: false,
+      isContact: true,
     },
   ];
 
@@ -87,16 +91,27 @@ export function PricingSection() {
                     </li>
                   ))}
                 </ul>
-                <Link
-                  href={plan.href}
-                  className={`mt-8 flex h-11 w-full items-center justify-center text-sm font-medium transition-all ${
-                    plan.highlight
-                      ? "btn-primary"
-                      : "btn-secondary"
-                  }`}
-                >
-                  {plan.cta}
-                </Link>
+                {plan.isContact ? (
+                  <ContactDialog>
+                    <button
+                      type="button"
+                      className="btn-secondary mt-8 flex h-11 w-full items-center justify-center text-sm font-medium transition-all"
+                    >
+                      {plan.cta}
+                    </button>
+                  </ContactDialog>
+                ) : (
+                  <Link
+                    href={plan.href}
+                    className={`mt-8 flex h-11 w-full items-center justify-center text-sm font-medium transition-all ${
+                      plan.highlight
+                        ? "btn-primary"
+                        : "btn-secondary"
+                    }`}
+                  >
+                    {plan.cta}
+                  </Link>
+                )}
               </div>
             </AnimatedItem>
           ))}

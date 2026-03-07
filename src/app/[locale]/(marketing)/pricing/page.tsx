@@ -17,6 +17,7 @@ import {
   AnimatedItem,
 } from "@/components/ui/animated-section";
 import { useTranslations } from "next-intl";
+import { ContactDialog } from "@/components/marketing/contact-dialog";
 
 interface Model {
   id: string;
@@ -48,6 +49,7 @@ export default function PricingPage() {
       cta: tp("freeRegister"),
       href: "/register",
       highlight: false,
+      isContact: false,
     },
     {
       name: tp("payAsYouGo"),
@@ -57,6 +59,7 @@ export default function PricingPage() {
       cta: tp("topUpNow"),
       href: "/register",
       highlight: true,
+      isContact: false,
     },
     {
       name: tp("enterprise"),
@@ -66,6 +69,7 @@ export default function PricingPage() {
       cta: tp("contactSales"),
       href: "/faq",
       highlight: false,
+      isContact: true,
     },
   ];
 
@@ -116,16 +120,27 @@ export default function PricingPage() {
                   </li>
                 ))}
               </ul>
-              <Link
-                href={plan.href}
-                className={`mt-8 flex h-11 w-full items-center justify-center rounded-full text-sm font-medium transition-all ${
-                  plan.highlight
-                    ? "btn-primary"
-                    : "border border-border bg-card text-foreground hover:bg-background"
-                }`}
-              >
-                {plan.cta}
-              </Link>
+              {plan.isContact ? (
+                <ContactDialog>
+                  <button
+                    type="button"
+                    className="mt-8 flex h-11 w-full items-center justify-center rounded-full border border-border bg-card text-sm font-medium text-foreground transition-all hover:bg-background"
+                  >
+                    {plan.cta}
+                  </button>
+                </ContactDialog>
+              ) : (
+                <Link
+                  href={plan.href}
+                  className={`mt-8 flex h-11 w-full items-center justify-center rounded-full text-sm font-medium transition-all ${
+                    plan.highlight
+                      ? "btn-primary"
+                      : "border border-border bg-card text-foreground hover:bg-background"
+                  }`}
+                >
+                  {plan.cta}
+                </Link>
+              )}
             </div>
           </AnimatedItem>
         ))}

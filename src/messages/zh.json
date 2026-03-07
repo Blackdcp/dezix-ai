@@ -27,6 +27,7 @@
     "pricing": "定价",
     "docs": "文档",
     "faq": "FAQ",
+    "contact": "联系我们",
     "login": "登录",
     "register": "注册",
     "freeRegister": "免费注册",
@@ -65,8 +66,17 @@
     "quickStart": "快速开始",
     "apiReference": "API 参考",
     "sdkExamples": "SDK 示例",
+    "contactUs": "联系我们",
     "description": "统一 AI 模型网关平台，一个 API Key 访问所有主流 AI 模型。",
     "copyright": "© 2026 Dezix AI. All rights reserved."
+  },
+  "Contact": {
+    "title": "联系我们",
+    "subtitle": "如需咨询或合作，欢迎通过以下方式联系我们的销售团队",
+    "wechat": "微信",
+    "phone": "电话",
+    "email": "邮箱",
+    "workingHours": "工作时间：周一至周五 9:00 - 18:00"
   },
   "DocsSidebar": {
     "gettingStarted": "入门",

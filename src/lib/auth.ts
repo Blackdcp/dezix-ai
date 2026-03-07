@@ -5,6 +5,7 @@ import Google from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
+import { Prisma } from "@prisma/client";
 import { db } from "@/lib/db";
 import { authConfig } from "@/lib/auth.config";
 
@@ -97,9 +98,34 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         /* cookies() unavailable in some contexts — ignore */
       }
 
-      await db.user.update({
-        where: { id: user.id },
-        data: updateData,
+      await db.$transaction(async (tx) => {
+        await tx.user.update({
+          where: { id: user.id },
+          data: updateData,
+        });
+
+        // Grant welcome bonus
+        const cfg = await tx.systemConfig.findUnique({ where: { key: "welcome_bonus" } });
+        const bonusAmount = new Prisma.Decimal(cfg?.value || "1");
+        if (bonusAmount.gt(0)) {
+          await tx.user.update({
+            where: { id: user.id },
+            data: { balance: { increment: bonusAmount } },
+          });
+          const updated = await tx.user.findUniqueOrThrow({
+            where: { id: user.id },
+            select: { balance: true },
+          });
+          await tx.transaction.create({
+            data: {
+              userId: user.id!,
+              type: "BONUS",
+              amount: bonusAmount,
+              balance: updated.balance,
+              description: "Welcome bonus",
+            },
+          });
+        }
       });
     },
   },

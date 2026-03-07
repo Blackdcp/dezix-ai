@@ -1,9 +1,13 @@
 import { NextResponse } from "next/server";
 import crypto from "crypto";
 import bcrypt from "bcryptjs";
+import { Prisma } from "@prisma/client";
 import { db } from "@/lib/db";
 import { registerSchema } from "@/lib/validations";
 import { checkIpRateLimit } from "@/lib/gateway/rate-limiter";
+
+/** Default welcome bonus (¥) — can be overridden via SystemConfig key "welcome_bonus" */
+const DEFAULT_WELCOME_BONUS = "1";
 
 export async function POST(req: Request) {
   try {
@@ -52,14 +56,32 @@ export async function POST(req: Request) {
     const passwordHash = await bcrypt.hash(password, 12);
     const newReferralCode = crypto.randomBytes(4).toString("hex");
 
-    await db.user.create({
-      data: {
-        name,
-        email,
-        passwordHash,
-        referralCode: newReferralCode,
-        referredBy,
-      },
+    // Read configurable welcome bonus
+    const cfg = await db.systemConfig.findUnique({ where: { key: "welcome_bonus" } });
+    const bonusAmount = new Prisma.Decimal(cfg?.value || DEFAULT_WELCOME_BONUS);
+
+    // Create user + grant welcome bonus in a single transaction
+    await db.$transaction(async (tx) => {
+      const user = await tx.user.create({
+        data: {
+          name,
+          email,
+          passwordHash,
+          balance: bonusAmount,
+          referralCode: newReferralCode,
+          referredBy,
+        },
+      });
+
+      await tx.transaction.create({
+        data: {
+          userId: user.id,
+          type: "BONUS",
+          amount: bonusAmount,
+          balance: bonusAmount,
+          description: "Welcome bonus",
+        },
+      });
     });
 
     return NextResponse.json({ message: "REGISTER_SUCCESS" }, { status: 201 });

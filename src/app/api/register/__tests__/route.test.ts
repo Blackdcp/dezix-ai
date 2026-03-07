@@ -1,13 +1,34 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 // Mock db
+const mockUserCreate = vi.fn();
+const mockUserFindUnique = vi.fn();
+const mockUserFindFirst = vi.fn();
+const mockTransactionCreate = vi.fn();
+const mockSystemConfigFindUnique = vi.fn();
+
 vi.mock("@/lib/db", () => ({
   db: {
     user: {
-      findUnique: vi.fn(),
-      findFirst: vi.fn(),
-      create: vi.fn(),
+      findUnique: (...args: unknown[]) => mockUserFindUnique(...args),
+      findFirst: (...args: unknown[]) => mockUserFindFirst(...args),
+      create: (...args: unknown[]) => mockUserCreate(...args),
     },
+    systemConfig: {
+      findUnique: (...args: unknown[]) => mockSystemConfigFindUnique(...args),
+    },
+    $transaction: vi.fn(async (fn: (tx: unknown) => Promise<void>) => {
+      // Provide a mock tx that mimics Prisma client
+      const tx = {
+        user: {
+          create: mockUserCreate,
+        },
+        transaction: {
+          create: mockTransactionCreate,
+        },
+      };
+      return fn(tx);
+    }),
   },
 }));
 
@@ -37,7 +58,6 @@ vi.mock("bcryptjs", () => ({
 }));
 
 import { POST } from "../route";
-import { db } from "@/lib/db";
 
 function makeRequest(body: unknown) {
   return new Request("http://localhost:3000/api/register", {
@@ -52,11 +72,16 @@ describe("POST /api/register", () => {
     vi.clearAllMocks();
     // Default: rate limit allows requests
     mockLimit.mockResolvedValue({ success: true, remaining: 4 });
+    // Default: no welcome bonus config (uses default ¥1)
+    mockSystemConfigFindUnique.mockResolvedValue(null);
+    // Default: user create returns an object with id
+    mockUserCreate.mockResolvedValue({ id: "new-user-id" });
+    // Default: transaction create succeeds
+    mockTransactionCreate.mockResolvedValue({});
   });
 
   it("creates a new user successfully", async () => {
-    vi.mocked(db.user.findUnique).mockResolvedValue(null);
-    vi.mocked(db.user.create).mockResolvedValue({} as never);
+    mockUserFindUnique.mockResolvedValue(null);
 
     const response = await POST(makeRequest({
       name: "Test User",
@@ -67,11 +92,13 @@ describe("POST /api/register", () => {
     expect(response.status).toBe(201);
     const data = await response.json();
     expect(data.message).toBe("REGISTER_SUCCESS");
-    expect(db.user.create).toHaveBeenCalledTimes(1);
+    expect(mockUserCreate).toHaveBeenCalledTimes(1);
+    // Should also create a bonus transaction
+    expect(mockTransactionCreate).toHaveBeenCalledTimes(1);
   });
 
   it("rejects duplicate email", async () => {
-    vi.mocked(db.user.findUnique).mockResolvedValue({ id: "existing" } as never);
+    mockUserFindUnique.mockResolvedValue({ id: "existing" });
 
     const response = await POST(makeRequest({
       name: "Test",
@@ -113,9 +140,8 @@ describe("POST /api/register", () => {
   });
 
   it("handles referral code", async () => {
-    vi.mocked(db.user.findUnique).mockResolvedValue(null);
-    vi.mocked(db.user.findFirst).mockResolvedValue({ id: "referrer-id" } as never);
-    vi.mocked(db.user.create).mockResolvedValue({} as never);
+    mockUserFindUnique.mockResolvedValue(null);
+    mockUserFindFirst.mockResolvedValue({ id: "referrer-id" });
 
     const response = await POST(makeRequest({
       name: "New User",
@@ -125,7 +151,7 @@ describe("POST /api/register", () => {
     }));
 
     expect(response.status).toBe(201);
-    expect(db.user.create).toHaveBeenCalledWith(
+    expect(mockUserCreate).toHaveBeenCalledWith(
       expect.objectContaining({
         data: expect.objectContaining({
           referredBy: "referrer-id",
