@@ -229,6 +229,9 @@
   border-color: #D6D3CD;
   background: var(--muted);
 }
+.dark .btn-secondary:hover {
+  border-color: #57534E;
+}
 
 /* ── Dot grid background ── */
 .dot-grid {

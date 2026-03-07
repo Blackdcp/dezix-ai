@@ -718,16 +718,24 @@ export default function ModelListPage() {
                       copiedLabel={t("copiedModelId")}
                     />
 
-                    {/* Header: logo + name + badges */}
+                    {/* Header: logo + name */}
                     <div className="mb-3 flex items-start gap-3">
-                      <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-muted">
-                        <Logo className="h-6 w-6 rounded-md" />
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-muted dark:bg-white/10 dark:ring-1 dark:ring-white/10">
+                        <Logo className="h-6 w-6 rounded-md dark:brightness-110 dark:contrast-125" />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-2">
-                          <h3 className="truncate text-base font-semibold leading-snug text-foreground">
-                            {m.displayName}
-                          </h3>
+                        <h3 className="truncate text-base font-semibold leading-snug text-foreground">
+                          {m.displayName}
+                        </h3>
+                        {/* Category + context + badges — second line */}
+                        <div className="mt-0.5 flex flex-wrap items-center gap-1.5">
+                          <span className="text-xs text-muted-foreground">{tc(m.category)}</span>
+                          {contextLabel && (
+                            <>
+                              <span className="text-xs text-border">·</span>
+                              <span className="text-xs text-muted-foreground">{contextLabel}</span>
+                            </>
+                          )}
                           {m.badges.map((b) => (
                             <ModelBadge
                               key={b}
@@ -735,16 +743,6 @@ export default function ModelListPage() {
                               label={badgeLabel(b)}
                             />
                           ))}
-                        </div>
-                        {/* Category + context — second line */}
-                        <div className="mt-0.5 flex items-center gap-1.5 text-xs text-muted-foreground">
-                          <span>{tc(m.category)}</span>
-                          {contextLabel && (
-                            <>
-                              <span className="text-border">·</span>
-                              <span>{contextLabel}</span>
-                            </>
-                          )}
                         </div>
                       </div>
                     </div>
