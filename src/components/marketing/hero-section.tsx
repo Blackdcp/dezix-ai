@@ -11,64 +11,64 @@ import { ArrowRight } from "lucide-react";
 
 function CodePreview() {
   return (
-    <div className="mx-auto mt-12 max-w-2xl overflow-hidden rounded-2xl border border-[#292524] shadow-2xl shadow-black/20">
+    <div className="mx-auto mt-12 max-w-2xl overflow-hidden rounded-2xl border border-stone-200 shadow-2xl shadow-black/10 dark:border-stone-800 dark:shadow-black/40">
       {/* Title bar - dark */}
-      <div className="flex items-center gap-2 border-b border-[#292524] bg-[#1C1917] px-4 py-3">
+      <div className="flex items-center gap-2 border-b border-stone-800 bg-stone-900 px-4 py-3">
         <div className="flex gap-1.5">
-          <div className="h-3 w-3 rounded-full bg-[#D97706]" />
-          <div className="h-3 w-3 rounded-full bg-[#f59e0b]" />
-          <div className="h-3 w-3 rounded-full bg-[#16A34A]" />
+          <div className="h-3 w-3 rounded-full bg-amber-600" />
+          <div className="h-3 w-3 rounded-full bg-amber-400" />
+          <div className="h-3 w-3 rounded-full bg-green-600" />
         </div>
-        <span className="ml-2 font-mono text-xs text-muted-foreground">request.py</span>
+        <span className="ml-2 font-mono text-xs text-stone-500">request.py</span>
       </div>
       {/* Code - dark */}
-      <pre className="overflow-x-auto bg-[#0C0A09] p-5 text-sm leading-relaxed">
+      <pre className="overflow-x-auto bg-stone-950 p-5 text-sm leading-relaxed">
         <code>
           <span className="text-[#c084fc]">import</span>{" "}
           <span className="text-[#e2e8f0]">openai</span>{"\n\n"}
           <span className="text-[#e2e8f0]">client</span>{" "}
-          <span className="text-muted-foreground">=</span>{" "}
+          <span className="text-stone-500">=</span>{" "}
           <span className="text-[#e2e8f0]">openai</span>
-          <span className="text-muted-foreground">.</span>
+          <span className="text-stone-500">.</span>
           <span className="text-[#c084fc]">OpenAI</span>
-          <span className="text-muted-foreground">(</span>{"\n"}
+          <span className="text-stone-500">(</span>{"\n"}
           {"    "}
           <span className="text-[#e2e8f0]">base_url</span>
-          <span className="text-muted-foreground">=</span>
+          <span className="text-stone-500">=</span>
           <span className="text-[#4ade80]">&quot;https://api.dezix.ai/v1&quot;</span>
-          <span className="text-muted-foreground">,</span>{"\n"}
+          <span className="text-stone-500">,</span>{"\n"}
           {"    "}
           <span className="text-[#e2e8f0]">api_key</span>
-          <span className="text-muted-foreground">=</span>
+          <span className="text-stone-500">=</span>
           <span className="text-[#4ade80]">&quot;sk-dezix-...&quot;</span>{"\n"}
-          <span className="text-muted-foreground">)</span>{"\n\n"}
+          <span className="text-stone-500">)</span>{"\n\n"}
           <span className="text-[#e2e8f0]">response</span>{" "}
-          <span className="text-muted-foreground">=</span>{" "}
+          <span className="text-stone-500">=</span>{" "}
           <span className="text-[#e2e8f0]">client</span>
-          <span className="text-muted-foreground">.</span>
+          <span className="text-stone-500">.</span>
           <span className="text-[#e2e8f0]">chat</span>
-          <span className="text-muted-foreground">.</span>
+          <span className="text-stone-500">.</span>
           <span className="text-[#e2e8f0]">completions</span>
-          <span className="text-muted-foreground">.</span>
+          <span className="text-stone-500">.</span>
           <span className="text-[#c084fc]">create</span>
-          <span className="text-muted-foreground">(</span>{"\n"}
+          <span className="text-stone-500">(</span>{"\n"}
           {"    "}
           <span className="text-[#e2e8f0]">model</span>
-          <span className="text-muted-foreground">=</span>
+          <span className="text-stone-500">=</span>
           <span className="text-[#4ade80]">&quot;gpt-4o&quot;</span>
-          <span className="text-muted-foreground">,</span>{"\n"}
+          <span className="text-stone-500">,</span>{"\n"}
           {"    "}
           <span className="text-[#e2e8f0]">messages</span>
-          <span className="text-muted-foreground">=[&#123;</span>
+          <span className="text-stone-500">=[&#123;</span>
           <span className="text-[#4ade80]">&quot;role&quot;</span>
-          <span className="text-muted-foreground">:</span>{" "}
+          <span className="text-stone-500">:</span>{" "}
           <span className="text-[#4ade80]">&quot;user&quot;</span>
-          <span className="text-muted-foreground">,</span>{" "}
+          <span className="text-stone-500">,</span>{" "}
           <span className="text-[#4ade80]">&quot;content&quot;</span>
-          <span className="text-muted-foreground">:</span>{" "}
+          <span className="text-stone-500">:</span>{" "}
           <span className="text-[#4ade80]">&quot;Hello!&quot;</span>
-          <span className="text-muted-foreground">&#125;]</span>{"\n"}
-          <span className="text-muted-foreground">)</span>
+          <span className="text-stone-500">&#125;]</span>{"\n"}
+          <span className="text-stone-500">)</span>
         </code>
       </pre>
     </div>

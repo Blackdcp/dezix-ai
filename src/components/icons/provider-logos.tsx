@@ -10,7 +10,7 @@ const brandColors: Record<string, string> = {
   ByteDance: "#3C8CFF",
   Alibaba: "#FF6A00",
   Zhipu: "#0060D0",
-  Moonshot: "#1C1917",
+  Moonshot: "#6D28D9",
   MiniMax: "#0060D0",
   Xiaomi: "#FF6900",
   Meituan: "#FFD100",

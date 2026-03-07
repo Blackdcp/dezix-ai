@@ -12,7 +12,7 @@ export function CtaSection() {
   const t = useTranslations("Cta");
 
   return (
-    <section className="relative overflow-hidden bg-[#1C1917] py-20 md:py-28">
+    <section className="relative overflow-hidden bg-[#1C1917] dark:bg-[#0C0A09] py-20 md:py-28">
       {/* Background decorations */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(242,101,34,0.12),transparent_60%)]" />
@@ -28,7 +28,7 @@ export function CtaSection() {
             </h2>
           </AnimatedItem>
           <AnimatedItem>
-            <p className="mx-auto mt-5 max-w-xl text-lg text-[#A8A29E]">
+            <p className="mx-auto mt-5 max-w-xl text-lg text-stone-400">
               {t("description")}
             </p>
           </AnimatedItem>
@@ -36,14 +36,14 @@ export function CtaSection() {
             <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link
                 href="/register"
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-white px-8 text-base font-medium text-[#1C1917] transition-all hover:bg-[#F5F3EF] hover:shadow-lg hover:shadow-white/10"
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-white px-8 text-base font-medium text-stone-900 transition-all hover:bg-stone-100 hover:shadow-lg hover:shadow-white/10"
               >
                 {t("freeRegister")}
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 href="/docs/quick-start"
-                className="inline-flex h-12 items-center justify-center rounded-full border border-[#44403C] px-8 text-base font-medium text-white transition-all hover:border-[#57534E] hover:bg-[#292524]"
+                className="inline-flex h-12 items-center justify-center rounded-full border border-stone-700 px-8 text-base font-medium text-white transition-all hover:border-stone-600 hover:bg-stone-800"
               >
                 {t("readDocs")}
               </Link>

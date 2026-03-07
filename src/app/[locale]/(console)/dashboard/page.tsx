@@ -154,33 +154,33 @@ export default function DashboardPage() {
                     <stop offset="95%" stopColor="#16A34A" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#E7E5E0" />
+                <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
                 <XAxis
                   dataKey="date"
                   tickFormatter={formatDate}
                   className="text-xs"
-                  tick={{ fill: "#A8A29E" }}
+                  tick={{ fill: "currentColor", className: "fill-muted-foreground" }}
                 />
                 <YAxis
                   yAxisId="left"
                   className="text-xs"
-                  tick={{ fill: "#A8A29E" }}
+                  tick={{ fill: "currentColor", className: "fill-muted-foreground" }}
                   allowDecimals={false}
                 />
                 <YAxis
                   yAxisId="right"
                   orientation="right"
                   className="text-xs"
-                  tick={{ fill: "#A8A29E" }}
+                  tick={{ fill: "currentColor", className: "fill-muted-foreground" }}
                   tickFormatter={(v: number) => `¥${v}`}
                 />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: "#ffffff",
-                    border: "1px solid #E7E5E0",
+                    backgroundColor: "var(--card)",
+                    border: "1px solid var(--border)",
                     borderRadius: "12px",
-                    boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
-                    color: "#1C1917",
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.12)",
+                    color: "var(--foreground)",
                   }}
                   labelFormatter={(label) => formatDate(String(label))}
                   formatter={(value, name) => {

@@ -70,7 +70,7 @@ function ResetPasswordForm() {
   if (!token) {
     return (
       <motion.div
-        className="relative w-full max-w-md overflow-hidden rounded-2xl border border-border bg-card p-10 shadow-xl shadow-black/5"
+        className="relative w-full max-w-md overflow-hidden rounded-2xl border border-border bg-card p-10 shadow-xl shadow-black/5 dark:shadow-black/30"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
@@ -82,7 +82,7 @@ function ResetPasswordForm() {
             </span>
           </Link>
         </div>
-        <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-600">
+        <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-600 dark:border-red-900 dark:bg-red-950/50 dark:text-red-400">
           {t("invalidToken")}
         </div>
         <div className="mt-6 text-center">
@@ -99,7 +99,7 @@ function ResetPasswordForm() {
 
   return (
     <motion.div
-      className="relative w-full max-w-md overflow-hidden rounded-2xl border border-border bg-card p-10 shadow-xl shadow-black/5"
+      className="relative w-full max-w-md overflow-hidden rounded-2xl border border-border bg-card p-10 shadow-xl shadow-black/5 dark:shadow-black/30"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
@@ -119,13 +119,13 @@ function ResetPasswordForm() {
       </div>
 
       {success ? (
-        <div className="rounded-xl border border-green-200 bg-green-50 p-4 text-sm text-green-700">
+        <div className="rounded-xl border border-green-200 bg-green-50 p-4 text-sm text-green-700 dark:border-green-900 dark:bg-green-950/50 dark:text-green-400">
           {t("passwordResetSuccess")}
         </div>
       ) : (
         <form onSubmit={onSubmit} className="space-y-4">
           {error && (
-            <div className="rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-600">
+            <div className="rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-600 dark:border-red-900 dark:bg-red-950/50 dark:text-red-400">
               {error}
             </div>
           )}
@@ -191,13 +191,13 @@ export default function ResetPasswordPage() {
       <div className="pointer-events-none fixed inset-0 dot-grid opacity-40" />
       <Suspense
         fallback={
-          <div className="w-full max-w-md animate-pulse rounded-2xl border border-border bg-card p-10 shadow-xl shadow-black/5">
-            <div className="mx-auto mb-8 h-6 w-24 rounded bg-gray-200" />
-            <div className="mb-4 h-8 w-48 rounded bg-gray-200" />
+          <div className="w-full max-w-md animate-pulse rounded-2xl border border-border bg-card p-10 shadow-xl shadow-black/5 dark:shadow-black/30">
+            <div className="mx-auto mb-8 h-6 w-24 rounded bg-muted" />
+            <div className="mb-4 h-8 w-48 rounded bg-muted" />
             <div className="space-y-4">
-              <div className="h-11 rounded-xl bg-gray-100" />
-              <div className="h-11 rounded-xl bg-gray-100" />
-              <div className="h-11 rounded-xl bg-gray-200" />
+              <div className="h-11 rounded-xl bg-muted" />
+              <div className="h-11 rounded-xl bg-muted" />
+              <div className="h-11 rounded-xl bg-muted" />
             </div>
           </div>
         }
