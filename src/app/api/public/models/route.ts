@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getModelBrand, getBrandList } from "@/lib/brand";
+import { getModelMetadata } from "@/lib/model-metadata";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl;
@@ -48,23 +49,26 @@ export async function GET(req: NextRequest) {
   });
   const brands = getBrandList(allActiveModels.map((m) => m.modelId));
 
-  // "New" threshold: models created within last 7 days
-  const newThreshold = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
-
   return NextResponse.json(
     {
-      models: models.map((m) => ({
-        id: m.id,
-        modelId: m.modelId,
-        displayName: m.displayName,
-        providerName: getModelBrand(m.modelId),
-        category: m.category,
-        sellPrice: Number(m.sellPrice),
-        sellOutPrice: Number(m.sellOutPrice),
-        maxContext: m.maxContext,
-        isNew: m.createdAt >= newThreshold,
-        createdAt: m.createdAt.toISOString(),
-      })),
+      models: models.map((m) => {
+        const meta = getModelMetadata(m.modelId, m.category);
+        return {
+          id: m.id,
+          modelId: m.modelId,
+          displayName: m.displayName,
+          providerName: getModelBrand(m.modelId),
+          category: m.category,
+          sellPrice: Number(m.sellPrice),
+          sellOutPrice: Number(m.sellOutPrice),
+          maxContext: m.maxContext,
+          badges: meta.badges,
+          features: meta.features,
+          inputTypes: meta.inputTypes,
+          outputTypes: meta.outputTypes,
+          createdAt: m.createdAt.toISOString(),
+        };
+      }),
       providers: brands.map((b) => ({ id: b, name: b })),
       categories,
     },
