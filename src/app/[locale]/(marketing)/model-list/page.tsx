@@ -16,10 +16,29 @@ import {
   X,
   SlidersHorizontal,
   ChevronDown,
+  ChevronUp,
   Flame,
   Sparkles,
   Gift,
+  Play,
+  MessageSquare,
+  PackageSearch,
 } from "lucide-react";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+  TooltipProvider,
+} from "@/components/ui/tooltip";
+import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Link } from "@/i18n/navigation";
 import type { BadgeType, FeatureTag, IOType } from "@/lib/model-metadata";
 
 // ============================================================
@@ -53,27 +72,45 @@ type SortOption =
 // Sub-components
 // ============================================================
 
-function CopyButton({ text, label }: { text: string; label: string }) {
+function CopyIdIcon({
+  modelId,
+  copyLabel,
+  copiedLabel,
+}: {
+  modelId: string;
+  copyLabel: string;
+  copiedLabel: string;
+}) {
   const [copied, setCopied] = useState(false);
 
-  const handleCopy = async () => {
-    await navigator.clipboard.writeText(text);
+  const handleCopy = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    await navigator.clipboard.writeText(modelId);
     setCopied(true);
     setTimeout(() => setCopied(false), 1500);
   };
 
   return (
-    <button
-      onClick={handleCopy}
-      className="ml-1.5 inline-flex items-center rounded p-1 text-muted-foreground/50 transition-colors hover:bg-muted hover:text-primary"
-      title={label}
-    >
-      {copied ? (
-        <Check className="h-3.5 w-3.5 text-green-500" />
-      ) : (
-        <Copy className="h-3.5 w-3.5" />
-      )}
-    </button>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            onClick={handleCopy}
+            className="absolute right-3 top-3 z-10 rounded-md p-1.5 text-muted-foreground/0 transition-all group-hover:text-muted-foreground hover:!bg-muted hover:!text-primary"
+          >
+            {copied ? (
+              <Check className="h-3.5 w-3.5 text-green-500" />
+            ) : (
+              <Copy className="h-3.5 w-3.5" />
+            )}
+          </button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>{copied ? copiedLabel : copyLabel}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }
 
@@ -102,32 +139,6 @@ function ModelBadge({ type, label }: { type: BadgeType; label: string }) {
   );
 }
 
-function ContextBadge({ maxContext }: { maxContext: number }) {
-  if (maxContext <= 0) return null;
-  const k = maxContext / 1000;
-  let label: string;
-  let colorClass: string;
-  if (k >= 1000) {
-    label = `${(k / 1000).toFixed(k >= 10000 ? 0 : 1)}M`;
-    colorClass =
-      "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300";
-  } else if (k >= 128) {
-    label = `${k}K`;
-    colorClass =
-      "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300";
-  } else {
-    label = `${k}K`;
-    colorClass = "bg-muted text-muted-foreground";
-  }
-  return (
-    <span
-      className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium ${colorClass}`}
-    >
-      {label}
-    </span>
-  );
-}
-
 function FeaturePill({ label }: { label: string }) {
   return (
     <span className="inline-flex items-center rounded-full border border-border/50 bg-muted/50 px-2 py-0.5 text-[11px] text-muted-foreground">
@@ -137,22 +148,34 @@ function FeaturePill({ label }: { label: string }) {
 }
 
 // ============================================================
-// Filter sidebar
+// Collapsible filter sidebar section
 // ============================================================
 
-function FilterSection({
+function CollapsibleFilterSection({
   title,
+  defaultOpen = true,
   children,
 }: {
   title: string;
+  defaultOpen?: boolean;
   children: React.ReactNode;
 }) {
+  const [open, setOpen] = useState(defaultOpen);
+
   return (
     <div>
-      <div className="mb-2.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+      <button
+        onClick={() => setOpen(!open)}
+        className="mb-2.5 flex w-full items-center justify-between text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+      >
         {title}
-      </div>
-      {children}
+        {open ? (
+          <ChevronUp className="h-3.5 w-3.5" />
+        ) : (
+          <ChevronDown className="h-3.5 w-3.5" />
+        )}
+      </button>
+      {open && children}
     </div>
   );
 }
@@ -210,6 +233,47 @@ function ProviderCheckbox({
 }
 
 // ============================================================
+// Skeleton card matching new layout
+// ============================================================
+
+function SkeletonCard() {
+  return (
+    <div className="card-gradient-line animate-pulse p-5">
+      {/* Header: logo + name */}
+      <div className="mb-3 flex items-start gap-3">
+        <div className="h-10 w-10 rounded-xl bg-muted" />
+        <div className="flex-1 space-y-2">
+          <div className="h-5 w-3/5 rounded bg-muted" />
+          <div className="h-3.5 w-2/5 rounded bg-muted" />
+        </div>
+      </div>
+      {/* Feature pills */}
+      <div className="mb-3 flex gap-1.5">
+        <div className="h-5 w-16 rounded-full bg-muted" />
+        <div className="h-5 w-20 rounded-full bg-muted" />
+        <div className="h-5 w-12 rounded-full bg-muted" />
+      </div>
+      {/* Price */}
+      <div className="space-y-2 border-t border-border/60 pt-3">
+        <div className="flex justify-between">
+          <div className="h-4 w-10 rounded bg-muted" />
+          <div className="h-4 w-20 rounded bg-muted" />
+        </div>
+        <div className="flex justify-between">
+          <div className="h-4 w-10 rounded bg-muted" />
+          <div className="h-4 w-20 rounded bg-muted" />
+        </div>
+      </div>
+      {/* Buttons */}
+      <div className="mt-3 flex gap-2 border-t border-border/60 pt-3">
+        <div className="h-9 flex-1 rounded-lg bg-muted" />
+        <div className="h-9 flex-1 rounded-lg bg-muted" />
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
 // Main page
 // ============================================================
 
@@ -242,7 +306,7 @@ export default function ModelListPage() {
     new Set()
   );
   const [sortBy, setSortBy] = useState<SortOption>("newest");
-  const [showMobileFilters, setShowMobileFilters] = useState(false);
+  const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
 
   useEffect(() => {
     fetch("/api/public/models")
@@ -397,14 +461,22 @@ export default function ModelListPage() {
     [t]
   );
 
+  // Format context window
+  const formatContext = (maxContext: number) => {
+    if (maxContext <= 0) return null;
+    const k = maxContext / 1000;
+    if (k >= 1000) return `${(k / 1000).toFixed(k >= 10000 ? 0 : 1)}M`;
+    return `${k}K`;
+  };
+
   // ============================================================
   // Filter sidebar content
   // ============================================================
 
   const filterContent = (
     <div className="space-y-6">
-      {/* Input Types */}
-      <FilterSection title={t("inputTypes")}>
+      {/* Input Types — default open */}
+      <CollapsibleFilterSection title={t("inputTypes")} defaultOpen>
         <div className="flex flex-wrap gap-1.5">
           {allInputTypes.map((type) => (
             <PillToggle
@@ -416,10 +488,10 @@ export default function ModelListPage() {
             </PillToggle>
           ))}
         </div>
-      </FilterSection>
+      </CollapsibleFilterSection>
 
-      {/* Output Types */}
-      <FilterSection title={t("outputTypes")}>
+      {/* Output Types — default open */}
+      <CollapsibleFilterSection title={t("outputTypes")} defaultOpen>
         <div className="flex flex-wrap gap-1.5">
           {allOutputTypes.map((type) => (
             <PillToggle
@@ -431,10 +503,10 @@ export default function ModelListPage() {
             </PillToggle>
           ))}
         </div>
-      </FilterSection>
+      </CollapsibleFilterSection>
 
-      {/* Category */}
-      <FilterSection title={t("category")}>
+      {/* Category — default open */}
+      <CollapsibleFilterSection title={t("category")} defaultOpen>
         <div className="flex flex-wrap gap-1.5">
           {categories.map((c) => (
             <PillToggle
@@ -446,10 +518,10 @@ export default function ModelListPage() {
             </PillToggle>
           ))}
         </div>
-      </FilterSection>
+      </CollapsibleFilterSection>
 
-      {/* Model Features */}
-      <FilterSection title={t("modelFeatures")}>
+      {/* Model Features — default open */}
+      <CollapsibleFilterSection title={t("modelFeatures")} defaultOpen>
         <div className="flex flex-wrap gap-1.5">
           {allFeatures.map((f) => (
             <PillToggle
@@ -461,10 +533,10 @@ export default function ModelListPage() {
             </PillToggle>
           ))}
         </div>
-      </FilterSection>
+      </CollapsibleFilterSection>
 
-      {/* Providers */}
-      <FilterSection title={t("provider")}>
+      {/* Providers — default collapsed */}
+      <CollapsibleFilterSection title={t("provider")} defaultOpen={false}>
         <div className="-mx-1 space-y-0.5">
           {providers.map((p) => (
             <ProviderCheckbox
@@ -477,7 +549,7 @@ export default function ModelListPage() {
             />
           ))}
         </div>
-      </FilterSection>
+      </CollapsibleFilterSection>
 
       {/* Clear all */}
       {activeFilterCount > 0 && (
@@ -550,21 +622,30 @@ export default function ModelListPage() {
                 </select>
                 <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               </div>
-              {/* Mobile filter toggle */}
-              <Button
-                variant={showMobileFilters ? "default" : "outline"}
-                size="sm"
-                onClick={() => setShowMobileFilters(!showMobileFilters)}
-                className="h-10 gap-1.5 lg:hidden"
-              >
-                <SlidersHorizontal className="h-4 w-4" />
-                {t("filters")}
-                {activeFilterCount > 0 && (
-                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary-foreground text-[10px] font-bold text-primary">
-                    {activeFilterCount}
-                  </span>
-                )}
-              </Button>
+              {/* Mobile filter toggle — Sheet */}
+              <Sheet open={mobileFilterOpen} onOpenChange={setMobileFilterOpen}>
+                <SheetTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-10 gap-1.5 lg:hidden"
+                  >
+                    <SlidersHorizontal className="h-4 w-4" />
+                    {t("filters")}
+                    {activeFilterCount > 0 && (
+                      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
+                        {activeFilterCount}
+                      </span>
+                    )}
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="left" className="w-80 overflow-y-auto">
+                  <SheetHeader>
+                    <SheetTitle>{t("filters")}</SheetTitle>
+                  </SheetHeader>
+                  <div className="mt-4">{filterContent}</div>
+                </SheetContent>
+              </Sheet>
               {/* Results count */}
               <span className="hidden text-sm text-muted-foreground lg:inline">
                 {t("showing", {
@@ -576,13 +657,6 @@ export default function ModelListPage() {
           </div>
         </AnimatedItem>
       </AnimatedSection>
-
-      {/* Mobile filter panel */}
-      {showMobileFilters && (
-        <div className="mb-6 rounded-xl border border-border bg-card p-5 lg:hidden">
-          {filterContent}
-        </div>
-      )}
 
       {/* Main layout: sidebar + grid */}
       <div className="flex gap-8">
@@ -603,49 +677,57 @@ export default function ModelListPage() {
           {loading ? (
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {Array.from({ length: 9 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="h-56 animate-pulse rounded-2xl bg-muted"
-                />
+                <SkeletonCard key={i} />
               ))}
             </div>
           ) : filtered.length === 0 ? (
-            <div className="py-24 text-center">
-              <p className="text-lg font-medium text-foreground">
-                {t("noResults")}
-              </p>
-              <p className="mt-2 text-sm text-muted-foreground">
-                {t("tryAdjustFilters")}
-              </p>
-              {activeFilterCount > 0 && (
-                <Button
-                  variant="outline"
-                  className="mt-5"
-                  onClick={clearFilters}
-                >
-                  {t("clearAll")}
-                </Button>
-              )}
-            </div>
+            <EmptyState
+              icon={PackageSearch}
+              title={t("noResults")}
+              description={t("tryAdjustFilters")}
+              action={
+                activeFilterCount > 0 ? (
+                  <Button variant="outline" onClick={clearFilters}>
+                    {t("clearAll")}
+                  </Button>
+                ) : undefined
+              }
+            />
           ) : (
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {filtered.map((m) => {
                 const { Logo } = getProviderLogo(m.providerName);
+                const contextLabel = formatContext(m.maxContext);
+                const maxVisibleFeatures = 3;
+                const visibleFeatures = m.features.slice(
+                  0,
+                  maxVisibleFeatures
+                );
+                const extraCount =
+                  m.features.length - maxVisibleFeatures;
+
                 return (
                   <div
                     key={m.id}
-                    className="group relative flex flex-col rounded-2xl border border-border bg-card p-5 transition-all hover:border-primary/30 hover:shadow-lg"
+                    className="card-gradient-line group relative flex flex-col p-5"
                   >
+                    {/* Hover copy ID icon */}
+                    <CopyIdIcon
+                      modelId={m.modelId}
+                      copyLabel={t("copyModelId")}
+                      copiedLabel={t("copiedModelId")}
+                    />
+
                     {/* Header: logo + name + badges */}
                     <div className="mb-3 flex items-start gap-3">
-                      <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-muted">
-                        <Logo className="h-7 w-7 rounded-md" />
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-muted">
+                        <Logo className="h-6 w-6 rounded-md" />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <h3 className="text-base font-semibold leading-snug text-foreground">
-                          {m.displayName}
-                        </h3>
-                        <div className="mt-0.5 flex items-center gap-1.5 flex-wrap">
+                        <div className="flex items-center gap-2">
+                          <h3 className="truncate text-base font-semibold leading-snug text-foreground">
+                            {m.displayName}
+                          </h3>
                           {m.badges.map((b) => (
                             <ModelBadge
                               key={b}
@@ -654,57 +736,82 @@ export default function ModelListPage() {
                             />
                           ))}
                         </div>
+                        {/* Category + context — second line */}
+                        <div className="mt-0.5 flex items-center gap-1.5 text-xs text-muted-foreground">
+                          <span>{tc(m.category)}</span>
+                          {contextLabel && (
+                            <>
+                              <span className="text-border">·</span>
+                              <span>{contextLabel}</span>
+                            </>
+                          )}
+                        </div>
                       </div>
                     </div>
 
-                    {/* Model ID */}
-                    <div className="mb-3 flex items-center">
-                      <code className="rounded-md bg-muted px-2 py-0.5 font-mono text-xs text-muted-foreground truncate">
-                        {m.modelId}
-                      </code>
-                      <CopyButton
-                        text={m.modelId}
-                        label={t("copyModelId")}
-                      />
-                    </div>
-
-                    {/* Feature pills + context badge */}
-                    <div className="mb-3 flex flex-wrap items-center gap-1.5">
-                      {m.features.map((f) => (
-                        <FeaturePill key={f} label={tf(f)} />
-                      ))}
-                      <ContextBadge maxContext={m.maxContext} />
-                    </div>
-
-                    {/* Provider */}
-                    <div className="mb-3 text-xs text-muted-foreground">
-                      {tp(m.providerName)}
-                    </div>
+                    {/* Feature pills (max 3 + overflow) */}
+                    {m.features.length > 0 && (
+                      <div className="mb-3 flex flex-wrap items-center gap-1.5">
+                        {visibleFeatures.map((f) => (
+                          <FeaturePill key={f} label={tf(f)} />
+                        ))}
+                        {extraCount > 0 && (
+                          <span className="inline-flex items-center rounded-full bg-muted/50 px-2 py-0.5 text-[11px] text-muted-foreground">
+                            {t("moreFeatures", { count: extraCount })}
+                          </span>
+                        )}
+                      </div>
+                    )}
 
                     {/* Pricing */}
                     <div className="mt-auto space-y-1.5 border-t border-border/60 pt-3">
                       <div className="flex items-center justify-between">
-                        <span className="text-sm text-muted-foreground">
+                        <span className="text-xs text-muted-foreground">
                           {t("inputPrice")}
                         </span>
                         <span className="font-mono text-sm font-semibold tabular-nums text-foreground">
                           ¥{(m.sellPrice * 1000).toFixed(2)}
                           <span className="ml-1 text-xs font-normal text-muted-foreground">
-                            /M tokens
+                            /M
                           </span>
                         </span>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-sm text-muted-foreground">
+                        <span className="text-xs text-muted-foreground">
                           {t("outputPrice")}
                         </span>
                         <span className="font-mono text-sm font-semibold tabular-nums text-foreground">
                           ¥{(m.sellOutPrice * 1000).toFixed(2)}
                           <span className="ml-1 text-xs font-normal text-muted-foreground">
-                            /M tokens
+                            /M
                           </span>
                         </span>
                       </div>
+                    </div>
+
+                    {/* Action buttons */}
+                    <div className="mt-3 flex gap-2 border-t border-border/60 pt-3">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="flex-1"
+                        asChild
+                      >
+                        <Link
+                          href={`/playground?model=${encodeURIComponent(m.modelId)}`}
+                        >
+                          <Play className="mr-1.5 h-3.5 w-3.5" />
+                          {t("playground")}
+                        </Link>
+                      </Button>
+                      <Button size="sm" className="flex-1" asChild>
+                        <Link
+                          href={`/chat?model=${encodeURIComponent(m.modelId)}`}
+                        >
+                          <MessageSquare className="mr-1.5 h-3.5 w-3.5" />
+                          {t("startChat")}
+                        </Link>
+                      </Button>
                     </div>
                   </div>
                 );
